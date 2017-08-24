@@ -1,0 +1,8 @@
+autofmt
+molokai
+neobundle.vim
+neosnippet
+neosnippet-snippets
+unite.vim
+vim-indent-guides
+vim-quickrun
