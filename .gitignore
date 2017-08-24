@@ -3,7 +3,7 @@
 !./bundle/neobundle.vim
 
 .netrwhist
-./vim80/*
-#./vim80/spell, /syntaxのみをgitに管理する
-!./vim80/spell
-!./vim80/syntax
+./vim80
+gvim
+vim
+
