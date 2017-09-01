@@ -3,5 +3,5 @@
 !./bundle/neobundle.vim
 
 .netrwhist
-./vim80
+.\vimBramFiles
 ./gvim.exe
