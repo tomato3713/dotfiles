@@ -70,6 +70,14 @@ scriptencoding utf-8
 
 "テキスト挿入中の自動折り返しを日本語に対応させる
 set formatoptions+=mM
+
+
+"固定文句を入れる
+augroup templateGroup
+  autocmd!
+  autocmd BufNewFile *.html :0r $VIM\template\t_html.html
+  autocmd BufNewFile *.tex :0r $VIM/template/t_tex.tex
+augroup END
 " }}}
 
 "### View ### {{{
@@ -115,6 +123,14 @@ set wildmenu wildmode=list:full
 set spelllang+=cjk "日本語をスペルチェックの対象 から除外する
 set spell
 
+"dictionary Complete
+augroup DictGroup
+  autocmd!
+  autocmd BufRead,BufNewFile *.js :set dictionary=$VIM/dict/javascript.dict
+  autocmd BufRead,BufNewFile *.html :set dictionary=$VIM/dict/html.dict
+  autocmd BufRead,BufNewFile *.tex :set dictionary=$VIM/dict/tex.dict
+augroup END
+
 " ### Command ### {{{
 "コマンドライン補完
 set wildmenu
@@ -158,52 +174,70 @@ NeoBundleFetch 'Shougo\neobundle.vim'
 "  :help neobundle-examples
 
 "現在開いているファイルをvim内で直接実行し結果を表示するプラグイン
-NeoBundle 'thinca/vim-quickrun'
+  NeoBundle 'thinca/vim-quickrun'
 
 "インデントを見やすくする {{{
-NeoBundle 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_enable_on_vim_startup=1 "起動時に自動起動
-let g:indent_guides_start_level=1 "インデントの量
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=black
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
-let g:indent_guides_guide_size=1
+  NeoBundle 'nathanaelkane/vim-indent-guides'
+  let g:indent_guides_enable_on_vim_startup=1 "起動時に自動起動
+  let g:indent_guides_start_level=1 "インデントの量
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=black
+  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+  let g:indent_guides_guide_size=1
 " }}}
 
 "ハイライト {{{
-NeoBundle 'tomasr/molokai'
-colorscheme molokai
-syntax on
-set nohlsearch
-let g:molokai_original=1
-let g:rehash256=1
-set background=dark
+  NeoBundle 'tomasr/molokai'
+  colorscheme molokai
+  syntax on
+  set nohlsearch
+  let g:molokai_original=1
+  let g:rehash256=1
+  set background=dark
 " }}}
 
 "スニペット用のプラグイン {{{
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets' "スニペットの定義ファイル
-"SurperTab like snippets behaivior
-imap <expr><TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \neosnippet#expandable_or_jumpable() ?
-    \  "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"For snippet_complete marker.
-if has('conceal')
-	set conceallevel=2 concealcursor=i
-endif
+  NeoBundle 'Shougo/neocomplcache'
+  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'Shougo/neosnippet-snippets' "スニペットの定義ファイル
+  "use neocomplcache
+  let g:neocomplcache_enable_at_startup=1
+  "Use smartcase 大文字小文字を無視する
+  let g:neocomplcache_enable_smart_case=1
+  "シンタックスをキャッシュする最小文字数を3にする
+  let g:neocomplcache_min_syntax_length=3
+  let g:neocomplcache_lock_buffer_name_pattern='\*ku*'
+  "SurperTab like snippets behaivior
+  imap <expr><TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \neosnippet#expandable_or_jumpable() ?
+      \  "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+  ".texでもtexのスニペットが聞くようにする
+  let g:tex_flavor='latex'
+  "For snippet_complete marker.
+  if has('conceal')
+    set conceallevel=2 concealcursor=i
+  endif
+
+  "Enable omni completion
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTages
+  autocmd FileType javascript setlocal omnifunc=javascript#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " }}}
 
 "インターフェースを拡張かつファイラー
-NeoBundle 'Shougo/unite.vim'
+  NeoBundle 'Shougo/unite.vim'
 
 "autofmt日本語文章のフォーマットプラグイン
-NeoBundle 'vim-jp/autofmt'
-set formatexpr=autofmt#japanese#formatexpr()
+  NeoBundle 'vim-jp/autofmt'
+  set formatexpr=autofmt#japanese#formatexpr()
 
-call neobundle#end()
-filetype plugin indent on
-" }}}
+  call neobundle#end()
+  filetype plugin indent on
+"}}}
 "プラグインがインストールされているかチェック
 NeoBundleCheck
