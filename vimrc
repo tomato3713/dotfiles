@@ -10,6 +10,9 @@ let g:is_unix = has('unix')
 let g:is_gui = has('gui_running')
 let g:is_terminal = !g:is_gui
 
+"runtimepath
+set runtimepath+=$VIM/
+
 "WinではPATHに$VIMが含まれていないときにexeを見つけ出せないので修正(kaoriya)
 if g:is_windows && $PATH !~? '\(^\|;\)' . escape($VIM, '\\') . '\(;\|$\)'
   let $PATH = $VIM . ';' . $PATH
@@ -75,8 +78,8 @@ set formatoptions+=mM
 "固定文句を入れる
 augroup templateGroup
   autocmd!
-  autocmd BufNewFile *.html :0r $VIM\template\t_html.html
-  autocmd BufNewFile *.tex :0r $VIM/template/t_tex.tex
+  autocmd BufNewFile *.html :0r $VIM/setting/template/t_html.html
+  autocmd BufNewFile *.tex :0r $VIM/setting/template/t_tex.tex
 augroup END
 " }}}
 
@@ -126,9 +129,11 @@ set spell
 "dictionary Complete
 augroup DictGroup
   autocmd!
-  autocmd BufRead,BufNewFile *.js :set dictionary=$VIM/dict/javascript.dict
-  autocmd BufRead,BufNewFile *.html :set dictionary=$VIM/dict/html.dict
-  autocmd BufRead,BufNewFile *.tex :set dictionary=$VIM/dict/tex.dict
+  autocmd BufRead,BufNewFile *.js :set dictionary=$VIM/setting/dict/javascript.dict
+  autocmd BufRead,BufNewFile *.html :set dictionary=$VIM/setting/dict/html.dict
+  autocmd BufRead,BufNewFile *.css :set dictionary=$VIM/setting/dict/css.dict
+  autocmd BufRead,BufNewFile *.tex :set dictionary=$VIM/setting/dict/tex.dict
+  autocmd BufRead,BufNewFile *.py :set dictionary=$VIM/setting/dict/python.dict
 augroup END
 
 " ### Command ### {{{
