@@ -1,3 +1,7 @@
+"$VIM以下ですべての設定ファイルを管理するために
+"環境変数に$VIM:c:\prog\vim
+"$VIMRUNTIME:c:\prog\vim
+"を加える。
 "Initialization {{{
 "My autocmd group
 augroup myautocmd
@@ -13,13 +17,10 @@ let g:is_terminal = !g:is_gui
 "runtimepath
 set runtimepath+=$VIM/
 
-"WinではPATHに$VIMが含まれていないときにexeを見つけ出せないので修正(kaoriya)
-if g:is_windows && $PATH !~? '\(^\|;\)' . escape($VIM, '\\') . '\(;\|$\)'
-  let $PATH = $VIM . ';' . $PATH
-endif
-
 "viとの互換ではなくvimの機能をフルに発揮できるようにする。
 set nocompatible
+
+filetype plugin on
 
 "Vim options {{{
 "### Indent ###{{{
@@ -55,10 +56,14 @@ set autoread
 set noswapfile
 
 "undoの記録を残す
-set undofile undodir==/.vimfiles/.vimundo
+set undofile undodir=$VIM/.vimundo
+
+"バックアップファイルの出力先を変更
+set backup
+set backupdir=$VIM/temp
 
 "viminfoファイルについて指定
-set viminfo+=n~/vimfiles/.viminfo
+"set viminfo+=n$VIM/temp/viminfo.txt
 
 "vimの無名レジスタとOSのクリップボードを連携させる
 set clipboard=unnamed
@@ -78,8 +83,8 @@ set formatoptions+=mM
 "固定文句を入れる
 augroup templateGroup
   autocmd!
-  autocmd BufNewFile *.html :0r $VIM/setting/template/t_html.html
-  autocmd BufNewFile *.tex :0r $VIM/setting/template/t_tex.tex
+  autocmd BufNewFile *.html :0r $VIM/template/t_html.html
+  autocmd BufNewFile *.tex :0r $VIM/template/t_tex.tex
 augroup END
 " }}}
 
@@ -124,16 +129,15 @@ set wildmenu wildmode=list:full
 
 "spelling補完 on <C-x><C-s>
 set spelllang+=cjk "日本語をスペルチェックの対象 から除外する
-set spell
 
 "dictionary Complete
 augroup DictGroup
   autocmd!
-  autocmd BufRead,BufNewFile *.js :set dictionary=$VIM/setting/dict/javascript.dict
-  autocmd BufRead,BufNewFile *.html :set dictionary=$VIM/setting/dict/html.dict
-  autocmd BufRead,BufNewFile *.css :set dictionary=$VIM/setting/dict/css.dict
-  autocmd BufRead,BufNewFile *.tex :set dictionary=$VIM/setting/dict/tex.dict
-  autocmd BufRead,BufNewFile *.py :set dictionary=$VIM/setting/dict/python.dict
+  autocmd BufRead,BufNewFile *.js :set dictionary=$VIM/dict/javascript.dict
+  autocmd BufRead,BufNewFile *.html :set dictionary=$VIM/dict/html.dict
+  autocmd BufRead,BufNewFile *.css :set dictionary=$VIM/dict/css.dict
+  autocmd BufRead,BufNewFile *.tex :set dictionary=$VIM/dict/tex.dict
+  autocmd BufRead,BufNewFile *.py :set dictionary=$VIM/dict/python.dict
 augroup END
 
 " ### Command ### {{{
