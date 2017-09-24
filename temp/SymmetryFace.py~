@@ -1,0 +1,33 @@
+#https://qiita.com/EafT/items/964dd70caa966c03f879
+#qiita by EafT
+
+import cv2
+import sys
+import math
+import numpy as np
+
+CASCADE_PATH = 'haarcascades/haarcascade_frontalface_alt.xml'
+
+def symmtry_face(in_image_path, out_image_path):
+    image = cv2.imread(in_image_path)
+    height, width, color = image.shape
+    cascade = cv2.CascadeClassifier(CASCADE_PATH)
+    facerect = cascade.detectMultiScale(image, scaleFactor=1.2, minNeighbors=2, minSize=(10, 10))
+
+    if len(facerect) == 0:
+        return False
+
+    rect = facerect[0]
+    start_x = rect[0]
+    face_width = rect[2]
+    center_x = int(math.floor(start_x + face_width/2.0))
+
+    left_image = image[0:height, 0:center_x]
+    right_image = left_image[:,::-1]
+    out_image = cv2.hconcat([left_image, right_image])
+
+    cv2.imwrite(out_image_path, out_image)
+
+    return True
+
+symmtry_face("./images\Lenna.png", ".\images\SymmetryFace.out.jpg")
