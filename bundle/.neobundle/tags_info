@@ -1,6 +1,6 @@
 autofmt
 molokai
 neobundle.vim
-unite.vim
+neosnippet
+neosnippet-snippets
 vim-indent-guides
-vim-quickrun

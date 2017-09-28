@@ -149,7 +149,7 @@ augroup OmniGroup
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTages
   autocmd FileType javascript setlocal omnifunc=javascript#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType python setlocal omnifunc=python3complete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
 
@@ -202,7 +202,7 @@ NeoBundleFetch 'Shougo\neobundle.vim'
 "  :help neobundle-examples
 
 "現在開いているファイルをvim内で直接実行し結果を表示するプラグイン
-  NeoBundle 'thinca/vim-quickrun'
+"  NeoBundle 'thinca/vim-quickrun'
 
 "インデントを見やすくする {{{
   NeoBundle 'nathanaelkane/vim-indent-guides'
@@ -223,40 +223,29 @@ NeoBundleFetch 'Shougo\neobundle.vim'
   set background=dark
 " }}}
 
-"スニペット用のプラグイン {{{
-"  NeoBundle 'Shougo/neocomplcache'
-"  NeoBundle 'Shougo/neosnippet'
-"  NeoBundle 'Shougo/neosnippet-snippets' "スニペットの定義ファイル
-"  "use neocomplcache
-"  let g:neocomplcache_enable_at_startup=1
-"  "Use smartcase 大文字小文字を無視する
-"  let g:neocomplcache_enable_smart_case=1
-"  "シンタックスをキャッシュする最小文字数を3にする
-"  let g:neocomplcache_min_syntax_length=3
-"  let g:neocomplcache_lock_buffer_name_pattern='\*ku*'
-"  "SurperTab like snippets behaivior
-"  imap <expr><TAB>
-"      \ pumvisible() ? "\<C-n>" :
-"      \neosnippet#expandable_or_jumpable() ?
-"      \  "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-"        \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"
-"  ".texでもtexのスニペットが聞くようにする
-"  let g:tex_flavor='latex'
-"  "For snippet_complete marker.
-"  if has('conceal')
-"    set conceallevel=2 concealcursor=i
-"  endif
-
-" }}}
-
-"インターフェースを拡張かつファイラー
-  NeoBundle 'Shougo/unite.vim'
-
 "autofmt日本語文章のフォーマットプラグイン
   NeoBundle 'vim-jp/autofmt'
   set formatexpr=autofmt#japanese#formatexpr()
+
+  "snippet{{{
+  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'Shougo/neosnippet-snippets'
+  "Plugin key-mappings.
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k> <Plug>(neosnippet_expand_target)
+  "SuperTab like snippets behabior.
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable) ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: "_<TAB>"
+  "For snippet_complete marker.
+  if has('conceal')
+    set conceallevel=2 concealcursor=i
+  endif
+  "}}}
 
   call neobundle#end()
 "}}}
