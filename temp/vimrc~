@@ -243,7 +243,7 @@ NeoBundleFetch 'Shougo\neobundle.vim'
         \: "_<TAB>"
   "For snippet_complete marker.
   if has('conceal')
-    set conceallebel=2 concealcursor=i
+    set conceallevel=2 concealcursor=i
   endif
   "}}}
 

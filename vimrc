@@ -172,7 +172,7 @@ set history=2000
 "
 " ### その他Miscellaneous ### {{{
 " 日本語ヘルプ
-set helplang=ja
+set helplang=en,ja
 
 "いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
