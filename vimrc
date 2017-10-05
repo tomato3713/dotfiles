@@ -1,3 +1,6 @@
+"Last Change: 29/09/2017
+"Maintainer: Watanabe Taichi < weasel.wt@outlook.com>
+"
 "$VIM以下ですべての設定ファイルを管理するために
 "環境変数に$VIM:c:\prog\vim
 "$VIMRUNTIME:c:\prog\vim
@@ -24,8 +27,8 @@ set nocompatible
 filetype plugin on
 filetype on
 
-"Vim options {{{
-"### Indent ###{{{
+"Vim options {
+"### Indent ###{
 set autoindent "新しい行のインデントを継続する
 set expandtab "tab to space
 set tabstop=2 "画面上でタブ文字の占める幅
@@ -36,7 +39,7 @@ filetype indent on
 if exists('+breakindent')
   set breakindent
 endif
-" }}}
+" }
 
 "マウスとの連携機能をオフにする
 set mouse=
@@ -66,7 +69,7 @@ set backup
 set backupdir=$VIM/temp
 
 "viminfoファイルについて指定
-"set viminfo+=n$VIM/temp/viminfo.txt
+set viminfo+=n
 
 "vimの無名レジスタとOSのクリップボードを連携させる
 set clipboard=unnamed
@@ -91,7 +94,7 @@ augroup templateGroup
 augroup END
 " }}}
 
-"### View ### {{{
+"### View ### {
 "色数
 set t_Co=256
 "コマンドラインの行数
@@ -127,6 +130,13 @@ set showtabline=2
 "長い行を@にさせない
 set display=lastline
 
+"windows上でもunix形式のend-of-lineを使う
+set viewoptions=unix
+"ファイル名内の'\'をスラッシュに置換する
+set viewoptions+=slash
+"}
+
+"completion {
 "入力補完機能を有効化
 set wildmenu wildmode=list:full
 
@@ -159,7 +169,9 @@ autocmd FileType *
 \ |    setlocal omnifunc=syntaxcomplete#Complete
 \ |  endif
 
-" ### Command ### {{{
+" }
+"
+" ### Command ### {
 "コマンドライン補完
 set wildmenu
 
@@ -168,16 +180,31 @@ set wildmode=longest:full,full
 
 "コマンド履歴の保存数
 set history=2000
-" ]}}
+" }
 "
-" ### その他Miscellaneous ### {{{
+" ### その他Miscellaneous ### {
 " 日本語ヘルプ
 set helplang=en,ja
 
 "いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
-"}}}
-"}}}
+"}
+"}
+"
+"gui options{
+"menuを使わない
+set winaltkeys=yes
+set guioptions=MRr
+
+"ウィンドウの幅
+set columns=100
+"ウィンドウの高さ
+set lines=50
+
+"挿入モード、検索モードでのデフォルトのIME状態の設定
+set iminsert=0
+set imsearch=0
+"}
 
 "### plugin #### {{{
 "neobundleの設定
