@@ -4,3 +4,4 @@ neobundle.vim
 neosnippet
 neosnippet-snippets
 vim-indent-guides
+vimtex

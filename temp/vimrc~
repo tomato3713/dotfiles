@@ -69,7 +69,7 @@ set backup
 set backupdir=$VIM/temp
 
 "viminfoファイルについて指定
-set viminfo+=n$VIM/temp/viminfo.txt
+set viminfo+=n
 
 "vimの無名レジスタとOSのクリップボードを連携させる
 set clipboard=unnamed
@@ -273,6 +273,25 @@ NeoBundleFetch 'Shougo\neobundle.vim'
     set conceallevel=2 concealcursor=i
   endif
   "}}}
+  "
+  "tex plugin{
+  NeoBundle 'lervag/vimtex'
+  let g:vimtex_latex_continuous=1
+  let g:vimtex_latexmk_background=1
+  let g:vimtex_view_general_viewer='SumatoraPDF'
+  let g:vimtex_compiler_latexmk={
+        \ 'background' : 0,
+        \ 'build_dir' : '',
+        \ 'continuous' : 1,
+        \ 'options' : [
+        \  '-pdfdvi',
+        \  '-verbose',
+        \  '-file-line-error',
+        \  '-synctex=1',
+        \  '-interaction=nonstopmode',
+        \ ],
+        \ }
+  "}
 
   call neobundle#end()
 "}}}
