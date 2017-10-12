@@ -1,9 +1,9 @@
 "Last Change: 29/09/2017
 "Maintainer: Watanabe Taichi < weasel.wt@outlook.com>
 "
-"$VIM以下ですべての設定ファイルを管理するために
-"環境変数に$VIM:c:\prog\vim
-"$VIMRUNTIME:c:\prog\vim
+"$HOME以下ですべての設定ファイルを管理するために
+"環境変数に$HOME:c:\prog\vim
+"$HOMERUNTIME:c:\prog\vim
 "を加える。
 "Initialization {{{
 "My autocmd group
@@ -18,8 +18,8 @@ let g:is_gui = has('gui_running')
 let g:is_terminal = !g:is_gui
 
 "runtimepath
-set runtimepath+=$VIM/
-set runtimepath+=$VIM/autoload/
+set runtimepath+=$HOME/
+set runtimepath+=$HOME/autoload/
 
 "viとの互換ではなくvimの機能をフルに発揮できるようにする。
 set nocompatible
@@ -62,11 +62,11 @@ set autoread
 set noswapfile
 
 "undoの記録を残す
-set undofile undodir=$VIM/.vimundo
+set undofile undodir=$HOME/.vimundo
 
 "バックアップファイルの出力先を変更
 set backup
-set backupdir=$VIM/temp
+set backupdir=$HOME/temp
 
 "viminfoファイルについて指定
 set viminfo+=n
@@ -89,8 +89,8 @@ set formatoptions+=mM
 "固定文句を入れる
 augroup templateGroup
   autocmd!
-  autocmd BufNewFile *.html :0r $VIM/template/t_html.html
-  autocmd BufNewFile *.tex :0r $VIM/template/t_tex.tex
+  autocmd BufNewFile *.html :0r $HOME/template/t_html.html
+  autocmd BufNewFile *.tex :0r $HOME/template/t_tex.tex
 augroup END
 " }}}
 
@@ -146,11 +146,11 @@ set spelllang+=cjk "日本語をスペルチェックの対象 から除外す�
 "dictionary Complete
 augroup DictGroup
   autocmd!
-  autocmd BufRead,BufNewFile *.js :set dictionary=$VIM/dict/javascript.dict
-  autocmd BufRead,BufNewFile *.html :set dictionary=$VIM/dict/html.dict
-  autocmd BufRead,BufNewFile *.css :set dictionary=$VIM/dict/css.dict
-  autocmd BufRead,BufNewFile *.tex :set dictionary=$VIM/dict/tex.dict
-  autocmd BufRead,BufNewFile *.py :set dictionary=$VIM/dict/python.dict
+  autocmd BufRead,BufNewFile *.js :set dictionary=$HOME/dict/javascript.dict
+  autocmd BufRead,BufNewFile *.html :set dictionary=$HOME/dict/html.dict
+  autocmd BufRead,BufNewFile *.css :set dictionary=$HOME/dict/css.dict
+  autocmd BufRead,BufNewFile *.tex :set dictionary=$HOME/dict/tex.dict
+  autocmd BufRead,BufNewFile *.py :set dictionary=$HOME/dict/python.dict
 augroup END
 
 "Enable omni completion
@@ -211,10 +211,10 @@ set imsearch=0
 "vim起動時にのみruntimepathにneobundle.vimを追加
 if has('vim_starting')
 	set nocompatible
-	set runtimepath+=$VIM\bundle\neobundle.vim
+	set runtimepath+=$HOME\bundle\neobundle.vim
 endif
 "neobundle.vimの初期化と設定開始
-call neobundle#begin(expand('$VIM\bundle'))
+call neobundle#begin(expand('$HOME\bundle'))
 if !has('vim_starting')
 	".vimrcを読み込みなおしたときのための設定
 	call neobundle#call_hook('on_source')
