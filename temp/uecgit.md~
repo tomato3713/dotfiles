@@ -1,5 +1,0 @@
-#setting 
-git config --global http.proxy http://proxy.uec.ac.jp:8080
-
-#unsetting
-git config --global --unset  http.proxy
