@@ -61,8 +61,8 @@ set noswapfile
 set undofile undodir=$HOME/vimfiles/.vimundo
 
 "バックアップファイルの出力先を変更
-set backup
-set backupdir=$HOME/vimfiles/temp
+set nobackup
+"set backupdir=$HOME/vimfiles/temp
 
 "viminfoファイルについて指定
 set viminfo+=n
@@ -71,10 +71,16 @@ set viminfo+=n
 set clipboard=unnamed
 
 "文字コードの設定 {{{
+"文字コードの自動認識
 set encoding=utf-8
 set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
 set fileformats=unix,dos,mac
+
+"保存時の文字コードを指定する
+set fileencoding=unix
+set fileformat=unix
 set ambiwidth=double "全角文字が半角で表示される問題を解消
+
 " must be set with multibyte strings
 scriptencoding utf-8
 
@@ -105,8 +111,8 @@ let g:cursorcolumn_flg=0
 set laststatus=2
 set statusline=%F%r%h%=
 
-"不可視文字を可視化
-set list
+"不可視文字を不可視化
+set nolist
 
 "相対的な行番号を表示
 set number relativenumber
@@ -161,9 +167,9 @@ augroup END
 
 "syntax complete
 autocmd FileType *
-\    if &l:omnifunc == ''
-\ |    setlocal omnifunc=syntaxcomplete#Complete
-\ |  endif
+      \    if &l:omnifunc == ''
+      \ |    setlocal omnifunc=syntaxcomplete#Complete
+      \ |  endif
 
 " }
 "
@@ -176,6 +182,10 @@ set wildmode=longest:full,full
 
 "コマンド履歴の保存数
 set history=2000
+
+"tex compile key map
+"
+
 " }
 "
 " ### その他Miscellaneous ### {
@@ -206,54 +216,62 @@ set imsearch=0
 "neobundleの設定
 "vim起動時にのみruntimepathにneobundle.vimを追加
 if has('vim_starting')
-	set nocompatible
-	set runtimepath+=$HOME/vimfiles/dein/dein.vim
+  set nocompatible
+  set runtimepath+=$HOME/vimfiles/dein/dein.vim
 endif
 call dein#begin(expand('$HOME/vimfiles/dein'))
+call dein#add('Shougo/dein.vim')
+
+"call dein#add('nathanaelkane/vim-indent-guides')
+call dein#add('tomasr/molokai')
+call dein#add('w0ng/vim-hybrid')
+call dein#add('vim-jp/autofmt')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
+
+call dein#end() 
 """""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""
 "インデントを見やすくする {{{
-  call dein#add('nathanaelkane/vim-indent-guides')
-  let g:indent_guides_enable_on_vim_startup=1 "起動時に自動起動
-  let g:indent_guides_start_level=1 "インデントの量
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=black
-  autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
-  let g:indent_guides_guide_size=1
+"vim-indent-guides
+let g:indent_guides_enable_on_vim_startup=1 "起動時に自動起動
+let g:indent_guides_start_level=1 "インデントの量
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+let g:indent_guides_guide_size=1
 " }}}
 
 "ハイライト {{{
-  call dein#add('tomasr/molokai')
-  colorscheme molokai
-  syntax on
-  set nohlsearch
-  let g:molokai_original=1
-  let g:rehash256=1
-  set background=dark
+"colorscheme
+set background=dark
+"colorscheme molokai
+colorscheme hybrid
+
+syntax on
+set nohlsearch
+let g:molokai_original=1
+let g:rehash256=1
 " }}}
 
 "autofmt日本語文章のフォーマットプラグイン
-  call dein#add('vim-jp/autofmt')
-  set formatexpr=autofmt#japanese#formatexpr()
+set formatexpr=autofmt#japanese#formatexpr()
 
-  "snippet{{{
-  call dein#add('Shougo/neosnippet')
-  call dein#add('Shougo/neosnippet-snippets')
-  "Plugin key-mappings.
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k> <Plug>(neosnippet_expand_target)
-  "SuperTab like snippets behabior.
-  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: pumvisible() ? "\<C-n>" : "\<TAB>"
-  smap <expr><TAB> neosnippet#expandable_or_jumpable) ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: "_<TAB>"
-  "For snippet_complete marker.
-  if has('conceal')
-    set conceallevel=2 concealcursor=i
-  endif
-  "}}}
-  "
-  call dein#end() 
+"snippet{{{
+"Plugin key-mappings.
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+"SuperTab like snippets behabior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable) ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: "_<TAB>"
+"For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+"}}}
+"
 "}}}

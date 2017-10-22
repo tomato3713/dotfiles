@@ -1,2 +1,2 @@
 100
-['Shougo/neosnippet', 'Shougo/neosnippet-snippets', 'nathanaelkane/vim-indent-guides', 'tomasr/molokai', 'vim-jp/autofmt']
+['Shougo/dein.vim', 'Shougo/neosnippet', 'Shougo/neosnippet-snippets', 'tomasr/molokai', 'vim-jp/autofmt', 'w0ng/vim-hybrid']
