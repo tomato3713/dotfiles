@@ -1,4 +1,4 @@
-"Last Change: 29/09/2017
+"Last Change: 29/10/2017
 "Maintainer: Watanabe Taichi < weasel.wt@outlook.com>
 "
 "Initialization {{{
@@ -6,6 +6,10 @@
 augroup myautocmd
   autocmd!
 augroup END
+
+autocmd!
+
+set all&
 
 "condition variables
 let g:is_windows = has('win32') || has('win62')
@@ -17,29 +21,51 @@ let g:is_terminal = !g:is_gui
 set runtimepath+=$HOME/
 set runtimepath+=$HOME/vimfiles/autoload/
 
-"viとの互換ではなくvimの機能をフルに発揮できるようにする。
-set nocompatible
+"viとの互換ではなくvimの機能をフルに発揮できるようにする。set nocompatible
+
+" 日本語ヘルプ
+set helplang=en,ja
+"}}}
 
 filetype plugin on
 filetype on
 
-"Vim options {
-"### Indent ###{
+"文字コードの設定 {{{
+"文字コードの自動認識
+"vim自体が使用する文字エンコーディング
+set encoding=utf-8
+set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileformats=unix,dos,mac
+
+"保存時の文字コードを指定する
+
+"ファイルに保存される文字エンコーディング
+set fileencoding=utf-8
+"改行文字
+set fileformat=unix
+set ambiwidth=double "全角文字が半角で表示される問題を解消
+
+" must be set with multibyte strings
+scriptencoding utf-8
+
+"テキスト挿入中の自動折り返しを日本語に対応させる
+set formatoptions+=mM
+"}}}
+
+"### Indent ###{{{
+filetype indent on
 set autoindent "新しい行のインデントを継続する
 set expandtab "tab to space
 set tabstop=2 "画面上でタブ文字の占める幅
 set shiftwidth =2 "自動インデントでずれる幅
 set smartindent "高度なインデント
-filetype indent on
 "折り返しの際にインデントを考慮
 if exists('+breakindent')
   set breakindent
 endif
-" }
+" }}}
 
-"マウスとの連携機能をオフにする
-set mouse=
-
+"search{{{
 "インクリメンタル検索を有効にする
 set incsearch
 
@@ -51,6 +77,12 @@ set smartcase
 " }}}
 
 "### Buffer ### {{{
+"マウスとの連携機能をオフにする
+set mouse=
+
+"vimの無名レジスタとOSのクリップボードを連携させる
+set clipboard=unnamed
+
 "ファイル内容が変更されると自動読み込みする
 set autoread
 
@@ -64,29 +96,11 @@ set undofile undodir=$HOME/vimfiles/.vimundo
 set nobackup
 "set backupdir=$HOME/vimfiles/temp
 
-"viminfoファイルについて指定
+"no viminfo file
 set viminfo+=n
 
-"vimの無名レジスタとOSのクリップボードを連携させる
-set clipboard=unnamed
-
-"文字コードの設定 {{{
-"文字コードの自動認識
-set encoding=utf-8
-set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
-set fileformats=unix,dos,mac
-
-"保存時の文字コードを指定する
-set fileencoding=unix
-set fileformat=unix
-set ambiwidth=double "全角文字が半角で表示される問題を解消
-
-" must be set with multibyte strings
-scriptencoding utf-8
-
-"テキスト挿入中の自動折り返しを日本語に対応させる
-set formatoptions+=mM
-
+"windows上でもunix形式のend-of-lineを使う
+set viewoptions=unix
 
 "固定文句を入れる
 augroup templateGroup
@@ -96,7 +110,7 @@ augroup templateGroup
 augroup END
 " }}}
 
-"### View ### {
+"### View ### {{{
 "色数
 set t_Co=256
 "コマンドラインの行数
@@ -132,13 +146,16 @@ set showtabline=2
 "長い行を@にさせない
 set display=lastline
 
-"windows上でもunix形式のend-of-lineを使う
-set viewoptions=unix
 "ファイル名内の'\'をスラッシュに置換する
 set viewoptions+=slash
-"}
+"}}}
 
-"completion {
+" folding {{{
+set foldmethod=marker
+set foldlevel=0
+"}}}
+
+"completion {{{
 "入力補完機能を有効化
 set wildmenu wildmode=list:full
 
@@ -163,6 +180,7 @@ augroup OmniGroup
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=python3complete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType xml setlocal omnifunc=ccomplete#Complete
 augroup END
 
 "syntax complete
@@ -171,9 +189,9 @@ autocmd FileType *
       \ |    setlocal omnifunc=syntaxcomplete#Complete
       \ |  endif
 
-" }
-"
-" ### Command ### {
+" }}}
+
+" ### Command ### {{{
 "コマンドライン補完
 set wildmenu
 
@@ -183,21 +201,15 @@ set wildmode=longest:full,full
 "コマンド履歴の保存数
 set history=2000
 
+"いろんなコマンドの後にカーソルを先頭に移動させない
+set nostartofline
+
 "tex compile key map
 "
 
-" }
-"
-" ### その他Miscellaneous ### {
-" 日本語ヘルプ
-set helplang=en,ja
+" }}}
 
-"いろんなコマンドの後にカーソルを先頭に移動させない
-set nostartofline
-"}
-"}
-"
-"gui options{
+"gui options{{{
 "menuを使わない
 set winaltkeys=yes
 set guioptions=MRr
@@ -210,10 +222,10 @@ set lines=50
 "挿入モード、検索モードでのデフォルトのIME状態の設定
 set iminsert=0
 set imsearch=0
-"}
+"}}}
 
 "### plugin #### {{{
-"neobundleの設定
+"deinの設定
 "vim起動時にのみruntimepathにneobundle.vimを追加
 if has('vim_starting')
   set nocompatible
@@ -222,7 +234,7 @@ endif
 call dein#begin(expand('$HOME/vimfiles/dein'))
 call dein#add('Shougo/dein.vim')
 
-"call dein#add('nathanaelkane/vim-indent-guides')
+call dein#add('nathanaelkane/vim-indent-guides')
 call dein#add('tomasr/molokai')
 call dein#add('w0ng/vim-hybrid')
 call dein#add('vim-jp/autofmt')
@@ -273,5 +285,14 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 "}}}
-"
+
 "}}}
+
+"vimrc {{{
+" auto reloaed vimrc
+augroup source-vimrc
+  autocmd!
+  autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
+  autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
+augroup END
+" }}}
