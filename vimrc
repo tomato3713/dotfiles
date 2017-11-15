@@ -27,9 +27,6 @@ set runtimepath+=$HOME/vimfiles/autoload/
 set helplang=en,ja
 "}}}
 
-filetype plugin on
-filetype on
-
 "文字コードの設定 {{{
 "文字コードの自動認識
 "vim自体が使用する文字エンコーディング
@@ -52,10 +49,14 @@ scriptencoding utf-8
 set formatoptions+=mM
 "}}}
 
+filetype plugin on
+filetype on
+
+
 "### Indent ###{{{
 filetype indent on
 set autoindent "新しい行のインデントを継続する
-set expandtab "tab to space
+"set expandtab "tab to space
 set tabstop=2 "画面上でタブ文字の占める幅
 set shiftwidth =2 "自動インデントでずれる幅
 set smartindent "高度なインデント
@@ -148,11 +149,23 @@ set display=lastline
 
 "ファイル名内の'\'をスラッシュに置換する
 set viewoptions+=slash
+"
+"colorscheme
+set background=dark
+colorscheme iceberg
+
+syntax on
+set nohlsearch
 "}}}
 
 " folding {{{
 set foldmethod=marker
 set foldlevel=0
+
+augroup TexFoldingGroup
+  autocmd!
+  autocmd BufRead, BufNewFile *.tex setlocal foldmethod=indent | setlocal foldlevel=2
+augroup END
 "}}}
 
 "completion {{{
@@ -225,74 +238,105 @@ set imsearch=0
 "}}}
 
 "### plugin #### {{{
-"deinの設定
-"vim起動時にのみruntimepathにneobundle.vimを追加
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=$HOME/vimfiles/dein/dein.vim
-endif
-call dein#begin(expand('$HOME/vimfiles/dein'))
-call dein#add('Shougo/dein.vim')
+" Required:
+set runtimepath+=$HOME/vimfiles/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=$HOME/vimfiles/dein/Required/github.com
 
-call dein#add('nathanaelkane/vim-indent-guides')
-call dein#add('tomasr/molokai')
-call dein#add('w0ng/vim-hybrid')
-call dein#add('vim-jp/autofmt')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
+" Required:
+if dein#load_state('$HOME/vimfiles/dein')
+  call dein#begin('$HOME/vimfiles/dein')
 
-call dein#end() 
-"""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""
-"インデントを見やすくする {{{
-"vim-indent-guides
-let g:indent_guides_enable_on_vim_startup=1 "起動時に自動起動
-let g:indent_guides_start_level=1 "インデントの量
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=black
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
-let g:indent_guides_guide_size=1
-" }}}
+  " Let dein manage dein
+  " Required:
+  call dein#add('$HOME/vimfiles/dein/repos/github.com/Shougo/dein.vim')
 
-"ハイライト {{{
-"colorscheme
-set background=dark
-"colorscheme molokai
-colorscheme hybrid
+  " Add or remove your plugins here:
+	call dein#add('nathanaelkane/vim-indent-guides')
+	call dein#add('tomasr/molokai')
+	call dein#add('w0ng/vim-hybrid')
+	call dein#add('cocopon/iceberg.vim')
+	call dein#add('thinca/vim-quickrun')
+	call dein#add('vim-jp/autofmt')
+	call dein#add('Shougo/neosnippet')
+	call dein#add('Shougo/neosnippet-snippets')
 
-syntax on
-set nohlsearch
-let g:molokai_original=1
-let g:rehash256=1
-" }}}
+	" You can specify revision/branch/tag.
+	call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
-"autofmt日本語文章のフォーマットプラグイン
-set formatexpr=autofmt#japanese#formatexpr()
+	" Required:
+	call dein#end()
+	call dein#save_state()
+	endif
+
+	" Required:
+	filetype plugin indent on
+	syntax enable
+
+	" If you want to install not installed plugins on startup.
+	"if dein#check_install()
+	"  call dein#install()
+	"endif
+
+	"""""""""""""""""""""""""""""""""""""""""""""""
+	"""""""""""""""""""""""""""""""""""""""""""""""
+	"インデントを見やすくする vim-indent-guides {{{
+		let g:indent_guides_enable_on_vim_startup=1 "起動時に自動起動
+			let g:indent_guides_start_level=1 "インデントの量
+			autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=black
+			autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=darkgray
+			let g:indent_guides_guide_size=1
+			" }}}
+
+"colorscheme molokai {{{
+	"let g:molokai_original=1
+		"let g:rehash256=1
+		" }}}
+
+"autofmt日本語文章のフォーマットプラグイン{{{
+	set formatexpr=autofmt#japanese#formatexpr()
+		"}}}
 
 "snippet{{{
-"Plugin key-mappings.
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-"SuperTab like snippets behabior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable) ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: "_<TAB>"
-"For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-"}}}
+	"Plugin key-mappings.
+		imap <C-k> <Plug>(neosnippet_expand_or_jump)
+		smap <C-k> <Plug>(neosnippet_expand_or_jump)
+		xmap <C-k> <Plug>(neosnippet_expand_target)
+		"SuperTab like snippets behabior.
+		imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+		\ "\<Plug>(neosnippet_expand_or_jump)"
+		\: pumvisible() ? "\<C-n>" : "\<TAB>"
+		smap <expr><TAB> neosnippet#expandable_or_jumpable) ?
+		\ "\<Plug>(neosnippet_expand_or_jump)"
+		\: "_<TAB>"
+		"For snippet_complete marker.
+		if has('conceal')
+			set conceallevel=2 concealcursor=i
+				endif
+				"}}}
+"
+	"quickrun {{{
+		"成功時はbufferに、失敗時はquickfixに出力するlet g:quickrun_config = get(g:, 'quickrun_config', {})
+			let g:quickrun_config = {
+				\ 'runner'    : 'vimproc',
+				\ 'runner/vimproc/updatetime' : 60,
+				\ 'outputter' : 'error',
+				\ 'outputter/error/success' : 'buffer',
+				\ 'outputter/error/error'   : 'quickfix',
+				\ 'outputter/buffer/split'  : ':rightbelow 8sp',
+				\ 'outputter/buffer/close_on_empty' : 1,
+				\ }
+
+		"qでquickfixを閉じられるようにする
+			au FileType qf nnoremap <silent><buffer>q :quit<CR>
+			"}}}
 
 "}}}
 
 "vimrc {{{
-" auto reloaed vimrc
-augroup source-vimrc
-  autocmd!
-  autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
-  autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
-augroup END
-" }}}
+	" auto reloaed vimrc
+		augroup source-vimrc
+		autocmd!
+		autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
+		autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
+		augroup END
+		" }}}
