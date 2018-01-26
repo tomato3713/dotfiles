@@ -7,3 +7,6 @@
 [submodule "pack/mypack/start/neosnippet.vim"]
 	path = pack/mypack/start/neosnippet.vim
 	url = https://github.com/Shougo/neosnippet.vim
+[submodule "pack/mypack/start/neosnippet-snippets.vim"]
+	path = pack/mypack/start/neosnippet-snippets.vim
+	url = https://github.com/Shougo/neosnippet-snippets

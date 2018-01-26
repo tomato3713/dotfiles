@@ -230,4 +230,22 @@
 		let g:syntastic_check_on_open = 1
 		let g:syntastic_check_on_wq = 1
 		" }}}
+
+		" neocomplete {{{
+		" plugin key-mappings.
+		let g:neosnippet#snippets_directory='~/.vim/pack/mypack/start/neosnippet-snippets.vim/'
+		imap <C-k> <plug>(neosnippet_expand_or_jump)
+		smap <C-k> <plug>(neosnippet_expand_or_jump)
+		xmap <C-k> <plug>(neosnippet_expand_target)
+
+		imap <expr><TAB> neosnippet#expandable_or_jumpable()?
+								\ "\<Plug>(neosnippet_expand_or_jump)"
+								\: pumvisible() ?"\<C-n>" : "\<TAB>"
+		smap <expr><TAB> neosnippet#expandable_or_jumpable) ?
+								\ "\<Plug>(neosnippet_expand_or_jump)"
+								\: "_<TAB>"
+		if has('conceal')
+				set conceallevel=2 concealcursor=i
+		endif
+		" }}}
 "}}}
