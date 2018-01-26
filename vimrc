@@ -215,3 +215,19 @@
 				autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
 				augroup END
 " }}}
+
+" ### plugin ### {{{
+		" tagbar.vim
+		let g:tagbar_width = 30
+
+		" syntastic.vim {{{
+		set statusline+=%#warningmsg#
+		set statusline+=%{SyntasticStatuslineFlag()}
+		set statusline+=%*
+
+		let g:syntastic_always_populate_loc_list = 1
+		let g:syntastic_auto_loc_list = 1
+		let g:syntastic_check_on_open = 1
+		let g:syntastic_check_on_wq = 1
+		" }}}
+"}}}
