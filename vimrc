@@ -1,7 +1,7 @@
 "Last Change: 27/12/2017
 "Maintainer: Watanabe Taichi < weasel.wt@outlook.com>
-"
-" ###Initialization### {{{
+
+" ### Initialization ### {{{
 		"My autocmd group
 				augroup myautocmd
 				autocmd!
@@ -24,7 +24,7 @@
 				set helplang=en,ja
 "}}}
 
-" ###encoding### {{{
+" ### encoding ### {{{
 		"文字コードの自動認識
 		"vim自体が使用する文字エンコーディング
 		set encoding=utf-8
@@ -52,8 +52,8 @@
 		set autoindent "新しい行のインデントを継続する
 
 		"set expandtab "tab to space
-		set tabstop=2 "画面上でタブ文字の占める幅
-		set shiftwidth =4 "自動インデントでずれる幅
+		set tabstop=4 "画面上でタブ文字の占める幅
+		set shiftwidth=4 "自動インデントでずれる幅
 		set smartindent "高度なインデント
 
 		"折り返しの際にインデントを考慮
@@ -62,7 +62,7 @@
 		endif
 " }}}
 
-" ###search### {{{
+" ### search ### {{{
 		"インクリメンタル検索を有効にする
 		set incsearch
 
@@ -74,6 +74,7 @@
 " }}}
 
 " ### Buffer ### {{{
+		set cursorline
 		"マウスとの連携機能をオフにする
 				set mouse=
 
@@ -118,6 +119,7 @@
 				"ステータスラインを表示
 				set laststatus=2
 				set statusline=%F%r%h%=
+				set ruler " add cursor line location in right of status line
 
 				"不可視文字を不可視化
 				set nolist
@@ -148,7 +150,7 @@
 				"}}}
 "}}}
 
-" ###completion### {{{
+" ### completion ### {{{
 		"入力補完機能を有効化
 				set wildmenu wildmode=list:full
 
@@ -198,25 +200,27 @@
 		set nostartofline
 " }}}
 
-" ###gui options### {{{
+" ### gui options ### {{{
 		" Required:
 
 		filetype plugin indent on
 		syntax enable
 " }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""
 " ###vimrc### {{{
 		" auto reloaed vimrc
-				augroup source-vimrc
-				autocmd!
-				autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
-				autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
-				augroup END
+		augroup source-vimrc
+			autocmd!
+			autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
+			autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
+		augroup END
 " }}}
 
 " ### plugin ### {{{
+		" match
+		set showmatch
+		source /home/jj1hgp/.vim/macros/matchit.vim " expand % command
+
 		" tagbar.vim
 		let g:tagbar_width = 30
 
@@ -226,25 +230,41 @@
 		set statusline+=%*
 
 		let g:syntastic_always_populate_loc_list = 1
-		let g:syntastic_auto_loc_list = 1
-		let g:syntastic_check_on_open = 1
-		let g:syntastic_check_on_wq = 1
+		let g:syntastic_auto_loc_list = 1 " show syntastic error list
+		let g:syntastic_check_on_open = 1 " run check syntastic when file open
+
+		autocmd FileType cpp call s:SyntasticCpp()
+
+		function! s:SyntasticCpp()
+				let g:syntastic_cpp_compiler="g++"
+				let g:syntastic_cpp_compiler_options=" -std=c++0x"
+		endfunction
+
+		augroup AutoSyntastic
+			autocmd!
+			autocmd InsertLeave call s:syntastic()
+		augroup END
+
+		function! s:syntastic()
+			SyntasticCheck
+		endfunction
 		" }}}
 
 		" neocomplete {{{
-		" plugin key-mappings.
-		set runtimepath+=$HOME/.vim/pack/mypack/start/neosnippet-snippets.vim
-		" Enable snipMate compatibility feature.
-		let g:neosnippet#enable_snipmate_compatibility = 1
+		if has('lua')
+				" plugin key-mappings.
+				" Enable snipMate compatibility feature.
+				let g:neosnippet#enable_snipmate_compatibility = 1
 
-		" Tell Neosnippet about the other snippets
-		let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-		imap <C-k> <plug>(neosnippet_expand_or_jump)
-		smap <C-k> <plug>(neosnippet_expand_or_jump)
-		xmap <C-k> <plug>(neosnippet_expand_target)
+				" Tell Neosnippet about the other snippets
+				let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+				imap <C-k> <plug>(neosnippet_expand_or_jump)
+				smap <C-k> <plug>(neosnippet_expand_or_jump)
+				xmap <C-k> <plug>(neosnippet_expand_target)
 
-		if has('conceal')
-				set conceallevel=2 concealcursor=niv
+				if has('conceal')
+						set conceallevel=2 concealcursor=niv
+				endif
 		endif
 		" }}}
 "}}}
