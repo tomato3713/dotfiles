@@ -233,7 +233,7 @@
 " ### plugin ### {{{
 		" match
 		set showmatch
-		"source $VIM/macros/matchit.vim " expand % command
+		source $VIMRUNTIME/macros/matchit.vim " expand % command
 
 		" tagbar.vim
 		let g:tagbar_width = 30
