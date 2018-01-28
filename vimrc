@@ -136,6 +136,11 @@
 		"長い行を@にさせない
 		set display=lastline
 
+		"ステータスラインを表示
+		set laststatus=2
+		set statusline=%F%r%h%=
+		set ruler " add cursor line location in right of status line
+
 		"ファイル名内の'\'をスラッシュに置換する
 		set viewoptions+=slash
 
@@ -260,6 +265,13 @@
 
 		function! s:syntastic()
 			SyntasticCheck
+		endfunction
+
+		autocmd FileType cpp call SyntasticCpp()
+
+		function! SyntasticCpp()
+				let g:syntastic_cpp_compiler="g++"
+				let g:syntastic_cpp_compiler_options=" -std=c++0x"
 		endfunction
 		" }}}
 
