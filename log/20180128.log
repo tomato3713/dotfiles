@@ -1,0 +1,119 @@
+
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.005  000.005: --- VIM STARTING ---
+000.122  000.117: Allocated generic buffers
+003.619  003.497: locale set
+003.639  000.020: GUI prepared
+003.642  000.003: clipboard setup
+003.648  000.006: window checked
+012.844  009.196: inits 1
+012.902  000.058: parsing arguments
+012.903  000.001: expanding arguments
+012.943  000.040: shell init
+013.543  000.600: Termcap init
+013.579  000.036: inits 2
+013.702  000.123: init highlight
+022.100  006.479  006.479: sourcing /home/jj1hgp/.vim/filetype.vim
+022.575  000.042  000.042: sourcing /usr/local/share/vim/vim80/filetype.vim
+022.944  000.066  000.066: sourcing /home/jj1hgp/.vim/indent.vim
+023.437  000.034  000.034: sourcing /usr/local/share/vim/vim80/indent.vim
+023.806  000.027  000.027: sourcing /home/jj1hgp/.vim/filetype.vim
+024.127  000.026  000.026: sourcing /usr/local/share/vim/vim80/filetype.vim
+024.505  000.068  000.068: sourcing /home/jj1hgp/.vim/ftplugin.vim
+025.187  000.038  000.038: sourcing /usr/local/share/vim/vim80/ftplugin.vim
+025.536  000.028  000.028: sourcing /home/jj1hgp/.vim/filetype.vim
+025.860  000.027  000.027: sourcing /usr/local/share/vim/vim80/filetype.vim
+028.295  001.681  001.681: sourcing /home/jj1hgp/.vim/colors/iceberg.vim
+030.146  000.257  000.257: sourcing /home/jj1hgp/.vim/syntax/syncolor.vim
+030.782  000.205  000.205: sourcing /usr/local/share/vim/vim80/syntax/syncolor.vim
+031.412  000.225  000.225: sourcing /home/jj1hgp/.vim/syntax/syncolor.vim
+031.959  000.205  000.205: sourcing /usr/local/share/vim/vim80/syntax/syncolor.vim
+032.501  003.092  002.200: sourcing /home/jj1hgp/.vim/colors/iceberg.vim
+032.607  003.472  000.380: sourcing /home/jj1hgp/.vim/syntax/synload.vim
+032.650  003.900  000.428: sourcing /usr/local/share/vim/vim80/syntax/syntax.vim
+033.834  000.031  000.031: sourcing /home/jj1hgp/.vim/filetype.vim
+034.204  000.030  000.030: sourcing /usr/local/share/vim/vim80/filetype.vim
+034.576  000.027  000.027: sourcing /home/jj1hgp/.vim/ftplugin.vim
+034.926  000.027  000.027: sourcing /usr/local/share/vim/vim80/ftplugin.vim
+035.247  000.026  000.026: sourcing /home/jj1hgp/.vim/indent.vim
+035.580  000.027  000.027: sourcing /usr/local/share/vim/vim80/indent.vim
+036.578  000.340  000.340: sourcing /usr/local/share/vim/vim80/syntax/nosyntax.vim
+037.776  000.207  000.207: sourcing /home/jj1hgp/.vim/syntax/syncolor.vim
+038.267  000.168  000.168: sourcing /usr/local/share/vim/vim80/syntax/syncolor.vim
+038.910  000.207  000.207: sourcing /home/jj1hgp/.vim/syntax/syncolor.vim
+039.460  000.214  000.214: sourcing /usr/local/share/vim/vim80/syntax/syncolor.vim
+040.090  003.009  002.213: sourcing /home/jj1hgp/.vim/colors/iceberg.vim
+040.203  003.382  000.373: sourcing /home/jj1hgp/.vim/syntax/synload.vim
+040.250  004.365  000.643: sourcing /usr/local/share/vim/vim80/syntax/syntax.vim
+047.333  032.269  015.320: sourcing ~/.vim/vimrc
+047.352  001.381: sourcing vimrc file(s)
+052.032  000.117  000.117: sourcing /home/jj1hgp/.vim/plugin/getscriptPlugin.vim
+052.639  000.362  000.362: sourcing /home/jj1hgp/.vim/plugin/gzip.vim
+053.147  000.289  000.289: sourcing /home/jj1hgp/.vim/plugin/logiPat.vim
+053.405  000.036  000.036: sourcing /home/jj1hgp/.vim/plugin/manpager.vim
+053.845  000.219  000.219: sourcing /home/jj1hgp/.vim/plugin/matchparen.vim
+054.721  000.655  000.655: sourcing /home/jj1hgp/.vim/plugin/netrwPlugin.vim
+055.048  000.073  000.073: sourcing /home/jj1hgp/.vim/plugin/rrhelper.vim
+055.329  000.056  000.056: sourcing /home/jj1hgp/.vim/plugin/spellfile.vim
+055.812  000.199  000.199: sourcing /home/jj1hgp/.vim/plugin/tarPlugin.vim
+056.206  000.165  000.165: sourcing /home/jj1hgp/.vim/plugin/tohtml.vim
+056.656  000.231  000.231: sourcing /home/jj1hgp/.vim/plugin/vimballPlugin.vim
+057.171  000.268  000.268: sourcing /home/jj1hgp/.vim/plugin/zipPlugin.vim
+059.406  000.044  000.044: sourcing /usr/local/share/vim/vim80/plugin/getscriptPlugin.vim
+059.678  000.036  000.036: sourcing /usr/local/share/vim/vim80/plugin/gzip.vim
+059.963  000.057  000.057: sourcing /usr/local/share/vim/vim80/plugin/logiPat.vim
+060.250  000.035  000.035: sourcing /usr/local/share/vim/vim80/plugin/manpager.vim
+060.522  000.043  000.043: sourcing /usr/local/share/vim/vim80/plugin/matchparen.vim
+060.800  000.050  000.050: sourcing /usr/local/share/vim/vim80/plugin/netrwPlugin.vim
+061.053  000.035  000.035: sourcing /usr/local/share/vim/vim80/plugin/rrhelper.vim
+061.305  000.036  000.036: sourcing /usr/local/share/vim/vim80/plugin/spellfile.vim
+061.579  000.044  000.044: sourcing /usr/local/share/vim/vim80/plugin/tarPlugin.vim
+061.925  000.074  000.074: sourcing /usr/local/share/vim/vim80/plugin/tohtml.vim
+062.190  000.044  000.044: sourcing /usr/local/share/vim/vim80/plugin/vimballPlugin.vim
+062.456  000.048  000.048: sourcing /usr/local/share/vim/vim80/plugin/zipPlugin.vim
+062.477  011.909: loading plugins
+064.238  000.212  000.212: sourcing /home/jj1hgp/.vim/pack/mypack/start/neosnippet.vim/plugin/neosnippet.vim
+064.871  000.048  000.048: sourcing /home/jj1hgp/.vim/pack/mypack/start/neosnippet.vim/ftdetect/neosnippet.vim
+067.240  000.043  000.043: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/autoloclist.vim
+067.600  000.042  000.042: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/balloons.vim
+067.879  000.035  000.035: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/checker.vim
+068.143  000.034  000.034: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/cursor.vim
+068.408  000.035  000.035: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/highlighting.vim
+068.708  000.035  000.035: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/loclist.vim
+068.971  000.034  000.034: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/modemap.vim
+069.239  000.034  000.034: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/notifiers.vim
+069.516  000.044  000.044: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/registry.vim
+069.801  000.035  000.035: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/signs.vim
+071.479  000.568  000.568: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/autoload/syntastic/util.vim
+138.164  000.094  000.094: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/autoloclist.vim
+138.495  000.083  000.083: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/balloons.vim
+139.030  000.258  000.258: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/checker.vim
+139.419  000.127  000.127: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/cursor.vim
+139.819  000.113  000.113: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/highlighting.vim
+140.423  000.346  000.346: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/loclist.vim
+140.811  000.121  000.121: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/modemap.vim
+141.212  000.103  000.103: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/notifiers.vim
+141.922  000.468  000.468: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/registry.vim
+142.371  000.173  000.173: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic/signs.vim
+143.678  073.654  071.200: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/plugin/syntastic.vim
+145.394  000.846  000.846: sourcing /home/jj1hgp/.vim/pack/mypack/start/tagbar.vim/plugin/tagbar.vim
+145.898  008.290: loading packages
+146.072  000.174: loading after plugins
+146.105  000.033: inits 3
+147.735  001.630: reading viminfo
+163.607  015.872: setup clipboard
+163.715  000.108: setting raw mode
+164.074  000.359: start termcap
+164.122  000.048: clearing screen
+185.334  000.390  000.390: sourcing /home/jj1hgp/.vim/pack/mypack/start/syntastic.vim/autoload/syntastic/log.vim
+185.416  020.904: opening buffers
+186.298  000.882: BufEnter autocommands
+186.304  000.006: editing files in windows
+189.502  003.198: VimEnter autocommands
+189.506  000.004: before starting main loop
+190.615  001.109: first screen update
+190.617  000.002: --- VIM STARTED ---

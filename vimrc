@@ -13,10 +13,6 @@
 
 				"condition variables
 
-				"runtimepath
-				set runtimepath+=$HOME/
-				set runtimepath+=$HOME/.vim/autoload/
-
 				"viとの互換ではなくvimの機能をフルに発揮できるようにする。
 				set nocompatible
 
@@ -229,7 +225,7 @@
 		" auto reloaed vimrc
 		augroup source-vimrc
 			autocmd!
-			autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
+			autocmd BufWritePost *vimrc source $MYVIMRC
 			autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
 		augroup END
 " }}}
@@ -237,7 +233,7 @@
 " ### plugin ### {{{
 		" match
 		set showmatch
-		source /home/jj1hgp/.vim/macros/matchit.vim " expand % command
+		"source $VIM/macros/matchit.vim " expand % command
 
 		" tagbar.vim
 		let g:tagbar_width = 30
