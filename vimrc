@@ -76,74 +76,87 @@
 " ### Buffer ### {{{
 		set cursorline
 		"マウスとの連携機能をオフにする
-				set mouse=
+		set mouse=
 
-				filetype plugin on
-				filetype on
-
-
-				"vimの無名レジスタとOSのクリップボードを連携させる
-				set clipboard=unnamed
-
-				"ファイル内容が変更されると自動読み込みする
-				set autoread
-
-				"スワップファイルを作成しない
-				set noswapfile
-
-				"undoの記録を残す
-				set undofile undodir=$HOME/.vim/.vimundo
-
-				"バックアップファイルの出力先を変更
-				set nobackup
-				"set backupdir=$HOME/.vim/temp
-
-				"no viminfo file
-				set viminfo+=n
-
-				"windows上でもunix形式のend-of-lineを使う
-				set viewoptions=unix
-
-				"固定文句を入れる
-				augroup templateGroup
-				autocmd!
-				autocmd BufNewFile *.html :0r $HOME/.vim/template/t_html.html
-				autocmd BufNewFile *.tex :0r $HOME/.vim/template/t_tex.tex
-				augroup END
+		filetype plugin on
+		filetype on
 
 
-				set t_Co=256
-				"コマンドライ=2
-				set cmdheight=3
+		"vimの無名レジスタとOSのクリップボードを連携させる
+		set clipboard=unnamed
 
-				"ステータスラインを表示
-				set laststatus=2
-				set statusline=%F%r%h%=
-				set ruler " add cursor line location in right of status line
+		"ファイル内容が変更されると自動読み込みする
+		set autoread
 
-				"不可視文字を不可視化
-				set nolist
+		"スワップファイルを作成しない
+		set noswapfile
 
-				"最低でも上下に表示する行数
-				set scrolloff=5
+		"undoの記録を残す
+		set undofile undodir=$HOME/.vim/.vimundo
 
-				"入力したコマンドを画面下に表示
-				set showcmd
+		"バックアップファイルの出力先を変更
+		set nobackup
+		"set backupdir=$HOME/.vim/temp
 
-				"自動折り返ししない
-				set textwidth=0
+		"no viminfo file
+		set viminfo+=n
 
-				"長い行を@にさせない
-				set display=lastline
+		"windows上でもunix形式のend-of-lineを使う
+		set viewoptions=unix
 
-				"ファイル名内の'\'をスラッシュに置換する
-				set viewoptions+=slash
-				"
-				"colorscheme
-				colorscheme iceberg
+		"固定文句を入れる
+		augroup templateGroup
+		autocmd!
+		autocmd BufNewFile *.html :0r $HOME/.vim/template/t_html.html
+		autocmd BufNewFile *.tex :0r $HOME/.vim/template/t_tex.tex
+		augroup END
 
-				syntax on
-				set nohlsearch
+
+		set t_Co=256
+		"コマンドライ=2
+		set cmdheight=3
+
+		"ステータスラインを表示
+		set laststatus=2
+		set statusline=%F%r%h%=
+		set ruler " add cursor line location in right of status line
+
+		"不可視文字を不可視化
+		set nolist
+
+		"最低でも上下に表示する行数
+		set scrolloff=5
+
+		"入力したコマンドを画面下に表示
+		set showcmd
+
+		"自動折り返ししない
+		set textwidth=0
+
+		"長い行を@にさせない
+		set display=lastline
+
+		"ファイル名内の'\'をスラッシュに置換する
+		set viewoptions+=slash
+
+		autocmd BufWritePre * call s:remove_unnecessary_space()
+
+		function! s:remove_unnecessary_space()
+			" delete last spaces
+			%s/\s\+$//ge
+
+			" delete last blank lines
+			while getline('$') == ""
+					$delete _
+			endwhile
+		endfunction
+
+
+		"colorscheme
+		colorscheme iceberg
+
+		syntax on
+		set nohlsearch
 
 				" ### terminal ### {{{
 						set termguicolors
@@ -268,4 +281,3 @@
 		endif
 		" }}}
 "}}}
-
