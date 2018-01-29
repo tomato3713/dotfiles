@@ -272,20 +272,18 @@
 		" }}}
 
 		" neocomplete {{{
-		if has('lua')
-				" plugin key-mappings.
-				" Enable snipMate compatibility feature.
-				let g:neosnippet#enable_snipmate_compatibility = 1
+			" plugin key-mappings.
+			" Enable snipMate compatibility feature.
+			let g:neosnippet#enable_snipmate_compatibility = 1
 
-				" Tell Neosnippet about the other snippets
-				let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-				imap <C-k> <plug>(neosnippet_expand_or_jump)
-				smap <C-k> <plug>(neosnippet_expand_or_jump)
-				xmap <C-k> <plug>(neosnippet_expand_target)
+			" Tell Neosnippet about the other snippets
+			let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+			imap <C-k> <plug>(neosnippet_expand_or_jump)
+			smap <C-k> <plug>(neosnippet_expand_or_jump)
+			xmap <C-k> <plug>(neosnippet_expand_target)
 
-				if has('conceal')
-						set conceallevel=2 concealcursor=niv
-				endif
-		endif
+			if has('conceal')
+					set conceallevel=2 concealcursor=niv
+			endif
 		" }}}
 "}}}
