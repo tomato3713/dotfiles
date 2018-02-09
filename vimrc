@@ -132,6 +132,10 @@
 		"長い行を@にさせない
 		set display=lastline
 
+		" disable conceal for tex
+		let g:tex_conceal=''
+		autocmd BufRead,BufNewFile *.tex :set foldmethod=marker
+
 		"ステータスラインを表示
 		set laststatus=2
 		set statusline=%F%r%h%=
