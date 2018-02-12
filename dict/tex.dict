@@ -159,7 +159,9 @@
 \enumiii
 \enumiv
 \epsilon
+\equation
 \equiv
+\eqnarray
 \eta
 \evensidemargin
 \exists
@@ -243,6 +245,7 @@
 \it
 \item
 \itemindent
+\itemize
 \itemsep
 \itshape
 \jmath

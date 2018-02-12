@@ -3,27 +3,37 @@
 
 " ### Initialization ### {{{
 		"My autocmd group
-				augroup myautocmd
-				autocmd!
-				augroup END
+		augroup MyAutoCmd
+			autocmd!
+		augroup END
 
-				autocmd!
+		set all&
 
-				set all&
+		"viとの互換ではなくvimの機能をフルに発揮できるようにする。
+		set nocompatible
 
-				"condition variables
+		" 日本語ヘルプ
+		set helplang=en,ja
 
-				"viとの互換ではなくvimの機能をフルに発揮できるようにする。
-				set nocompatible
+		"vim自体が使用する文字エンコーディング
+		set encoding=utf-8
 
-				" 日本語ヘルプ
-				set helplang=en,ja
+		" must be set with multibyte strings
+		scriptencoding=utf-8
+
+		" enable syntax higlight
+		syntax on
+
+		" enable indent plugin each filetype
+		filetype plugin indent on
+
+		" ### terminal ### {{{
+				set termguicolors
+		"}}}
 "}}}
 
 " ### encoding ### {{{
 		"文字コードの自動認識
-		"vim自体が使用する文字エンコーディング
-		set encoding=utf-8
 		set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
 		set fileformats=unix,dos,mac
 
@@ -36,15 +46,11 @@
 		set fileformat=unix
 		set ambiwidth=double "全角文字が半角で表示される問題を解消
 
-		" must be set with multibyte strings
-		scriptencoding utf-8
-
 		"テキスト挿入中の自動折り返しを日本語に対応させる
 		set formatoptions+=mM
 "}}}
 
-"### Indent ###{{{
-		filetype indent on
+" ### Indent ###{{{
 		set autoindent "新しい行のインデントを継続する
 
 		"set expandtab "tab to space
@@ -70,13 +76,16 @@
 " }}}
 
 " ### Buffer ### {{{
+		" if miss to guess filetype
+		autocmd MyAutoCmd BufWritePost *
+			\ if &filetype ==# '' && exists('b:ftdetect') |
+			\ unlet! b:ftdetect |
+			\ filetype detect |
+			\ endif
+
 		set cursorline
 		"マウスとの連携機能をオフにする
 		set mouse=
-
-		filetype plugin on
-		filetype on
-
 
 		"vimの無名レジスタとOSのクリップボードを連携させる
 		set clipboard=unnamed
@@ -101,12 +110,8 @@
 		set viewoptions=unix
 
 		"固定文句を入れる
-		augroup templateGroup
-		autocmd!
-		autocmd BufNewFile *.html :0r $HOME/.vim/template/t_html.html
-		autocmd BufNewFile *.tex :0r $HOME/.vim/template/t_tex.tex
-		augroup END
-
+		autocmd MyAutoCmd BufNewFile *.html :0r $HOME/.vim/template/t_html.html
+		autocmd MyAutoCmd BufNewFile *.tex :0r $HOME/.vim/template/t_tex.tex
 
 		set t_Co=256
 		"コマンドライ=2
@@ -134,7 +139,7 @@
 
 		" disable conceal for tex
 		let g:tex_conceal=''
-		autocmd BufRead,BufNewFile *.tex :set foldmethod=marker
+		autocmd MyAutoCmd BufRead,BufNewFile *.tex :set foldmethod=marker
 
 		"ステータスラインを表示
 		set laststatus=2
@@ -144,7 +149,7 @@
 		"ファイル名内の'\'をスラッシュに置換する
 		set viewoptions+=slash
 
-		autocmd BufWritePre * call s:remove_unnecessary_space()
+		autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
 
 		function! s:remove_unnecessary_space()
 			" delete last spaces
@@ -160,47 +165,36 @@
 		"colorscheme
 		colorscheme iceberg
 
-		syntax on
 		set nohlsearch
-
-				" ### terminal ### {{{
-						set termguicolors
-				"}}}
 "}}}
 
 " ### completion ### {{{
 		"入力補完機能を有効化
-				set wildmenu wildmode=list:full
+		set wildmenu wildmode=list:full
 
-				"spelling補完 on <C-x><C-s>
-				set spelllang+=cjk "日本語をスペルチェックの対象 から除外する
+		"spelling補完 on <C-x><C-s>
+		set spelllang+=cjk "日本語をスペルチェックの対象 から除外する
 
-				"dictionary Complete
-				augroup DictGroup
-				autocmd!
-				autocmd BufRead,BufNewFile *.js :set dictionary=$HOME/.vim/dict/javascript.dict
-				autocmd BufRead,BufNewFile *.html :set dictionary=$HOME/.vim/dict/html.dict
-				autocmd BufRead,BufNewFile *.css :set dictionary=$HOME/.vim/dict/css.dict
-				autocmd BufRead,BufNewFile *.tex :set dictionary=$HOME/.vim/dict/tex.dict
-				autocmd BufRead,BufNewFile *.py :set dictionary=$HOME/.vim/dict/python.dict
-				augroup END
+		"dictionary Complete
+		autocmd MyAutoCmd BufRead,BufNewFile *.js :set dictionary=$HOME/.vim/dict/javascript.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.html :set dictionary=$HOME/.vim/dict/html.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.css :set dictionary=$HOME/.vim/dict/css.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.tex :set dictionary=$HOME/.vim/dict/tex.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.py :set dictionary=$HOME/.vim/dict/python.dict
 
-				"Enable omni completion
-				augroup OmniGroup
-				autocmd!
-				autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-				autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-				autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-				autocmd FileType python setlocal omnifunc=python3complete#Complete
-				autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-				autocmd FileType xml setlocal omnifunc=ccomplete#Complete
-				augroup END
+		"Enable omni completion
+		autocmd MyAutoCmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+		autocmd MyAutoCmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+		autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+		autocmd MyAutoCmd FileType python setlocal omnifunc=python3complete#Complete
+		autocmd MyAutoCmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+		autocmd MyAutoCmd FileType xml setlocal omnifunc=ccomplete#Complete
 
-				"syntax complete
-				autocmd FileType *
-				\    if &l:omnifunc == ''
-				\ |    setlocal omnifunc=syntaxcomplete#Complete
-				\ |  endif
+		"syntax complete
+		autocmd MyAutoCmd FileType *
+		\    if &l:omnifunc == ''
+		\ |    setlocal omnifunc=syntaxcomplete#Complete
+		\ |  endif
 
 " }}}
 
@@ -218,20 +212,24 @@
 		set nostartofline
 " }}}
 
-" ### gui options ### {{{
-		" Required:
-
-		filetype plugin indent on
-		syntax enable
-" }}}
-
 " ###vimrc### {{{
-		" auto reloaed vimrc
-		augroup source-vimrc
-			autocmd!
-			autocmd BufWritePost *vimrc source $MYVIMRC
-			autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
-		augroup END
+	" tapping <F10> source editing vim script
+	if !exists('*s:source_script')
+		function s:source_script(path) abort
+			let path = expand(a:path)
+			if !filereadable(path)
+				return
+			endif
+			execute 'source' fnameescape(path)
+			echomsg printf(
+				\ '"%s" has sourced (%s)',
+				\ simplify(fnamemodify(path, ':~:.')),
+				\ strftime('%c'),
+				\)
+		endfunction
+	endif
+	nnoremap <silent> <F5> :<C-u>call <SID>source_script('%')<CR>
+
 " }}}
 
 " ### plugin ### {{{
@@ -257,37 +255,25 @@
 				let g:syntastic_cpp_compiler="g++"
 				let g:syntastic_cpp_compiler_options=" -std=c++0x"
 		endfunction
-
-		augroup AutoSyntastic
-			autocmd!
-			autocmd InsertLeave call s:syntastic()
-		augroup END
-
-		function! s:syntastic()
-			SyntasticCheck
-		endfunction
-
-		autocmd FileType cpp call SyntasticCpp()
-
-		function! SyntasticCpp()
-				let g:syntastic_cpp_compiler="g++"
-				let g:syntastic_cpp_compiler_options=" -std=c++0x"
-		endfunction
 		" }}}
 
 		" neocomplete {{{
-			" plugin key-mappings.
-			" Enable snipMate compatibility feature.
-			let g:neosnippet#enable_snipmate_compatibility = 1
+		" plugin key-mappings.
+		" Enable snipMate compatibility feature.
+		let g:neosnippet#enable_snipmate_compatibility = 1
 
-			" Tell Neosnippet about the other snippets
-			let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
-			imap <C-k> <plug>(neosnippet_expand_or_jump)
-			smap <C-k> <plug>(neosnippet_expand_or_jump)
-			xmap <C-k> <plug>(neosnippet_expand_target)
+		" Tell Neosnippet about the other snippets
+		let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+		imap <C-k> <plug>(neosnippet_expand_or_jump)
+		smap <C-k> <plug>(neosnippet_expand_or_jump)
+		xmap <C-k> <plug>(neosnippet_expand_target)
+		smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+					\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-			if has('conceal')
-					set conceallevel=2 concealcursor=niv
-			endif
+		if has('conceal')
+				set conceallevel=2 concealcursor=niv
+		endif
 		" }}}
 "}}}
+
+set secure
