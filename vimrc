@@ -34,7 +34,7 @@
 
 " ### encoding ### {{{
 		"文字コードの自動認識
-		set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+		set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 		set fileformats=unix,dos,mac
 
 		"保存時の文字コードを指定する
@@ -254,6 +254,7 @@
 		function! s:SyntasticCpp()
 				let g:syntastic_cpp_compiler="g++"
 				let g:syntastic_cpp_compiler_options=" -std=c++0x"
+				let g:syntastic_cpp_compiler_options="LIBS = `pkg-config gtkmm-3.0 --cflags --libs gtk+-3.0`"
 		endfunction
 		" }}}
 
