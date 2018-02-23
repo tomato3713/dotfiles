@@ -199,7 +199,7 @@
 " }}}
 
 " ### Command ### {{{
-		"コマンドライン補完
+		"コマンドライン補完on
 		set wildmenu
 
 		"コマンドライン補完の方法
@@ -210,6 +210,12 @@
 
 		"いろんなコマンドの後にカーソルを先頭に移動させない
 		set nostartofline
+
+		" key mapping
+		" return command line history
+		cnoremap <C-n> <Down>
+		" proceed commadn line history
+		cnoremap <C-p> <Up>
 " }}}
 
 " ###vimrc### {{{
