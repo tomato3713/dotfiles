@@ -166,6 +166,11 @@
 		colorscheme iceberg
 
 		set nohlsearch
+		set nrformats=alpha,octal,hex,bin
+
+		" faster redraw
+		set lazyredraw
+		set ttyfast
 "}}}
 
 " ### completion ### {{{
@@ -261,6 +266,7 @@
 				let g:syntastic_cpp_compiler="g++"
 				let g:syntastic_cpp_compiler_options=" -std=c++0x"
 				let g:syntastic_cpp_compiler_options="LIBS = `pkg-config gtkmm-3.0 --cflags --libs gtk+-3.0`"
+				"let g:syntastic_cpp_include_dirs=["/usr/include/gtkmm-3.0/", "/usr/include/glibmm-2.4/", "/usr/include/glibmm-2.4/glibmm/", "/usr/include/glibmm-2.4/glibmm_generate_extra_defs/"]
 		endfunction
 		" }}}
 
