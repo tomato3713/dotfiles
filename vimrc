@@ -186,6 +186,10 @@
 		autocmd MyAutoCmd BufRead,BufNewFile *.css :set dictionary=$HOME/.vim/dict/css.dict
 		autocmd MyAutoCmd BufRead,BufNewFile *.tex :set dictionary=$HOME/.vim/dict/tex.dict
 		autocmd MyAutoCmd BufRead,BufNewFile *.py :set dictionary=$HOME/.vim/dict/python.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.cpp :set dictionary=$HOME/.vim/dict/cpp.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.c :set dictionary=$HOME/.vim/dict/clang.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.rb :set dictionary=$HOME/.vim/dict/ruby.dict
+		autocmd MyAutoCmd BufRead,BufNewFile *.php :set dictionary=$HOME/.vim/dict/php.dict
 
 		"Enable omni completion
 		autocmd MyAutoCmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
