@@ -225,6 +225,8 @@
 		cnoremap <C-n> <Down>
 		" proceed commadn line history
 		cnoremap <C-p> <Up>
+		" Leader
+		let mapleader = "\<Space>"
 " }}}
 
 " ###vimrc### {{{
