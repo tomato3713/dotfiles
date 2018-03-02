@@ -10,3 +10,6 @@
 [submodule "pack/mypack/start/neosnippet-snippets.vim"]
 	path = pack/mypack/start/neosnippet-snippets.vim
 	url = https://github.com/Shougo/neosnippet-snippets
+[submodule "pack/mypack/start/Align.vim"]
+	path = pack/mypack/start/Align.vim
+	url = https://github.com/vim-scripts/Align
