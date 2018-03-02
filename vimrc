@@ -291,6 +291,9 @@
 				set conceallevel=2 concealcursor=niv
 		endif
 		" }}}
+		" Align.vim {{{
+		let g:Align_xstrlen = 3
+		" }
 "}}}
 
 set secure
