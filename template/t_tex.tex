@@ -1,13 +1,63 @@
-\documentclass{jarticle}
-\usepackage{graphicx}
+\documentclass[11pt]{ltjsarticle}
+\usepackage{luatexja}
+\usepackage{listings} % for source codes
+\usepackage[dvipsnames, svgnames, x11names, dvipdfmx, table, xcdraw]{xcolor}
+\usepackage{graphics}
+\usepackage{caption, subcaption}
+% ### macro ###  {{{
+\newcommand{\lnand}[1]{\uparrow{#1}}
+\newcommand{\lnor}[1]{\downarrow{#1}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\framedParBox}[2][10zw]{%
+	\fbox{\parbox{#1}{#2}}%
+}
+% ### for graphic ### {{{
+% Usage
+% \fig[width=3cm]{FNAME}{CAPTION}{REFNAME}
+% If you write
+% \fig{FNAME}{CAPTION}{REFNAME}
+% is show image whose width is 5cm
+\newcommand{\fig}[4][width=5cm]{%
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[#1]{#2}
+		\caption{#3} \label{fig:#4}
+	\end{figure}%
+}
+\newcommand{\tfig}[5]{%
+	\begin{figure}
+		\centering
+		\subcaptionbox{A}{\includegraphics{#1}}%
+		\subcaptionbox{B}{\includegraphics{#2}}
+
+		\subcaptionbox{C}{\includegraphics{#3}}%
+		\subcaptionbox{D}{\includegraphics{#4}}
+		\caption{#5}
+	\end{figure}%
+}
+% }}}
+% programming documents macros for listings {{{
+\newcommand{\code}[4]{%
+	\lstinputlisting[language=#1,
+	breaklines=true,
+	caption=#3,
+	label=code#4,
+	frame=single,
+	numbers=left, stepnumber=1, numberstyle=\tiny,
+	]{#2}%
+	}
+% }}}
+% }}}
 \begin{document}
 \title{}
 \author{1710693 渡辺大智}
 \maketitle
 
-\section{}
+\section{first}
+\code{tex}{./t_tex.tex}{example}{t_tex.tex}
 
 \begin{thebibliography}{99}
-    \bibitem{book1}
+	\bibitem{book1}
 \end{thebibliography}
 \end{document}
