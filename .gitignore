@@ -10,3 +10,5 @@
 ./compiler
 ./rgv.txt
 ./scripts.vim
+./template/t_tex.aux
+./template/t_tex.log

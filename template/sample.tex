@@ -22,7 +22,7 @@
 		\caption{#3} \label{fig:#4}
 	\end{figure}%
 }
-\newcommand{\tfig}[6]{%
+\newcommand{\tfig}[5]{%
 	\begin{figure}
 		\centering
 		\subcaptionbox{A}{\includegraphics[width=5cm]{#1}}%
@@ -30,7 +30,7 @@
 
 		\subcaptionbox{C}{\includegraphics[width=5cm]{#3}}%
 		\subcaptionbox{D}{\includegraphics[width=5cm]{#4}}
-		\caption{#5} \label{fig:#5}
+		\caption{#5}
 	\end{figure}%
 }
 % }}}
@@ -59,7 +59,9 @@
 \author{1710693 渡辺大智}
 \maketitle
 
-\section{}
+\section{first}
+\fig{vim16x16.png}{caption}{ref}
+\tfig{vim16x16.png}{vim16x16.png}{vim16x16.png}{vim16x16.png}{table fig}
 
 \begin{thebibliography}{99}
 	\bibitem{book1}

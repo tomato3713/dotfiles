@@ -1,0 +1,14 @@
+snippet     fig
+abbr        \fig{FNAME}{CAPTION}{LABEL}
+    \fig{${1:filename}}{${2:caption}}{${3:label}}
+options     head
+
+snippet     tfig
+abbr        \tfig{FILENAME}{FILENAME}{FILENAME}{FILENAME}{CAPTION}{LABEL}
+    \tfig{${1:filename}}{${2:filename}}{${3:filename}{${4:filename}}{${5:caption}}{${6:label}}
+options     head
+
+snippet     code
+abbr        \code{LANG}{FILENAME}{CAPTION}{LABEL}
+    \code{${1:lang}}{${2:filename}}{${3:caption}}{${4:label}}
+options     head
