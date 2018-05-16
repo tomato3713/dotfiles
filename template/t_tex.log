@@ -1,4 +1,4 @@
-This is LuaTeX, Version beta-0.80.0 (TeX Live 2015/Debian) (rev 5238)  (format=lualatex 2018.5.10)  16 MAY 2018 19:04
+This is LuaTeX, Version beta-0.80.0 (TeX Live 2015/Debian) (rev 5238)  (format=lualatex 2018.5.10)  16 MAY 2018 19:14
  restricted \write18 enabled.
 **t_tex.tex
 (./t_tex.tex
@@ -494,22 +494,22 @@ Package: subcaption 2016/02/20 v1.1-142 Sub-captions (AR)
 ) (./t_tex.aux)
 \openout1 = t_tex.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for JY3/mc/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for JT3/mc/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for JY3/mc/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for JT3/mc/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
  (/usr/share/texlive/texmf-dist/tex/luatex/luatexja/patches/lltjp-listings.sty
 Package: lltjp-listings 2016/02/07 Patch to listings for LuaTeX-ja
 (/usr/share/texlive/texmf-dist/tex/luatex/luatexbase/luatexbase-cctb.sty
@@ -527,7 +527,7 @@ File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 \AtBeginShipoutBox=\box45
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 52.
+LaTeX Info: Redefining \selectfont on input line 56.
 \c@lstlisting=\count113
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -574,41 +574,41 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `JT3/mc/m/n' will be
-(Font)              scaled to size 15.98167pt on input line 55.
+(Font)              scaled to size 15.98167pt on input line 59.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    Font shape `JY3/mc/m/n' will be
-(Font)              scaled to size 15.98167pt on input line 55.
+(Font)              scaled to size 15.98167pt on input line 59.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    Font shape `JT3/mc/m/n' will be
-(Font)              scaled to size 11.09839pt on input line 55.
+(Font)              scaled to size 11.09839pt on input line 59.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    Font shape `JY3/mc/m/n' will be
-(Font)              scaled to size 11.09839pt on input line 55.
+(Font)              scaled to size 11.09839pt on input line 59.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 55.
+(Font)              <12> on input line 59.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 55.
+(Font)              <8> on input line 59.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 55.
+(Font)              <6> on input line 59.
 LaTeX Font Info:    Font shape `JY3/mc/m/n' will be
-(Font)              scaled to size 5.5492pt on input line 55.
+(Font)              scaled to size 5.5492pt on input line 59.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    Font shape `JT3/mc/m/n' will be
-(Font)              scaled to size 13.31805pt on input line 57.
+(Font)              scaled to size 13.31805pt on input line 61.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    Font shape `JY3/mc/m/n' will be
-(Font)              scaled to size 13.31805pt on input line 57.
+(Font)              scaled to size 13.31805pt on input line 61.
 luaotfload | load : Lookup/name: "IPAExMincho" -> "fonts-japanese-mincho.ttf"
 LaTeX Font Info:    Font shape `JT3/gt/m/n' will be
-(Font)              scaled to size 13.31805pt on input line 57.
+(Font)              scaled to size 13.31805pt on input line 61.
 luaotfload | load : Lookup/name: "IPAExGothic" -> "fonts-japanese-gothic.ttf"(co
 mpiling luc: /var/lib/texmf/luatex-cache/generic/fonts/otf/fonts-japanese-gothic
 .luc)(load luc: /home/jj1hgp/.texmf-var/luatex-cache/generic/fonts/otf/fonts-jap
 anese-gothic.luc)(load cache: /home/jj1hgp/.texmf-var/luatexja/extra_fonts-japan
 ese-gothic.luc)
 LaTeX Font Info:    Font shape `JY3/gt/m/n' will be
-(Font)              scaled to size 13.31805pt on input line 57.
+(Font)              scaled to size 13.31805pt on input line 61.
 luaotfload | load : Lookup/name: "IPAExGothic" -> "fonts-japanese-gothic.ttf" (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
@@ -687,18 +687,21 @@ Removing  `ltj.listings_unicode' from `process_input_buffer'. [3] (./t_tex.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 )
 
 Here is how much of LuaTeX's memory you used:
- 8614 strings out of 495004
- 476905,266212 words of node,token memory allocated
+ 8618 strings out of 495004
+ 476909,266212 words of node,token memory allocated
  7953 words of node memory still in use:
    7 hlist, 1 vlist, 5 rule, 3 glue, 45 kern, 1 glyph, 1574 attribute, 1046 glue
 _spec, 85 attribute_list, 1 write, 10 user_defined nodes
-   avail lists: 1:8,2:92992,3:108,4:12753,5:6996,6:1581,7:4481,8:1,9:7566,10:423
- 11732 multiletter control sequences out of 65536+600000
+   avail lists: 1:8,2:93013,3:108,4:12753,5:7463,6:1581,7:4960,8:1,9:7566,10:423
+ 11736 multiletter control sequences out of 65536+600000
  53 fonts using 38523959 bytes
- 61i,7n,125p,968b,1592s stack positions out of 5000i,500n,10000p,200000b,100000s
+ 61i,7n,125p,968b,1574s stack positions out of 5000i,500n,10000p,200000b,100000s
 </usr/share/fonts/truetype/fonts-japanese-gothic.ttf></usr/share/fonts/truetype/
 fonts-japanese-mincho.ttf><</usr/share/texlive/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb><</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
@@ -707,7 +710,7 @@ cm/cmr10.pfb><</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
 /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb><</usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><</usr/share/t
 exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on t_tex.pdf (3 pages, 301172 bytes).
+Output written on t_tex.pdf (3 pages, 301731 bytes).
 
 PDF statistics: 56 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream

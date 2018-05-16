@@ -38,13 +38,18 @@
 }
 % }}}
 % programming documents macros for listings {{{
+\lstset{
+	breaklines=true,
+	frame=tRBl,
+	classoffset=1,
+	numbers=left, stepnumber=1, numberstyle=\tiny,
+	tabsize=2
+	}
+	% \code{LANG}{FNAME}{CAPTION}{LABEL}
 \newcommand{\code}[4]{%
 	\lstinputlisting[language=#1,
-	breaklines=true,
 	caption=#3,
 	label=code#4,
-	frame=single,
-	numbers=left, stepnumber=1, numberstyle=\tiny,
 	]{#2}%
 	}
 % }}}
