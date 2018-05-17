@@ -22,7 +22,7 @@
 		\caption{#3} \label{fig:#4}
 	\end{figure}%
 }
-\newcommand{\tfig}[5]{%
+\newcommand{\tfig}[6]{%
 	\begin{figure}
 		\centering
 		\subcaptionbox{A}{\includegraphics[width=5cm]{#1}}%
@@ -30,7 +30,7 @@
 
 		\subcaptionbox{C}{\includegraphics[width=5cm]{#3}}%
 		\subcaptionbox{D}{\includegraphics[width=5cm]{#4}}
-		\caption{#5}
+		\caption{#5} \label{fig:#6}
 	\end{figure}%
 }
 % }}}
@@ -61,7 +61,7 @@
 
 \section{first}
 \fig{vim16x16.png}{caption}{ref}
-\tfig{vim16x16.png}{vim16x16.png}{vim16x16.png}{vim16x16.png}{table fig}
+\tfig{vim16x16.png}{vim16x16.png}{vim16x16.png}{vim16x16.png}{table fig}{label2}
 
 \begin{thebibliography}{99}
 	\bibitem{book1}
