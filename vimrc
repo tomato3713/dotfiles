@@ -23,6 +23,7 @@
 
 		" enable syntax higlight
 		syntax on
+		set synmaxcol=200
 
 		" enable indent plugin each filetype
 		filetype plugin indent on
@@ -246,6 +247,10 @@
 		endfunction
 	endif
 	nnoremap <silent> <F5> :<C-u>call <SID>source_script('%')<CR>
+	nnoremap j gj
+	nnoremap k gk
+	nnoremap gj j
+	nnoremap gk k
 
 " }}}
 
@@ -262,6 +267,8 @@
 		set statusline+=%{SyntasticStatuslineFlag()}
 		set statusline+=%*
 
+		let g:syntastic_tex_chackers=['']
+		let g:syntastic_disabled_filetype=['tex']
 		let g:syntastic_always_populate_loc_list = 1
 		let g:syntastic_auto_loc_list = 1 " show syntastic error list
 		let g:syntastic_check_on_open = 1 " run check syntastic when file open
