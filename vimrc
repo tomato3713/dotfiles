@@ -1,4 +1,4 @@
-"Last Change: 27/12/2017
+"Last Change: 29/05/2018
 "Maintainer: Watanabe Taichi < weasel.wt@outlook.com>
 
 " ### Initialization ### {{{
@@ -251,6 +251,10 @@
 	nnoremap k gk
 	nnoremap gj j
 	nnoremap gk k
+	" disable save and close
+	nnoremap ZZ <Nop>
+	" disable not to save and close
+	nnoremap ZQ <Nop>
 
 " }}}
 
