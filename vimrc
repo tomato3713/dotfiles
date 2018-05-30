@@ -266,27 +266,7 @@
 		" tagbar.vim
 		let g:tagbar_width = 30
 
-		" syntastic.vim {{{
-		set statusline+=%#warningmsg#
-		set statusline+=%{SyntasticStatuslineFlag()}
-		set statusline+=%*
-
-		let g:syntastic_always_populate_loc_list = 1
-		let g:syntastic_auto_loc_list = 1 " show syntastic error list
-		let g:syntastic_check_on_open = 1 " run check syntastic when file open
-		let g:syntastic_check_on_wq = 0 " not work when :wq
-
-		autocmd FileType cpp call s:SyntasticCpp()
-
-		function! s:SyntasticCpp()
-				let g:syntastic_cpp_compiler="g++"
-				let g:syntastic_cpp_compiler_options=" -std=c++0x"
-				let g:syntastic_cpp_compiler_options="LIBS = `pkg-config gtkmm-3.0 --cflags --libs gtk+-3.0`"
-				"let g:syntastic_cpp_include_dirs=["/usr/include/gtkmm-3.0/", "/usr/include/glibmm-2.4/", "/usr/include/glibmm-2.4/glibmm/", "/usr/include/glibmm-2.4/glibmm_generate_extra_defs/"]
-		endfunction
-
-		let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [], 'passive_filetypes': []}
-		nnoremap <C-w>E	:SyntasticCheck<CR>	:SyntasticToggleMode<CR>
+		" code checker plugin
 		" }}}
 
 		" neocomplete {{{

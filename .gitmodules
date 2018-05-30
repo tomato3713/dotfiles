@@ -1,9 +1,6 @@
 [submodule "pack/mypack/start/tagbar.vim"]
 	path = pack/mypack/start/tagbar.vim
 	url = https://github.com/majutsushi/tagbar
-[submodule "pack/mypack/start/syntastic.vim"]
-	path = pack/mypack/start/syntastic.vim
-	url = https://github.com/vim-syntastic/syntastic
 [submodule "pack/mypack/start/neosnippet.vim"]
 	path = pack/mypack/start/neosnippet.vim
 	url = https://github.com/Shougo/neosnippet.vim
