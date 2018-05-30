@@ -267,6 +267,43 @@
 		let g:tagbar_width = 30
 
 		" code checker plugin
+		" ale {{{
+		if has('job') && has('channel') && has('timers')
+			let g:ale_sign_column_always = 1
+
+			" format message
+			let g:ale_echo_msg_error_str = 'E'
+			let g:ale_echo_msg_warning_str = 'W'
+			let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+			"move error mapping
+			nmap <silent> <C-k> <plug>(ale_next_wrap)
+
+			" check at :w
+			let g:ale_lint_on_save = 1
+			let g:ale_lint_on_text_changed = 0
+			"check at open file
+			let g:ale_lint_on_enter = 1
+
+			" use QuickFix instead of location list
+			let g:ale_set_loclist = 0
+			let g:ale_set_quickfix = 1
+
+			" set linter
+			let g:ale_linters = {
+						\ 'javascript' : ['eslint'],
+						\ 'latex' : ['chktex'],
+						\ }
+
+			" set fixer
+			let g:ale_fix_on_save = 1
+			let g:ale_fixers = {
+						\ 'javascript' : ['prettier'],
+						\ 'css' : ['csslint'],
+						\ 'cpp' : ['cpplint'],
+						\ 'html' : ['cHTMLHint'],
+						\ }
+		endif
 		" }}}
 
 		" neocomplete {{{
