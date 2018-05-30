@@ -258,6 +258,20 @@ nnoremap ZQ <Nop>
 
 " }}}
 
+" ### Load local vimrc ### {{{
+augroup vimrc-local
+	autocmd!
+	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
+augroup END
+
+function! s:vimrc_local(loc)
+	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+	for i in reverse(filter(files, 'filereadable(v:val)'))
+		source `=i`
+	endfor
+endfunction
+" }}}
+
 " ### plugin ### {{{
 " match
 set showmatch
@@ -295,9 +309,19 @@ if has('job') && has('channel') && has('timers')
 				\ 'html' : ['cHTMLHint'],
 				\ 'css' : ['csslint'],
 				\ 'latex' : ['chktex'],
-				\ 'c' : ['clang'],
-				\ 'cpp' : ['cpplint'],
+				\ 'c' : ['gcc'],
+				\ 'cpp' : ['gcc'],
 				\ }
+	autocmd BufNewFile,BufRead *.cpp call s:cpplinter()
+	autocmd BufNewFile,BufRead *.c call s:clanglinter()
+
+	function! s:cpplinter()
+		let g:ale_cpp_gcc_options="-std=c++17 -Wall"
+	endfunction
+
+	function! s:clanglinter()
+		let g:ale_c_gcc_options="-std=c99 -Wall"
+	endfunction
 
 	" set fixer
 	nnoremap <space>= :ALEFix<CR>
