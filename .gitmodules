@@ -13,3 +13,6 @@
 [submodule "pack/mypack/start/Align.vim"]
 	path = pack/mypack/start/Align.vim
 	url = https://github.com/vim-scripts/Align
+[submodule "pack/mypack/start/ale.vim"]
+	path = pack/mypack/start/ale.vim
+	url = https://github.com/w0rp/ale
