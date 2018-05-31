@@ -48,7 +48,11 @@ set fileformat=unix
 set ambiwidth=double "全角文字が半角で表示される問題を解消
 
 "テキスト挿入中の自動折り返しを日本語に対応させる
-set formatoptions+=mM
+" auto commet off
+augroup auto_comment__off
+	autocmd!
+	autocmd BufEnter * setlocal formatoptions=tcqmM
+augroup END
 "}}}
 
 " ### Indent ###{{{
