@@ -299,7 +299,7 @@ if has('job') && has('channel') && has('timers')
 
 	" check at :w
 	let g:ale_lint_on_save = 1
-	let g:ale_lint_on_text_changed = 0
+	let g:ale_lint_on_text_changed = 1
 	"check at open file
 	let g:ale_lint_on_enter = 1
 
