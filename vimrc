@@ -23,13 +23,15 @@ scriptencoding=utf-8
 
 " enable syntax higlight
 syntax on
-set synmaxcol=200
+set synmaxcol=400
 
 " enable indent plugin each filetype
 filetype plugin indent on
 
 " ### terminal ### {{{
-set termguicolors
+if has('terminal')
+	set termguicolors
+endif
 "}}}
 "}}}
 
@@ -37,8 +39,7 @@ set termguicolors
 "文字コードの自動認識
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
-
-"保存時の文字コードを指定する
+autocmd BufEnter * setlocal bomb?
 
 "ファイルに保存される文字エンコーディング
 set fileencoding=utf-8
@@ -47,7 +48,7 @@ set fileencoding=utf-8
 set fileformat=unix
 set ambiwidth=double "全角文字が半角で表示される問題を解消
 
-"テキスト挿入中の自動折り返しを日本語に対応させる
+" テキスト挿入中の自動折り返しを日本語に対応させる
 " auto commet off
 augroup auto_comment__off
 	autocmd!
@@ -93,7 +94,9 @@ set cursorline
 set mouse=
 
 "vimの無名レジスタとOSのクリップボードを連携させる
-set clipboard=unnamed
+if has('clipboard')
+	set clipboard=unnamed
+endif
 
 "ファイル内容が変更されると自動読み込みする
 set autoread
@@ -171,7 +174,9 @@ endfunction
 colorscheme iceberg
 
 set nohlsearch
-set nrformats=alpha,octal,hex,bin
+if v:version > 800
+	set nrformats=alpha,hex,bin
+endif
 
 " faster redraw
 set lazyredraw
@@ -226,31 +231,16 @@ set history=2000
 set nostartofline
 
 " key mapping
+" change Leader key to Space key
+let mapleader = "\<Space>"
+
+" Load current file as vimrc
+nnoremap <silent> <F5> :<C-u>call <SID>source_script('%')<CR>
+
 " return command line history
 cnoremap <C-n> <Down>
 " proceed commadn line history
 cnoremap <C-p> <Up>
-" Leader
-let mapleader = "\<Space>"
-" }}}
-
-" ###vimrc### {{{
-" tapping <F10> source editing vim script
-if !exists('*s:source_script')
-	function s:source_script(path) abort
-		let path = expand(a:path)
-		if !filereadable(path)
-			return
-		endif
-		execute 'source' fnameescape(path)
-		echomsg printf(
-					\ '"%s" has sourced (%s)',
-					\ simplify(fnamemodify(path, ':~:.')),
-					\ strftime('%c'),
-					\)
-	endfunction
-endif
-nnoremap <silent> <F5> :<C-u>call <SID>source_script('%')<CR>
 nnoremap j gj
 nnoremap k gk
 nnoremap gj j
@@ -277,9 +267,10 @@ endfunction
 " }}}
 
 " ### plugin ### {{{
-" match
+" match {{{
 set showmatch
 source $VIMRUNTIME/macros/matchit.vim " expand % command
+" }}}
 
 " tagbar.vim
 let g:tagbar_width = 30
@@ -335,18 +326,20 @@ endif
 " neocomplete {{{
 " plugin key-mappings.
 " Enable snipMate compatibility feature.
-let g:neosnippet#enable_snipmate_compatibility = 1
+if v:version > 704
+	let g:neosnippet#enable_snipmate_compatibility = 1
 
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/.vim/snippets/'
-imap <C-k> <plug>(neosnippet_expand_or_jump)
-smap <C-k> <plug>(neosnippet_expand_or_jump)
-xmap <C-k> <plug>(neosnippet_expand_target)
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-			\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+	" Tell Neosnippet about the other snippets
+	let g:neosnippet#snippets_directory='~/.vim/snippets/'
+	imap <C-k> <plug>(neosnippet_expand_or_jump)
+	smap <C-k> <plug>(neosnippet_expand_or_jump)
+	xmap <C-k> <plug>(neosnippet_expand_target)
+	smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+				\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-if has('conceal')
-	set conceallevel=2 concealcursor=niv
+	if has('conceal')
+		set conceallevel=2 concealcursor=niv
+	endif
 endif
 " }}}
 " Align.vim {{{
