@@ -269,6 +269,7 @@ endfunction
 " ### plugin ### {{{
 " match {{{
 set showmatch
+set matchpairs+=「:」,（:）
 source $VIMRUNTIME/macros/matchit.vim " expand % command
 " }}}
 
