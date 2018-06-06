@@ -1,5 +1,5 @@
-"Last Change: 29/05/2018
-"Maintainer: Watanabe Taichi < weasel.wt@outlook.com>
+"Last Change: 06/06/2018
+"Maintainer: Watanabe Taichi < weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
 "My autocmd group
@@ -22,8 +22,8 @@ set encoding=utf-8
 scriptencoding=utf-8
 
 " enable syntax higlight
-syntax on
 set synmaxcol=400
+syntax on
 
 " enable indent plugin each filetype
 filetype plugin indent on
@@ -39,7 +39,7 @@ endif
 "文字コードの自動認識
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
-autocmd BufEnter * setlocal bomb?
+autocmd MyAutoCmd BufEnter * setlocal bomb?
 
 "ファイルに保存される文字エンコーディング
 set fileencoding=utf-8
@@ -308,8 +308,8 @@ if has('job') && has('channel') && has('timers')
 				\ 'c' : ['gcc'],
 				\ 'cpp' : ['gcc'],
 				\ }
-	autocmd BufNewFile,BufRead *.cpp call s:cpplinter()
-	autocmd BufNewFile,BufRead *.c call s:clanglinter()
+	autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
+	autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
 
 	function! s:cpplinter()
 		let g:ale_cpp_gcc_options="-std=c++17 -Wall"
@@ -320,7 +320,7 @@ if has('job') && has('channel') && has('timers')
 	endfunction
 
 	" set fixer
-	nnoremap <space>= :ALEFix<CR>
+	nmap <space>= :ALEFix<CR>
 endif
 " }}}
 
