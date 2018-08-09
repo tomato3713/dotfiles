@@ -130,6 +130,9 @@ set laststatus=2
 set statusline=%F%r%h%=
 set ruler " add cursor line location in right of status line
 
+" title
+set title
+
 "不可視文字を不可視化
 set nolist
 
