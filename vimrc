@@ -175,6 +175,14 @@ endfunction
 
 "colorscheme
 colorscheme iceberg
+autocmd BufNewFile,BufRead doc/* call s:set_colorscheme()
+
+function! s:set_japanese_document_format()
+	" change important keyword the last of lines ' >' and the top of lines '<'
+	hi ignore ctermfg=red
+	set fileencoding=utf-8
+	set fileformat=unix
+endfunction
 
 set nohlsearch
 if v:version > 800
