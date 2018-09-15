@@ -1,21 +1,21 @@
-"Last Change: 06/06/2018
-"Maintainer: Watanabe Taichi < weasel.wt(at)outlook.com>
+"Last Change: 15/09/2018
+"Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
-"My autocmd group
+" My autocmd group
 augroup MyAutoCmd
 	autocmd!
 augroup END
 
 set all&
 
-"viとの互換ではなくvimの機能をフルに発揮できるようにする。
+" Make it fully functional with vim, not compatible with vi.
 set nocompatible
 
 " in shell setting file, for example .bashrc or .cshrc
 " setenv $VIMRUNTIME ~/vim/vim/runtime
 
-" 日本語ヘルプ
+" japanese help
 set helplang=en,ja
 
 "vim自体が使用する文字エンコーディング
@@ -39,7 +39,7 @@ endif
 "}}}
 
 " ### encoding ### {{{
-"文字コードの自動認識
+" 文字コードの自動認識
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
 autocmd MyAutoCmd BufEnter * setlocal bomb?
@@ -232,16 +232,16 @@ autocmd MyAutoCmd FileType *
 " }}}
 
 " ### Command ### {{{
-"コマンドライン補完on
+" set command line completion
 set wildmenu
 
-"コマンドライン補完の方法
+" コマンドライン補完の方法
 set wildmode=longest:full,full
 
-"コマンド履歴の保存数
+" the count of command history
 set history=2000
 
-"いろんなコマンドの後にカーソルを先頭に移動させない
+" いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
 
 " key mapping
@@ -259,10 +259,11 @@ nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
-" disable save and close
-nnoremap ZZ <Nop>
 " disable not to save and close
 nnoremap ZQ <Nop>
+
+" when tap :wq, make not save and close if buffer is no difference before
+cnoremap wq x
 
 " }}}
 
@@ -284,7 +285,12 @@ endfunction
 " match {{{
 set showmatch
 set matchpairs+=「:」,（:）
-runtime! macros/matchit.vim " expand % command
+" expand % command
+if has('packages')
+	packadd! matchit " if has package function, read /pack/.../matchit.vim
+else
+	runtime! macros/matchit.vim
+endif
 " }}}
 
 " tagbar.vim
