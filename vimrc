@@ -12,6 +12,9 @@ set all&
 "viとの互換ではなくvimの機能をフルに発揮できるようにする。
 set nocompatible
 
+" in shell setting file, for example .bashrc or .cshrc
+" setenv $VIMRUNTIME ~/vim/vim/runtime
+
 " 日本語ヘルプ
 set helplang=en,ja
 
@@ -281,7 +284,7 @@ endfunction
 " match {{{
 set showmatch
 set matchpairs+=「:」,（:）
-source $VIMRUNTIME/macros/matchit.vim " expand % command
+runtime! macros/matchit.vim " expand % command
 " }}}
 
 " tagbar.vim
