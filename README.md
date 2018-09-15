@@ -4,8 +4,8 @@ This is my ~/.vim dir.
 clone the repogitory: `git clone --recursive https://github.com/homedm/vimfiles ~/.vim`
 
 # update all plugin
-	git submodule forereach git pull
-	git commit -a "update: Update all vim plugin"
+	git submodule foreach git pull
+	git commit -am "update: Update all vim plugin"
 
 # add plugin
 	git subomdele add "github repogitory" ./pack/mypack/start/repository.vim
