@@ -1,4 +1,4 @@
-"Last Change: 15/09/2018
+"Last Change: 06/10/2018
 "Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -198,7 +198,7 @@ set ttyfast
 
 " ### Diff ### {{{
 set diffexpr=MyDiff()
-function MyDiff()
+function! MyDiff()
 	let opt = ""
 	if &diffopt =~ "icase"
 		let opt = opt . "-i "
@@ -372,7 +372,9 @@ if v:version > 704
 
 	" Tell Neosnippet about the snippets directory
 	let g:neosnippet#snippets_directory=[]
+	" My snippets files
 	let g:neosnippet#snippets_directory+=['~/.vim/snippets/']
+	" Plugin snippets files
 	let g:neosnippet#snippets_directory+=['~/.vim/pack/mypack/start/neosnippet-snippets.vim/neosnippets/']
 	" set key map for snippet
 	imap <C-k> <plug>(neosnippet_expand_or_jump)
