@@ -123,12 +123,9 @@ set viminfo+=n
 "windows上でもunix形式のend-of-lineを使う
 set viewoptions=unix
 
-"固定文句を入れる
-autocmd MyAutoCmd BufNewFile *.html :0r $HOME/.vim/template/t_html.html
-
 set t_Co=256
-"コマンドライ=2
-set cmdheight=3
+
+set cmdheight=2
 
 "ステータスラインを表示
 set laststatus=2
