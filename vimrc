@@ -118,7 +118,7 @@ set nobackup
 "set backupdir=$HOME/.vim/temp
 
 "no viminfo file
-set viminfo+=n
+set viminfo=
 
 "windows上でもunix形式のend-of-lineを使う
 set viewoptions=unix
