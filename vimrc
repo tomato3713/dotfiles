@@ -103,6 +103,9 @@ endif
 
 "ファイル内容が変更されると自動読み込みする
 set autoread
+augroup MyAutoCmd
+	autocmd WinEnter * checktime
+augroup END
 
 "スワップファイルを作成しない
 set noswapfile
@@ -122,7 +125,6 @@ set viewoptions=unix
 
 "固定文句を入れる
 autocmd MyAutoCmd BufNewFile *.html :0r $HOME/.vim/template/t_html.html
-autocmd MyAutoCmd BufNewFile *.tex :0r $HOME/.vim/template/t_tex.tex
 
 set t_Co=256
 "コマンドライ=2
@@ -196,6 +198,20 @@ endif
 set lazyredraw
 set ttyfast
 "}}}
+
+" ### Diff ### {{{
+set diffexpr=MyDiff()
+function MyDiff()
+	let opt = ""
+	if &diffopt =~ "icase"
+		let opt = opt . "-i "
+	endif
+	if &diffopt =~ "iwhile"
+		let opt = opt . "-b "
+	endif
+	silent execute "!diff -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
+endfunction
+" }}}
 
 " ### completion ### {{{
 "入力補完機能を有効化
@@ -346,12 +362,15 @@ endif
 
 " neocomplete {{{
 " plugin key-mappings.
-" Enable snipMate compatibility feature.
 if v:version > 704
+	" Enable snipMate compatibility feature.
 	let g:neosnippet#enable_snipmate_compatibility = 1
 
-	" Tell Neosnippet about the other snippets
-	let g:neosnippet#snippets_directory='~/.vim/snippets/'
+	" Tell Neosnippet about the snippets directory
+	let g:neosnippet#snippets_directory=[]
+	let g:neosnippet#snippets_directory+=['~/.vim/snippets/']
+	let g:neosnippet#snippets_directory+=['~/.vim/pack/mypack/start/neosnippet-snippets.vim/neosnippets/']
+	" set key map for snippet
 	imap <C-k> <plug>(neosnippet_expand_or_jump)
 	smap <C-k> <plug>(neosnippet_expand_or_jump)
 	xmap <C-k> <plug>(neosnippet_expand_target)
@@ -364,6 +383,7 @@ if v:version > 704
 endif
 " }}}
 " Align.vim {{{
+" Setting for japanese environment
 let g:Align_xstrlen = 3
 " }
 "}}}
