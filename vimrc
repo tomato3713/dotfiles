@@ -180,7 +180,7 @@ endfunction
 
 "colorscheme
 colorscheme iceberg
-autocmd BufNewFile,BufRead doc/* call s:set_colorscheme()
+autocmd MyAutoCmd BufNewFile,BufRead doc/* call s:set_colorscheme()
 
 function! s:set_japanese_document_format()
 	" change important keyword the last of lines ' >' and the top of lines '<'
@@ -221,23 +221,29 @@ set wildmenu wildmode=list:full
 set spelllang+=cjk "日本語をスペルチェックの対象 から除外する
 
 "dictionary Complete
-autocmd MyAutoCmd BufRead,BufNewFile *.js :set dictionary=$HOME/.vim/dict/javascript.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.html :set dictionary=$HOME/.vim/dict/html.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.css :set dictionary=$HOME/.vim/dict/css.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.tex :set dictionary=$HOME/.vim/dict/tex.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.py :set dictionary=$HOME/.vim/dict/python.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.cpp :set dictionary=$HOME/.vim/dict/cpp.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.c :set dictionary=$HOME/.vim/dict/clang.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.rb :set dictionary=$HOME/.vim/dict/ruby.dict
-autocmd MyAutoCmd BufRead,BufNewFile *.php :set dictionary=$HOME/.vim/dict/php.dict
+augroup dict-comp
+	autocmd!
+	autocmd BufRead,BufNewFile *.js :set dictionary=$HOME/.vim/dict/javascript.dict
+	autocmd BufRead,BufNewFile *.html :set dictionary=$HOME/.vim/dict/html.dict
+	autocmd BufRead,BufNewFile *.css :set dictionary=$HOME/.vim/dict/css.dict
+	autocmd BufRead,BufNewFile *.tex :set dictionary=$HOME/.vim/dict/tex.dict
+	autocmd BufRead,BufNewFile *.py :set dictionary=$HOME/.vim/dict/python.dict
+	autocmd BufRead,BufNewFile *.cpp :set dictionary=$HOME/.vim/dict/cpp.dict
+	autocmd BufRead,BufNewFile *.c :set dictionary=$HOME/.vim/dict/clang.dict
+	autocmd BufRead,BufNewFile *.rb :set dictionary=$HOME/.vim/dict/ruby.dict
+	autocmd BufRead,BufNewFile *.php :set dictionary=$HOME/.vim/dict/php.dict
+augroup END
 
 "Enable omni completion
-autocmd MyAutoCmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd MyAutoCmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd MyAutoCmd FileType python setlocal omnifunc=python3complete#Complete
-autocmd MyAutoCmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd MyAutoCmd FileType xml setlocal omnifunc=ccomplete#Complete
+augroup omni-comp
+	autocmd!
+	autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+	autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+	autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+	autocmd FileType python setlocal omnifunc=python3complete#Complete
+	autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+	autocmd FileType xml setlocal omnifunc=ccomplete#Complete
+augroup END
 
 "syntax complete
 autocmd MyAutoCmd FileType *
@@ -329,7 +335,8 @@ if has('job') && has('channel') && has('timers')
 	let g:ale_lint_on_save = 1
 	let g:ale_lint_on_text_changed = 1
 	"check at open file
-	let g:ale_lint_on_enter = 1
+	" Disable check at file open
+	let g:ale_lint_on_enter = 0
 
 	" use QuickFix instead of location list
 	let g:ale_set_loclist = 0
