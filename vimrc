@@ -287,17 +287,17 @@ cnoremap wq x
 " }}}
 
 " ### Load local vimrc ### {{{
-augroup vimrc-local
-	autocmd!
-	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
-augroup END
+" augroup vimrc-local
+" 	autocmd!
+" 	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
+" augroup END
 
-function! s:vimrc_local(loc)
-	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
-	for i in reverse(filter(files, 'filereadable(v:val)'))
-		source `=i`
-	endfor
-endfunction
+" function! s:vimrc_local(loc)
+" 	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+" 	for i in reverse(filter(files, 'filereadable(v:val)'))
+" 		source `=i`
+" 	endfor
+" endfunction
 " }}}
 
 " ### plugin ### {{{
@@ -330,7 +330,7 @@ if has('job') && has('channel') && has('timers')
 
 	" check at :w
 	let g:ale_lint_on_save = 1
-	let g:ale_lint_on_text_changed = 1
+	let g:ale_lint_on_text_changed = 0
 	"check at open file
 	" Disable check at file open
 	let g:ale_lint_on_enter = 0
