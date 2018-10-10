@@ -4,7 +4,7 @@
 " ### Initialization ### {{{
 " My autocmd group
 augroup MyAutoCmd
-	autocmd!
+        autocmd!
 augroup END
 
 set all&
@@ -33,7 +33,7 @@ filetype plugin indent on
 
 " ### terminal ### {{{
 if has('terminal')
-	set termguicolors
+        set termguicolors
 endif
 "}}}
 "}}}
@@ -54,22 +54,22 @@ set ambiwidth=double "全角文字が半角で表示される問題を解消
 " テキスト挿入中の自動折り返しを日本語に対応させる
 " auto commet off
 augroup auto_comment__off
-	autocmd!
-	autocmd BufEnter * setlocal formatoptions=tcqmM
+        autocmd!
+        autocmd BufEnter * setlocal formatoptions=tcqmM
 augroup END
 "}}}
 
 " ### Indent ###{{{
 set autoindent "新しい行のインデントを継続する
 
-"set expandtab "tab to space
+set expandtab "tab to space
 set tabstop=4 "画面上でタブ文字の占める幅
-set shiftwidth=4 "自動インデントでずれる幅
+"set shiftwidth=4 "自動インデントでずれる幅
 set smartindent "高度なインデント
 
 "折り返しの際にインデントを考慮
 if exists('+breakindent')
-	set breakindent
+        set breakindent
 endif
 " }}}
 
@@ -87,10 +87,10 @@ set smartcase
 " ### Buffer ### {{{
 " if miss to guess filetype
 autocmd MyAutoCmd BufWritePost *
-			\ if &filetype ==# '' && exists('b:ftdetect') |
-			\ unlet! b:ftdetect |
-			\ filetype detect |
-			\ endif
+                        \ if &filetype ==# '' && exists('b:ftdetect') |
+                        \ unlet! b:ftdetect |
+                        \ filetype detect |
+                        \ endif
 
 set cursorline
 "マウスとの連携機能をオフにする
@@ -98,14 +98,12 @@ set mouse=
 
 "vimの無名レジスタとOSのクリップボードを連携させる
 if has('clipboard')
-	set clipboard=unnamed
+        set clipboard=unnamed
 endif
 
 "ファイル内容が変更されると自動読み込みする
 set autoread
-augroup MyAutoCmd
-	autocmd WinEnter * checktime
-augroup END
+autocmd MyAutoCmd WinEnter * checktime
 
 "スワップファイルを作成しない
 set noswapfile
@@ -152,7 +150,7 @@ set display=lastline
 
 " disable conceal for tex
 let g:tex_conceal=''
-autocmd MyAutoCmd BufRead,BufNewFile *.tex :set foldmethod=marker
+autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
 "ステータスラインを表示
 set laststatus=2
@@ -165,13 +163,13 @@ set viewoptions+=slash
 autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
 
 function! s:remove_unnecessary_space()
-	" delete last spaces
-	%s/\s\+$//ge
+        " delete last spaces
+        %s/\s\+$//ge
 
-	" delete last blank lines
-	while getline('$') == ""
-		$delete _
-	endwhile
+        " delete last blank lines
+        while getline('$') == ""
+                $delete _
+        endwhile
 endfunction
 
 
@@ -180,15 +178,15 @@ colorscheme iceberg
 autocmd MyAutoCmd BufNewFile,BufRead doc/* call s:set_colorscheme()
 
 function! s:set_japanese_document_format()
-	" change important keyword the last of lines ' >' and the top of lines '<'
-	hi ignore ctermfg=red
-	set fileencoding=utf-8
-	set fileformat=unix
+        " change important keyword the last of lines ' >' and the top of lines '<'
+        hi ignore ctermfg=red
+        set fileencoding=utf-8
+        set fileformat=unix
 endfunction
 
 set nohlsearch
 if v:version > 800
-	set nrformats=alpha,hex,bin
+        set nrformats=alpha,hex,bin
 endif
 
 " faster redraw
@@ -199,14 +197,14 @@ set ttyfast
 " ### Diff ### {{{
 set diffexpr=MyDiff()
 function! MyDiff()
-	let opt = ""
-	if &diffopt =~ "icase"
-		let opt = opt . "-i "
-	endif
-	if &diffopt =~ "iwhile"
-		let opt = opt . "-b "
-	endif
-	silent execute "!diff -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
+        let opt = ""
+        if &diffopt =~ "icase"
+                let opt = opt . "-i "
+        endif
+        if &diffopt =~ "iwhile"
+                let opt = opt . "-b "
+        endif
+        silent execute "!diff -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
 endfunction
 " }}}
 
@@ -219,34 +217,34 @@ set spelllang+=cjk "日本語をスペルチェックの対象 から除外す�
 
 "dictionary Complete
 augroup dict-comp
-	autocmd!
-	autocmd BufRead,BufNewFile *.js :set dictionary=$HOME/.vim/dict/javascript.dict
-	autocmd BufRead,BufNewFile *.html :set dictionary=$HOME/.vim/dict/html.dict
-	autocmd BufRead,BufNewFile *.css :set dictionary=$HOME/.vim/dict/css.dict
-	autocmd BufRead,BufNewFile *.tex :set dictionary=$HOME/.vim/dict/tex.dict
-	autocmd BufRead,BufNewFile *.py :set dictionary=$HOME/.vim/dict/python.dict
-	autocmd BufRead,BufNewFile *.cpp :set dictionary=$HOME/.vim/dict/cpp.dict
-	autocmd BufRead,BufNewFile *.c :set dictionary=$HOME/.vim/dict/clang.dict
-	autocmd BufRead,BufNewFile *.rb :set dictionary=$HOME/.vim/dict/ruby.dict
-	autocmd BufRead,BufNewFile *.php :set dictionary=$HOME/.vim/dict/php.dict
+        autocmd!
+        autocmd FileType javascript :setlocal dictionary=$HOME/.vim/dict/javascript.dict
+        autocmd FileType html :setlocal dictionary=$HOME/.vim/dict/html.dict
+        autocmd FileType css :setlocal dictionary=$HOME/.vim/dict/css.dict
+        autocmd FileType latex :setlocal dictionary=$HOME/.vim/dict/tex.dict
+        autocmd FileType python :setlocal dictionary=$HOME/.vim/dict/python.dict
+        autocmd FileType cpp :setlocal dictionary=$HOME/.vim/dict/cpp.dict
+        autocmd FileType c :setlocal dictionary=$HOME/.vim/dict/clang.dict
+        autocmd FileType ruby :setlocal dictionary=$HOME/.vim/dict/ruby.dict
+        autocmd FileType php :setlocal dictionary=$HOME/.vim/dict/php.dict
 augroup END
 
 "Enable omni completion
 augroup omni-comp
-	autocmd!
-	autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-	autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-	autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-	autocmd FileType python setlocal omnifunc=python3complete#Complete
-	autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-	autocmd FileType xml setlocal omnifunc=ccomplete#Complete
+        autocmd!
+        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType python setlocal omnifunc=python3complete#Complete
+        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+        autocmd FileType xml setlocal omnifunc=ccomplete#Complete
 augroup END
 
 "syntax complete
 autocmd MyAutoCmd FileType *
-			\    if &l:omnifunc == ''
-			\ |    setlocal omnifunc=syntaxcomplete#Complete
-			\ |  endif
+                        \    if &l:omnifunc == ''
+                        \ |    setlocal omnifunc=syntaxcomplete#Complete
+                        \ |  endif
 
 " }}}
 
@@ -288,15 +286,15 @@ cnoremap wq x
 
 " ### Load local vimrc ### {{{
 augroup vimrc-local
-	autocmd!
-	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
+        autocmd!
+        autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
 augroup END
 
 function! s:vimrc_local(loc)
-	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
-	for i in reverse(filter(files, 'filereadable(v:val)'))
-		source `=i`
-	endfor
+        let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+        for i in reverse(filter(files, 'filereadable(v:val)'))
+                source `=i`
+        endfor
 endfunction
 " }}}
 
@@ -306,9 +304,9 @@ set showmatch
 set matchpairs+=「:」,（:）
 " expand % command
 if has('packages')
-	packadd! matchit " if has package function, read /pack/.../matchit.vim
+        packadd! matchit " if has package function, read /pack/.../matchit.vim
 else
-	runtime! macros/matchit.vim
+        runtime! macros/matchit.vim
 endif
 " }}}
 
@@ -318,74 +316,74 @@ let g:tagbar_width = 30
 " code checker plugin
 " ale {{{
 if has('job') && has('channel') && has('timers')
-	let g:ale_sign_column_always = 1
+        let g:ale_sign_column_always = 1
 
-	" format message
-	let g:ale_echo_msg_error_str = 'E'
-	let g:ale_echo_msg_warning_str = 'W'
-	let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+        " format message
+        let g:ale_echo_msg_error_str = 'E'
+        let g:ale_echo_msg_warning_str = 'W'
+        let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-	"move error mapping
-	nmap <silent> <C-k> <plug>(ale_next_wrap)
+        "move error mapping
+        nmap <silent> <C-k> <plug>(ale_next_wrap)
 
-	" check at :w
-	let g:ale_lint_on_save = 1
-	let g:ale_lint_on_text_changed = 1
-	"check at open file
-	" Disable check at file open
-	let g:ale_lint_on_enter = 0
+        " check at :w
+        let g:ale_lint_on_save = 1
+        let g:ale_lint_on_text_changed = 1
+        "check at open file
+        " Disable check at file open
+        let g:ale_lint_on_enter = 0
 
-	" use QuickFix instead of location list
-	let g:ale_set_loclist = 0
-	let g:ale_set_quickfix = 1
+        " use QuickFix instead of location list
+        let g:ale_set_loclist = 0
+        let g:ale_set_quickfix = 1
 
-	" set linter
-	let g:ale_linters = {
-				\ 'javascript' : ['eslint'],
-				\ 'html' : ['cHTMLHint'],
-				\ 'css' : ['csslint'],
-				\ 'latex' : ['chktex'],
-				\ 'c' : ['gcc'],
-				\ 'cpp' : ['gcc'],
-				\ }
-	autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
-	autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
+        " set linter
+        let g:ale_linters = {
+                                \ 'javascript' : ['eslint'],
+                                \ 'html' : ['cHTMLHint'],
+                                \ 'css' : ['csslint'],
+                                \ 'latex' : ['chktex'],
+                                \ 'c' : ['gcc'],
+                                \ 'cpp' : ['gcc'],
+                                \ }
+        autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
+        autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
 
-	function! s:cpplinter()
-		let g:ale_cpp_gcc_options="-std=c++17 -Wall"
-	endfunction
+        function! s:cpplinter()
+                let g:ale_cpp_gcc_options="-std=c++17 -Wall"
+        endfunction
 
-	function! s:clanglinter()
-		let g:ale_c_gcc_options="-std=c99 -Wall"
-	endfunction
+        function! s:clanglinter()
+                let g:ale_c_gcc_options="-std=c99 -Wall"
+        endfunction
 
-	" set fixer
-	nmap <space>= :ALEFix<CR>
+        " set fixer
+        nmap <space>= :ALEFix<CR>
 endif
 " }}}
 
 " neocomplete {{{
 " plugin key-mappings.
 if v:version > 704
-	" Enable snipMate compatibility feature.
-	let g:neosnippet#enable_snipmate_compatibility = 1
+        " Enable snipMate compatibility feature.
+        let g:neosnippet#enable_snipmate_compatibility = 1
 
-	" Tell Neosnippet about the snippets directory
-	let g:neosnippet#snippets_directory=[]
-	" My snippets files
-	let g:neosnippet#snippets_directory+=['~/.vim/snippets/']
-	" Plugin snippets files
-	let g:neosnippet#snippets_directory+=['~/.vim/pack/mypack/start/neosnippet-snippets.vim/neosnippets/']
-	" set key map for snippet
-	imap <C-k> <plug>(neosnippet_expand_or_jump)
-	smap <C-k> <plug>(neosnippet_expand_or_jump)
-	xmap <C-k> <plug>(neosnippet_expand_target)
-	smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-				\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+        " Tell Neosnippet about the snippets directory
+        let g:neosnippet#snippets_directory=[]
+        " My snippets files
+        let g:neosnippet#snippets_directory+=['~/.vim/snippets/']
+        " Plugin snippets files
+        let g:neosnippet#snippets_directory+=['~/.vim/pack/mypack/start/neosnippet-snippets.vim/neosnippets/']
+        " set key map for snippet
+        imap <C-k> <plug>(neosnippet_expand_or_jump)
+        smap <C-k> <plug>(neosnippet_expand_or_jump)
+        xmap <C-k> <plug>(neosnippet_expand_target)
+        smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+                                \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-	if has('conceal')
-		set conceallevel=2 concealcursor=niv
-	endif
+        if has('conceal')
+                set conceallevel=2 concealcursor=niv
+        endif
 endif
 " }}}
 " Align.vim {{{
