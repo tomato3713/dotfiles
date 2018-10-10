@@ -25,7 +25,7 @@ set encoding=utf-8
 scriptencoding=utf-8
 
 " enable syntax higlight
-set synmaxcol=400
+set synmaxcol=200
 syntax on
 
 " enable indent plugin each filetype
@@ -92,7 +92,38 @@ autocmd MyAutoCmd BufWritePost *
                         \ filetype detect |
                         \ endif
 
-set cursorline
+
+" Enable cursorline at needed
+augroup vimrc-auto-cursorline
+        autocmd!
+        autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
+        autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
+        autocmd WinEnter * call s:auto_cursorline('WinEnter')
+        autocmd WinLeave * call s:auto_cursorline('WinLeave')
+
+        let s:cursorline_lock = 0
+        function! s:auto_cursorline(event)
+                if a:event ==# 'WinEnter'
+                        setlocal cursorline
+                        let s:cursorline_lock = 2
+                elseif a:event ==# 'WinLeave'
+                        setlocal nocursorline
+                elseif a:event ==# 'CursorMoved'
+                        if s:cursorline_lock
+                                if 1 < s:cursorline_lock
+                                        let s:cursorline_lock = 1
+                                else
+                                        setlocal nocursorline
+                                        let s:cursorline_lock = 0
+                                endif
+                        endif
+                elseif a:event ==# 'CursorHold'
+                        setlocal cursorline
+                        let s:cursorline_lock = 1
+                endif
+        endfunction
+augroup END
+
 "マウスとの連携機能をオフにする
 set mouse=
 
@@ -262,6 +293,8 @@ set history=2000
 set nostartofline
 
 " key mapping
+" Wait key time
+set timeout ttimeoutlen=50
 " change Leader key to Space key
 let mapleader = "\<Space>"
 
@@ -285,21 +318,22 @@ cnoremap wq x
 " }}}
 
 " ### Load local vimrc ### {{{
-" augroup vimrc-local
-" 	autocmd!
-" 	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
-" augroup END
+augroup vimrc-local
+	autocmd!
+	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
+augroup END
 
-" function! s:vimrc_local(loc)
-" 	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
-" 	for i in reverse(filter(files, 'filereadable(v:val)'))
-" 		source `=i`
-" 	endfor
-" endfunction
+function! s:vimrc_local(loc)
+	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+	for i in reverse(filter(files, 'filereadable(v:val)'))
+		source `=i`
+	endfor
+endfunction
 " }}}
 
 " ### plugin ### {{{
 " match {{{
+let g:loaded_matchparen = 1
 set showmatch
 set matchpairs+=「:」,（:）
 " expand % command
@@ -317,6 +351,7 @@ let g:tagbar_width = 30
 " ale {{{
 if has('job') && has('channel') && has('timers')
         let g:ale_sign_column_always = 1
+        let g:ale_list_window_size = 3
 
         " format message
         let g:ale_echo_msg_error_str = 'E'
@@ -327,8 +362,8 @@ if has('job') && has('channel') && has('timers')
         nmap <silent> <C-k> <plug>(ale_next_wrap)
 
         " check at :w
-        let g:ale_lint_on_save = 1
-        let g:ale_lint_on_text_changed = 1
+        let g:ale_lint_on_save = 0
+        let g:ale_lint_on_text_changed = 'never'
         "check at open file
         " Disable check at file open
         let g:ale_lint_on_enter = 0
