@@ -13,3 +13,6 @@
 [submodule "pack/mypack/start/ale.vim"]
 	path = pack/mypack/start/ale.vim
 	url = https://github.com/w0rp/ale
+[submodule "/home/jj1hgp/.vim/pack/mypack/opt/vim-go.vim"]
+	path = /home/jj1hgp/.vim/pack/mypack/opt/vim-go.vim
+	url = https://github.com/fatih/vim-go.git
