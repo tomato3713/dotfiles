@@ -20,7 +20,7 @@ set runtimepath+=~/.vim/autoload/
 " japanese help
 set helplang=en,ja
 
-"vim自体が使用する文字エンコーディング
+" Vim自体が使用する文字エンコーディング
 set encoding=utf-8
 
 " must be set with multibyte strings
@@ -46,10 +46,10 @@ set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
 autocmd MyAutoCmd BufEnter * setlocal bomb?
 
-"ファイルに保存される文字エンコーディング
+" ファイルに保存される文字エンコーディング
 set fileencoding=utf-8
 
-"改行文字
+" 改行文字
 set fileformat=unix
 set ambiwidth=double "全角文字が半角で表示される問題を解消
 
@@ -59,30 +59,30 @@ augroup auto_comment__off
         autocmd!
         autocmd BufEnter * setlocal formatoptions=tcqmM
 augroup END
-"}}}
+" }}}
 
 " ### Indent ###{{{
-set autoindent "新しい行のインデントを継続する
+set autoindent " 新しい行のインデントを継続する
 
 set expandtab "tab to space
-set tabstop=4 "画面上でタブ文字の占める幅
-"set shiftwidth=4 "自動インデントでずれる幅
-set smartindent "高度なインデント
+set tabstop=4 " 画面上でタブ文字の占める幅
+" set shiftwidth=4 " 自動インデントでずれる幅
+set smartindent " 高度なインデント
 
-"折り返しの際にインデントを考慮
+" 折り返しの際にインデントを考慮
 if exists('+breakindent')
         set breakindent
 endif
 " }}}
 
 " ### search ### {{{
-"インクリメンタル検索を有効にする
+" インクリメンタル検索を有効にする
 set incsearch
 
-"大文字小文字を無視
+" 大文字小文字を無視
 set ignorecase
 
-"大文字が入力されたら大文字小文字を区別する
+" 大文字が入力されたら大文字小文字を区別する
 set smartcase
 " }}}
 
@@ -126,39 +126,39 @@ augroup vimrc-auto-cursorline
         endfunction
 augroup END
 
-"マウスとの連携機能をオフにする
+" マウスとの連携機能をオフにする
 set mouse=
 
-"vimの無名レジスタとOSのクリップボードを連携させる
+" vimの無名レジスタとOSのクリップボードを連携させる
 if has('clipboard')
         set clipboard=unnamed
 endif
 
-"ファイル内容が変更されると自動読み込みする
+" ファイル内容が変更されると自動読み込みする
 set autoread
 autocmd MyAutoCmd WinEnter * checktime
 
-"スワップファイルを作成しない
+" スワップファイルを作成しない
 set noswapfile
 
-"undoの記録を残す
+" undoの記録を残す
 set undofile undodir=$HOME/.vim/.vimundo
 
-"バックアップファイルの出力先を変更
+" バックアップファイルの出力先を変更
 set nobackup
-"set backupdir=$HOME/.vim/temp
+" set backupdir=$HOME/.vim/temp
 
-"no viminfo file
+" no viminfo file
 set viminfo=
 
-"windows上でもunix形式のend-of-lineを使う
+" windows上でもunix形式のend-of-lineを使う
 set viewoptions=unix
 
 set t_Co=256
 
 set cmdheight=2
 
-"ステータスラインを表示
+" ステータスラインを表示
 set laststatus=2
 set statusline=%F%r%h%=
 set ruler " add cursor line location in right of status line
@@ -166,31 +166,31 @@ set ruler " add cursor line location in right of status line
 " title
 set title
 
-"不可視文字を不可視化
+" 不可視文字を不可視化
 set nolist
 
-"最低でも上下に表示する行数
+" 最低でも上下に表示する行数
 set scrolloff=5
 
-"入力したコマンドを画面下に表示
+" 入力したコマンドを画面下に表示
 set showcmd
 
-"自動折り返ししない
+" 自動折り返ししない
 set textwidth=0
 
-"長い行を@にさせない
+" 長い行を@にさせない
 set display=lastline
 
 " disable conceal for tex
 let g:tex_conceal=''
 autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
-"ステータスラインを表示
+" ステータスラインを表示
 set laststatus=2
 set statusline=%F%r%h%=
 set ruler " add cursor line location in right of status line
 
-"ファイル名内の'\'をスラッシュに置換する
+" ファイル名内の'\'をスラッシュに置換する
 set viewoptions+=slash
 
 autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
@@ -206,7 +206,7 @@ function! s:remove_unnecessary_space()
 endfunction
 
 
-"colorscheme
+" colorscheme
 colorscheme iceberg
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 
@@ -228,7 +228,7 @@ endif
 " faster redraw
 set lazyredraw
 set ttyfast
-"}}}
+" }}}
 
 " ### Diff ### {{{
 set diffexpr=MyDiff()
@@ -245,13 +245,13 @@ endfunction
 " }}}
 
 " ### completion ### {{{
-"入力補完機能を有効化
+" 入力補完機能を有効化
 set wildmenu wildmode=list:full
 
-"spelling補完 on <C-x><C-s>
-set spelllang+=cjk "日本語をスペルチェックの対象 から除外する
+" spelling補完 on <C-x><C-s>
+set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
 
-"dictionary Complete
+" dictionary Complete
 augroup dict-comp
         autocmd!
         autocmd FileType javascript :setlocal dictionary=$HOME/.vim/dict/javascript.dict
@@ -265,7 +265,7 @@ augroup dict-comp
         autocmd FileType php :setlocal dictionary=$HOME/.vim/dict/php.dict
 augroup END
 
-"Enable omni completion
+" Enable omni completion
 augroup omni-comp
         autocmd!
         autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -276,7 +276,7 @@ augroup omni-comp
         autocmd FileType xml setlocal omnifunc=ccomplete#Complete
 augroup END
 
-"syntax complete
+" syntax complete
 autocmd MyAutoCmd FileType *
                         \    if &l:omnifunc == ''
                         \ |    setlocal omnifunc=syntaxcomplete#Complete
@@ -320,20 +320,6 @@ nnoremap ZQ <Nop>
 " when tap :wq, make not save and close if buffer is no difference before
 cnoremap wq x
 
-" }}}
-
-" ### Load local vimrc ### {{{
-augroup vimrc-local
-	autocmd!
-	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
-augroup END
-
-function! s:vimrc_local(loc)
-	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
-	for i in reverse(filter(files, 'filereadable(v:val)'))
-		source `=i`
-	endfor
-endfunction
 " }}}
 
 " ### Ruby setting ### {{{
@@ -395,13 +381,13 @@ if has('job') && has('channel') && has('timers')
         let g:ale_echo_msg_warning_str = 'W'
         let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-        "move error mapping
+        " move error mapping
         nmap <silent> <C-k> <plug>(ale_next_wrap)
 
         " check at :w
         let g:ale_lint_on_save = 0
         let g:ale_lint_on_text_changed = 'never'
-        "check at open file
+        " check at open file
         " Disable check at file open
         let g:ale_lint_on_enter = 0
 
