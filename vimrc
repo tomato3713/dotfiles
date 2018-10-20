@@ -28,8 +28,8 @@ scriptencoding=utf-8
 set synmaxcol=200
 syntax on
 
-" enable indent plugin each filetype
-filetype plugin indent on
+" disable indent plugin each filetype
+filetype plugin indent off
 
 " ### terminal ### {{{
 if has('terminal')
@@ -206,13 +206,16 @@ endfunction
 
 "colorscheme
 colorscheme iceberg
-autocmd MyAutoCmd BufNewFile,BufRead doc/* call s:set_colorscheme()
+autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 
 function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
-        hi ignore ctermfg=red
-        set fileencoding=utf-8
-        set fileformat=unix
+        if &buftype != 'help'
+                hi ignore ctermfg=red
+                if has('conceal')
+                        setlocal conceallevel=0
+                endif
+        endif
 endfunction
 
 set nohlsearch
@@ -331,6 +334,22 @@ function! s:vimrc_local(loc)
 endfunction
 " }}}
 
+" ### Ruby setting ### {{{
+autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
+" }}}
+
+" ### Golang setting ### {{{
+if( &filetype == 'go' )
+        " setting of runtimepath
+        set runtimepath+=$GOROOT/misc/vim
+        let g:go_bin_path = $GOPATH.'/bin'
+        " for completion
+        exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+        set runtimepath+=$GOPATH/src/github.com/nsf/gocode/vim
+        set completeopt=menu,preview
+endif
+" }}}
+
 " ### plugin ### {{{
 " match {{{
 let g:loaded_matchparen = 1
@@ -427,4 +446,6 @@ let g:Align_xstrlen = 3
 " }
 "}}}
 
+" enable indent plugin each filetype
+filetype plugin indent off
 set secure
