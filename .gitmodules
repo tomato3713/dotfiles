@@ -1,18 +1,3 @@
-[submodule "pack/mypack/start/tagbar.vim"]
-	path = pack/mypack/start/tagbar.vim
-	url = https://github.com/majutsushi/tagbar
-[submodule "pack/mypack/start/neosnippet.vim"]
-	path = pack/mypack/start/neosnippet.vim
-	url = https://github.com/Shougo/neosnippet.vim
-[submodule "pack/mypack/start/neosnippet-snippets.vim"]
-	path = pack/mypack/start/neosnippet-snippets.vim
-	url = https://github.com/Shougo/neosnippet-snippets
-[submodule "pack/mypack/start/Align.vim"]
-	path = pack/mypack/start/Align.vim
-	url = https://github.com/vim-scripts/Align
-[submodule "pack/mypack/start/ale.vim"]
-	path = pack/mypack/start/ale.vim
-	url = https://github.com/w0rp/ale
 [submodule "/home/jj1hgp/.vim/pack/mypack/opt/vim-go.vim"]
 	path = /home/jj1hgp/.vim/pack/mypack/opt/vim-go.vim
 	url = https://github.com/fatih/vim-go.git
