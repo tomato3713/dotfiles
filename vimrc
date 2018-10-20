@@ -1,5 +1,5 @@
-"Last Change: 06/10/2018
-"Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
+" Last Change: 06/10/2018
+" Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
 " My autocmd group
@@ -14,6 +14,8 @@ set nocompatible
 
 " in shell setting file, for example .bashrc or .cshrc
 " setenv $VIMRUNTIME ~/vim/vim/runtime
+set runtimepath+=~/.vim
+set runtimepath+=~/.vim/autoload/
 
 " japanese help
 set helplang=en,ja
@@ -351,6 +353,22 @@ endif
 " }}}
 
 " ### plugin ### {{{
+" vim-plug {{{
+let s:vim_plug_url='https://github.com/junegunn/vim-plug'
+if !filereadable(expand('~/.vim/vim-plug/plug.vim'))
+    call system("git clone " . s:vim_plug_url . " " . $HOME . "/.vim/vim-plug/")
+endif
+source ~/.vim/vim-plug/plug.vim
+call plug#begin('~/.vim/plugged')
+        Plug 'Shougo/neosnippet.vim'
+        Plug 'Shougo/neosnippet-snippets'
+        Plug 'vim-scripts/Align'
+        Plug 'w0rp/ale'
+        Plug 'majutsushi/tagbar'
+        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+        Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+call plug#end()
+" }}}
 " match {{{
 let g:loaded_matchparen = 1
 set showmatch
@@ -427,7 +445,7 @@ if v:version > 704
         " My snippets files
         let g:neosnippet#snippets_directory+=['~/.vim/snippets/']
         " Plugin snippets files
-        let g:neosnippet#snippets_directory+=['~/.vim/pack/mypack/start/neosnippet-snippets.vim/neosnippets/']
+        let g:neosnippet#snippets_directory+=['~/.vim/plugged/neosnippet-snippets/neosnippets/']
         " set key map for snippet
         imap <C-k> <plug>(neosnippet_expand_or_jump)
         smap <C-k> <plug>(neosnippet_expand_or_jump)
@@ -447,5 +465,6 @@ let g:Align_xstrlen = 3
 "}}}
 
 " enable indent plugin each filetype
-filetype plugin indent off
+" automatically executes this command by vim-plug
+" filetype plugin indent off
 set secure

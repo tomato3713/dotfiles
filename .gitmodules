@@ -1,6 +1,3 @@
 [submodule "/home/jj1hgp/.vim/pack/mypack/opt/vim-go.vim"]
 	path = /home/jj1hgp/.vim/pack/mypack/opt/vim-go.vim
 	url = https://github.com/fatih/vim-go.git
-[submodule "autoload/vim-plug.vim"]
-	path = autoload/vim-plug.vim
-	url = https://github.com/junegunn/vim-plug.git
