@@ -1,6 +1,8 @@
 #! /bin/bash
 # Symbolic Link
-ln -sf ~/.dotfiles/vimfiles ~/.vim
+if [ ! -e ~/vim ]; then
+        ln -sf ~/.dotfiles/vimfiles ~/.vim
+fi
 echo "source ~/.dotfiles/.bash_setting" >> ~/.bashrc
 
 # Install Section
@@ -15,8 +17,16 @@ apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential
 apt -y install python3-dev ruby-dev
 
 # Build Vim
-git clone https://github.com/vim/vim.git ~/vim
-cd ~/vim/src
+if [ ! -e ~/vim ]; then
+        mkdir ~/vim
+fi
+if [ ! -e ~/vim/vim ]; then
+        # ~/vim/vimが存在しなければgit cloneする。
+        git clone https://github.com/vim/vim.git ~/vim/vim
+fi
+# Build Process Start
+cd ~/vim/vim/src
+make distclean
 ./configure \
         --enable-multibyte --enable-multibyte --enable-fontset \
         --enable-gui=yes --enable-gui=gtk2 \
@@ -26,3 +36,4 @@ cd ~/vim/src
         --with-features=huge \
 make
 make install
+echo Installed Vim

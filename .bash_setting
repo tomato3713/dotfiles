@@ -1,12 +1,7 @@
 # .bash_profile
 echo "Your shell is ${SHELL}"
 # Set Prompt
-PS1='\[\e[1;36m\e[\][\u@\h \w]\[\e[0m\] \n\$'
-
-# Get the aliases and functions
-if [-f ~/.bashrc ]; then
-        . ~/.bashrc
-fi
+PS1='\[\e[1;36m\e[\][\u@\h \w]\[\e[0m\] \n\$ '
 
 # some more git aliases
 alias gitsts='git status'
@@ -15,7 +10,7 @@ alias cls='clear'
 export DISPLAY=localhost:0.0
 
 # For Golang
-echo "export GOROOT=/usr/lib/go/" >> ~/.bashrc
-echo "export GOPATH=$HOME/go" >> ~/.bashrc
-echo "export PATH=$PATH:/usr/lib/go/bin" >> ~/.bashrc
-echo "export PATH=$PATH:$GOPATH/bin" >> ~/.bashrc
+export GOROOT=/usr/lib/go/
+export GOPATH=$HOME/go
+export PATH=$PATH:/usr/lib/go/bin
+export PATH=$PATH:$GOPATH/bin
