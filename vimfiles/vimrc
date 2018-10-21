@@ -15,7 +15,6 @@ set nocompatible
 " in shell setting file, for example .bashrc or .cshrc
 " setenv $VIMRUNTIME ~/vim/vim/runtime
 set runtimepath+=~/.vim
-set runtimepath+=~/.vim/autoload/
 
 " japanese help
 set helplang=en,ja
@@ -133,6 +132,7 @@ set mouse=
 if has('clipboard')
         set clipboard=unnamed
 endif
+set paste
 
 " ファイル内容が変更されると自動読み込みする
 set autoread
@@ -271,6 +271,7 @@ augroup omni-comp
         autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
         autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
         autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+		autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
         autocmd FileType python setlocal omnifunc=python3complete#Complete
         autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
         autocmd FileType xml setlocal omnifunc=ccomplete#Complete
@@ -340,6 +341,7 @@ endif
 
 " ### plugin ### {{{
 " vim-plug {{{
+" automated install vim-plug
 let s:vim_plug_url='https://github.com/junegunn/vim-plug'
 if !filereadable(expand('~/.vim/vim-plug/plug.vim'))
     call system("git clone " . s:vim_plug_url . " " . $HOME . "/.vim/vim-plug/")
@@ -351,8 +353,9 @@ call plug#begin('~/.vim/plugged')
         Plug 'vim-scripts/Align'
         Plug 'w0rp/ale'
         Plug 'majutsushi/tagbar'
-        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-        Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
+        Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+		Plug 'thinca/vim-quickrun', {}
 call plug#end()
 " }}}
 " match {{{
@@ -374,7 +377,7 @@ let g:tagbar_width = 30
 " ale {{{
 if has('job') && has('channel') && has('timers')
         let g:ale_sign_column_always = 1
-        let g:ale_list_window_size = 3
+        let g:ale_list_window_size = 2
 
         " format message
         let g:ale_echo_msg_error_str = 'E'
@@ -385,9 +388,8 @@ if has('job') && has('channel') && has('timers')
         nmap <silent> <C-k> <plug>(ale_next_wrap)
 
         " check at :w
-        let g:ale_lint_on_save = 0
+        let g:ale_lint_on_save = 1
         let g:ale_lint_on_text_changed = 'never'
-        " check at open file
         " Disable check at file open
         let g:ale_lint_on_enter = 0
 

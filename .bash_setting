@@ -1,7 +1,7 @@
 # .bash_profile
 echo "Your shell is ${SHELL}"
 # Set Prompt
-PS1='\[\e[1;36m\e[\][\u@\h \w]\[\e[0m\] \n\$ '
+PS1='\[\e[1;36m\e[\][[\u@\h \w]\[\e[0m\] \n\$ '
 
 # some more git aliases
 alias gitsts='git status'
