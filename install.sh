@@ -1,10 +1,4 @@
 #! /bin/bash
-# Symbolic Link
-if [ ! -e ~/vim ]; then
-        ln -sf ~/.dotfiles/vimfiles ~/.vim
-fi
-echo "source ~/.dotfiles/.bash_setting" >> ~/.bashrc
-
 # Install Section
 apt update
 apt -y upgrade
@@ -16,6 +10,12 @@ echo "install rbenv and ruby"
 apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential
 apt -y install python3-dev ruby-dev
 
+# Symbolic Link
+if [ ! -e ~/vim ]; then
+        ln -sf ~/.dotfiles/vimfiles ~/.vim
+fi
+echo "source ~/.dotfiles/.bash_setting" >> ~/.bashrc
+
 # Build Vim
 if [ ! -e ~/vim ]; then
         mkdir ~/vim
@@ -23,6 +23,9 @@ fi
 if [ ! -e ~/vim/vim ]; then
         # ~/vim/vimが存在しなければgit cloneする。
         git clone https://github.com/vim/vim.git ~/vim/vim
+else
+		cd ~/vim/vim/
+		git pull
 fi
 # Build Process Start
 cd ~/vim/vim/src
@@ -36,4 +39,5 @@ make distclean
         --with-features=huge \
 make
 make install
-echo Installed Vim
+
+vim +":PlugInstall" + ":q" + ":q"
