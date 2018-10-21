@@ -1,4 +1,4 @@
-./vim-plug
-./plugged/
-./autoload/
-./ftplugin/
+./vimfiles/vim-plug
+./vimfiles/plugged/
+./vimfiles/autoload/
+./vimfiles/ftplugin/
