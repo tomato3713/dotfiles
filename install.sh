@@ -1,22 +1,35 @@
 #! /bin/bash
+# 0以外の終了ステータスが出た瞬間にスクリプトを止める。
+set -e
+
 # Install Section
-apt update
-apt -y upgrade
-# For Golang
-echo "install golang"
-apt -y install golang-go
-echo "install rbenv and ruby"
-# For Latest Vim
-apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential
-apt -y install python3-dev ruby-dev
+if [ ${EUID:-${UID}} = 0 ]; then
+		apt update
+		apt -y upgrade
+		# Golang {{{
+		echo "install golang"
+		apt -y install golang-go
+		# }}}
+		# ruby {{{
+		echo "install rbenv and ruby"
+		# }}}
+		# Java {{{
+		echo "install java"
+		apt -y install default-jre
+		# }}}
+
+		# For Latest Vim {{{
+		apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential install python3-dev ruby-dev
+else
+		echo 'Not root user'
+fi
 
 # Symbolic Link
-if [ ! -e ~/vim ]; then
+if [ ! -e ~/.vim ]; then
         ln -sf ~/.dotfiles/vimfiles ~/.vim
 fi
-echo "source ~/.dotfiles/.bash_setting" >> ~/.bashrc
 
-# Build Vim
+# Build Vim {{{
 if [ ! -e ~/vim ]; then
         mkdir ~/vim
 fi
@@ -38,6 +51,10 @@ make distclean
         --enable-python3interp=dynamic \
         --with-features=huge \
 make
-make install
-
+if [ ! -e ~/vim/vim ]; then
+		make install
+fi
 vim +":PlugInstall" + ":q" + ":q"
+# }}}
+
+echo "source ~/.dotfiles/.bash_setting" >> ~/.bashrc
