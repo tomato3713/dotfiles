@@ -65,7 +65,7 @@ set autoindent " 新しい行のインデントを継続する
 
 set expandtab "tab to space
 set tabstop=4 " 画面上でタブ文字の占める幅
-" set shiftwidth=4 " 自動インデントでずれる幅
+set shiftwidth=4 " 自動インデントでずれる幅
 set smartindent " 高度なインデント
 
 " 折り返しの際にインデントを考慮
@@ -132,7 +132,6 @@ set mouse=
 if has('clipboard')
         set clipboard=unnamed
 endif
-set paste
 
 " ファイル内容が変更されると自動読み込みする
 set autoread
@@ -152,16 +151,12 @@ set nobackup
 set viminfo=
 
 " windows上でもunix形式のend-of-lineを使う
-set viewoptions=unix
+" ファイル名内の'\'をスラッシュに置換する
+set viewoptions=unix,slash
 
 set t_Co=256
 
 set cmdheight=2
-
-" ステータスラインを表示
-set laststatus=2
-set statusline=%F%r%h%=
-set ruler " add cursor line location in right of status line
 
 " title
 set title
@@ -189,9 +184,6 @@ autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 set laststatus=2
 set statusline=%F%r%h%=
 set ruler " add cursor line location in right of status line
-
-" ファイル名内の'\'をスラッシュに置換する
-set viewoptions+=slash
 
 autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
 
@@ -286,12 +278,6 @@ autocmd MyAutoCmd FileType *
 " }}}
 
 " ### Command ### {{{
-" set command line completion
-set wildmenu
-
-" コマンドライン補完の方法
-set wildmode=longest:full,full
-
 " the count of command history
 set history=2000
 
@@ -454,5 +440,5 @@ let g:Align_xstrlen = 3
 
 " enable indent plugin each filetype
 " automatically executes this command by vim-plug
-" filetype plugin indent off
+" filetype plugin indent on
 set secure
