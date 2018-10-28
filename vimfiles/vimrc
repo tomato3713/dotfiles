@@ -1,4 +1,4 @@
-" Last Change: 06/10/2018
+" Last Change: 28/10/2018
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -54,7 +54,7 @@ set ambiwidth=double "全角文字が半角で表示される問題を解消
 
 " テキスト挿入中の自動折り返しを日本語に対応させる
 " auto commet off
-augroup auto_comment__off
+augroup auto_comment_off
         autocmd!
         autocmd BufEnter * setlocal formatoptions=tcqmM
 augroup END
@@ -206,6 +206,8 @@ function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
         if &buftype != 'help'
                 hi ignore ctermfg=red
+                let JpCountOverChars = 1
+                set formatexpr=jpfmt#formatexpr()
                 if has('conceal')
                         setlocal conceallevel=0
                 endif
@@ -342,6 +344,7 @@ call plug#begin('~/.vim/plugged')
         Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
         Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 		Plug 'thinca/vim-quickrun', {}
+        Plug 'fuenor/JpFormat.vim', {}
 call plug#end()
 " }}}
 " match {{{
@@ -436,6 +439,19 @@ endif
 " Setting for japanese environment
 let g:Align_xstrlen = 3
 " }
+" JpFormat.vim {{{
+" gqコマンドを実行前に自動整形をオフにする
+nnoremap <silent> <expr> gq JpFormat_cmd("gq")
+" .txt, .mdで自動整形を有効にする。
+autocmd MyAutoCmd FileType markdown call s:set_autoformat()
+autocmd MyAutoCmd FileType text call s:set_autoformat()
+
+function! s:set_autoformat()
+    let JpCountChars=80
+    let JpCountOverChars=1
+    set formatexpr=jpfmt#formatexpr()
+endfunction
+" }}}
 "}}}
 
 " enable indent plugin each filetype
