@@ -200,12 +200,17 @@ endfunction
 
 " colorscheme
 colorscheme iceberg
+
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 
 function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
         if &buftype != 'help'
                 hi ignore ctermfg=red
+                syntax match Error /\%>79v.*/
+                syntax match Error /、\s/
+                syntax match Error /。\s/
+                set cc=+1
                 let JpCountOverChars = 1
                 set formatexpr=jpfmt#formatexpr()
                 if has('conceal')
@@ -345,6 +350,8 @@ call plug#begin('~/.vim/plugged')
         Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 		Plug 'thinca/vim-quickrun', {}
         Plug 'fuenor/JpFormat.vim', {}
+        Plug 'cocopon/iceberg.vim', {'do': 'cp colors/*
+        ~/.vim/colors/'}
 call plug#end()
 " }}}
 " match {{{
