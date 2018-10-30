@@ -6,6 +6,8 @@ PS1='\[\e[1;36m\e[\][[\u@\h \w]\[\e[0m\] \n\$ '
 # some more git aliases
 alias gitsts='git status'
 alias cls='clear'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 
 export DISPLAY=localhost:0.0
 

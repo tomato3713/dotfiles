@@ -1,5 +1,5 @@
+#! /bin/sh
 # run-with-color.sh
-
 red=31
 yellow=33
 cyan=36
