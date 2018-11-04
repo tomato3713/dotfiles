@@ -1,4 +1,10 @@
-#! /bin/bash
+#! /bin/sh
+#
+# vim, goのインストールを行います。
+#
+# Usage:
+# 	~/.dotfiles/install.sh
+
 # 0以外の終了ステータスが出た瞬間にスクリプトを止める。
 set -e
 

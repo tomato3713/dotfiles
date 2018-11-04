@@ -1,5 +1,14 @@
-#! /bin/sh
+#! /bin/bash
 # run-with-color.sh
+#
+# Shell Script Library
+# ステータスコードで失敗と示されている場合には、実行したコマンド列と
+# カレントディレクトリの位置を出力します。その後、exitでスクリプトの
+# 実行を中断します。
+#
+# Usage:
+#   run [command]
+
 red=31
 yellow=33
 cyan=36
