@@ -1,3 +1,4 @@
+#! /bin/sh
 # 終了ステータスのみ利用したい場合の書き方の例
 if grep pattern myfile > /dev/null
 then
