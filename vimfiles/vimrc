@@ -201,7 +201,15 @@ endfunction
 " colorscheme
 "colorscheme iceberg
 syntax enable
-set background=light
+
+" 6:00 ~ 19:00 の間はbackground = lightにする
+let s:now = str2nr( strftime("%H", localtime()) )
+if s:now >= 6 && s:now < 19
+    set background=light
+else
+    set background=dark
+endif
+
 colorscheme solarized
 
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
@@ -404,6 +412,7 @@ if has('job') && has('channel') && has('timers')
                                 \ 'latex' : ['chktex'],
                                 \ 'c' : ['gcc'],
                                 \ 'cpp' : ['gcc'],
+                                \ 'java': [],
                                 \ }
         autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
         autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
