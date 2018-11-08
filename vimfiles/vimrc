@@ -43,7 +43,6 @@ endif
 " 文字コードの自動認識
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
-autocmd MyAutoCmd BufEnter * setlocal bomb?
 
 " ファイルに保存される文字エンコーディング
 set fileencoding=utf-8
@@ -182,7 +181,8 @@ autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
 " ステータスラインを表示
 set laststatus=2
-set statusline=%F%r%h%=
+set statusline=[.%F%r%h%w%m]%=
+set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
 set ruler " add cursor line location in right of status line
 
 autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
@@ -205,12 +205,10 @@ syntax enable
 " 6:00 ~ 19:00 の間はbackground = lightにする
 let s:now = str2nr( strftime("%H", localtime()) )
 if s:now >= 6 && s:now < 19
-    set background=light
+    colorscheme solarized
 else
-    set background=dark
+    colorscheme molokai
 endif
-
-colorscheme solarized
 
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 
@@ -256,7 +254,7 @@ endfunction
 
 " ### completion ### {{{
 " 入力補完機能を有効化
-set wildmenu wildmode=list:full
+set wildmenu wildmode=longest:full
 
 " spelling補完 on <C-x><C-s>
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
@@ -307,9 +305,6 @@ set nostartofline
 set timeout ttimeoutlen=50
 " change Leader key to Space key
 let mapleader = "\<Space>"
-
-" Load current file as vimrc
-nnoremap <silent> <F5> :<C-u>call <SID>source_script('%')<CR>
 
 " return command line history
 cnoremap <C-n> <Down>
@@ -428,6 +423,24 @@ if has('job') && has('channel') && has('timers')
         " set fixer
         nmap <space>= :ALEFix<CR>
 endif
+" }}}
+
+" QuickRun.vim {{{
+nnoremap <expr><silent> <space>c quickrun#is_runnting() ? quickrun#sweep_sessions() "\<C-c>"
+let g:quickrun_config = {
+            \ '_' : {
+            \   'outputter/buffer/split' : ':botright 8sp',
+            \   'outputter/buffer/close_on_empty' : 1,
+            \   'outputter/buffer/name' : '[QuickRun Output]',
+            \ },
+            \ 'c/gcc' : {
+            \   'cmdopt' : '-stc=c99 -Wall'
+            \ },
+            \ 'tex' : {
+            \   'command' : 'lualatex',
+            \   'exec' : ['%c -synctex=1 -interaction=nonstopmode %s', 'apvlv %s:r.pdf']
+            \ },
+            \ }
 " }}}
 
 " neocomplete {{{
