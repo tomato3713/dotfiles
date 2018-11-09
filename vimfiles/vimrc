@@ -1,4 +1,4 @@
-" Last Change: 28/10/2018
+" Last Change: 09/11/2018
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -427,6 +427,8 @@ endif
 
 " QuickRun.vim {{{
 nnoremap <expr><silent> <space>c quickrun#is_runnting() ? quickrun#sweep_sessions() "\<C-c>"
+" <Leader>qでquickrunで開かれた出力バッファを閉じる
+nnoremap <Leader>q :<C-u>bw! \[QuickRun\ Output\]<CR>
 let g:quickrun_config = {
             \ '_' : {
             \   'outputter/buffer/split' : ':botright 8sp',

@@ -10,6 +10,7 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
 export DISPLAY=localhost:0.0
+export EDITOR=vim
 
 # For Golang
 export GOROOT=/usr/lib/go/
