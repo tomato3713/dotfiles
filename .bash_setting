@@ -1,5 +1,20 @@
-# .bash_profile
-echo "Your shell is ${SHELL}"
+#! /usr/bin/env bash
+#####################################################################
+#
+# Simple Bash Setting
+# Environmental setting is written in .bash_profile
+#   echo 'export PATH="$HOME/.aaaa/bin:$PATH" >> ~/.bash_profile
+#
+#####################################################################
+
+# Print Prompt
+echo "############################################"
+echo "Starting ${SHELL} Setting."
+echo "############################################"
+
+# Read functions
+~/.dotfiles/shlib/run-with-color.sh
+
 # Set Prompt
 PS1='\[\e[1;36m\e[\][[\u@\h \w]\[\e[0m\] \n\$ '
 
@@ -17,3 +32,10 @@ export GOROOT=/usr/lib/go/
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/lib/go/bin
 export PATH=$PATH:$GOPATH/bin
+
+# For my shell command
+export PATH=$PATH:~/.dotfiles/shlib/
+
+echo "############################################"
+echo "Shell Setting is finished!!!"
+echo "############################################"

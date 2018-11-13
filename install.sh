@@ -1,6 +1,7 @@
 #! /bin/sh
 #
-# vim, goのインストールを行います。
+# vim : githubのコードから最新のバージョンをビルドし、インストールする。
+# ruby, golang, pyenv, nodejsはanyenvを利用して、バージョンを管理する。
 #
 # Usage:
 # 	~/.dotfiles/install.sh
@@ -15,31 +16,33 @@ set -e
 # Install Section
 
 # sudo権限でなければ実行できない
-if [ ${EUID:-${UID}} = 0 ]; then
-    apt update
-    apt -y upgrade
-    # Golang {{{
-    echo "install golang"
-    apt -y install golang-go
-    # }}}
-    # ruby {{{
-    echo "install rbenv and ruby"
-    # }}}
-    # Java {{{
-    echo "install java"
-    apt -y install default-jre
-    # }}}
-
-    # For Latest Vim {{{
-    apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential install python3-dev ruby-dev
-else
+if [ ${EUID:-${UID}} != 0 ]; then
     echo 'Not root user'
+    exit 1
 fi
 
-# Symbolic Link
-if [ ! -e ~/.vim ]; then
-    ln -sf ~/.dotfiles/vimfiles ~/.vim
-fi
+apt update
+apt -y upgrade
+
+# Golang {{{
+echo "install golang"
+apt -y install golang-go
+# }}}
+
+# Java {{{
+echo "install java"
+apt -y install default-jre
+# }}}
+
+# For Latest Vim {{{
+apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential install python3-dev ruby-dev
+
+setSymbolicLink() {
+    # Symbolic Link
+    if [ ! -e ~/.vim ]; then
+        ln -sf ~/.dotfiles/vimfiles ~/.vim
+    fi
+}
 
 build_vim() {
     # Build Vim {{{
@@ -67,7 +70,7 @@ build_vim() {
         --prefix=/usr/local \
         --with-features=huge \
 
-    make
+        make
 
     if [ ! -e ~/vim/vim ]; then
         make install
@@ -77,4 +80,24 @@ build_vim() {
     # }}}
 
     echo "source ~/.dotfiles/.bash_setting" >> ~/.bashrc
+}
+
+install_anyenv() {
+    # Anyenv {{{
+    git clone https://github.com/riywo/anyenv ~/.anyenv
+    echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bash_profile
+    echo 'eval "$(anyenv init -)"' >> ~/.bash_profile
+    exec $SHELL -l
+    # install rbenv, pyenv, goenv, ndenv
+    anyenv install rbenv
+    anyenv install pyenv
+    anyenv install goenv
+    anyenv install ndenv
+    # If install by anyenv, do this ...
+    anyenv version
+    exec $SHELL -l
+    # }}}
+}
+
+set_node() {
 }
