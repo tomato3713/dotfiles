@@ -1,4 +1,4 @@
-" Last Change: 09/11/2018
+" Last Change: 14/11/2018 - 20:27:16.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -358,6 +358,9 @@ call plug#begin('~/.vim/plugged')
         Plug 'fuenor/JpFormat.vim', {}
         Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
         Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
+
+        " For memo
+        Plug 'vim-scripts/autodate.vim', {}
 call plug#end()
 " }}}
 " match {{{
@@ -485,6 +488,9 @@ function! s:set_autoformat()
     let JpCountOverChars=1
     set formatexpr=jpfmt#formatexpr()
 endfunction
+" }}}
+" autodate.vim {{{
+let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
 " }}}
 "}}}
 
