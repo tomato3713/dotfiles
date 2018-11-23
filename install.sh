@@ -62,7 +62,7 @@ build_vim() {
     ./configure \
         --enable-multibyte --enable-multibyte --enable-fontset \
         --enable-gui=yes --enable-gui=gtk2 \
-        --enable-perlinter=yes \
+        --enable-perlinterp=yes \
         --enable-rubyinterp=yes \
         --enable-luainterp=yes \
         --with-luajit \

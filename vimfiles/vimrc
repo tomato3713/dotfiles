@@ -1,4 +1,4 @@
-" Last Change: 14/11/2018 - 20:27:16.
+" Last Change: 23/11/2018 - 23:13:59.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -256,6 +256,8 @@ endfunction
 " 入力補完機能を有効化
 set wildmenu wildmode=longest:full
 
+set completeopt=menu,preview
+
 " spelling補完 on <C-x><C-s>
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
 
@@ -282,7 +284,8 @@ augroup omni-comp
 		autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
         autocmd FileType python setlocal omnifunc=python3complete#Complete
         autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-        autocmd FileType xml setlocal omnifunc=ccomplete#Complete
+        autocmd FileType c setlocal omnifunc=ccomplete#Complete
+        autocmd FileType php setlocal omnifunc=phpcomplete#Complete
 augroup END
 
 " syntax complete
@@ -334,7 +337,6 @@ if( &filetype == 'go' )
         " for completion
         exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
         set runtimepath+=$GOPATH/src/github.com/nsf/gocode/vim
-        set completeopt=menu,preview
 endif
 " }}}
 
@@ -347,20 +349,30 @@ if !filereadable(expand('~/.vim/vim-plug/plug.vim'))
 endif
 source ~/.vim/vim-plug/plug.vim
 call plug#begin('~/.vim/plugged')
+        " For Completion and Snippet
         Plug 'Shougo/neosnippet.vim'
         Plug 'Shougo/neosnippet-snippets'
-        Plug 'vim-scripts/Align'
+        Plug 'mattn/sonictemplate-vim'
+
+        " For Code Check
         Plug 'w0rp/ale'
+
         Plug 'majutsushi/tagbar'
+
+        " For Golang
         Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
         Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+
 		Plug 'thinca/vim-quickrun', {}
-        Plug 'fuenor/JpFormat.vim', {}
+        " ColorScheme
         Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
         Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 
-        " For memo
+        " For Format
         Plug 'vim-scripts/autodate.vim', {}
+        Plug 'fuenor/JpFormat.vim', {}
+        Plug 'vim-scripts/Align'
+
 call plug#end()
 " }}}
 " match {{{
@@ -448,18 +460,16 @@ let g:quickrun_config = {
             \ }
 " }}}
 
-" neocomplete {{{
+" neosnippet {{{
 " plugin key-mappings.
 if v:version > 704
         " Enable snipMate compatibility feature.
         let g:neosnippet#enable_snipmate_compatibility = 1
 
-        " Tell Neosnippet about the snippets directory
-        let g:neosnippet#snippets_directory=[]
+        " Tell Neosnippet about the My Snippets Directory
         " My snippets files
-        let g:neosnippet#snippets_directory+=['~/.vim/snippets/']
-        " Plugin snippets files
-        let g:neosnippet#snippets_directory+=['~/.vim/plugged/neosnippet-snippets/neosnippets/']
+        let g:neosnippet#snippets_directory=['~/.vim/snippets/']
+
         " set key map for snippet
         imap <C-k> <plug>(neosnippet_expand_or_jump)
         smap <C-k> <plug>(neosnippet_expand_or_jump)
@@ -472,6 +482,14 @@ if v:version > 704
         endif
 endif
 " }}}
+
+" sonictemplate-vim.vim {{{
+" Tell My Template Directory
+let g:sonictemplate_vim_template_dir = [
+            \ '~/.vim/template'
+            \]
+" }}}
+
 " Align.vim {{{
 " Setting for japanese environment
 let g:Align_xstrlen = 3
