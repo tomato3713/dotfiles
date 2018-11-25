@@ -1,4 +1,4 @@
-" Last Change: 23/11/2018 - 23:13:59.
+" Last Change: 25/11/2018 - 14:51:38.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -91,7 +91,6 @@ autocmd MyAutoCmd BufWritePost *
                         \ unlet! b:ftdetect |
                         \ filetype detect |
                         \ endif
-
 
 " Enable cursorline at needed
 augroup vimrc-auto-cursorline
@@ -373,6 +372,8 @@ call plug#begin('~/.vim/plugged')
         Plug 'fuenor/JpFormat.vim', {}
         Plug 'vim-scripts/Align'
 
+        " For Plugin
+        Plug 'mopp/layoutplugin.vim'
 call plug#end()
 " }}}
 " match {{{
