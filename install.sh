@@ -61,16 +61,14 @@ build_vim() {
     make distclean
     ./configure \
         --enable-multibyte --enable-multibyte --enable-fontset \
-        --enable-gui=yes --enable-gui=gtk2 \
-        --enable-perlinterp=yes \
+        --enable-gui=yes
         --enable-rubyinterp=yes \
         --enable-luainterp=yes \
-        --with-luajit \
         --enable-python3interp=yes \
         --prefix=/usr/local \
         --with-features=huge \
 
-        make
+    make
 
     if [ ! -e ~/vim/vim ]; then
         make install

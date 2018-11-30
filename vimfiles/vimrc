@@ -1,4 +1,4 @@
-" Last Change: 25/11/2018 - 14:51:38.
+" Last Change: 30/11/2018 - 11:14:59.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -260,6 +260,12 @@ set completeopt=menu,preview
 " spelling補完 on <C-x><C-s>
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
 
+" tag Complete For html and xml file
+augroup xml-html-comp
+    autocmd!
+    autocmd FileType html,xml inoremap <buffer> </ </<C-x><C-o>
+augroup END
+
 " dictionary Complete
 augroup dict-comp
         autocmd!
@@ -312,16 +318,68 @@ let mapleader = "\<Space>"
 cnoremap <C-n> <Down>
 " proceed commadn line history
 cnoremap <C-p> <Up>
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
 " disable not to save and close
 nnoremap ZQ <Nop>
 
 " when tap :wq, make not save and close if buffer is no difference before
 cnoremap wq x
+inoremap <ESC> <ESC><ESC>
+" }}}
 
+" ### For Proxy Setting ### {{{
+" Setting File For Proxy
+" For example
+"
+" {
+"   name: {
+"     http: http://proxy.aa.bb:8080,
+"     https: https://proxy.aa.bb:8080
+"   }
+" }
+"
+" git などのproxyを設定する。
+let s:readfile=expand('~/proxy_setting.json')
+if filereadable(s:readfile)
+    " string型としてファイルを読み込む
+    let s:lines=join(readfile(s:readfile, '', 10))
+    " json形式へ変換
+    let s:proxy_json=json_decode(s:lines)
+
+    function! SetProxy(name) abort
+        if has_key(s:proxy_json, a:name)
+            if has_key(s:proxy_json[a:name], 'http')
+                let s:http_proxy=s:proxy_json[a:name]["http"]
+                let $http_proxy=s:http_proxy
+
+                " Set git proxy
+                call system("git config --global http.proxy " . s:http_proxy )
+                " Set ssh proxy
+                " ~/.ssh/configの設定に書き込む
+            endif
+
+            if has_key(s:proxy_json[a:name], 'https')
+                let s:https_proxy=s:proxy_json[a:name]["https"]
+                let $https_proxy=s:https_proxy
+
+                " Set git proxy
+                call system("git config --global https.proxy " . s:https_proxy )
+
+                " Set ssh proxy
+                " ~/.ssh/configの設定に書き込む
+            endif
+        endif
+    endfunction
+
+    function! UnsetProxy() abort
+        " unset system proxy setting
+        unlet $http_proxy
+        unlet $https_proxy
+
+        " unset git global proxy setting
+        call system("git config --global --unset http.proxy")
+        call system("git config --global --unset https.proxy")
+    endfunction
+endif
 " }}}
 
 " ### Ruby setting ### {{{
@@ -352,6 +410,7 @@ call plug#begin('~/.vim/plugged')
         Plug 'Shougo/neosnippet.vim'
         Plug 'Shougo/neosnippet-snippets'
         Plug 'mattn/sonictemplate-vim'
+        Plug 'tpope/vim-surround'
 
         " For Code Check
         Plug 'w0rp/ale'
@@ -495,6 +554,7 @@ let g:sonictemplate_vim_template_dir = [
 " Setting for japanese environment
 let g:Align_xstrlen = 3
 " }
+
 " JpFormat.vim {{{
 " gqコマンドを実行前に自動整形をオフにする
 nnoremap <silent> <expr> gq JpFormat_cmd("gq")
