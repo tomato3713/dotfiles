@@ -1,4 +1,4 @@
-" Last Change: 30/11/2018 - 11:14:59.
+" Last Change: 30/11/2018 - 13:19:03.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -422,6 +422,7 @@ call plug#begin('~/.vim/plugged')
         Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 		Plug 'thinca/vim-quickrun', {}
+
         " ColorScheme
         Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
         Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
@@ -433,6 +434,9 @@ call plug#begin('~/.vim/plugged')
 
         " For Plugin
         Plug 'mopp/layoutplugin.vim'
+
+        "Draw image
+        Plug 'thinca/vim-painter'
 call plug#end()
 " }}}
 " match {{{
