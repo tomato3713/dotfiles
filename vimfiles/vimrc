@@ -1,4 +1,4 @@
-" Last Change: 30/11/2018 - 13:19:03.
+" Last Change: 01/12/2018 - 16:26:12.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -266,38 +266,62 @@ augroup xml-html-comp
     autocmd FileType html,xml inoremap <buffer> </ </<C-x><C-o>
 augroup END
 
+function! CInclude(headfile) abort
+    " headfileが書かれているかをチェックする
+    let pattern = '^#include\s*<\s*'.a:headfile.'\.h\s*>'
+    let startline = 1
+    let last = line("$")
+    let i = startline - 1
+    let endIncline = startline
+    while i <= last
+        let curline =  getline(i)
+        if curline =~ '^#include\s*<\s*'
+            let endIncline = i - 1
+            if curline =~ pattern
+                " 引数のライブラリがincludeされていれば、中止
+                return
+            endif
+        endif
+        let i = i+1
+    endwhile
+
+    " headfileがまだインクルードされていなければ、追加する。
+    let insert = '#include<'.a:headfile.'.h>'
+    call append(endIncline, insert)
+endfunction
+
 " dictionary Complete
 augroup dict-comp
-        autocmd!
-        autocmd FileType javascript :setlocal dictionary=$HOME/.vim/dict/javascript.dict
-        autocmd FileType html :setlocal dictionary=$HOME/.vim/dict/html.dict
-        autocmd FileType css :setlocal dictionary=$HOME/.vim/dict/css.dict
-        autocmd FileType latex :setlocal dictionary=$HOME/.vim/dict/tex.dict
-        autocmd FileType python :setlocal dictionary=$HOME/.vim/dict/python.dict
-        autocmd FileType cpp :setlocal dictionary=$HOME/.vim/dict/cpp.dict
-        autocmd FileType c :setlocal dictionary=$HOME/.vim/dict/clang.dict
-        autocmd FileType ruby :setlocal dictionary=$HOME/.vim/dict/ruby.dict
-        autocmd FileType php :setlocal dictionary=$HOME/.vim/dict/php.dict
+    autocmd!
+    autocmd FileType javascript :setlocal dictionary=$HOME/.vim/dict/javascript.dict
+    autocmd FileType html :setlocal dictionary=$HOME/.vim/dict/html.dict
+    autocmd FileType css :setlocal dictionary=$HOME/.vim/dict/css.dict
+    autocmd FileType latex :setlocal dictionary=$HOME/.vim/dict/tex.dict
+    autocmd FileType python :setlocal dictionary=$HOME/.vim/dict/python.dict
+    autocmd FileType cpp :setlocal dictionary=$HOME/.vim/dict/cpp.dict
+    autocmd FileType c :setlocal dictionary=$HOME/.vim/dict/clang.dict
+    autocmd FileType ruby :setlocal dictionary=$HOME/.vim/dict/ruby.dict
+    autocmd FileType php :setlocal dictionary=$HOME/.vim/dict/php.dict
 augroup END
 
 " Enable omni completion
 augroup omni-comp
-        autocmd!
-        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-		autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-        autocmd FileType python setlocal omnifunc=python3complete#Complete
-        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-        autocmd FileType c setlocal omnifunc=ccomplete#Complete
-        autocmd FileType php setlocal omnifunc=phpcomplete#Complete
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+    autocmd FileType python setlocal omnifunc=python3complete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+    autocmd FileType c setlocal omnifunc=ccomplete#Complete
+    autocmd FileType php setlocal omnifunc=phpcomplete#Complete
 augroup END
 
 " syntax complete
 autocmd MyAutoCmd FileType *
-                        \    if &l:omnifunc == ''
-                        \ |    setlocal omnifunc=syntaxcomplete#Complete
-                        \ |  endif
+            \    if &l:omnifunc == ''
+            \ |    setlocal omnifunc=syntaxcomplete#Complete
+            \ |  endif
 
 " }}}
 
@@ -388,12 +412,12 @@ autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 
 " ### Golang setting ### {{{
 if( &filetype == 'go' )
-        " setting of runtimepath
-        set runtimepath+=$GOROOT/misc/vim
-        let g:go_bin_path = $GOPATH.'/bin'
-        " for completion
-        exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-        set runtimepath+=$GOPATH/src/github.com/nsf/gocode/vim
+    " setting of runtimepath
+    set runtimepath+=$GOROOT/misc/vim
+    let g:go_bin_path = $GOPATH.'/bin'
+    " for completion
+    exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+    set runtimepath+=$GOPATH/src/github.com/nsf/gocode/vim
 endif
 " }}}
 
@@ -406,37 +430,37 @@ if !filereadable(expand('~/.vim/vim-plug/plug.vim'))
 endif
 source ~/.vim/vim-plug/plug.vim
 call plug#begin('~/.vim/plugged')
-        " For Completion and Snippet
-        Plug 'Shougo/neosnippet.vim'
-        Plug 'Shougo/neosnippet-snippets'
-        Plug 'mattn/sonictemplate-vim'
-        Plug 'tpope/vim-surround'
+" For Completion and Snippet
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'mattn/sonictemplate-vim'
+Plug 'tpope/vim-surround'
 
-        " For Code Check
-        Plug 'w0rp/ale'
+" For Code Check
+Plug 'w0rp/ale'
 
-        Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
-        " For Golang
-        Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-        Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+" For Golang
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
+Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
-		Plug 'thinca/vim-quickrun', {}
+Plug 'thinca/vim-quickrun', {}
 
-        " ColorScheme
-        Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
-        Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
+" ColorScheme
+Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
+Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 
-        " For Format
-        Plug 'vim-scripts/autodate.vim', {}
-        Plug 'fuenor/JpFormat.vim', {}
-        Plug 'vim-scripts/Align'
+" For Format
+Plug 'vim-scripts/autodate.vim', {}
+Plug 'fuenor/JpFormat.vim', {}
+Plug 'vim-scripts/Align'
 
-        " For Plugin
-        Plug 'mopp/layoutplugin.vim'
+" For Plugin
+Plug 'mopp/layoutplugin.vim'
 
-        "Draw image
-        Plug 'thinca/vim-painter'
+"Draw image
+Plug 'thinca/vim-painter'
 call plug#end()
 " }}}
 " match {{{
@@ -445,9 +469,9 @@ set showmatch
 set matchpairs+=「:」,（:）
 " expand % command
 if has('packages')
-        packadd! matchit " if has package function, read /pack/.../matchit.vim
+    packadd! matchit " if has package function, read /pack/.../matchit.vim
 else
-        runtime! macros/matchit.vim
+    runtime! macros/matchit.vim
 endif
 " }}}
 
@@ -457,50 +481,50 @@ let g:tagbar_width = 30
 " code checker plugin
 " ale {{{
 if has('job') && has('channel') && has('timers')
-        let g:ale_sign_column_always = 1
-        let g:ale_list_window_size = 2
+    let g:ale_sign_column_always = 1
+    let g:ale_list_window_size = 2
 
-        " format message
-        let g:ale_echo_msg_error_str = 'E'
-        let g:ale_echo_msg_warning_str = 'W'
-        let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+    " format message
+    let g:ale_echo_msg_error_str = 'E'
+    let g:ale_echo_msg_warning_str = 'W'
+    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-        " move error mapping
-        nmap <silent> <C-k> <plug>(ale_next_wrap)
+    " move error mapping
+    nmap <silent> <C-k> <plug>(ale_next_wrap)
 
-        " check at :w
-        let g:ale_lint_on_save = 1
-        let g:ale_lint_on_text_changed = 'never'
-        " Disable check at file open
-        let g:ale_lint_on_enter = 0
+    " check at :w
+    let g:ale_lint_on_save = 1
+    let g:ale_lint_on_text_changed = 'never'
+    " Disable check at file open
+    let g:ale_lint_on_enter = 0
 
-        " use QuickFix instead of location list
-        let g:ale_set_loclist = 0
-        let g:ale_set_quickfix = 1
+    " use QuickFix instead of location list
+    let g:ale_set_loclist = 0
+    let g:ale_set_quickfix = 1
 
-        " set linter
-        let g:ale_linters = {
-                                \ 'javascript' : ['eslint'],
-                                \ 'html' : ['cHTMLHint'],
-                                \ 'css' : ['csslint'],
-                                \ 'latex' : ['chktex'],
-                                \ 'c' : ['gcc'],
-                                \ 'cpp' : ['gcc'],
-                                \ 'java': [],
-                                \ }
-        autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
-        autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
+    " set linter
+    let g:ale_linters = {
+                \ 'javascript' : ['eslint'],
+                \ 'html' : ['cHTMLHint'],
+                \ 'css' : ['csslint'],
+                \ 'latex' : ['chktex'],
+                \ 'c' : ['gcc'],
+                \ 'cpp' : ['gcc'],
+                \ 'java': [],
+                \ }
+    autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
+    autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
 
-        function! s:cpplinter()
-                let g:ale_cpp_gcc_options="-std=c++17 -Wall"
-        endfunction
+    function! s:cpplinter()
+        let g:ale_cpp_gcc_options="-std=c++17 -Wall"
+    endfunction
 
-        function! s:clanglinter()
-                let g:ale_c_gcc_options="-std=c99 -Wall"
-        endfunction
+    function! s:clanglinter()
+        let g:ale_c_gcc_options="-std=c99 -Wall"
+    endfunction
 
-        " set fixer
-        nmap <space>= :ALEFix<CR>
+    " set fixer
+    nmap <space>= :ALEFix<CR>
 endif
 " }}}
 
@@ -527,23 +551,23 @@ let g:quickrun_config = {
 " neosnippet {{{
 " plugin key-mappings.
 if v:version > 704
-        " Enable snipMate compatibility feature.
-        let g:neosnippet#enable_snipmate_compatibility = 1
+    " Enable snipMate compatibility feature.
+    let g:neosnippet#enable_snipmate_compatibility = 1
 
-        " Tell Neosnippet about the My Snippets Directory
-        " My snippets files
-        let g:neosnippet#snippets_directory=['~/.vim/snippets/']
+    " Tell Neosnippet about the My Snippets Directory
+    " My snippets files
+    let g:neosnippet#snippets_directory=['~/.vim/snippets/']
 
-        " set key map for snippet
-        imap <C-k> <plug>(neosnippet_expand_or_jump)
-        smap <C-k> <plug>(neosnippet_expand_or_jump)
-        xmap <C-k> <plug>(neosnippet_expand_target)
-        smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-                                \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    " set key map for snippet
+    imap <C-k> <plug>(neosnippet_expand_or_jump)
+    smap <C-k> <plug>(neosnippet_expand_or_jump)
+    xmap <C-k> <plug>(neosnippet_expand_target)
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+                \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-        if has('conceal')
-                set conceallevel=2 concealcursor=niv
-        endif
+    if has('conceal')
+        set conceallevel=2 concealcursor=niv
+    endif
 endif
 " }}}
 
