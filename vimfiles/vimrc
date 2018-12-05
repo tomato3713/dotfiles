@@ -1,4 +1,4 @@
-" Last Change: 01/12/2018 - 16:26:12.
+" Last Change: 06/12/2018 - 01:42:17.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -266,30 +266,6 @@ augroup xml-html-comp
     autocmd FileType html,xml inoremap <buffer> </ </<C-x><C-o>
 augroup END
 
-function! CInclude(headfile) abort
-    " headfileが書かれているかをチェックする
-    let pattern = '^#include\s*<\s*'.a:headfile.'\.h\s*>'
-    let startline = 1
-    let last = line("$")
-    let i = startline - 1
-    let endIncline = startline
-    while i <= last
-        let curline =  getline(i)
-        if curline =~ '^#include\s*<\s*'
-            let endIncline = i - 1
-            if curline =~ pattern
-                " 引数のライブラリがincludeされていれば、中止
-                return
-            endif
-        endif
-        let i = i+1
-    endwhile
-
-    " headfileがまだインクルードされていなければ、追加する。
-    let insert = '#include<'.a:headfile.'.h>'
-    call append(endIncline, insert)
-endfunction
-
 " dictionary Complete
 augroup dict-comp
     autocmd!
@@ -362,6 +338,8 @@ inoremap <ESC> <ESC><ESC>
 " }
 "
 " git などのproxyを設定する。
+command! -nargs=? ProxySet call s:set_proxy(<f-args>)
+command! ProxyUnset call s:unset_proxy()
 let s:readfile=expand('~/proxy_setting.json')
 if filereadable(s:readfile)
     " string型としてファイルを読み込む
@@ -369,7 +347,7 @@ if filereadable(s:readfile)
     " json形式へ変換
     let s:proxy_json=json_decode(s:lines)
 
-    function! SetProxy(name) abort
+    function! s:set_proxy(name) abort
         if has_key(s:proxy_json, a:name)
             if has_key(s:proxy_json[a:name], 'http')
                 let s:http_proxy=s:proxy_json[a:name]["http"]
@@ -394,7 +372,7 @@ if filereadable(s:readfile)
         endif
     endfunction
 
-    function! UnsetProxy() abort
+    function! s:unset_proxy() abort
         " unset system proxy setting
         unlet $http_proxy
         unlet $https_proxy
@@ -445,6 +423,10 @@ Plug 'majutsushi/tagbar'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
+" For Clang
+Plug 'homedm/cinclude.vim', { 'for': 'c' }
+
+" Runner
 Plug 'thinca/vim-quickrun', {}
 
 " ColorScheme
