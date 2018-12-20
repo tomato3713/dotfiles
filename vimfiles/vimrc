@@ -1,4 +1,4 @@
-" Last Change: 06/12/2018 - 01:42:17.
+" Last Change: 21/12/2018 - 00:45:04.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -326,6 +326,49 @@ cnoremap wq x
 inoremap <ESC> <ESC><ESC>
 " }}}
 
+" Git {{{
+command! -nargs=* Ver call s:version_controll(<f-args>)
+command! -nargs=* Version call s:version_controll(<f-args>)
+let s:version_cmd_list = [["add", "a"], ["status", "s"], ["branch", "b"]]
+function! s:version_controll(...) abort
+    if a:0 < 1
+        call s:version_help()
+        return
+    endif
+
+    " search command
+    let i = 0
+    let cmd = "git "
+    while i < len(s:version_cmd_list)
+        " search match command
+        let list = s:version_cmd_list[i]
+        let num = match(list, "^" . a:1 . "$")
+        let i += 1
+        break
+    endwhile
+    if i >= len(s:version_cmd_list)
+        call s:version_help()
+        return
+    endif
+    let cmd .= get(get(s:version_cmd_list, num - 1), 0)
+
+    " add command options
+    if a:0 == 2 && cmd == "git branch"
+        if a:2 == "a" || a:2 == "all"
+            let cmd .= " -a"
+        endif
+    endif
+
+    if cmd == "git add"
+        let cmd .= expand("%:p")
+        return
+    endif
+    echo system(cmd)
+endfunction
+function! s:version_help() abort
+    echo "Version {option1} {option2}\n => git {option1} -{option2}"
+endfunction
+
 " ### For Proxy Setting ### {{{
 " Setting File For Proxy
 " For example
@@ -382,6 +425,7 @@ if filereadable(s:readfile)
         call system("git config --global --unset https.proxy")
     endfunction
 endif
+" }}}
 " }}}
 
 " ### Ruby setting ### {{{
