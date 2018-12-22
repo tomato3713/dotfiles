@@ -1,16 +1,12 @@
-" Last Change: 22/12/2018 - 13:42:19.
+" Last Change: 23/12/2018 - 01:23:59.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
-" My autocmd group
+set nocompatible
+set all&
 augroup MyAutoCmd
         autocmd!
 augroup END
-
-set all&
-
-" Make it fully functional with vim, not compatible with vi.
-set nocompatible
 
 " in shell setting file, for example .bashrc or .cshrc
 " setenv $VIMRUNTIME ~/vim/vim/runtime
@@ -19,18 +15,27 @@ set runtimepath+=~/.vim
 " japanese help
 set helplang=en,ja
 
-" Vim自体が使用する文字エンコーディング
-set encoding=utf-8
+if has('vim_starting')
+    set encoding=utf-8
+    scriptencoding=utf-8
+endif
 
-" must be set with multibyte strings
-scriptencoding=utf-8
-
-" enable syntax higlight
-set synmaxcol=200
-syntax on
+" windows上でもunix形式のend-of-lineを使う
+" ファイル名内の'\'をスラッシュに置換する
+set viewoptions=unix,slash
 
 " disable indent plugin each filetype
 filetype plugin indent off
+set t_Co=256
+
+" enable syntax higlight
+syntax on
+set synmaxcol=200
+set cmdheight=2
+" faster redraw
+set lazyredraw
+set ttyfast
+
 
 " ### terminal ### {{{
 if has('terminal')
@@ -43,30 +48,22 @@ endif
 " 文字コードの自動認識
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
-
 " ファイルに保存される文字エンコーディング
 set fileencoding=utf-8
-
 " 改行文字
 set fileformat=unix
-set ambiwidth=double "全角文字が半角で表示される問題を解消
-
+set ambiwidth=double
 " テキスト挿入中の自動折り返しを日本語に対応させる
 " auto commet off
-augroup auto_comment_off
-        autocmd!
-        autocmd BufEnter * setlocal formatoptions=tcqmM
-augroup END
+autocmd MyAutoCmd BufEnter * setlocal formatoptions=tcqmM
 " }}}
 
 " ### Indent ###{{{
 set autoindent " 新しい行のインデントを継続する
-
 set expandtab "tab to space
 set tabstop=4 " 画面上でタブ文字の占める幅
 set shiftwidth=4 " 自動インデントでずれる幅
-set smartindent " 高度なインデント
-
+set smartindent
 " 折り返しの際にインデントを考慮
 if exists('+breakindent')
         set breakindent
@@ -76,13 +73,14 @@ endif
 " ### search ### {{{
 " インクリメンタル検索を有効にする
 set incsearch
-
 " 大文字小文字を無視
 set ignorecase
-
 " 大文字が入力されたら大文字小文字を区別する
 set smartcase
 " }}}
+
+" マウスとの連携機能をオフにする
+set mouse=
 
 " ### Buffer ### {{{
 " if miss to guess filetype
@@ -99,7 +97,6 @@ augroup vimrc-auto-cursorline
         autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
         autocmd WinEnter * call s:auto_cursorline('WinEnter')
         autocmd WinLeave * call s:auto_cursorline('WinLeave')
-
         let s:cursorline_lock = 0
         function! s:auto_cursorline(event)
                 if a:event ==# 'WinEnter'
@@ -123,9 +120,6 @@ augroup vimrc-auto-cursorline
         endfunction
 augroup END
 
-" マウスとの連携機能をオフにする
-set mouse=
-
 " vimの無名レジスタとOSのクリップボードを連携させる
 if has('clipboard')
         set clipboard=unnamed
@@ -135,48 +129,34 @@ endif
 set autoread
 autocmd MyAutoCmd WinEnter * checktime
 
-" スワップファイルを作成しない
-set noswapfile
-
-" undoの記録を残す
-set undofile undodir=$HOME/.vim/.vimundo
-
+if has('persistent_undo')
+    if !isdirectory(expand('$HOME/.vim/.undo'))
+        mkdir(expand('$HOME/.vim/.undo'), 0700)
+    endif
+    set undodir=$HOME/.vim/.undo
+    set undofile
+endif
+" no viminfo file
+set viminfo='50,/50,:25,n$HOME/.vim/viminfo
 " バックアップファイルの出力先を変更
 set nobackup
-" set backupdir=$HOME/.vim/temp
-
-" no viminfo file
-set viminfo=
-
-" windows上でもunix形式のend-of-lineを使う
-" ファイル名内の'\'をスラッシュに置換する
-set viewoptions=unix,slash
-
-set t_Co=256
-
-set cmdheight=2
+" スワップファイルを作成しない
+set noswapfile
 
 " title
 set title
 
 " 不可視文字を不可視化
 set nolist
-
+" 自動折り返ししない
+set textwidth=0
+" 長い行を@にさせない
+set display=lastline
 " 最低でも上下に表示する行数
 set scrolloff=5
 
 " 入力したコマンドを画面下に表示
 set showcmd
-
-" 自動折り返ししない
-set textwidth=0
-
-" 長い行を@にさせない
-set display=lastline
-
-" disable conceal for tex
-let g:tex_conceal=''
-autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
 " ステータスラインを表示
 set laststatus=2
@@ -184,33 +164,25 @@ set statusline=[.%F%r%h%w%m]%=
 set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
 set ruler " add cursor line location in right of status line
 
-autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
+" disable conceal for tex
+let g:tex_conceal=''
+autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
+autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
 function! s:remove_unnecessary_space()
         " delete last spaces
         %s/\s\+$//ge
-
         " delete last blank lines
         while getline('$') == ""
                 $delete _
         endwhile
 endfunction
 
-
 " colorscheme
-"colorscheme iceberg
+colorscheme iceberg
 syntax enable
 
-" 6:00 ~ 19:00 の間はbackground = lightにする
-let s:now = str2nr( strftime("%H", localtime()) )
-if s:now >= 6 && s:now < 19
-    colorscheme solarized
-else
-    colorscheme molokai
-endif
-
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
-
 function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
         if &buftype != 'help'
@@ -231,10 +203,6 @@ set nohlsearch
 if v:version > 800
         set nrformats=alpha,hex,bin
 endif
-
-" faster redraw
-set lazyredraw
-set ttyfast
 " }}}
 
 " ### Diff ### {{{
@@ -254,7 +222,6 @@ endfunction
 " ### completion ### {{{
 " 入力補完機能を有効化
 set wildmenu wildmode=longest:full
-
 set completeopt=menu,preview
 
 " spelling補完 on <C-x><C-s>
@@ -304,32 +271,19 @@ autocmd MyAutoCmd FileType *
 " ### Command ### {{{
 " the count of command history
 set history=2000
-
 " いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
-
-" key mapping
-" Wait key time
-set timeout ttimeoutlen=50
-" change Leader key to Space key
-let mapleader = "\<Space>"
-
-" return command line history
-cnoremap <C-n> <Down>
-" proceed commadn line history
-cnoremap <C-p> <Up>
-" disable not to save and close
-nnoremap ZQ <Nop>
-
-" when tap :wq, make not save and close if buffer is no difference before
-cnoremap wq x
-inoremap <ESC> <ESC><ESC>
-" }}}
-
+" Vim script Experiments {{{
 " Git {{{
-command! -nargs=* Ver call s:version_controll(<f-args>)
-command! -nargs=* Version call s:version_controll(<f-args>)
+command! -nargs=+ -complete=customlist,s:version_compelete_command Ver call s:version_controll(<f-args>)
 let s:version_cmd_list = [["add", "a"], ["status", "s"], ["branch", "b"], ["commit", "c"], ["log", "l"]]
+function! s:version_compelete_command(ArgLead, CmdLine, CursorPos) abort
+    let list = []
+    for l in s:version_cmd_list
+        call add(list, l[0])
+    endfor
+    return list
+endfunction
 function! s:version_controll(...) abort
     if a:0 < 1
         call s:version_help()
@@ -355,10 +309,10 @@ function! s:version_controll(...) abort
     endif
 
     if a:0 == 2 && option1 == "commit"
-        let option2 = '-m "' . a:2 . '"'
+        let option2 = printf('-m "%s"', a:2)
     endif
 
-    let cmd = "git " . option1 . " " . option2
+    let cmd = printf('git %s %s', option1 ,option2)
     echo cmd
     echo system(cmd)
 endfunction
@@ -397,7 +351,7 @@ endfunction
 " }
 "
 " git などのproxyを設定する。
-command! -nargs=? ProxySet call s:set_proxy(<f-args>)
+command! -nargs=+ ProxySet call s:set_proxy(<f-args>)
 command! ProxyUnset call s:unset_proxy()
 let s:readfile=expand('~/proxy_setting.json')
 if filereadable(s:readfile)
@@ -443,11 +397,27 @@ if filereadable(s:readfile)
 endif
 " }}}
 " }}}
+" }}}
+" }}}
+
+" ### key mapping ### {{{
+" Wait key time
+set timeout ttimeoutlen=50
+" change Leader key to Space key
+let mapleader = "\<Space>"
+" return command line history
+cnoremap <C-n> <Down>
+" proceed commadn line history
+cnoremap <C-p> <Up>
+" disable not to save and close
+nnoremap ZQ <Nop>
+" when tap :wq, make not save and close if buffer is no difference before
+cnoremap wq x
+" }}}
 
 " ### Ruby setting ### {{{
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 " }}}
-
 " ### Golang setting ### {{{
 if( &filetype == 'go' )
     " setting of runtimepath
@@ -463,7 +433,7 @@ endif
 " vim-plug {{{
 " automated install vim-plug
 let s:vim_plug_url='https://github.com/junegunn/vim-plug'
-if !filereadable(expand('~/.vim/vim-plug/plug.vim'))
+if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
     call system("git clone " . s:vim_plug_url . " " . $HOME . "/.vim/vim-plug/")
 endif
 source ~/.vim/vim-plug/plug.vim
@@ -525,25 +495,20 @@ let g:tagbar_width = 30
 if has('job') && has('channel') && has('timers')
     let g:ale_sign_column_always = 1
     let g:ale_list_window_size = 2
-
     " format message
     let g:ale_echo_msg_error_str = 'E'
     let g:ale_echo_msg_warning_str = 'W'
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
     " move error mapping
     nmap <silent> <C-k> <plug>(ale_next_wrap)
-
     " check at :w
     let g:ale_lint_on_save = 1
     let g:ale_lint_on_text_changed = 'never'
     " Disable check at file open
     let g:ale_lint_on_enter = 0
-
     " use QuickFix instead of location list
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
-
     " set linter
     let g:ale_linters = {
                 \ 'javascript' : ['eslint'],
@@ -556,15 +521,12 @@ if has('job') && has('channel') && has('timers')
                 \ }
     autocmd MyAutoCmd BufNewFile,BufRead *.cpp call s:cpplinter()
     autocmd MyAutoCmd BufNewFile,BufRead *.c call s:clanglinter()
-
     function! s:cpplinter()
         let g:ale_cpp_gcc_options="-std=c++17 -Wall"
     endfunction
-
     function! s:clanglinter()
         let g:ale_c_gcc_options="-std=c99 -Wall"
     endfunction
-
     " set fixer
     nmap <space>= :ALEFix<CR>
 endif
@@ -595,18 +557,15 @@ let g:quickrun_config = {
 if v:version > 704
     " Enable snipMate compatibility feature.
     let g:neosnippet#enable_snipmate_compatibility = 1
-
     " Tell Neosnippet about the My Snippets Directory
     " My snippets files
     let g:neosnippet#snippets_directory=['~/.vim/snippets/']
-
     " set key map for snippet
     imap <C-k> <plug>(neosnippet_expand_or_jump)
     smap <C-k> <plug>(neosnippet_expand_or_jump)
     xmap <C-k> <plug>(neosnippet_expand_target)
     smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
                 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
     if has('conceal')
         set conceallevel=2 concealcursor=niv
     endif
@@ -631,7 +590,6 @@ nnoremap <silent> <expr> gq JpFormat_cmd("gq")
 " .txt, .mdで自動整形を有効にする。
 autocmd MyAutoCmd FileType markdown call s:set_autoformat()
 autocmd MyAutoCmd FileType text call s:set_autoformat()
-
 function! s:set_autoformat()
     let JpCountChars=80
     let JpCountOverChars=1
@@ -641,9 +599,6 @@ endfunction
 " autodate.vim {{{
 let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
 " }}}
-"}}}
+" }}}
 
-" enable indent plugin each filetype
-" automatically executes this command by vim-plug
-" filetype plugin indent on
 set secure
