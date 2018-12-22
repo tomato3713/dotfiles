@@ -1,4 +1,4 @@
-" Last Change: 21/12/2018 - 00:45:04.
+" Last Change: 22/12/2018 - 13:42:19.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -329,44 +329,60 @@ inoremap <ESC> <ESC><ESC>
 " Git {{{
 command! -nargs=* Ver call s:version_controll(<f-args>)
 command! -nargs=* Version call s:version_controll(<f-args>)
-let s:version_cmd_list = [["add", "a"], ["status", "s"], ["branch", "b"]]
+let s:version_cmd_list = [["add", "a"], ["status", "s"], ["branch", "b"], ["commit", "c"], ["log", "l"]]
 function! s:version_controll(...) abort
     if a:0 < 1
         call s:version_help()
         return
     endif
-
-    " search command
-    let i = 0
-    let cmd = "git "
-    while i < len(s:version_cmd_list)
-        " search match command
-        let list = s:version_cmd_list[i]
-        let num = match(list, "^" . a:1 . "$")
-        let i += 1
-        break
-    endwhile
-    if i >= len(s:version_cmd_list)
+    let num = s:version_search_command(a:1)
+    if num < 0
         call s:version_help()
         return
     endif
-    let cmd .= get(get(s:version_cmd_list, num - 1), 0)
+    let option1 = get(get(s:version_cmd_list, num ), 0)
 
     " add command options
-    if a:0 == 2 && cmd == "git branch"
+    let option2 = ""
+    if a:0 == 2 && option1 == "branch"
         if a:2 == "a" || a:2 == "all"
-            let cmd .= " -a"
+            let option2 = "-a"
         endif
     endif
 
-    if cmd == "git add"
-        let cmd .= expand("%:p")
-        return
+    if option1 == "add"
+        let option2 = expand("%:p")
     endif
+
+    if a:0 == 2 && option1 == "commit"
+        let option2 = '-m "' . a:2 . '"'
+    endif
+
+    let cmd = "git " . option1 . " " . option2
+    echo cmd
     echo system(cmd)
 endfunction
+" print command help
 function! s:version_help() abort
     echo "Version {option1} {option2}\n => git {option1} -{option2}"
+endfunction
+" search command in command list, return location number
+" if cmd is not exist, return -1
+function! s:version_search_command(cmd) abort
+    let i = 0
+    while i < len(s:version_cmd_list)
+        " search match command
+        let j = 0
+        while j < len(s:version_cmd_list[i])
+            let elmt = s:version_cmd_list[i][j]
+            if elmt == a:cmd
+                return i
+            endif
+            let j += 1
+        endwhile
+        let i += 1
+    endwhile
+    return -1
 endfunction
 
 " ### For Proxy Setting ### {{{
