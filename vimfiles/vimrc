@@ -1,4 +1,4 @@
-" Last Change: 31/12/2018 - 15:08:09.
+" Last Change: 08/01/2019 - 10:19:41.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -28,13 +28,19 @@ set viewoptions=unix,slash
 filetype plugin indent off
 set t_Co=256
 
-" enable syntax higlight
+" enable syntax highlight
 syntax on
 set synmaxcol=200
 set cmdheight=2
 " faster redraw
 set lazyredraw
 set ttyfast
+" Keyword highlight ex. TODO:, NOTE:, REF:, TEMP:
+augroup HilightsForce
+    autocmd!
+    autocmd WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
+    autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=Red guifg=White
+augroup END
 
 
 " ### terminal ### {{{
