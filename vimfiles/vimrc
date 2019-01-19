@@ -1,4 +1,4 @@
-" Last Change: 10/01/2019 - 11:20:44.
+" Last Change: 19/01/2019 - 20:00:17.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -137,7 +137,7 @@ autocmd MyAutoCmd WinEnter * checktime
 
 if has('persistent_undo')
     if !isdirectory(expand('$HOME/.vim/.undo'))
-        mkdir(expand('$HOME/.vim/.undo'), 0700)
+        call mkdir(expand('$HOME/.vim/.undo'), 0700)
     endif
     set undodir=$HOME/.vim/.undo
     set undofile
