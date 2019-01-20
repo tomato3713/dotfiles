@@ -1,4 +1,4 @@
-" Last Change: 19/01/2019 - 20:00:17.
+" Last Change: 20/01/2019 - 05:47:54.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -254,24 +254,34 @@ augroup dict-comp
 augroup END
 
 " Enable omni completion
-augroup omni-comp
-    autocmd!
-    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-    autocmd FileType python setlocal omnifunc=python3complete#Complete
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType c setlocal omnifunc=ccomplete#Complete
-    autocmd FileType php setlocal omnifunc=phpcomplete#Complete
-augroup END
+
+let g:lsp_diagnostics_enabled = 0
+if executable('go-langserver')
+    augroup LspGo
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'go-langserver',
+                    \ 'cmd': {server_info->['go-langserver', '-gocodecompletion']},
+                    \ 'whitelist': ['go'],
+                    \ })
+    augroup END
+endif
 
 " syntax complete
-autocmd MyAutoCmd FileType *
-            \    if &l:omnifunc == ''
-            \ |    setlocal omnifunc=syntaxcomplete#Complete
-            \ |  endif
-
+if &l:omnifunc == ''
+    augroup omni-comp
+        autocmd!
+        setlocal omnifunc=syntaxcomplete#Complete
+        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+        autocmd FileType python setlocal omnifunc=python3complete#Complete
+        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+        "autocmd FileType c setlocal omnifunc=ccomplete#Complete
+        autocmd FileType php setlocal omnifunc=phpcomplete#Complete
+    augroup END
+endif
 " }}}
 
 " ### Command ### {{{
@@ -358,16 +368,6 @@ cnoremap wq x
 " ### Ruby setting ### {{{
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 " }}}
-" ### Golang setting ### {{{
-if( &filetype == 'go' )
-    " setting of runtimepath
-    set runtimepath+=$GOROOT/misc/vim
-    let g:go_bin_path = $GOPATH.'/bin'
-    " for completion
-    exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-    set runtimepath+=$GOPATH/src/github.com/nsf/gocode/vim
-endif
-" }}}
 
 " ### plugin ### {{{
 " vim-plug {{{
@@ -389,12 +389,16 @@ Plug 'w0rp/ale'
 
 Plug 'majutsushi/tagbar'
 
+" Language Server Protocol
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+
 " For Golang
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-Plug 'mdempsky/gocode', { 'for': 'go', 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
 
 " For Clang
 Plug 'homedm/cinclude.vim', { 'for': 'c' }
+Plug 'justmao945/vim-clang'
 " Plug 'homedm/gilo.vim'
 
 " Runner
@@ -450,8 +454,15 @@ if has('job') && has('channel') && has('timers')
     " use QuickFix instead of location list
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
+
+    " for npm local installed eslint and textlint
+    if filereadable(expand('$PWD/.textlintrc')) ||
+                \ filereadable(expand('$PWD/.eslintrc.json'))
+        let $PATH .= ':' . $PWD . 'node_modules/.bin'
+    endif
     " set linter
     let g:ale_linters = {
+                \ 'markdown' : ['textlint'],
                 \ 'javascript' : ['eslint'],
                 \ 'html' : ['cHTMLHint'],
                 \ 'css' : ['csslint'],
