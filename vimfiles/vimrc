@@ -1,4 +1,4 @@
-" Last Change: 20/01/2019 - 05:47:54.
+" Last Change: 22/01/2019 - 17:33:34.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -255,6 +255,7 @@ augroup END
 
 " Enable omni completion
 
+" syntastic check disabled by lsp
 let g:lsp_diagnostics_enabled = 0
 if executable('go-langserver')
     augroup LspGo
@@ -267,7 +268,20 @@ if executable('go-langserver')
     augroup END
 endif
 
-" syntax complete
+" use directory with .git as root
+if executable('typescript-language-server')
+    augroup LspJSTS
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'javascript support using typescript-language-server',
+                    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+                    \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+                    \ 'whitelist' : ['javascript', 'javascript.jsx']
+                    \ })
+    augroup END
+endif
+
+" set omni function if don't have completion tools by plugin
 if &l:omnifunc == ''
     augroup omni-comp
         autocmd!
@@ -278,7 +292,7 @@ if &l:omnifunc == ''
         autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
         autocmd FileType python setlocal omnifunc=python3complete#Complete
         autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-        "autocmd FileType c setlocal omnifunc=ccomplete#Complete
+        autocmd FileType c setlocal omnifunc=ccomplete#Complete
         autocmd FileType php setlocal omnifunc=phpcomplete#Complete
     augroup END
 endif
@@ -395,6 +409,9 @@ Plug 'prabirshrestha/vim-lsp'
 
 " For Golang
 Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
+
+" For javascript
+Plug 'ryanolsonx/vim-lsp-javascript', { 'for' : 'js' }
 
 " For Clang
 Plug 'homedm/cinclude.vim', { 'for': 'c' }
