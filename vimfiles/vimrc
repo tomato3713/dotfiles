@@ -1,4 +1,4 @@
-" Last Change: 22/01/2019 - 17:33:34.
+" Last Change: 23/01/2019 - 23:24:46.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -253,10 +253,9 @@ augroup dict-comp
     autocmd FileType php :setlocal dictionary=$HOME/.vim/dict/php.dict
 augroup END
 
-" Enable omni completion
-
 " syntastic check disabled by lsp
 let g:lsp_diagnostics_enabled = 0
+
 if executable('go-langserver')
     augroup LspGo
         autocmd!
@@ -277,6 +276,31 @@ if executable('typescript-language-server')
                     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
                     \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
                     \ 'whitelist' : ['javascript', 'javascript.jsx']
+                    \ })
+    augroup END
+endif
+
+if executable('solagraph')
+    " gem install solagraph
+    augroup LspRuby
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'solagraph',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solagraph stdio']},
+                    \ 'initialization_options': { "diagnostics": "true"},
+                    \ 'whitelist': ['ruby'],
+                    \ })
+    augroup END
+endif
+
+if executable('css-languageserver')
+    " npm install -g vscode-css-languageserver-bin
+    augroup LspCSS
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'css-languageserver',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
+                    \ 'whitelist': ['css', 'less', 'sass'],
                     \ })
     augroup END
 endif
