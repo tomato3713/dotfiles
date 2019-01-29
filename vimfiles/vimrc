@@ -1,4 +1,4 @@
-" Last Change: 23/01/2019 - 23:24:46.
+" Last Change: 24/01/2019 - 19:55:10.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -255,6 +255,7 @@ augroup END
 
 " syntastic check disabled by lsp
 let g:lsp_diagnostics_enabled = 0
+let g:lsp_use_event_queue = 1
 
 if executable('go-langserver')
     augroup LspGo
