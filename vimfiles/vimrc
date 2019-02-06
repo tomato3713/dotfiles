@@ -1,4 +1,4 @@
-" Last Change: 24/01/2019 - 19:55:10.
+" Last Change: 06/02/2019 - 13:28:35.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -86,7 +86,7 @@ set smartcase
 " }}}
 
 " マウスとの連携機能をオフにする
-set mouse=
+" set mouse=
 
 " ### Buffer ### {{{
 " if miss to guess filetype
@@ -128,7 +128,7 @@ augroup END
 
 " vimの無名レジスタとOSのクリップボードを連携させる
 if has('clipboard')
-        set clipboard=unnamed
+        set clipboard=unnamed,autoselect
 endif
 
 " ファイル内容が変更されると自動読み込みする
@@ -306,6 +306,14 @@ if executable('css-languageserver')
     augroup END
 endif
 
+" npm install -g intelephense-server
+" npm list -g | head
+autocmd User lsp_setup call lsp#register_server({
+            \ 'name': 'intelephense',
+            \ 'cmd': {server_info->['node', expand('~/.nvm/versions/node/v11.7.0/lib/node_modules/intelephense-server/lib/server.js'), '--stdio']},
+            \ 'whitelist': ['php'],
+            \ })
+
 " set omni function if don't have completion tools by plugin
 if &l:omnifunc == ''
     augroup omni-comp
@@ -442,6 +450,9 @@ Plug 'ryanolsonx/vim-lsp-javascript', { 'for' : 'js' }
 Plug 'homedm/cinclude.vim', { 'for': 'c' }
 Plug 'justmao945/vim-clang'
 " Plug 'homedm/gilo.vim'
+
+" For writing
+Plug 'mbbill/undotree' " :UndotreeToggle
 
 " Runner
 Plug 'thinca/vim-quickrun', {}
@@ -593,6 +604,7 @@ endfunction
 " autodate.vim {{{
 let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
 " }}}
+autocmd! MyAutoCmd FileType latex,tex,markdown :UndotreeToggle
 " }}}
 
 set secure
