@@ -1,4 +1,4 @@
-" Last Change: 06/02/2019 - 14:57:41.
+" Last Change: 06/02/2019 - 15:40:00.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -349,9 +349,9 @@ set nostartofline
 " }
 "
 " git などのproxyを設定する。
-command! -nargs=+ ProxySet call s:set_proxy(<f-args>)
+command! -nargs=1 ProxySet call s:set_proxy(<f-args>)
 command! ProxyUnset call s:unset_proxy()
-let s:readfile=expand('~/proxy_setting.json')
+let s:readfile=expand('~/.vim_proxy_setting.json')
 if filereadable(s:readfile)
     " string型としてファイルを読み込む
     let s:lines=join(readfile(s:readfile, '', 10))
@@ -364,8 +364,8 @@ if filereadable(s:readfile)
                 let s:http_proxy=s:proxy_json[a:name]["http"]
                 let $http_proxy=s:http_proxy
 
-                " Set git proxy
                 call system("git config --global http.proxy " . s:http_proxy )
+                call system("npm config -g set proxy " . s:http_proxy )
                 " Set ssh proxy
                 " ~/.ssh/configの設定に書き込む
             endif
@@ -374,8 +374,8 @@ if filereadable(s:readfile)
                 let s:https_proxy=s:proxy_json[a:name]["https"]
                 let $https_proxy=s:https_proxy
 
-                " Set git proxy
                 call system("git config --global https.proxy " . s:https_proxy )
+                call system("npm config -g set https-proxy " . s:https_proxy )
 
                 " Set ssh proxy
                 " ~/.ssh/configの設定に書き込む
@@ -392,6 +392,8 @@ if filereadable(s:readfile)
         call system("git config --global --unset http.proxy")
         call system("git config --global --unset https.proxy")
     endfunction
+else
+    echomsg "Not found '~/.vim_proxy_setting.json'"
 endif
 " }}}
 " }}}
