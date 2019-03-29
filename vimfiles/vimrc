@@ -1,4 +1,4 @@
-" Last Change: 06/02/2019 - 15:40:00.
+" Last Change: 29/03/2019 - 22:34:48.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -337,6 +337,15 @@ endif
 set history=2000
 " いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
+
+" generate random string
+command! -nargs=1 GenerateRandomStr call s:generate_random_str(<f-args>)
+function! s:generate_random_str(size) abort
+    let s:str=sha256(reltimestr(reltime()))[:(a:size) -1]
+    let s:pos = getpos('.')
+    execute ":normal i" . s:str
+endfunction
+
 " ### For Proxy Setting ### {{{
 " Setting File For Proxy
 " For example
