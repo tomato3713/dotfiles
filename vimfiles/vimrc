@@ -1,4 +1,4 @@
-" Last Change: 29/03/2019 - 22:34:48.
+" Last Change: 29/03/2019 - 23:26:40.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -467,15 +467,18 @@ Plug 'justmao945/vim-clang'
 Plug 'mbbill/undotree' " :UndotreeToggle
 
 " Runner
-Plug 'thinca/vim-quickrun', {}
+Plug 'thinca/vim-quickrun',
 
 " ColorScheme
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
+Plug 'luochen1990/rainbow'
+let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
+Plug 'mechatroner/rainbow_csv'
 
 " For Format
-Plug 'vim-scripts/autodate.vim', {}
-Plug 'fuenor/JpFormat.vim', {}
+Plug 'vim-scripts/autodate.vim',
+Plug 'fuenor/JpFormat.vim',
 Plug 'vim-scripts/Align'
 
 " For Plugin
