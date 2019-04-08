@@ -1,4 +1,4 @@
-" Last Change: 29/03/2019 - 23:26:40.
+" Last Change: 08/04/2019 - 10:00:59.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -464,7 +464,7 @@ Plug 'justmao945/vim-clang'
 " Plug 'homedm/gilo.vim'
 
 " For writing
-Plug 'mbbill/undotree' " :UndotreeToggle
+Plug 'andymass/vim-matchup'
 
 " Runner
 Plug 'thinca/vim-quickrun',
@@ -488,17 +488,7 @@ Plug 'mopp/layoutplugin.vim'
 Plug 'thinca/vim-painter'
 call plug#end()
 " }}}
-" match {{{
-let g:loaded_matchparen = 1
 set showmatch
-set matchpairs+=「:」,（:）
-" expand % command
-if has('packages')
-    packadd! matchit " if has package function, read /pack/.../matchit.vim
-else
-    runtime! macros/matchit.vim
-endif
-" }}}
 
 " tagbar.vim
 let g:tagbar_width = 30
@@ -619,7 +609,6 @@ endfunction
 " autodate.vim {{{
 let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
 " }}}
-autocmd! MyAutoCmd FileType latex,tex,markdown :UndotreeToggle
 " }}}
 
 set secure
