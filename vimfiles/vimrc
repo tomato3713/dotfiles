@@ -1,4 +1,4 @@
-" Last Change: 08/04/2019 - 10:00:59.
+" Last Change: 16/04/2019 - 13:47:27.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -487,6 +487,7 @@ Plug 'mopp/layoutplugin.vim'
 "Draw image
 Plug 'thinca/vim-painter'
 call plug#end()
+packadd termdebug
 " }}}
 set showmatch
 
