@@ -1,4 +1,4 @@
-" Last Change: 16/04/2019 - 13:47:27.
+" Last Change: 24/04/2019 - 01:40:57.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -172,7 +172,7 @@ set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
 set ruler " add cursor line location in right of status line
 
 " disable conceal for tex
-let g:tex_conceal=''
+let g:tex_conceal='abdmg'
 autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
 autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
@@ -233,6 +233,10 @@ set completeopt=menu,preview
 
 " spelling補完 on <C-x><C-s>
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
+autocmd FileType markdown,latex,tex,plaintex,text :setlocal spell
+" When press Ctrl + L while am typing, the previous spelling mistake is
+" corrected.
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 " tag Complete For html and xml file
 augroup xml-html-comp
@@ -440,6 +444,7 @@ call plug#begin('~/.vim/plugged')
 " For Completion and Snippet
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'mattn/emmet-vim'
 Plug 'mattn/sonictemplate-vim'
 Plug 'tpope/vim-surround'
 
@@ -457,6 +462,24 @@ Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
 
 " For javascript
 Plug 'ryanolsonx/vim-lsp-javascript', { 'for' : 'js' }
+
+" For LaTeX
+Plug 'lervag/vimtex'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+let g:vimtex_compiler_latexmk = {
+            \ 'background': 1,
+            \ 'build_dir': '',
+            \ 'continuous': 1,
+            \ 'options': [
+            \     '-pdfdvi',
+            \     '-verbose',
+            \     '-file-line-error',
+            \     '-synctex=1',
+            \     '-interaction=nonstopmode',
+            \ ],
+            \}
 
 " For Clang
 Plug 'homedm/cinclude.vim', { 'for': 'c' }
@@ -557,8 +580,8 @@ let g:quickrun_config = {
             \   'cmdopt' : '-stc=c99 -Wall'
             \ },
             \ 'tex' : {
-            \   'command' : 'lualatex',
-            \   'exec' : ['%c -synctex=1 -interaction=nonstopmode %s', 'apvlv %s:r.pdf']
+            \   'command' : 'platex',
+            \   'exec' : ['%c -synctex=1 -interaction=nonstopmode %s', 'zathura %s:r.pdf']
             \ },
             \ }
 " }}}
@@ -578,7 +601,7 @@ if v:version > 704
     smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
                 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
     if has('conceal')
-        set conceallevel=2 concealcursor=niv
+        set conceallevel=1 concealcursor=niv
     endif
 endif
 " }}}
@@ -612,4 +635,6 @@ let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
 " }}}
 " }}}
 
+filetype plugin indent on
+syntax on
 set secure

@@ -1,3 +1,4 @@
+# ========== GENERAL  ===========
 snippet     luatemplate
 abbr        template for lualatex
 alias       template
@@ -105,3 +106,8 @@ options     head
     \newcommand{\lnor}[1]{\downarrow{#1}}
     \renewcommand{\Re}{\operatorname{Re}}
     \renewcommand{\Im}{\operatorname{Im}}
+
+snippet     \frac
+alias       frac \frac{ /
+options     head
+	\frac{${1}}{${2}}${0}
