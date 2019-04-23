@@ -1,4 +1,4 @@
-" Last Change: 24/04/2019 - 01:40:57.
+" Last Change: 24/04/2019 - 01:47:39.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -433,7 +433,7 @@ autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 " }}}
 
 " ### plugin ### {{{
-" vim-plug {{{
+" vim-plug
 " automated install vim-plug
 let s:vim_plug_url='https://github.com/junegunn/vim-plug'
 if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
@@ -442,83 +442,35 @@ endif
 source ~/.vim/vim-plug/plug.vim
 call plug#begin('~/.vim/plugged')
 " For Completion and Snippet
-Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet.vim' " {{{
+" plugin key-mappings.
+if v:version > 704
+    " Enable snipMate compatibility feature.
+    let g:neosnippet#enable_snipmate_compatibility = 1
+    " Tell Neosnippet about the My Snippets Directory
+    " My snippets files
+    let g:neosnippet#snippets_directory=['~/.vim/snippets/']
+    " set key map for snippet
+    imap <C-k> <plug>(neosnippet_expand_or_jump)
+    smap <C-k> <plug>(neosnippet_expand_or_jump)
+    xmap <C-k> <plug>(neosnippet_expand_target)
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+                \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    if has('conceal')
+        set conceallevel=1 concealcursor=niv
+    endif
+endif
+" }}}
 Plug 'Shougo/neosnippet-snippets'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/sonictemplate-vim'
+" Tell My Template Directory
+let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
 Plug 'tpope/vim-surround'
 
 " For Code Check
-Plug 'w0rp/ale'
-
-Plug 'majutsushi/tagbar'
-
-" Language Server Protocol
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-
-" For Golang
-Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
-
-" For javascript
-Plug 'ryanolsonx/vim-lsp-javascript', { 'for' : 'js' }
-
-" For LaTeX
-Plug 'lervag/vimtex'
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-let g:vimtex_compiler_latexmk = {
-            \ 'background': 1,
-            \ 'build_dir': '',
-            \ 'continuous': 1,
-            \ 'options': [
-            \     '-pdfdvi',
-            \     '-verbose',
-            \     '-file-line-error',
-            \     '-synctex=1',
-            \     '-interaction=nonstopmode',
-            \ ],
-            \}
-
-" For Clang
-Plug 'homedm/cinclude.vim', { 'for': 'c' }
-Plug 'justmao945/vim-clang'
-" Plug 'homedm/gilo.vim'
-
-" For writing
-Plug 'andymass/vim-matchup'
-
-" Runner
-Plug 'thinca/vim-quickrun',
-
-" ColorScheme
-Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
-Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
-Plug 'luochen1990/rainbow'
-let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
-Plug 'mechatroner/rainbow_csv'
-
-" For Format
-Plug 'vim-scripts/autodate.vim',
-Plug 'fuenor/JpFormat.vim',
-Plug 'vim-scripts/Align'
-
-" For Plugin
-Plug 'mopp/layoutplugin.vim'
-
-"Draw image
-Plug 'thinca/vim-painter'
-call plug#end()
-packadd termdebug
-" }}}
-set showmatch
-
-" tagbar.vim
-let g:tagbar_width = 30
-
+Plug 'w0rp/ale' " {{{
 " code checker plugin
-" ale {{{
 if has('job') && has('channel') && has('timers')
     let g:ale_sign_column_always = 1
     let g:ale_list_window_size = 2
@@ -566,7 +518,48 @@ if has('job') && has('channel') && has('timers')
 endif
 " }}}
 
-" QuickRun.vim {{{
+Plug 'majutsushi/tagbar'
+let g:tagbar_width = 30
+
+" Language Server Protocol
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+
+" For Golang
+Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
+
+" For javascript
+Plug 'ryanolsonx/vim-lsp-javascript', { 'for' : 'js' }
+
+" For LaTeX
+Plug 'lervag/vimtex'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+let g:vimtex_compiler_latexmk = {
+            \ 'background': 1,
+            \ 'build_dir': '',
+            \ 'continuous': 1,
+            \ 'options': [
+            \     '-pdfdvi',
+            \     '-verbose',
+            \     '-file-line-error',
+            \     '-synctex=1',
+            \     '-interaction=nonstopmode',
+            \ ],
+            \}
+
+" For Clang
+Plug 'homedm/cinclude.vim', { 'for': 'c' }
+Plug 'justmao945/vim-clang'
+" Plug 'homedm/gilo.vim'
+
+" For writing
+Plug 'andymass/vim-matchup'
+set showmatch
+
+" Runner
+Plug 'thinca/vim-quickrun' " {{{
 nnoremap <expr><silent> <space>c quickrun#is_runnting() ? quickrun#sweep_sessions() "\<C-c>"
 " <Leader>qでquickrunで開かれた出力バッファを閉じる
 nnoremap <Leader>q :<C-u>bw! \[QuickRun\ Output\]<CR>
@@ -586,39 +579,17 @@ let g:quickrun_config = {
             \ }
 " }}}
 
-" neosnippet {{{
-" plugin key-mappings.
-if v:version > 704
-    " Enable snipMate compatibility feature.
-    let g:neosnippet#enable_snipmate_compatibility = 1
-    " Tell Neosnippet about the My Snippets Directory
-    " My snippets files
-    let g:neosnippet#snippets_directory=['~/.vim/snippets/']
-    " set key map for snippet
-    imap <C-k> <plug>(neosnippet_expand_or_jump)
-    smap <C-k> <plug>(neosnippet_expand_or_jump)
-    xmap <C-k> <plug>(neosnippet_expand_target)
-    smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-                \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-    if has('conceal')
-        set conceallevel=1 concealcursor=niv
-    endif
-endif
-" }}}
+" ColorScheme
+Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
+Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
+Plug 'luochen1990/rainbow'
+let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
+Plug 'mechatroner/rainbow_csv'
 
-" sonictemplate-vim.vim {{{
-" Tell My Template Directory
-let g:sonictemplate_vim_template_dir = [
-            \ '~/.vim/template'
-            \]
-" }}}
-
-" Align.vim {{{
-" Setting for japanese environment
-let g:Align_xstrlen = 3
-" }
-
-" JpFormat.vim {{{
+" For Format
+Plug 'vim-scripts/autodate.vim',
+let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
+Plug 'fuenor/JpFormat.vim', " {{{
 " gqコマンドを実行前に自動整形をオフにする
 nnoremap <silent> <expr> gq JpFormat_cmd("gq")
 " .txt, .mdで自動整形を有効にする。
@@ -630,9 +601,17 @@ function! s:set_autoformat()
     set formatexpr=jpfmt#formatexpr()
 endfunction
 " }}}
-" autodate.vim {{{
-let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
-" }}}
+Plug 'vim-scripts/Align'
+" Setting for japanese environment
+let g:Align_xstrlen = 3
+
+" For Plugin
+Plug 'mopp/layoutplugin.vim'
+
+"Draw image
+Plug 'thinca/vim-painter'
+call plug#end()
+packadd termdebug
 " }}}
 
 filetype plugin indent on
