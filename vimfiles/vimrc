@@ -1,4 +1,4 @@
-" Last Change: 24/04/2019 - 01:47:39.
+" Last Change: 04/05/2019 - 12:42:50.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -466,6 +466,11 @@ Plug 'mattn/emmet-vim'
 Plug 'mattn/sonictemplate-vim'
 " Tell My Template Directory
 let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
+let g:sonictemplate_vim_vars = {
+\ '_': {
+\   'author': 'Taichi Watanabe',
+\ },
+\}
 Plug 'tpope/vim-surround'
 
 " For Code Check
