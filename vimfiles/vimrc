@@ -1,4 +1,4 @@
-" Last Change: 04/05/2019 - 12:42:50.
+" Last Change: 14/05/2019 - 21:49:36.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -590,6 +590,11 @@ Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/co
 Plug 'luochen1990/rainbow'
 let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 Plug 'mechatroner/rainbow_csv'
+
+" markdown
+Plug 'previm/previm'
+" open with Firefox
+let g:previm_open_cmd = 'chromium'
 
 " For Format
 Plug 'vim-scripts/autodate.vim',
