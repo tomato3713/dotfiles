@@ -1,4 +1,4 @@
-" Last Change: 04/05/2019 - 12:42:50.
+" Last Change: 05/05/2019 - 13:56:06.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -615,10 +615,15 @@ Plug 'mopp/layoutplugin.vim'
 
 "Draw image
 Plug 'thinca/vim-painter'
+
+" w3m Browser
+Plug 'yuratomo/w3m.vim'
 call plug#end()
 packadd termdebug
 " }}}
 
+" should write last line {{{
 filetype plugin indent on
 syntax on
 set secure
+" }}}
