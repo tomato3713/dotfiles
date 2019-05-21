@@ -1,4 +1,4 @@
-" Last Change: 21/05/2019 - 15:18:13.
+" Last Change: 21/05/2019 - 15:46:08.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -378,7 +378,7 @@ if filereadable(s:readfile)
         if has_key(s:proxy_json, a:name)
             if has_key(s:proxy_json[a:name], 'http')
                 let s:http_proxy=s:proxy_json[a:name]["http"]
-                let $http_proxy=s:http_proxy
+                call setenv("http_proxy", s:http_proxy)
 
                 call system("git config --global http.proxy " . s:http_proxy )
                 call system("npm config -g set proxy " . s:http_proxy )
@@ -388,7 +388,7 @@ if filereadable(s:readfile)
 
             if has_key(s:proxy_json[a:name], 'https')
                 let s:https_proxy=s:proxy_json[a:name]["https"]
-                let $https_proxy=s:https_proxy
+                call setenv("https_proxy", s:https_proxy)
 
                 call system("git config --global https.proxy " . s:https_proxy )
                 call system("npm config -g set https-proxy " . s:https_proxy )
@@ -401,8 +401,8 @@ if filereadable(s:readfile)
 
     function! s:unset_proxy() abort
         " unset system proxy setting
-        unlet $http_proxy
-        unlet $https_proxy
+        call setenv("http_proxy", v:null)
+        call setenv("https_proxy", v:null)
 
         " unset git global proxy setting
         call system("git config --global --unset http.proxy")
