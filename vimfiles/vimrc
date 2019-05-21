@@ -1,4 +1,4 @@
-" Last Change: 15/05/2019 - 09:34:25.
+" Last Change: 21/05/2019 - 15:18:13.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -180,9 +180,12 @@ function! s:remove_unnecessary_space()
         " delete last spaces
         %s/\s\+$//ge
         " delete last blank lines
+        let pos = getpos('.')
         while getline('$') == ""
                 $delete _
         endwhile
+        " return previous cursor position
+        call setpos('.', pos)
 endfunction
 
 " colorscheme
