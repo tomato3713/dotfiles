@@ -1,4 +1,4 @@
-" Last Change: 10/06/2019 - 10:24:56.
+" Last Change: 10/06/2019 - 10:33:15.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -143,11 +143,10 @@ if has('persistent_undo')
     set undodir=$HOME/.vim/.undo
     set undofile
 endif
-" no viminfo file
 set viminfo='50,/50,:25,n$HOME/.vim/viminfo
-" バックアップファイルの出力先を変更
+" don't make back up file
 set nobackup
-" スワップファイルを作成しない
+" don't make swap file
 set noswapfile
 
 " title
@@ -339,10 +338,6 @@ nnoremap ZQ <Nop>
 cnoremap wq x
 " }}}
 
-" ### Ruby setting ### {{{
-autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
-" }}}
-
 " ### plugin ### {{{
 " vim-plug
 " automated install vim-plug
@@ -478,6 +473,8 @@ if executable('solagraph')
                     \ })
     augroup END
 endif
+autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
+
 
 if executable('css-languageserver')
     " npm install -g vscode-css-languageserver-bin
