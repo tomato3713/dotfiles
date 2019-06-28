@@ -21,7 +21,7 @@ fi
 apt update
 apt -y upgrade
 
-apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential install python3-dev ruby-dev
+apt -y install libxmu-dev libgtk3.0-dev libxpm-dev build-essential install python3-dev ruby-dev libcanberra-dev
 
 if [ ! -e ~/vim ]; then
     mkdir ~/vim
@@ -40,13 +40,18 @@ cd ~/vim/vim/src
 make distclean
 
 ./configure \
-    --enable-multibyte --enable-fontset \
-    --enable-gui=yes \
-    --enable-rubyinterp=yes \
-    --enable-luainterp=yes \
-    --enable-python3interp=yes \
+    --enable-fail-if-missing \
     --with-features=huge \
-    --enable-fail-if-missing
+    --enable-luainterp=dynamic \
+    --enable-python3interp=dynamic \
+    --enable-rubyinterp=dynamic \
+    --enable-cscope \
+    --enable-fontset \
+    --enable-multibyte \
+    --enable-luainterp \
+    --enable-perlinterp \
+    --enable-terminal \
+    --enable-gui=yes
 
 if [ -e make ]; then
     make install
