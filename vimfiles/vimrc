@@ -1,4 +1,4 @@
-" Last Change: 28/06/2019 - 13:10:58.
+" Last Change: 01/07/2019 - 16:00:52.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -172,19 +172,6 @@ set ruler " add cursor line location in right of status line
 " disable conceal for tex
 let g:tex_conceal='abdmg'
 autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
-
-autocmd MyAutoCmd BufWritePre * call s:remove_unnecessary_space()
-function! s:remove_unnecessary_space()
-        let pos = getpos('.')
-        " delete last spaces
-        %s/\s\+$//ge
-        " delete last blank lines
-        while getline('$') == ""
-                $delete _
-        endwhile
-        " return previous cursor position
-        call setpos('.', pos)
-endfunction
 
 " colorscheme
 colorscheme iceberg
@@ -587,6 +574,8 @@ endfunction
 Plug 'vim-scripts/Align'
 " Setting for japanese environment
 let g:Align_xstrlen = 3
+
+Plug 'homedm/vim-better-whitespace'
 
 " For Plugin
 Plug 'mopp/layoutplugin.vim'
