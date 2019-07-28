@@ -1,4 +1,4 @@
-" Last Change: 01/07/2019 - 16:00:52.
+" Last Change: 06/07/2019 - 10:20:12.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -421,6 +421,10 @@ let g:lsp_diagnostics_enabled = 0
 let g:lsp_use_event_queue = 1
 
 Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
+let g:go_fmt_command = "goimports"
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+
 if executable('go-langserver')
     augroup LspGo
         autocmd!
@@ -585,7 +589,12 @@ Plug 'vim-jp/vimdoc-ja'
 "Draw image
 Plug 'thinca/vim-painter'
 
-"Plug 'homedm/vim-play-piano'
+Plug 'homedm/vim-play-piano'
+
+Plug 'glidenote/memolist.vim'
+let g:memolist_path = expand('$HOME/Documents/notebox/memo')
+let g:memolist_memo_suffix = "md"
+let g:memolist_memo_date = "%Y-%m-%d %H:%M"
 call plug#end()
 packadd termdebug
 " }}}
