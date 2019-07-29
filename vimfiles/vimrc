@@ -1,4 +1,4 @@
-" Last Change: 06/07/2019 - 10:20:12.
+" Last Change: 29/07/2019 - 15:31:41.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -424,6 +424,11 @@ Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
 let g:go_fmt_command = "goimports"
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
+" leave under functions to LSP
+let g:go_def_mapping_enabled = 0
+let g:go_doc_keywordprg_enabled = 0
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
 
 if executable('go-langserver')
     augroup LspGo
@@ -431,6 +436,7 @@ if executable('go-langserver')
         autocmd User lsp_setup call lsp#register_server({
                     \ 'name': 'go-lang',
                     \ 'cmd': {server_info->['gopls']},
+                    \ 'rootPatterns': ["go.mod", ".git/"],
                     \ 'whitelist': ['go'],
                     \ })
         autocmd FileType go setlocal omnifunc=lsp#complete
@@ -548,6 +554,10 @@ let g:quickrun_config = {
 " ColorScheme
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
+Plug 'itchyny/lightline.vim'
+let g:lightline = {
+            \ 'colorscheme': 'solarized',
+            \ }
 
 " For CSV
 Plug 'luochen1990/rainbow'
