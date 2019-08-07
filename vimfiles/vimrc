@@ -1,4 +1,4 @@
-" Last Change: 07/08/2019 - 10:12:41.
+" Last Change: 08/08/2019 - 01:57:13.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -326,7 +326,6 @@ cnoremap wq x
 " }}}
 
 " ### plugin ### {{{
-" vim-plug
 " automated install vim-plug
 if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
     let s:vim_plug_url='https://github.com/junegunn/vim-plug'
@@ -335,6 +334,16 @@ endif
 source ~/.vim/vim-plug/plug.vim
 
 call plug#begin('~/.vim/plugged')
+Plug 'mattn/emmet-vim'
+Plug 'mattn/sonictemplate-vim'
+" Tell My Template Directory
+let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
+let g:sonictemplate_vim_vars = {
+            \ '_': {
+            \   'author': 'Taichi Watanabe',
+            \ },
+            \}
+
 " For Completion and Snippet {{{
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
@@ -354,79 +363,26 @@ if v:version > 704
     endif
 endif
 " }}}
-Plug 'mattn/emmet-vim'
-
-Plug 'mattn/sonictemplate-vim'
-" Tell My Template Directory
-let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
-let g:sonictemplate_vim_vars = {
-            \ '_': {
-            \   'author': 'Taichi Watanabe',
-            \ },
-            \}
-
-" For Code Check
-Plug 'w0rp/ale' " {{{
-" code checker plugin
-if has('job') && has('channel') && has('timers')
-    let g:ale_sign_column_always = 1
-    let g:ale_list_window_size = 2
-    " format message
-    let g:ale_echo_msg_error_str = 'E'
-    let g:ale_echo_msg_warning_str = 'W'
-    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-    " move error mapping
-    nmap <silent> <C-k> <plug>(ale_next_wrap)
-    " check at :w
-    let g:ale_lint_on_save = 1
-    let g:ale_lint_on_text_changed = 'never'
-    " Disable check at file open
-    let g:ale_lint_on_enter = 0
-    " use QuickFix instead of location list
-    let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
-
-    " for npm local installed eslint and textlint
-    if filereadable(expand('$PWD/.textlintrc')) ||
-                \ filereadable(expand('$PWD/.eslintrc.json'))
-        let $PATH .= ':' . $PWD . 'node_modules/.bin'
-    endif
-
-    let g:ale_cpp_gcc_options="-std=c++17 -Wall"
-    let g:ale_c_gcc_options="-std=c99 -Wall"
-    " set linter
-    let g:ale_linters = {
-                \ 'markdown' : ['textlint'],
-                \ 'javascript' : ['eslint'],
-                \ 'html' : ['cHTMLHint'],
-                \ 'css' : ['csslint'],
-                \ 'latex' : ['chktex'],
-                \ 'c' : ['gcc'],
-                \ 'cpp' : ['gcc'],
-                \ 'java': [],
-                \ }
-    " set fixer
-    nmap <space>= :ALEFix<CR>
-endif
-" }}}
-
-Plug 'majutsushi/tagbar'
-let g:tagbar_width = 30
 
 " Language Server Protocol
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
-" syntastic check disabled by lsp
-let g:lsp_diagnostics_enabled = 0
+" common vim-lsp setting
+let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LISP
 let g:lsp_use_event_queue = 1
+let g:lsp_diagnostics_echo_cursor = 0 " disable echo under cursor when in normal mode
+let g:lsp_signs_enabled = 1         " enable signs
+let g:lsp_signs_error = {"text": "✗"}
+let g:lsp_signs_warning = {"text": "!!"}
+let g:lsp_signs_hint = {"text": "??"}
+autocmd BufWritePre <buffer> LspDocumentFormatSync
+nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
 
-Plug 'fatih/vim-go', { 'for' : 'go', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_command = "goimports"
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 " leave under functions to LSP
-let g:go_def_mapping_enabled = 0
-let g:go_doc_keywordprg_enabled = 0
 let g:go_def_mode = 'gopls'
 let g:go_info_mode = 'gopls'
 
@@ -472,7 +428,6 @@ if executable('solagraph')
 endif
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 
-
 if executable('css-languageserver')
     " npm install -g vscode-css-languageserver-bin
     augroup LspCSS
@@ -503,30 +458,20 @@ if executable('pyls')
         \ })
 endif
 
-
-" For LaTeX
-Plug 'lervag/vimtex'
-let g:tex_flavor='latex'
-let g:vimtex_view_method='zathura'
-let g:vimtex_quickfix_mode=0
-let g:vimtex_compiler_latexmk = {
-            \ 'background': 1,
-            \ 'build_dir': '',
-            \ 'continuous': 1,
-            \ 'options': [
-            \     '-pdfdvi',
-            \     '-verbose',
-            \     '-file-line-error',
-            \     '-synctex=1',
-            \     '-interaction=nonstopmode',
-            \ ],
-            \}
+" other language lsp setting
+augroup LspEFM
+  au!
+  autocmd User lsp_setup call lsp#register_server({
+      \ 'name': 'efm-langserver',
+      \ 'cmd': {server_info->['efm-langserver']},
+      \ 'whitelist': ['markdown', 'vim'],
+      \ })
+augroup END
 
 " For Clang
 Plug 'homedm/cinclude.vim', { 'for': 'c' }
 Plug 'justmao945/vim-clang'
 
-" For writing
 Plug 'andymass/vim-matchup'
 set showmatch
 
@@ -551,7 +496,7 @@ let g:quickrun_config = {
             \ }
 " }}}
 
-" ColorScheme
+" Color Scheme
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 Plug 'itchyny/lightline.vim'
@@ -564,15 +509,10 @@ Plug 'luochen1990/rainbow'
 let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 Plug 'mechatroner/rainbow_csv'
 
-" markdown
-Plug 'previm/previm'
-" open with Firefox
-let g:previm_open_cmd = 'chromium'
-
-" For Format
+" For General Formatter
 Plug 'vim-scripts/autodate.vim',
 let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
-Plug 'fuenor/JpFormat.vim', " {{{
+Plug 'fuenor/JpFormat.vim',
 " gqコマンドを実行前に自動整形をオフにする
 nnoremap <silent> <expr> gq JpFormat_cmd("gq")
 " .txt, .mdで自動整形を有効にする。
@@ -583,28 +523,45 @@ function! s:set_autoformat()
     let JpCountOverChars=1
     set formatexpr=jpfmt#formatexpr()
 endfunction
-" }}}
-
-Plug 'vim-scripts/Align'
-" Setting for japanese environment
-let g:Align_xstrlen = 3
-
 Plug 'homedm/vim-better-whitespace'
+Plug 'vim-scripts/Align'
+let g:Align_xstrlen = 3 " Setting for Japanese environment
 
-" For Plugin
+" For making Plugin
 Plug 'mopp/layoutplugin.vim'
-
 Plug 'vim-jp/vimdoc-ja'
 
-"Draw image
+" Draw image and play music
 Plug 'thinca/vim-painter'
-
 Plug 'homedm/vim-play-piano'
 
+" For Writing Documentation
 Plug 'glidenote/memolist.vim'
 let g:memolist_path = expand('$HOME/Documents/notebox/memo')
 let g:memolist_memo_suffix = "md"
 let g:memolist_memo_date = "%Y-%m-%d %H:%M"
+" markdown
+Plug 'previm/previm'
+" open with Firefox
+let g:previm_open_cmd = 'chromium'
+" For LaTeX
+Plug 'lervag/vimtex'
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+let g:vimtex_compiler_latexmk = {
+            \ 'background': 1,
+            \ 'build_dir': '',
+            \ 'continuous': 1,
+            \ 'options': [
+            \     '-pdfdvi',
+            \     '-verbose',
+            \     '-file-line-error',
+            \     '-synctex=1',
+            \     '-interaction=nonstopmode',
+            \ ],
+            \}
+
 call plug#end()
 packadd termdebug
 " }}}
