@@ -1,4 +1,4 @@
-" Last Change: 08/08/2019 - 01:57:13.
+" Last Change: 09/08/2019 - 14:19:30.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -23,6 +23,7 @@ endif
 " windows上でもunix形式のend-of-lineを使う
 " ファイル名内の'\'をスラッシュに置換する
 set viewoptions=unix,slash
+set number
 
 " disable indent plugin each filetype
 filetype plugin indent off
@@ -60,8 +61,8 @@ set fileencoding=utf-8
 set fileformat=unix
 set ambiwidth=double
 " テキスト挿入中の自動折り返しを日本語に対応させる
-" auto commet off
-autocmd MyAutoCmd BufEnter * setlocal formatoptions=tcqmM
+" auto comment off
+autocmd MyAutoCmd FileType * setlocal formatoptions=tcqmM
 " }}}
 
 " ### Indent ###{{{
@@ -155,6 +156,7 @@ set title
 " 不可視文字を不可視化
 set nolist
 " 自動折り返ししない
+set nowrap
 set textwidth=0
 " 長い行を@にさせない
 set display=lastline
@@ -198,20 +200,6 @@ set nohlsearch
 if v:version > 800
         set nrformats=alpha,hex,bin
 endif
-" }}}
-
-" ### Diff ### {{{
-set diffexpr=MyDiff()
-function! MyDiff()
-        let opt = ""
-        if &diffopt =~ "icase"
-                let opt = opt . "-i "
-        endif
-        if &diffopt =~ "iwhile"
-                let opt = opt . "-b "
-        endif
-        silent execute "!diff -a --binary " . opt . v:fname_in . " " . v:fname_new . " > " . v:fname_out
-endfunction
 " }}}
 
 " ### completion ### {{{
@@ -364,17 +352,22 @@ if v:version > 704
 endif
 " }}}
 
-" Language Server Protocol
+" Language Server Protocol Client
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 " common vim-lsp setting
 let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LISP
+let g:lsp_auto_enable = 1
 let g:lsp_use_event_queue = 1
 let g:lsp_diagnostics_echo_cursor = 0 " disable echo under cursor when in normal mode
 let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_signs_error = {"text": "✗"}
 let g:lsp_signs_warning = {"text": "!!"}
 let g:lsp_signs_hint = {"text": "??"}
+" Opens preview windows as floating
+let g:lsp_preview_float = 1
+" Preview remains open and waits for an explicit call
+let g:lsp_preview_autoclose = 0
 autocmd BufWritePre <buffer> LspDocumentFormatSync
 nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
 
@@ -406,10 +399,10 @@ if executable('typescript-language-server')
     augroup LspJSTS
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
-                    \ 'name': 'javascript support using typescript-language-server',
+                    \ 'name': 'TypeScript',
                     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
                     \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-                    \ 'whitelist' : ['javascript', 'javascript.jsx']
+                    \ 'whitelist' : ['typescript', 'javascript', 'javascript.jsx']
                     \ })
     augroup END
 endif

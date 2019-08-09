@@ -1,3 +1,4 @@
+#!/usr/bin/env perl
 $latex='platex -synctex=1 -halt-on-error';
 $bibtex='pbibtex';
 $biber='biber -input-encoding=UTF-8 -output-encoding=UTF-8 --output_safechars';
