@@ -1,4 +1,4 @@
-" Last Change: 09/08/2019 - 14:19:30.
+" Last Change: 24/08/2019 - 03:14:46.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -175,10 +175,6 @@ set ruler " add cursor line location in right of status line
 let g:tex_conceal='abdmg'
 autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
-" colorscheme
-colorscheme iceberg
-syntax enable
-
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
@@ -351,15 +347,29 @@ if v:version > 704
     endif
 endif
 " }}}
-
+"
 " Language Server Protocol Client
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 " common vim-lsp setting
-let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LISP
+let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LSP
+let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_auto_enable = 1
 let g:lsp_use_event_queue = 1
-let g:lsp_diagnostics_echo_cursor = 0 " disable echo under cursor when in normal mode
 let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_signs_error = {"text": "✗"}
 let g:lsp_signs_warning = {"text": "!!"}
@@ -373,11 +383,19 @@ nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_command = "goimports"
+let g:go_bin_path = $GOPATH.'/bin'
+let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_function_calls = 1
 " leave under functions to LSP
 let g:go_def_mode = 'gopls'
 let g:go_info_mode = 'gopls'
+" LSP に任せる機能を Off にする
+let g:go_def_mapping_enabled = 0
+let g:go_doc_keywordprg_enabled = 0
 
 if executable('go-langserver')
     augroup LspGo
@@ -404,6 +422,7 @@ if executable('typescript-language-server')
                     \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
                     \ 'whitelist' : ['typescript', 'javascript', 'javascript.jsx']
                     \ })
+        autocmd FileType javascript,typescript setlocal omnifunc=lsp#complete
     augroup END
 endif
 
@@ -417,6 +436,7 @@ if executable('solagraph')
                     \ 'initialization_options': { "diagnostics": "true"},
                     \ 'whitelist': ['ruby'],
                     \ })
+        autocmd FileType ruby setlocal omnifunc=lsp#complete
     augroup END
 endif
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
@@ -430,16 +450,21 @@ if executable('css-languageserver')
                     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
                     \ 'whitelist': ['css', 'less', 'sass'],
                     \ })
+        autocmd FileType css,lss,sass setlocal omnifunc=lsp#complete
     augroup END
 endif
 
 " npm install -g intelephense-server
 " npm list -g | head
-autocmd User lsp_setup call lsp#register_server({
-            \ 'name': 'intelephense',
-            \ 'cmd': {server_info->['node', expand('~/.nvm/versions/node/v11.7.0/lib/node_modules/intelephense-server/lib/server.js'), '--stdio']},
-            \ 'whitelist': ['php'],
-            \ })
+augroup LspPHP
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+                \ 'name': 'intelephense',
+                \ 'cmd': {server_info->['node', expand('~/.nvm/versions/node/v11.7.0/lib/node_modules/intelephense-server/lib/server.js'), '--stdio']},
+                \ 'whitelist': ['php'],
+                \ })
+    autocmd FileType php setlocal omnifunc=lsp#complete
+augroup END
 
 " pip install python-language-server
 Plug 'ryanolsonx/vim-lsp-python'
@@ -465,6 +490,8 @@ augroup END
 Plug 'homedm/cinclude.vim', { 'for': 'c' }
 Plug 'justmao945/vim-clang'
 
+Plug 'kovisoft/slimv'
+
 Plug 'andymass/vim-matchup'
 set showmatch
 
@@ -486,6 +513,22 @@ let g:quickrun_config = {
             \   'command' : 'platex',
             \   'exec' : ['%c -synctex=1 -interaction=nonstopmode %s', 'zathura %s:r.pdf']
             \ },
+            \ 'lisp' : {
+            \   'type': executable('sbcl') ? 'lisp/sbcl':
+            \           executable('ccl')  ? 'lisp/ccl':
+            \           executable('clisp') ? 'lisp/clisp': '',
+            \ },
+            \ 'lisp/sbcl': {
+            \   'command': 'sbcl',
+            \   'cmdopt': '--script'
+            \ },
+            \ 'lisp/ccl' : {
+            \   'command': 'ccl',
+            \   'exec': '%c -l %s -e "(ccl:quit)"',
+            \ },
+            \ 'lisp/clisp': {
+            \   'command': 'clisp',
+            \ }
             \ }
 " }}}
 
@@ -493,6 +536,7 @@ let g:quickrun_config = {
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 Plug 'itchyny/lightline.vim'
+colorscheme solarized
 let g:lightline = {
             \ 'colorscheme': 'solarized',
             \ }
@@ -530,7 +574,8 @@ Plug 'homedm/vim-play-piano'
 
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
-let g:memolist_path = expand('$HOME/Documents/notebox/memo')
+let g:memolist_path = expand('$HOME/code/src/github.com/homedm/notebox/memo')
+let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
 let g:memolist_memo_suffix = "md"
 let g:memolist_memo_date = "%Y-%m-%d %H:%M"
 " markdown
@@ -557,10 +602,21 @@ let g:vimtex_compiler_latexmk = {
 
 call plug#end()
 packadd termdebug
+
+" netrw setting
+let g:netrw_liststyle = 1
+let g:netrw_sizestyle = "H"
+let g:netrw_sort_options="i"
+let g:netrw_timefmt = "%Y/%m/%d(%a) %H:%M:%S"
+let g:netrw_preview = 1
+let g:netrw_list_hide = '.git'
+let g:netrw_altv = 1
+let g:netrw_alto = 1
 " }}}
 
 " should write last line {{{
 filetype plugin indent on
-syntax on
+" syntax on の場合は、現在の色設定を変更する
+syntax enable
 set secure
 " }}}
