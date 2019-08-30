@@ -1,8 +1,7 @@
-" Last Change: 24/08/2019 - 03:14:46.
+" Last Change: 31/08/2019 - 02:52:41.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
-set nocompatible
 set all&
 augroup MyAutoCmd
         autocmd!
@@ -10,14 +9,14 @@ augroup END
 
 " in shell setting file, for example .bashrc or .cshrc
 " setenv $VIMRUNTIME ~/vim/vim/runtime
-set runtimepath+=~/.vim
-
-" japanese help
-set helplang=en,ja
+" set runtimepath+=~/.vim
 
 if has('vim_starting')
     set encoding=utf-8
     scriptencoding=utf-8
+    set t_vb=
+    set visualbell
+    set noerrorbells
 endif
 
 " windows上でもunix形式のend-of-lineを使う
@@ -30,7 +29,6 @@ filetype plugin indent off
 set t_Co=256
 
 " enable syntax highlight
-syntax on
 set synmaxcol=200
 set cmdheight=2
 " faster redraw
@@ -40,15 +38,12 @@ set ttyfast
 augroup HilightsForce
     autocmd!
     autocmd WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
-    autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=Red guifg=White
+    " autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=#000124 guifg=#000015
 augroup END
 
-
-" ### terminal ### {{{
 if has('terminal')
         set termguicolors
 endif
-"}}}
 "}}}
 
 " ### encoding ### {{{
@@ -236,72 +231,19 @@ augroup END
 set history=2000
 " いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
-
-" ### For Proxy Setting ### {{{
-" Setting File For Proxy
-" For example
-"
-" {
-"   name: {
-"     http: http://proxy.aa.bb:8080,
-"     https: https://proxy.aa.bb:8080
-"   }
-" }
-"
-" git などのproxyを設定する。
-command! -nargs=1 ProxySet call s:set_proxy(<f-args>)
-command! ProxyUnset call s:unset_proxy()
-let s:readfile=expand('~/.vim_proxy_setting.json')
-if filereadable(s:readfile)
-    " string型としてファイルを読み込む
-    let s:lines=join(readfile(s:readfile, '', 10))
-    " json形式へ変換
-    let s:proxy_json=json_decode(s:lines)
-
-    function! s:set_proxy(name) abort
-        if has_key(s:proxy_json, a:name)
-            if has_key(s:proxy_json[a:name], 'http')
-                let s:http_proxy=s:proxy_json[a:name]["http"]
-                call setenv("http_proxy", s:http_proxy)
-                call system("git config --global http.proxy " . s:http_proxy )
-                call system("npm config -g set proxy " . s:http_proxy )
-                " Set ssh proxy
-                " ~/.ssh/configの設定に書き込む
-            endif
-
-            if has_key(s:proxy_json[a:name], 'https')
-                let s:https_proxy=s:proxy_json[a:name]["https"]
-                call setenv("https_proxy", s:https_proxy)
-                call system("git config --global https.proxy " . s:https_proxy )
-                call system("npm config -g set https-proxy " . s:https_proxy )
-                " Set ssh proxy
-                " ~/.ssh/configの設定に書き込む
-            endif
-        endif
-    endfunction
-
-    function! s:unset_proxy() abort
-        " unset system proxy setting
-        call setenv("http_proxy", v:null)
-        call setenv("https_proxy", v:null)
-
-        " unset git global proxy setting
-        call system("git config --global --unset http.proxy")
-        call system("git config --global --unset https.proxy")
-    endfunction
-else
-    echomsg "Not found '~/.vim_proxy_setting.json'"
-endif
-" }}}
-" }}}
-" }}}
 " }}}
 
 " ### key mapping ### {{{
+" Vim は以下のキーを同一視する.
+" <C-i> == <Tab>
+" <C-m> == <Enter>
+" <C-[> == <ESC>
+
 " Wait key time
 set timeout ttimeoutlen=50
 " change Leader key to Space key
 let mapleader = "\<Space>"
+
 cnoremap <C-n> <Down>
 cnoremap <C-p> <Up>
 nnoremap ZQ <Nop>
@@ -318,7 +260,8 @@ endif
 source ~/.vim/vim-plug/plug.vim
 
 call plug#begin('~/.vim/plugged')
-Plug 'mattn/emmet-vim'
+Plug 'cocopon/vaffle.vim'
+
 Plug 'mattn/sonictemplate-vim'
 " Tell My Template Directory
 let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
@@ -327,6 +270,8 @@ let g:sonictemplate_vim_vars = {
             \   'author': 'Taichi Watanabe',
             \ },
             \}
+" For making Plugin
+Plug 'mopp/layoutplugin.vim'
 
 " For Completion and Snippet {{{
 Plug 'Shougo/neosnippet.vim'
@@ -411,27 +356,56 @@ if executable('go-langserver')
 endif
 
 " For javascript
-Plug 'ryanolsonx/vim-lsp-javascript', { 'for' : 'js' }
+Plug 'ryanolsonx/vim-lsp-javascript'
+Plug 'leafgarland/typescript-vim'
 if executable('typescript-language-server')
+    " npm install -g typescript typescript-language-server
     " use directory with .git as root
     augroup LspJSTS
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
                     \ 'name': 'TypeScript',
                     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                    \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+                    \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), 'package.json'))},
                     \ 'whitelist' : ['typescript', 'javascript', 'javascript.jsx']
                     \ })
         autocmd FileType javascript,typescript setlocal omnifunc=lsp#complete
     augroup END
 endif
 
+if executable('css-languageserver')
+    " npm install -g vscode-css-languageserver-bin
+    augroup LspCSS
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'CSS, SCSS, LESS',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
+                    \ 'whitelist': ['css', 'less', 'sass'],
+                    \ })
+        autocmd FileType css,lss,sass setlocal omnifunc=lsp#complete
+    augroup END
+endif
+
+Plug 'mattn/emmet-vim'
+
+" npm install -g intelephense-server
+" npm list -g | head
+augroup LspPHP
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+                \ 'name': 'PHP',
+                \ 'cmd': {server_info->['node', expand('~/.nvm/versions/node/v11.7.0/lib/node_modules/intelephense-server/lib/server.js'), '--stdio']},
+                \ 'whitelist': ['php'],
+                \ })
+    autocmd FileType php setlocal omnifunc=lsp#complete
+augroup END
+
 if executable('solagraph')
     " gem install solagraph
     augroup LspRuby
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
-                    \ 'name': 'solagraph',
+                    \ 'name': 'Ruby',
                     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solagraph stdio']},
                     \ 'initialization_options': { "diagnostics": "true"},
                     \ 'whitelist': ['ruby'],
@@ -441,38 +415,22 @@ if executable('solagraph')
 endif
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 
-if executable('css-languageserver')
-    " npm install -g vscode-css-languageserver-bin
-    augroup LspCSS
-        autocmd!
-        autocmd User lsp_setup call lsp#register_server({
-                    \ 'name': 'css-languageserver',
-                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
-                    \ 'whitelist': ['css', 'less', 'sass'],
-                    \ })
-        autocmd FileType css,lss,sass setlocal omnifunc=lsp#complete
-    augroup END
-endif
-
-" npm install -g intelephense-server
-" npm list -g | head
-augroup LspPHP
-    autocmd!
-    autocmd User lsp_setup call lsp#register_server({
-                \ 'name': 'intelephense',
-                \ 'cmd': {server_info->['node', expand('~/.nvm/versions/node/v11.7.0/lib/node_modules/intelephense-server/lib/server.js'), '--stdio']},
-                \ 'whitelist': ['php'],
-                \ })
-    autocmd FileType php setlocal omnifunc=lsp#complete
-augroup END
-
 " pip install python-language-server
 Plug 'ryanolsonx/vim-lsp-python'
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
+        \ 'name': 'Python',
         \ 'cmd': {server_info->['pyls']},
         \ 'whitelist': ['python'],
+        \ })
+endif
+
+" npm install -g dockerfile-language-server-nodejs
+if executable('docker-langserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'docker-langserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
+        \ 'whitelist': ['dockerfile'],
         \ })
 endif
 
@@ -480,20 +438,16 @@ endif
 augroup LspEFM
   au!
   autocmd User lsp_setup call lsp#register_server({
-      \ 'name': 'efm-langserver',
+      \ 'name': 'efm',
       \ 'cmd': {server_info->['efm-langserver']},
       \ 'whitelist': ['markdown', 'vim'],
       \ })
 augroup END
 
-" For Clang
-Plug 'homedm/cinclude.vim', { 'for': 'c' }
+" C Language
 Plug 'justmao945/vim-clang'
-
+" Lisp
 Plug 'kovisoft/slimv'
-
-Plug 'andymass/vim-matchup'
-set showmatch
 
 " Runner
 Plug 'thinca/vim-quickrun' " {{{
@@ -535,10 +489,16 @@ let g:quickrun_config = {
 " Color Scheme
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
+
+" Status Line
+Plug 'itchyny/vim-gitbranch'
 Plug 'itchyny/lightline.vim'
 colorscheme solarized
 let g:lightline = {
             \ 'colorscheme': 'solarized',
+            \ 'component_function': {
+            \   'gitbranch': 'gitbranch#name'
+            \ },
             \ }
 
 " For CSV
@@ -564,13 +524,9 @@ Plug 'homedm/vim-better-whitespace'
 Plug 'vim-scripts/Align'
 let g:Align_xstrlen = 3 " Setting for Japanese environment
 
-" For making Plugin
-Plug 'mopp/layoutplugin.vim'
 Plug 'vim-jp/vimdoc-ja'
-
-" Draw image and play music
-Plug 'thinca/vim-painter'
-Plug 'homedm/vim-play-piano'
+" japanese help
+set helplang=en,ja
 
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
@@ -580,7 +536,7 @@ let g:memolist_memo_suffix = "md"
 let g:memolist_memo_date = "%Y-%m-%d %H:%M"
 " markdown
 Plug 'previm/previm'
-" open with Firefox
+" open with chromium
 let g:previm_open_cmd = 'chromium'
 " For LaTeX
 Plug 'lervag/vimtex'
@@ -600,6 +556,13 @@ let g:vimtex_compiler_latexmk = {
             \ ],
             \}
 
+Plug 'andymass/vim-matchup'
+set showmatch
+
+" Draw image and play music
+Plug 'thinca/vim-painter'
+Plug 'homedm/vim-play-piano'
+
 call plug#end()
 packadd termdebug
 
@@ -616,7 +579,9 @@ let g:netrw_alto = 1
 
 " should write last line {{{
 filetype plugin indent on
-" syntax on の場合は、現在の色設定を変更する
+" syntax on の場合は、現在の色設定を変更する.また、syntax on, syntax enable は
+" , runtimepath に含まれている設定をもとにシンタックスを生成しようとするため,
+" runtimepath を設定し終えた後に設定するべき.
 syntax enable
 set secure
 " }}}
