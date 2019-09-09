@@ -1,4 +1,4 @@
-" Last Change: 31/08/2019 - 02:52:41.
+" Last Change: 09/09/2019 - 00:23:28.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -19,12 +19,12 @@ if has('vim_starting')
     set noerrorbells
 endif
 
-" windows上でもunix形式のend-of-lineを使う
-" ファイル名内の'\'をスラッシュに置換する
+" Windows上でも Unix 形式の end-of-line を使う
+" ファイル名内の '\' をスラッシュに置換する
 set viewoptions=unix,slash
 set number
 
-" disable indent plugin each filetype
+" disable indent plugin each file type
 filetype plugin indent off
 set t_Co=256
 
@@ -86,14 +86,14 @@ set mouse=a
 set ttymouse=xterm2
 
 " ### Buffer ### {{{
-" if miss to guess filetype
+" if miss to guess file type
 autocmd MyAutoCmd BufWritePost *
                         \ if &filetype ==# '' && exists('b:ftdetect') |
                         \ unlet! b:ftdetect |
                         \ filetype detect |
                         \ endif
 
-" Enable cursorline at needed
+" Enable cursor line at needed
 augroup vimrc-auto-cursorline
         autocmd!
         autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
@@ -160,13 +160,7 @@ set scrolloff=5
 " 入力したコマンドを画面下に表示
 set showcmd
 
-" display status line
-set laststatus=2
-set statusline=[.%F%r%h%w%m]%=
-set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
-set ruler " add cursor line location in right of status line
-
-" disable conceal for tex
+" disable conceal for TeX
 let g:tex_conceal='abdmg'
 autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
@@ -174,7 +168,7 @@ autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
         if &buftype != 'help'
-                hi ignore ctermfg=red
+                highlight ignore ctermfg=red
                 syntax match Error /\%>79v.*/
                 syntax match Error /、\s/
                 syntax match Error /。\s/
@@ -355,22 +349,25 @@ if executable('go-langserver')
     augroup END
 endif
 
-" For javascript
+" For JavaScript
 Plug 'ryanolsonx/vim-lsp-javascript'
+" Typescript Syntax highlight
 Plug 'leafgarland/typescript-vim'
 if executable('typescript-language-server')
     " npm install -g typescript typescript-language-server
     " use directory with .git as root
-    augroup LspJSTS
-        autocmd!
-        autocmd User lsp_setup call lsp#register_server({
-                    \ 'name': 'TypeScript',
-                    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                    \ 'root_uri' : { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), 'package.json'))},
-                    \ 'whitelist' : ['typescript', 'javascript', 'javascript.jsx']
-                    \ })
-        autocmd FileType javascript,typescript setlocal omnifunc=lsp#complete
-    augroup END
+    autocmd User lsp_setup call lsp#register_server({
+    \ 'name': 'javascript',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
+    \ 'whitelist': ['javascript', 'javascript.jsx'],
+    \ })
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'typescript.tsx'],
+        \ })
 endif
 
 if executable('css-languageserver')
@@ -425,6 +422,16 @@ if executable('pyls')
         \ })
 endif
 
+Plug 'derekwyatt/vim-scala'
+if executable('metals-vim')
+   au User lsp_setup call lsp#register_server({
+      \ 'name': 'Scala',
+      \ 'cmd': {server_info->['metals-vim']},
+      \ 'initialization_options': { 'rootPatterns': 'build.sbt' },
+      \ 'whitelist': [ 'scala', 'sbt' ],
+      \ })
+endif
+
 " npm install -g dockerfile-language-server-nodejs
 if executable('docker-langserver')
     au User lsp_setup call lsp#register_server({
@@ -452,7 +459,7 @@ Plug 'kovisoft/slimv'
 " Runner
 Plug 'thinca/vim-quickrun' " {{{
 nnoremap <expr><silent> <space>c quickrun#is_runnting() ? quickrun#sweep_sessions() "\<C-c>"
-" <Leader>qでquickrunで開かれた出力バッファを閉じる
+" <Leader>q で quickrun で開かれた出力バッファを閉じる
 nnoremap <Leader>q :<C-u>bw! \[QuickRun\ Output\]<CR>
 let g:quickrun_config = {
             \ '_' : {
@@ -493,13 +500,23 @@ Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/co
 " Status Line
 Plug 'itchyny/vim-gitbranch'
 Plug 'itchyny/lightline.vim'
-colorscheme solarized
+" display status line
+set laststatus=2
+set ruler " add cursor line location in right of status line
 let g:lightline = {
+            \ 'active': {
+            \   'left': [ ['mode', 'gitbranch', 'readonly', 'filename', 'modified'] ]
+            \ },
             \ 'colorscheme': 'solarized',
             \ 'component_function': {
             \   'gitbranch': 'gitbranch#name'
             \ },
             \ }
+" Syntastic can call a post-check hook, let's update lightline there
+" For more information: :help syntastic-loclist-callback
+function! SyntasticCheckHook(errors)
+    call lightline#update()
+endfunction
 
 " For CSV
 Plug 'luochen1990/rainbow'
@@ -583,5 +600,8 @@ filetype plugin indent on
 " , runtimepath に含まれている設定をもとにシンタックスを生成しようとするため,
 " runtimepath を設定し終えた後に設定するべき.
 syntax enable
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 set secure
 " }}}
