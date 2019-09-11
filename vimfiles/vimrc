@@ -1,4 +1,4 @@
-" Last Change: 10/09/2019 - 23:58:29.
+" Last Change: 12/09/2019 - 01:53:30.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -271,6 +271,13 @@ endif
 " }}}
 
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf', { 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-gitgutter'
+set updatetime=250
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'sheerun/vim-polyglot'
 
 " Language Server Protocol Client
 Plug 'prabirshrestha/asyncomplete.vim'
