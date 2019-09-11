@@ -1,4 +1,4 @@
-" Last Change: 09/09/2019 - 00:23:28.
+" Last Change: 10/09/2019 - 23:58:29.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -199,25 +199,8 @@ set spelllang+=cjk " 日本語をスペルチェックの対象 から除外す�
 " corrected.
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
-" tag Complete For html and xml file
-augroup xml-html-comp
-    autocmd!
-    autocmd FileType html,xml inoremap <buffer> </ </<C-x><C-o>
-augroup END
-
 " dictionary Complete
-augroup dict-comp
-    autocmd!
-    autocmd FileType javascript :setlocal dictionary=$HOME/.vim/dict/javascript.dict
-    autocmd FileType html :setlocal dictionary=$HOME/.vim/dict/html.dict
-    autocmd FileType css :setlocal dictionary=$HOME/.vim/dict/css.dict
-    autocmd FileType latex :setlocal dictionary=$HOME/.vim/dict/tex.dict
-    autocmd FileType python :setlocal dictionary=$HOME/.vim/dict/python.dict
-    autocmd FileType cpp :setlocal dictionary=$HOME/.vim/dict/cpp.dict
-    autocmd FileType c :setlocal dictionary=$HOME/.vim/dict/clang.dict
-    autocmd FileType ruby :setlocal dictionary=$HOME/.vim/dict/ruby.dict
-    autocmd FileType php :setlocal dictionary=$HOME/.vim/dict/php.dict
-augroup END
+set dictionary=$HOME/.vim/dict/programming.dict
 " }}}
 
 " ### Command ### {{{
@@ -286,7 +269,9 @@ if v:version > 704
     endif
 endif
 " }}}
-"
+
+Plug 'jiangmiao/auto-pairs'
+
 " Language Server Protocol Client
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
@@ -538,11 +523,13 @@ function! s:set_autoformat()
     set formatexpr=jpfmt#formatexpr()
 endfunction
 Plug 'homedm/vim-better-whitespace'
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
 Plug 'vim-scripts/Align'
 let g:Align_xstrlen = 3 " Setting for Japanese environment
 
 Plug 'vim-jp/vimdoc-ja'
-" japanese help
+" Japanese help
 set helplang=en,ja
 
 " For Writing Documentation
