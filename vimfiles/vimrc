@@ -1,4 +1,4 @@
-" Last Change: 12/09/2019 - 01:53:30.
+" Last Change: 12/09/2019 - 13:52:15.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -270,6 +270,7 @@ if v:version > 704
 endif
 " }}}
 
+" for text edit
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -405,8 +406,8 @@ endif
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 
 " pip install python-language-server
-Plug 'ryanolsonx/vim-lsp-python'
 if executable('pyls')
+Plug 'ryanolsonx/vim-lsp-python'
     au User lsp_setup call lsp#register_server({
         \ 'name': 'Python',
         \ 'cmd': {server_info->['pyls']},
@@ -414,8 +415,8 @@ if executable('pyls')
         \ })
 endif
 
-Plug 'derekwyatt/vim-scala'
 if executable('metals-vim')
+Plug 'derekwyatt/vim-scala'
    au User lsp_setup call lsp#register_server({
       \ 'name': 'Scala',
       \ 'cmd': {server_info->['metals-vim']},
