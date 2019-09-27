@@ -1,4 +1,4 @@
-" Last Change: 12/09/2019 - 13:52:15.
+" Last Change: 27/09/2019 - 13:29:17.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -18,6 +18,7 @@ if has('vim_starting')
     set visualbell
     set noerrorbells
 endif
+
 
 " Windows上でも Unix 形式の end-of-line を使う
 " ファイル名内の '\' をスラッシュに置換する
@@ -41,9 +42,9 @@ augroup HilightsForce
     " autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=#000124 guifg=#000015
 augroup END
 
-if has('terminal')
-        set termguicolors
-endif
+set termguicolors
+let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
 "}}}
 
 " ### encoding ### {{{
@@ -337,6 +338,7 @@ if executable('go-langserver')
                     \ 'cmd': {server_info->['gopls']},
                     \ 'rootPatterns': ["go.mod", ".git/"],
                     \ 'whitelist': ['go'],
+                    \ 'workspace_config': {'gopls': {'staticcheck': v:true}},
                     \ })
         autocmd FileType go setlocal omnifunc=lsp#complete
     augroup END
@@ -530,7 +532,7 @@ function! s:set_autoformat()
     let JpCountOverChars=1
     set formatexpr=jpfmt#formatexpr()
 endfunction
-Plug 'homedm/vim-better-whitespace'
+Plug 'tomato3713/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
 Plug 'vim-scripts/Align'
@@ -542,7 +544,7 @@ set helplang=en,ja
 
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
-let g:memolist_path = expand('$HOME/code/src/github.com/homedm/notebox/memo')
+let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo')
 let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
 let g:memolist_memo_suffix = "md"
 let g:memolist_memo_date = "%Y-%m-%d %H:%M"
@@ -573,7 +575,7 @@ set showmatch
 
 " Draw image and play music
 Plug 'thinca/vim-painter'
-Plug 'homedm/vim-play-piano'
+Plug 'tomato3713/vim-play-piano'
 
 call plug#end()
 packadd termdebug
