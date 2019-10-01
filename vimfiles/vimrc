@@ -1,4 +1,4 @@
-" Last Change: 27/09/2019 - 13:29:17.
+" Last Change: 02/10/2019 - 01:50:49.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -434,6 +434,24 @@ if executable('docker-langserver')
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
         \ 'whitelist': ['dockerfile'],
         \ })
+endif
+
+if executable('elm-language-server')
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
+let g:elm_setup_keybindings = 0
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'elm-language-server',
+                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'elm-language-server --stdio']},
+                \ 'initialization_options': {
+                \ 'runtime': 'node',
+                \ 'elmPath': 'elm',
+                \ 'elmFormatPath': 'elm-format',
+                \ 'elmTestPath': 'elm-test',
+                \ 'rootPatterns': 'elm.json'
+                \ },
+                \ 'whitelist': ['elm'],
+                \ })
+    autocmd BufWritePre *.elm LspDocumentFormat
 endif
 
 " other language lsp setting
