@@ -1,4 +1,4 @@
-" Last Change: 02/10/2019 - 01:50:49.
+" Last Change: 11/10/2019 - 18:35:34.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -272,6 +272,7 @@ endif
 " }}}
 
 " for text edit
+Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -280,6 +281,8 @@ set updatetime=250
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['latex']
+let g:vim_markdown_conceal = 0
 
 " Language Server Protocol Client
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -567,6 +570,7 @@ let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
 let g:memolist_memo_suffix = "md"
 let g:memolist_memo_date = "%Y-%m-%d %H:%M"
 " markdown
+Plug 'godlygeek/tabular'
 Plug 'previm/previm'
 " open with chromium
 let g:previm_open_cmd = 'chromium'
