@@ -1,4 +1,4 @@
-" Last Change: 11/10/2019 - 18:35:34.
+" Last Change: 18/10/2019 - 12:05:32.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -131,6 +131,7 @@ endif
 
 " ファイル内容が変更されると自動読み込みする
 set autoread
+set switchbuf=useopen
 autocmd MyAutoCmd WinEnter * checktime
 
 if has('persistent_undo')
