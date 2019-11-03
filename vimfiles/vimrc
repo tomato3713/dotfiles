@@ -1,4 +1,4 @@
-" Last Change: 18/10/2019 - 12:05:32.
+" Last Change: 03/11/2019 - 16:56:15.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ### {{{
@@ -163,18 +163,18 @@ set scrolloff=5
 set showcmd
 
 " disable conceal for TeX
-let g:tex_conceal='abdmg'
+let g:tex_conceal=''
 autocmd MyAutoCmd FileType latex :setlocal foldmethod=marker
 
 autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
 function! s:set_japanese_document_format()
         " change important keyword the last of lines ' >' and the top of lines '<'
-        if &buftype != 'help'
+        if &buftype !=# 'help'
                 highlight ignore ctermfg=red
                 syntax match Error /\%>79v.*/
                 syntax match Error /、\s/
                 syntax match Error /。\s/
-                set cc=+1
+                set colorcolumn=+1
                 let JpCountOverChars = 1
                 set formatexpr=jpfmt#formatexpr()
                 if has('conceal')
@@ -234,7 +234,7 @@ cnoremap wq x
 " automated install vim-plug
 if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
     let s:vim_plug_url='https://github.com/junegunn/vim-plug'
-    call system("git clone " . s:vim_plug_url . " " . $HOME . "/.vim/vim-plug/")
+    call system('git clone ' . s:vim_plug_url . ' ' . $HOME . '/.vim/vim-plug/')
 endif
 source ~/.vim/vim-plug/plug.vim
 
@@ -275,6 +275,7 @@ endif
 " for text edit
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jiangmiao/auto-pairs'
+autocmd MyAutoCmd Filetype markdown,tex let b:autopairs_loaded=1
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
@@ -290,17 +291,22 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+let g:asyncomplete_remove_duplicates = 1
+let g:asyncomplete_smart_completion = 1
+let g:asyncomplete_auto_popup = 1
+" auto close preview window when completion is done.
+autocmd! MyAutoCmd CompleteDone * if pumvisible() == 0 | pclose | endif
 
 function! s:check_back_space() abort
     let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 inoremap <silent><expr> <TAB>
   \ pumvisible() ? "\<C-n>" :
   \ <SID>check_back_space() ? "\<TAB>" :
   \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> pumvisible() ? '\<C-p>' : '\<C-h>'
 
 " common vim-lsp setting
 let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LSP
@@ -308,18 +314,18 @@ let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_auto_enable = 1
 let g:lsp_use_event_queue = 1
 let g:lsp_signs_enabled = 1         " enable signs
-let g:lsp_signs_error = {"text": "✗"}
-let g:lsp_signs_warning = {"text": "!!"}
-let g:lsp_signs_hint = {"text": "??"}
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '!!'}
+let g:lsp_signs_hint = {'text': '??'}
 " Opens preview windows as floating
 let g:lsp_preview_float = 1
 " Preview remains open and waits for an explicit call
 let g:lsp_preview_autoclose = 0
-autocmd BufWritePre <buffer> LspDocumentFormatSync
+" autocmd BufWritePre <buffer> LspDocumentFormatSync
 nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = 'goimports'
 let g:go_bin_path = $GOPATH.'/bin'
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -355,13 +361,13 @@ Plug 'leafgarland/typescript-vim'
 if executable('typescript-language-server')
     " npm install -g typescript typescript-language-server
     " use directory with .git as root
-    autocmd User lsp_setup call lsp#register_server({
+    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
     \ 'name': 'javascript',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
     \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
     \ 'whitelist': ['javascript', 'javascript.jsx'],
     \ })
-    autocmd User lsp_setup call lsp#register_server({
+    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
         \ 'name': 'typescript',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
@@ -414,7 +420,7 @@ autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 " pip install python-language-server
 if executable('pyls')
 Plug 'ryanolsonx/vim-lsp-python'
-    au User lsp_setup call lsp#register_server({
+    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
         \ 'name': 'Python',
         \ 'cmd': {server_info->['pyls']},
         \ 'whitelist': ['python'],
@@ -423,7 +429,7 @@ endif
 
 if executable('metals-vim')
 Plug 'derekwyatt/vim-scala'
-   au User lsp_setup call lsp#register_server({
+   autocmd MyAutoCmd User lsp_setup call lsp#register_server({
       \ 'name': 'Scala',
       \ 'cmd': {server_info->['metals-vim']},
       \ 'initialization_options': { 'rootPatterns': 'build.sbt' },
@@ -433,7 +439,7 @@ endif
 
 " npm install -g dockerfile-language-server-nodejs
 if executable('docker-langserver')
-    au User lsp_setup call lsp#register_server({
+    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
         \ 'name': 'docker-langserver',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
         \ 'whitelist': ['dockerfile'],
@@ -443,7 +449,7 @@ endif
 if executable('elm-language-server')
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 let g:elm_setup_keybindings = 0
-    au User lsp_setup call lsp#register_server({
+    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
                 \ 'name': 'elm-language-server',
                 \ 'cmd': {server_info->[&shell, &shellcmdflag, 'elm-language-server --stdio']},
                 \ 'initialization_options': {
@@ -455,7 +461,7 @@ let g:elm_setup_keybindings = 0
                 \ },
                 \ 'whitelist': ['elm'],
                 \ })
-    autocmd BufWritePre *.elm LspDocumentFormat
+    autocmd MyAutoCmd BufWritePre *.elm LspDocumentFormat
 endif
 
 " other language lsp setting
@@ -464,7 +470,7 @@ augroup LspEFM
   autocmd User lsp_setup call lsp#register_server({
       \ 'name': 'efm',
       \ 'cmd': {server_info->['efm-langserver']},
-      \ 'whitelist': ['markdown', 'vim'],
+      \ 'whitelist': ['vim', 'markdown', 'yaml'],
       \ })
 augroup END
 
@@ -472,6 +478,9 @@ augroup END
 Plug 'justmao945/vim-clang'
 " Lisp
 Plug 'kovisoft/slimv'
+let g:slimv_swank_cmd = "!ros -e '(ql:quickload :swank) (swank:create-server)' wait &"
+let g:slimv_lisp = 'ros run'
+let g:slimv_impl = 'sbcl'
 
 " Runner
 Plug 'thinca/vim-quickrun' " {{{
@@ -542,7 +551,7 @@ Plug 'mechatroner/rainbow_csv'
 
 " For General Formatter
 Plug 'vim-scripts/autodate.vim',
-let autodate_format="%d/%m/%Y\ -\ %H:%M:%S"
+let autodate_format='%d/%m/%Y\ -\ %H:%M:%S'
 Plug 'fuenor/JpFormat.vim',
 " gqコマンドを実行前に自動整形をオフにする
 nnoremap <silent> <expr> gq JpFormat_cmd("gq")
@@ -568,8 +577,8 @@ set helplang=en,ja
 Plug 'glidenote/memolist.vim'
 let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo')
 let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
-let g:memolist_memo_suffix = "md"
-let g:memolist_memo_date = "%Y-%m-%d %H:%M"
+let g:memolist_memo_suffix = 'md'
+let g:memolist_memo_date = '%Y-%m-%d %H:%M'
 " markdown
 Plug 'godlygeek/tabular'
 Plug 'previm/previm'
@@ -605,9 +614,9 @@ packadd termdebug
 
 " netrw setting
 let g:netrw_liststyle = 1
-let g:netrw_sizestyle = "H"
-let g:netrw_sort_options="i"
-let g:netrw_timefmt = "%Y/%m/%d(%a) %H:%M:%S"
+let g:netrw_sizestyle = 'H'
+let g:netrw_sort_options='i'
+let g:netrw_timefmt = '%Y/%m/%d(%a) %H:%M:%S'
 let g:netrw_preview = 1
 let g:netrw_list_hide = '.git'
 let g:netrw_altv = 1
