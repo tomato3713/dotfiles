@@ -6,7 +6,7 @@ let g:lightline = {
             \ 'active': {
             \   'left': [ ['mode', 'gitbranch', 'readonly', 'filename', 'modified'] ]
             \ },
-            \ 'colorscheme': 'solarized',
+            \ 'colorscheme': 'seoul256',
             \ 'component_function': {
             \   'gitbranch': 'gitbranch#name'
             \ },

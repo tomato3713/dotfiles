@@ -1,4 +1,4 @@
-" Last Change: 03/11/2019 - 19:48:38.
+" Last Change: 04/11/2019 - 01:56:19.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -228,14 +228,18 @@ let g:netrw_list_hide = '.git'
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 
-" Color Scheme
+" Colorscheme
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 let g:solarized_termcolors=256
+Plug 'junegunn/seoul256.vim'
+"   Range:   233 (darkest) ~ 239 (lightest), default: 237
+let g:seoul256_background = 234
 
 " for text edit
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
+Plug 'kana/vim-tabpagecd'
 Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
 autocmd MyAutoCmd Filetype markdown,tex let b:autopairs_loaded=1
@@ -402,6 +406,6 @@ filetype plugin indent on
 " , runtimepath に含まれている設定をもとにシンタックスを生成しようとするため,
 " runtimepath を設定し終えた後に設定するべき.
 syntax enable
-colorscheme solarized
+colorscheme seoul256
 set secure
 " }}}
