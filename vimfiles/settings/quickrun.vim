@@ -11,10 +11,6 @@ let g:quickrun_config = {
             \ 'c/gcc' : {
             \   'cmdopt' : '-stc=c99 -Wall'
             \ },
-            \ 'tex' : {
-            \   'command' : 'platex',
-            \   'exec' : ['%c -synctex=1 -interaction=nonstopmode %s', 'zathura %s:r.pdf']
-            \ },
             \ 'lisp' : {
             \   'type': executable('sbcl') ? 'lisp/sbcl':
             \           executable('ccl')  ? 'lisp/ccl':

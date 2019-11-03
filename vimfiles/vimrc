@@ -1,4 +1,4 @@
-" Last Change: 04/11/2019 - 01:56:19.
+" Last Change: 04/11/2019 - 02:14:39.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -374,18 +374,6 @@ let g:tex_conceal=''
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-let g:vimtex_compiler_latexmk = {
-            \ 'background': 1,
-            \ 'build_dir': '',
-            \ 'continuous': 1,
-            \ 'options': [
-            \     '-pdfdvi',
-            \     '-verbose',
-            \     '-file-line-error',
-            \     '-synctex=1',
-            \     '-interaction=nonstopmode',
-            \ ],
-            \}
 
 " CSV
 Plug 'luochen1990/rainbow'
