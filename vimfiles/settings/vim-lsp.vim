@@ -29,8 +29,6 @@ if executable('go-langserver')
 endif
 
 if executable('typescript-language-server')
-    Plug 'ryanolsonx/vim-lsp-javascript'
-
     " npm install -g typescript typescript-language-server
     " use directory with .git as root
     autocmd MyAutoCmd User lsp_setup call lsp#register_server({
@@ -89,7 +87,6 @@ autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 
 " pip install python-language-server
 if executable('pyls')
-Plug 'ryanolsonx/vim-lsp-python'
     autocmd MyAutoCmd User lsp_setup call lsp#register_server({
         \ 'name': 'Python',
         \ 'cmd': {server_info->['pyls']},
@@ -98,7 +95,6 @@ Plug 'ryanolsonx/vim-lsp-python'
 endif
 
 if executable('metals-vim')
-Plug 'derekwyatt/vim-scala'
    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
       \ 'name': 'Scala',
       \ 'cmd': {server_info->['metals-vim']},
@@ -117,7 +113,6 @@ if executable('docker-langserver')
 endif
 
 if executable('elm-language-server')
-    Plug 'ElmCast/elm-vim', { 'for': 'elm' }
     let g:elm_setup_keybindings = 0
     autocmd MyAutoCmd User lsp_setup call lsp#register_server({
                 \ 'name': 'elm-language-server',

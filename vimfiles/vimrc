@@ -1,4 +1,4 @@
-" Last Change: 03/11/2019 - 19:39:02.
+" Last Change: 03/11/2019 - 19:48:38.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -228,17 +228,6 @@ let g:netrw_list_hide = '.git'
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 
-Plug 'mattn/sonictemplate-vim'
-" Tell My Template Directory
-let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
-let g:sonictemplate_vim_vars = {
-            \ '_': {
-            \   'author': 'Taichi Watanabe',
-            \ },
-            \}
-" For making Plugin
-Plug 'mopp/layoutplugin.vim'
-
 " Color Scheme
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
@@ -308,6 +297,23 @@ Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['latex']
 let g:vim_markdown_conceal = 0
 
+" #### template ####
+Plug 'mattn/sonictemplate-vim'
+" Tell My Template Directory
+let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
+let g:sonictemplate_vim_vars = {
+            \ '_': {
+            \   'author': 'Taichi Watanabe',
+            \ },
+            \}
+" For making Plugin
+Plug 'mopp/layoutplugin.vim'
+
+" #### Snippet ####
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+runtime settings/neosnippet.vim
+
 " #### Language Server Protocol Client ####
 Plug 'prabirshrestha/vim-lsp'
 runtime settings/vim-lsp.vim
@@ -315,6 +321,11 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 runtime settings/asyncomplete.vim
+Plug 'ryanolsonx/vim-lsp-javascript'
+Plug 'ryanolsonx/vim-lsp-python'
+Plug 'derekwyatt/vim-scala'
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
+
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_command = 'goimports'
