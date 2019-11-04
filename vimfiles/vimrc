@@ -1,4 +1,4 @@
-" Last Change: 04/11/2019 - 02:14:39.
+" Last Change: 04/11/2019 - 23:26:42.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -250,6 +250,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tomato3713/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
+Plug 'skanehira/translate.vim'
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
 let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo')
