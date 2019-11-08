@@ -1,4 +1,4 @@
-" Last Change: 04/11/2019 - 23:26:42.
+" Last Change: 05/11/2019 - 04:50:40.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -300,7 +300,9 @@ runtime settings/statusline.vim
 " #### Language Settings ####
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['latex']
+let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
 
 " #### template ####
 Plug 'mattn/sonictemplate-vim'
