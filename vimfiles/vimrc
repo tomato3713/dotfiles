@@ -1,4 +1,4 @@
-" Last Change: 05/11/2019 - 04:50:40.
+" Last Change: 13/11/2019 - 22:57:44.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -107,11 +107,11 @@ if has('vim_starting')
     " }}}
 
     " #### Indent #### {{{
-    set autoindent " 新しい行のインデントを継続する
-    set expandtab "tab to space
-    set tabstop=4 " 画面上でタブ文字の占める幅
+    set autoindent   " 新しい行のインデントを継続する
+    set expandtab    " tab to space
+    set tabstop=4    " 画面上でタブ文字の占める幅
     set shiftwidth=4 " 自動インデントでずれる幅
-    set smartindent " 折り返しの際にインデントを考慮
+    set smartindent  " 折り返しの際にインデントを考慮
     set breakindent
     " }}}
 
@@ -120,16 +120,10 @@ if has('vim_starting')
     set history=2000
     " いろんなコマンドの後にカーソルを先頭に移動させない
     set nostartofline
+    " Rename current file
+    command! -nargs=1 -complete=file Rename call rename(expand('%'), '<args>') | e <args>
     " }}}
 endif
-
-" Keyword highlight ex. TODO:, NOTE:, REF:, TEMP:
-augroup HilightsForce
-    autocmd!
-    autocmd WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
-    " autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=#000124 guifg=#000015
-augroup END
-"}}}
 
 " if miss to guess file type
 autocmd MyAutoCmd BufWritePost *
@@ -137,6 +131,13 @@ autocmd MyAutoCmd BufWritePost *
                         \ unlet! b:ftdetect |
                         \ filetype detect |
                         \ endif
+
+" Keyword highlight ex. TODO:, NOTE:, REF:, TEMP:
+augroup HilightsForce
+    autocmd!
+    autocmd WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
+    " autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=#000124 guifg=#000015
+augroup END
 
 " Enable cursor line at needed
 augroup vimrc-auto-cursorline
@@ -174,7 +175,6 @@ set wildmenu wildmode=longest:full
 set completeopt=menu,preview
 " Wait key time
 set timeout ttimeoutlen=50
-
 " spelling補完 on <C-x><C-s>
 set spell
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
@@ -194,7 +194,6 @@ set dictionary=$HOME/.vim/dict/programming.dict
 
 " change Leader key to Space key
 let mapleader = "\<Space>"
-
 cnoremap <C-n> <Down>
 cnoremap <C-p> <Up>
 nnoremap ZQ <Nop>
@@ -202,7 +201,7 @@ nnoremap ZQ <Nop>
 cnoremap wq x
 " }}}
 
-" ### plugin ### {{{
+" ### Plugins ### {{{
 " automated install vim-plug
 if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
     let s:vim_plug_url='https://github.com/junegunn/vim-plug'
@@ -211,13 +210,12 @@ endif
 source ~/.vim/vim-plug/plug.vim
 
 call plug#begin('~/.vim/plugged')
-" Japanese help
+" #### Help Documents ####
 Plug 'vim-jp/vimdoc-ja'
 set helplang=en,ja
 
 " #### Filer ####
 Plug 'cocopon/vaffle.vim'
-
 " netrw setting
 let g:netrw_liststyle = 1
 let g:netrw_sizestyle = 'H'
@@ -228,15 +226,16 @@ let g:netrw_list_hide = '.git'
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 
-" Colorscheme
+" #### Color scheme ####
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 let g:solarized_termcolors=256
 Plug 'junegunn/seoul256.vim'
-"   Range:   233 (darkest) ~ 239 (lightest), default: 237
+" Range:   233 (darkest) ~ 239 (lightest), default: 237
 let g:seoul256_background = 234
 
-" for text edit
+" #### Text editing Utilities ####
+Plug 'itchyny/vim-cursorword'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-tabpagecd'
@@ -250,6 +249,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tomato3713/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0 " not confirm before white space is stripped."
 Plug 'skanehira/translate.vim'
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
@@ -257,9 +257,12 @@ let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo'
 let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
 let g:memolist_memo_suffix = 'md'
 let g:memolist_memo_date = '%Y-%m-%d %H:%M'
-
-Plug 'vim-scripts/Align'
-let g:Align_xstrlen = 3 " Setting for Japanese environment
+Plug 'junegunn/vim-easy-align'
+vmap <Enter> <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+" disable &foldmethod during alignment
+let g:easy_align_bypass_fold = 1
 " For General Formatter
 Plug 'vim-scripts/autodate.vim',
 let autodate_format='%d/%m/%Y\ -\ %H:%M:%S'
@@ -291,6 +294,7 @@ function! s:set_japanese_document_format()
         endif
 endfunction
 
+" #### Runner ####
 Plug 'thinca/vim-quickrun'
 runtime settings/quickrun.vim
 Plug 'itchyny/vim-gitbranch'
@@ -304,6 +308,9 @@ let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 
+" #### Debugger Supports ####
+packadd termdebug
+
 " #### template ####
 Plug 'mattn/sonictemplate-vim'
 " Tell My Template Directory
@@ -313,7 +320,7 @@ let g:sonictemplate_vim_vars = {
             \   'author': 'Taichi Watanabe',
             \ },
             \}
-" For making Plugin
+" For making Vim Plugin
 Plug 'mopp/layoutplugin.vim'
 
 " #### Snippet ####
@@ -328,12 +335,31 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 runtime settings/asyncomplete.vim
+
+" #### General Languages Supports ####
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['latex']
+let g:vim_markdown_conceal = 0
+
+" #### JavaScript/AltJS and HTML/CSS Supports ####
 Plug 'ryanolsonx/vim-lsp-javascript'
-Plug 'ryanolsonx/vim-lsp-python'
+" Typescript Syntax highlight
+Plug 'leafgarland/typescript-vim'
+
+" #### HTML/CSS Supports ####
+Plug 'mattn/emmet-vim'
+
+" #### Python Supports ####
+Plug 'ryanolsonx/vim-lsp-python', { 'for': 'python' }
+Plug 'prakashdanish/vimport', { 'for': 'python' } " :Vimport and :Vimdrop"
+
+" #### Scala Supports ####
 Plug 'derekwyatt/vim-scala'
+
+" #### Elm Supports ####
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
-
+" #### Golang Supports ####
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_command = 'goimports'
 let g:go_bin_path = $GOPATH.'/bin'
@@ -350,35 +376,29 @@ let g:go_info_mode = 'gopls'
 let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 
-" Typescript Syntax highlight
-Plug 'leafgarland/typescript-vim'
-
-" HTML/CSS
-Plug 'mattn/emmet-vim'
-
-" C Language
+" #### C Language Supports ####
 Plug 'justmao945/vim-clang'
 
-" Lisp
+" #### Lisp Supports ####
 Plug 'kovisoft/slimv'
 let g:slimv_swank_cmd = "!ros -e '(ql:quickload :swank) (swank:create-server)' wait &"
 let g:slimv_lisp = 'ros run'
 let g:slimv_impl = 'sbcl'
 
-" markdown
-Plug 'godlygeek/tabular'
+" #### Markdown Supports ####
+Plug 'godlygeek/tabular' " for :TableFormat in vim-markdown
 Plug 'previm/previm'
 let g:previm_open_cmd = 'firefox'
 
-" For LaTeX
+" #### LaTeX/TeX Supports ####
 Plug 'lervag/vimtex'
-" disable conceal for TeX
+" disable conceal for LaTeX/TeX
 let g:tex_conceal=''
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 
-" CSV
+" #### CSV Supports ####
 Plug 'luochen1990/rainbow'
 let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 Plug 'mechatroner/rainbow_csv'
@@ -387,7 +407,6 @@ Plug 'mechatroner/rainbow_csv'
 Plug 'thinca/vim-painter'
 Plug 'tomato3713/vim-play-piano'
 call plug#end()
-packadd termdebug
 " }}}
 
 " ### Last Configuration ###
