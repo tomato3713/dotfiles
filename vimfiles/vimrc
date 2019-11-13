@@ -1,4 +1,4 @@
-" Last Change: 13/11/2019 - 19:17:35.
+" Last Change: 13/11/2019 - 20:16:29.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -107,11 +107,11 @@ if has('vim_starting')
     " }}}
 
     " #### Indent #### {{{
-    set autoindent " 新しい行のインデントを継続する
-    set expandtab "tab to space
-    set tabstop=4 " 画面上でタブ文字の占める幅
+    set autoindent   " 新しい行のインデントを継続する
+    set expandtab    " tab to space
+    set tabstop=4    " 画面上でタブ文字の占める幅
     set shiftwidth=4 " 自動インデントでずれる幅
-    set smartindent " 折り返しの際にインデントを考慮
+    set smartindent  " 折り返しの際にインデントを考慮
     set breakindent
     " }}}
 
@@ -231,7 +231,7 @@ Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 let g:solarized_termcolors=256
 Plug 'junegunn/seoul256.vim'
-"   Range:   233 (darkest) ~ 239 (lightest), default: 237
+" Range:   233 (darkest) ~ 239 (lightest), default: 237
 let g:seoul256_background = 234
 
 " #### Text editing Utilities ####
@@ -249,7 +249,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tomato3713/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
-let g:strip_whitespace_confirm=0 " not confirm before whitespace is stripped."
+let g:strip_whitespace_confirm=0 " not confirm before white space is stripped."
 Plug 'skanehira/translate.vim'
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
@@ -257,8 +257,12 @@ let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo'
 let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
 let g:memolist_memo_suffix = 'md'
 let g:memolist_memo_date = '%Y-%m-%d %H:%M'
-Plug 'vim-scripts/Align'
-let g:Align_xstrlen = 3 " Setting for Japanese environment
+Plug 'junegunn/vim-easy-align'
+vmap <Enter> <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+" disable &foldmethod during alignment
+let g:easy_align_bypass_fold = 1
 " For General Formatter
 Plug 'vim-scripts/autodate.vim',
 let autodate_format='%d/%m/%Y\ -\ %H:%M:%S'
@@ -375,7 +379,7 @@ let g:slimv_lisp = 'ros run'
 let g:slimv_impl = 'sbcl'
 
 " #### Markdown Supports ####
-Plug 'godlygeek/tabular'
+Plug 'godlygeek/tabular' " for :TableFormat in vim-markdown
 Plug 'previm/previm'
 let g:previm_open_cmd = 'firefox'
 
