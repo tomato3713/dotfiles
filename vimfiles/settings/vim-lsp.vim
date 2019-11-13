@@ -13,13 +13,25 @@ let g:lsp_preview_autoclose = 0
 " Highlight references
 let g:lsp_highlight_references_enabled = 1
 
-" autocmd BufWritePre <buffer> LspDocumentFormatSync
-nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
-setlocal omnifunc=lsp#complete
-nnoremap <buffer> gd <plug>(lsp-definition)
-nnoremap <buffer> gr <plug>(lsp-references)
-nnoremap <buffer> K <plug>(lsp-hover)
-nnoremap <buffer> gr <plug>(lsp-rename)
+function! s:set_lsp_configuration() abort
+    " autocmd BufWritePre <buffer> LspDocumentFormatSync
+
+    setlocal omnifunc=lsp#complete
+
+    " <Leader>l is prefix for vim-lsp
+    nmap <Leader>l [vim-lsp]
+    nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
+    nnoremap <buffer> <C-]> :<C-u>LspDefinition<CR>
+    nnoremap <buffer> [vim-lsp]d :<C-u>LspDefinition<CR>
+    nnoremap <buffer> [vim-lsp]D :<C-u>LspReferences<CR>
+    nnoremap <buffer> [vim-lsp]s :<C-u>LspDocumentSymbol<CR>
+    nnoremap <buffer> [vim-lsp]S :<C-u>LspWorkspaceSymbol<CR>
+    nnoremap <buffer> [vim-lsp]q :<C-u>LspDocumentFormat<CR>
+    vnoremap <buffer> [vim-lsp]q :LspDocumentRangeFormat<CR>
+    nnoremap <buffer> [vim-lsp]k :<C-u>LspHover<CR>
+    nnoremap <buffer> [vim-lsp]i :<C-u>LspImplementation<CR>
+    nnoremap <buffer> [vim-lsp]r :<C-u>LspRename<CR>
+endfunction
 
 if executable('go-langserver')
     augroup LspGo
@@ -39,24 +51,42 @@ if executable('go-langserver')
                     \     'hoverKind': 'SingleLine',
                     \ }},
                     \ })
+        autocmd FileType go call s:set_lsp_configuration()
     augroup END
 endif
 
 if executable('typescript-language-server')
     " npm install -g typescript typescript-language-server
     " use directory with .git as root
-    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
-                \ 'name': 'javascript',
-                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
-                \ 'whitelist': ['javascript', 'javascript.jsx'],
-                \ })
-    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
-                \ 'name': 'typescript',
-                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-                \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-                \ 'whitelist': ['typescript', 'typescript.tsx'],
-                \ })
+    augroup LspJS
+        autocmd!
+        autocmd MyAutoCmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'javascript',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+                    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
+                    \ 'whitelist': ['javascript', 'javascript.jsx'],
+                    \ })
+        autocmd MyAutoCmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'typescript',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+                    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+                    \ 'whitelist': ['typescript', 'typescript.tsx'],
+                    \ })
+        autocmd FileType javascript, typescript call s:set_lsp_configuration()
+    augroup END
+endif
+
+if executable('html-languageserver')
+    " npm install --global vscode-html-language-server-bin
+    augroup LspHTML
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'html-languageserver',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'html-languageserver --stdio']},
+                    \ 'whitelist': ['html'],
+                    \ })
+        autocmd FileType html call s:set_lsp_configuration()
+    augroup END
 endif
 
 if executable('css-languageserver')
@@ -68,6 +98,7 @@ if executable('css-languageserver')
                     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
                     \ 'whitelist': ['css', 'less', 'sass'],
                     \ })
+        autocmd FileType css, less, sass call s:set_lsp_configuration()
     augroup END
 endif
 
@@ -80,6 +111,7 @@ augroup LspPHP
                 \ 'cmd': {server_info->['node', expand('~/.nvm/versions/node/v11.7.0/lib/node_modules/intelephense-server/lib/server.js'), '--stdio']},
                 \ 'whitelist': ['php'],
                 \ })
+    autocmd FileType php call s:set_lsp_configuration()
 augroup END
 
 if executable('solagraph')
@@ -92,58 +124,74 @@ if executable('solagraph')
                     \ 'initialization_options': { "diagnostics": "true"},
                     \ 'whitelist': ['ruby'],
                     \ })
+        autocmd FileType ruby call s:set_lsp_configuration()
     augroup END
 endif
 autocmd MyAutoCmd FileType ruby :setlocal isk+=@-@
 
 " pip install python-language-server
 if executable('pyls')
-    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
-                \ 'name': 'Python',
-                \ 'cmd': {server_info->['pyls']},
-                \ 'whitelist': ['python'],
-                \ })
+    augroup LspPython
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'Python',
+                    \ 'cmd': {server_info->['pyls']},
+                    \ 'whitelist': ['python'],
+                    \ })
+        autocmd FileType python call s:set_lsp_configuration()
+    augroup END
 endif
 
 if executable('metals-vim')
-    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
-                \ 'name': 'Scala',
-                \ 'cmd': {server_info->['metals-vim']},
-                \ 'initialization_options': { 'rootPatterns': 'build.sbt' },
-                \ 'whitelist': [ 'scala', 'sbt' ],
-                \ })
+    augroup LspScala
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'Scala',
+                    \ 'cmd': {server_info->['metals-vim']},
+                    \ 'initialization_options': { 'rootPatterns': 'build.sbt' },
+                    \ 'whitelist': [ 'scala', 'sbt' ],
+                    \ })
+        autocmd FileType scala call s:set_lsp_configuration()
+    augroup END
 endif
 
 " npm install -g dockerfile-language-server-nodejs
 if executable('docker-langserver')
-    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
-                \ 'name': 'docker-langserver',
-                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
-                \ 'whitelist': ['dockerfile'],
-                \ })
+    augroup LspDocker
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'docker-langserver',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
+                    \ 'whitelist': ['dockerfile'],
+                    \ })
+    augroup END
 endif
 
 if executable('elm-language-server')
     let g:elm_setup_keybindings = 0
-    autocmd MyAutoCmd User lsp_setup call lsp#register_server({
-                \ 'name': 'elm-language-server',
-                \ 'cmd': {server_info->[&shell, &shellcmdflag, 'elm-language-server --stdio']},
-                \ 'initialization_options': {
-                \     'runtime': 'node',
-                \     'elmPath': 'elm',
-                \     'elmFormatPath': 'elm-format',
-                \     'elmTestPath': 'elm-test',
-                \     'rootPatterns': 'elm.json'
-                \ },
-                \ 'whitelist': ['elm'],
-                \ })
-    autocmd MyAutoCmd BufWritePre *.elm LspDocumentFormat
+    augroup LspElm
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'elm-language-server',
+                    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'elm-language-server --stdio']},
+                    \ 'initialization_options': {
+                    \     'runtime': 'node',
+                    \     'elmPath': 'elm',
+                    \     'elmFormatPath': 'elm-format',
+                    \     'elmTestPath': 'elm-test',
+                    \     'rootPatterns': 'elm.json'
+                    \ },
+                    \ 'whitelist': ['elm'],
+                    \ })
+        autocmd BufWritePre FileType elm LspDocumentFormat
+        autocmd FileType elm call s:set_lsp_configuration()
+    augroup END
 endif
 
 " other language lsp setting
 if executable('efm-langserver')
     augroup LspEFM
-        au!
+        autocmd!
         autocmd User lsp_setup call lsp#register_server({
                     \ 'name': 'efm',
                     \ 'cmd': {server_info->['efm-langserver']},

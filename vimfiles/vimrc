@@ -1,4 +1,4 @@
-" Last Change: 13/11/2019 - 22:57:44.
+" Last Change: 14/11/2019 - 00:03:51.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -174,7 +174,7 @@ augroup END
 set wildmenu wildmode=longest:full
 set completeopt=menu,preview
 " Wait key time
-set timeout ttimeoutlen=50
+set timeout ttimeoutlen=100
 " spelling補完 on <C-x><C-s>
 set spell
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
@@ -341,7 +341,7 @@ Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['latex']
 let g:vim_markdown_conceal = 0
 
-" #### JavaScript/AltJS and HTML/CSS Supports ####
+" #### JavaScript/AltJS Supports ####
 Plug 'ryanolsonx/vim-lsp-javascript'
 " Typescript Syntax highlight
 Plug 'leafgarland/typescript-vim'
