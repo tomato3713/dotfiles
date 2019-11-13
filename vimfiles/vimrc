@@ -1,4 +1,4 @@
-" Last Change: 13/11/2019 - 18:50:18.
+" Last Change: 13/11/2019 - 19:17:35.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -235,6 +235,7 @@ Plug 'junegunn/seoul256.vim'
 let g:seoul256_background = 234
 
 " #### Text editing Utilities ####
+Plug 'itchyny/vim-cursorword'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-tabpagecd'
@@ -296,6 +297,9 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'itchyny/lightline.vim'
 runtime settings/statusline.vim
 
+" #### Debugger Supports ####
+packadd termdebug
+
 " #### template ####
 Plug 'mattn/sonictemplate-vim'
 " Tell My Template Directory
@@ -335,7 +339,8 @@ Plug 'leafgarland/typescript-vim'
 Plug 'mattn/emmet-vim'
 
 " #### Python Supports ####
-Plug 'ryanolsonx/vim-lsp-python'
+Plug 'ryanolsonx/vim-lsp-python', { 'for': 'python' }
+Plug 'prakashdanish/vimport', { 'for': 'python' } " :Vimport and :Vimdrop"
 
 " #### Scala Supports ####
 Plug 'derekwyatt/vim-scala'
@@ -391,7 +396,6 @@ Plug 'mechatroner/rainbow_csv'
 Plug 'thinca/vim-painter'
 Plug 'tomato3713/vim-play-piano'
 call plug#end()
-packadd termdebug
 " }}}
 
 " ### Last Configuration ###
