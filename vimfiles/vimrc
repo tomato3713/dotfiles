@@ -1,4 +1,4 @@
-" Last Change: 04/11/2019 - 23:26:42.
+" Last Change: 13/11/2019 - 18:43:37.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -202,7 +202,7 @@ nnoremap ZQ <Nop>
 cnoremap wq x
 " }}}
 
-" ### plugin ### {{{
+" ### Plugins ### {{{
 " automated install vim-plug
 if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
     let s:vim_plug_url='https://github.com/junegunn/vim-plug'
@@ -211,13 +211,12 @@ endif
 source ~/.vim/vim-plug/plug.vim
 
 call plug#begin('~/.vim/plugged')
-" Japanese help
+" #### Help Documents ####
 Plug 'vim-jp/vimdoc-ja'
 set helplang=en,ja
 
 " #### Filer ####
 Plug 'cocopon/vaffle.vim'
-
 " netrw setting
 let g:netrw_liststyle = 1
 let g:netrw_sizestyle = 'H'
@@ -228,7 +227,7 @@ let g:netrw_list_hide = '.git'
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 
-" Colorscheme
+" #### Colorscheme ####
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
 Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 let g:solarized_termcolors=256
@@ -236,7 +235,7 @@ Plug 'junegunn/seoul256.vim'
 "   Range:   233 (darkest) ~ 239 (lightest), default: 237
 let g:seoul256_background = 234
 
-" for text edit
+" #### Text editing Utilities ####
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'kana/vim-tabpagecd'
@@ -250,6 +249,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tomato3713/vim-better-whitespace'
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
+let g:strip_whitespace_confirm=0 " not confirm before whitespace is stripped."
 Plug 'skanehira/translate.vim'
 " For Writing Documentation
 Plug 'glidenote/memolist.vim'
@@ -257,7 +257,6 @@ let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo'
 let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
 let g:memolist_memo_suffix = 'md'
 let g:memolist_memo_date = '%Y-%m-%d %H:%M'
-
 Plug 'vim-scripts/Align'
 let g:Align_xstrlen = 3 " Setting for Japanese environment
 " For General Formatter
@@ -291,16 +290,12 @@ function! s:set_japanese_document_format()
         endif
 endfunction
 
+" #### Runner ####
 Plug 'thinca/vim-quickrun'
 runtime settings/quickrun.vim
 Plug 'itchyny/vim-gitbranch'
 Plug 'itchyny/lightline.vim'
 runtime settings/statusline.vim
-
-" #### Language Settings ####
-Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled = ['latex']
-let g:vim_markdown_conceal = 0
 
 " #### template ####
 Plug 'mattn/sonictemplate-vim'
@@ -311,7 +306,7 @@ let g:sonictemplate_vim_vars = {
             \   'author': 'Taichi Watanabe',
             \ },
             \}
-" For making Plugin
+" For making Vim Plugin
 Plug 'mopp/layoutplugin.vim'
 
 " #### Snippet ####
@@ -326,12 +321,30 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 runtime settings/asyncomplete.vim
+
+" #### General Languages Supports ####
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['latex']
+let g:vim_markdown_conceal = 0
+
+" #### JavaScript/AltJS and HTML/CSS Supports ####
 Plug 'ryanolsonx/vim-lsp-javascript'
+" Typescript Syntax highlight
+Plug 'leafgarland/typescript-vim'
+
+" #### HTML/CSS Supports ####
+Plug 'mattn/emmet-vim'
+
+" #### Python Supports ####
 Plug 'ryanolsonx/vim-lsp-python'
+
+" #### Scala Supports ####
 Plug 'derekwyatt/vim-scala'
+
+" #### Elm Supports ####
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
-
+" #### Golang Supports ####
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 let g:go_fmt_command = 'goimports'
 let g:go_bin_path = $GOPATH.'/bin'
@@ -348,35 +361,29 @@ let g:go_info_mode = 'gopls'
 let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 
-" Typescript Syntax highlight
-Plug 'leafgarland/typescript-vim'
-
-" HTML/CSS
-Plug 'mattn/emmet-vim'
-
-" C Language
+" #### C Language Supports ####
 Plug 'justmao945/vim-clang'
 
-" Lisp
+" #### Lisp Supports ####
 Plug 'kovisoft/slimv'
 let g:slimv_swank_cmd = "!ros -e '(ql:quickload :swank) (swank:create-server)' wait &"
 let g:slimv_lisp = 'ros run'
 let g:slimv_impl = 'sbcl'
 
-" markdown
+" #### Markdown Supports ####
 Plug 'godlygeek/tabular'
 Plug 'previm/previm'
 let g:previm_open_cmd = 'firefox'
 
-" For LaTeX
+" #### LaTeX/TeX Supports ####
 Plug 'lervag/vimtex'
-" disable conceal for TeX
+" disable conceal for LaTeX/TeX
 let g:tex_conceal=''
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 
-" CSV
+" #### CSV Supports ####
 Plug 'luochen1990/rainbow'
 let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 Plug 'mechatroner/rainbow_csv'
