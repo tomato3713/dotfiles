@@ -1,6 +1,7 @@
-nnoremap <expr><silent> <space>c quickrun#is_runnting() ? quickrun#sweep_sessions() "\<C-c>"
-" <Leader>q で quickrun で開かれた出力バッファを閉じる
-nnoremap <Leader>q :<C-u>bw! \[QuickRun\ Output\]<CR>
+nmap <Leader>r [quick-run]
+" <Leader>rq で QuickRun で開かれた出力バッファを閉じる
+nnoremap [quick-run]q :<C-u>bw! \[QuickRun\ Output\]<CR>
+nnoremap [quick-run]r :<C-u>QuickRun<CR>
 
 let g:quickrun_config = {
             \ '_' : {
