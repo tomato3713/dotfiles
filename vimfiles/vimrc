@@ -1,4 +1,4 @@
-" Last Change: 14/11/2019 - 09:24:21.
+" Last Change: 14/11/2019 - 09:45:01.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -238,6 +238,9 @@ let g:seoul256_background = 234
 Plug 'itchyny/vim-cursorword'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
+Plug 'AndrewRadev/switch.vim'
+let g:switch_mapping = '+'
+let g:switch_reverse_mapping = '-'
 Plug 'kana/vim-tabpagecd'
 Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
