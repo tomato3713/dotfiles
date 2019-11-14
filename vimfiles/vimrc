@@ -1,4 +1,4 @@
-" Last Change: 14/11/2019 - 00:03:51.
+" Last Change: 14/11/2019 - 09:24:21.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -8,7 +8,7 @@
 
 set all&
 augroup MyAutoCmd
-        autocmd!
+    autocmd!
 augroup END
 
 if has('vim_starting')
@@ -70,7 +70,7 @@ if has('vim_starting')
 
     " vimの無名レジスタとOSのクリップボードを連携させる
     if has('clipboard')
-            set clipboard=unnamed,autoselect
+        set clipboard=unnamed,autoselect
     endif
 
     set viminfo='50,/50,:25,n$HOME/.vim/viminfo
@@ -127,10 +127,10 @@ endif
 
 " if miss to guess file type
 autocmd MyAutoCmd BufWritePost *
-                        \ if &filetype ==# '' && exists('b:ftdetect') |
-                        \ unlet! b:ftdetect |
-                        \ filetype detect |
-                        \ endif
+            \ if &filetype ==# '' && exists('b:ftdetect') |
+            \ unlet! b:ftdetect |
+            \ filetype detect |
+            \ endif
 
 " Keyword highlight ex. TODO:, NOTE:, REF:, TEMP:
 augroup HilightsForce
@@ -141,32 +141,32 @@ augroup END
 
 " Enable cursor line at needed
 augroup vimrc-auto-cursorline
-        autocmd!
-        autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
-        autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
-        autocmd WinEnter * call s:auto_cursorline('WinEnter')
-        autocmd WinLeave * call s:auto_cursorline('WinLeave')
-        let s:cursorline_lock = 0
-        function! s:auto_cursorline(event)
-                if a:event ==# 'WinEnter'
-                        setlocal cursorline
-                        let s:cursorline_lock = 2
-                elseif a:event ==# 'WinLeave'
-                        setlocal nocursorline
-                elseif a:event ==# 'CursorMoved'
-                        if s:cursorline_lock
-                                if 1 < s:cursorline_lock
-                                        let s:cursorline_lock = 1
-                                else
-                                        setlocal nocursorline
-                                        let s:cursorline_lock = 0
-                                endif
-                        endif
-                elseif a:event ==# 'CursorHold'
-                        setlocal cursorline
-                        let s:cursorline_lock = 1
+    autocmd!
+    autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
+    autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
+    autocmd WinEnter * call s:auto_cursorline('WinEnter')
+    autocmd WinLeave * call s:auto_cursorline('WinLeave')
+    let s:cursorline_lock = 0
+    function! s:auto_cursorline(event)
+        if a:event ==# 'WinEnter'
+            setlocal cursorline
+            let s:cursorline_lock = 2
+        elseif a:event ==# 'WinLeave'
+            setlocal nocursorline
+        elseif a:event ==# 'CursorMoved'
+            if s:cursorline_lock
+                if 1 < s:cursorline_lock
+                    let s:cursorline_lock = 1
+                else
+                    setlocal nocursorline
+                    let s:cursorline_lock = 0
                 endif
-        endfunction
+            endif
+        elseif a:event ==# 'CursorHold'
+            setlocal cursorline
+            let s:cursorline_lock = 1
+        endif
+    endfunction
 augroup END
 
 " ### completion ### {{{
@@ -279,19 +279,19 @@ function! s:set_autoformat()
     set formatexpr=jpfmt#formatexpr()
 endfunction
 function! s:set_japanese_document_format()
-        " change important keyword the last of lines ' >' and the top of lines '<'
-        if &buftype !=# 'help'
-                highlight ignore ctermfg=red
-                syntax match Error /\%>79v.*/
-                syntax match Error /、\s/
-                syntax match Error /。\s/
-                set colorcolumn=+1
-                let JpCountOverChars = 1
-                set formatexpr=jpfmt#formatexpr()
-                if has('conceal')
-                        setlocal conceallevel=0
-                endif
+    " change important keyword the last of lines ' >' and the top of lines '<'
+    if &buftype !=# 'help'
+        highlight ignore ctermfg=red
+        syntax match Error /\%>79v.*/
+        syntax match Error /、\s/
+        syntax match Error /。\s/
+        set colorcolumn=+1
+        let JpCountOverChars = 1
+        set formatexpr=jpfmt#formatexpr()
+        if has('conceal')
+            setlocal conceallevel=0
         endif
+    endif
 endfunction
 
 " #### Runner ####
