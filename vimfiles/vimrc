@@ -1,4 +1,4 @@
-" Last Change: 14/11/2019 - 09:45:01.
+" Last Change: 17/11/2019 - 00:30:32.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -378,9 +378,6 @@ let g:go_info_mode = 'gopls'
 " LSP に任せる機能を Off にする
 let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
-
-" #### C Language Supports ####
-Plug 'justmao945/vim-clang'
 
 " #### Lisp Supports ####
 Plug 'kovisoft/slimv'

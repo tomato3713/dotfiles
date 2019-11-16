@@ -189,6 +189,20 @@ if executable('elm-language-server')
     augroup END
 endif
 
+" Clang
+if executable('clangd')
+    augroup LspClang
+        autocmd!
+        autocmd User lsp_setup call lsp#register_server({
+                    \ 'name': 'clangd',
+                    \ 'cmd': {server_info->['clangd']},
+                    \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+                    \ })
+        autocmd BufWritePre FileType c LspDocumentFormat
+        autocmd FileType c call s:set_lsp_configuration()
+    augroup END
+endif
+
 " other language lsp setting
 if executable('efm-langserver')
     augroup LspEFM
