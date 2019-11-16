@@ -1,6 +1,7 @@
 let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LSP
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_auto_enable = 1
+let g:lsp_text_edit_enabled = 0
 let g:lsp_use_event_queue = 1
 let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_signs_error = {'text': '✗'}
