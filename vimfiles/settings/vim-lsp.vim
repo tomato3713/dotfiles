@@ -138,6 +138,7 @@ if executable('pyls')
                     \ 'name': 'Python',
                     \ 'cmd': {server_info->['pyls']},
                     \ 'whitelist': ['python'],
+                    \ 'workspace_config': {'pyls': {'plugins': {'pydocstyle' : {'enable': v:true}}}}
                     \ })
         autocmd FileType python call s:set_lsp_configuration()
     augroup END
