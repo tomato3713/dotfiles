@@ -1,4 +1,4 @@
-" Last Change: 11/12/2019 - 03:48:21.
+" Last Change: 21/12/2019 - 08:38:35.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -362,21 +362,7 @@ Plug 'derekwyatt/vim-scala'
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
 " #### Golang Supports ####
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-let g:go_fmt_command = 'goimports'
-let g:go_bin_path = $GOPATH.'/bin'
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_function_calls = 1
-" leave under functions to LSP
-let g:go_def_mode = 'gopls'
-let g:go_info_mode = 'gopls'
-" LSP に任せる機能を Off にする
-let g:go_def_mapping_enabled = 0
-let g:go_doc_keywordprg_enabled = 0
+Plug 'mattn/vim-goimports'
 
 " #### Lisp Supports ####
 Plug 'kovisoft/slimv'
