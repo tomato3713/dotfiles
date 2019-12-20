@@ -1,6 +1,9 @@
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_compleopt = 0
+
 let g:asyncomplete_remove_duplicates = 1
 let g:asyncomplete_smart_completion = 1
-let g:asyncomplete_auto_popup = 1
+
 " auto close preview window when completion is done.
 autocmd! MyAutoCmd CompleteDone * if pumvisible() == 0 | pclose | endif
 
@@ -14,5 +17,4 @@ inoremap <silent><expr> <TAB>
   \ <SID>check_back_space() ? "\<TAB>" :
   \ asyncomplete#force_refresh()
 inoremap <expr><S-TAB> pumvisible() ? '\<C-p>' : '\<C-h>'
-
 

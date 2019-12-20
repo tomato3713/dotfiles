@@ -1,27 +1,33 @@
-let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LSP
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_auto_enable = 1
-let g:lsp_text_edit_enabled = 0
-let g:lsp_use_event_queue = 1
 let g:lsp_signs_enabled = 1         " enable signs
 let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '!'}
 let g:lsp_signs_hint = {'text': '?'}
+let g:lsp_async_completion = 0
+let g:lsp_diagnostics_enabled = 1 " syntactic check enabled by LSP
+let g:lsp_diagnostics_echo_cursor = 1
+" Highlight references
+let g:lsp_highlight_references_enabled = 1
+let g:lsp_text_edit_enabled = 0
+
+let g:lsp_auto_enable = 1
+let g:lsp_use_event_queue = 1
 " Opens preview windows as floating
 let g:lsp_preview_float = 1
 " Preview remains open and waits for an explicit call
 let g:lsp_preview_autoclose = 0
-" Highlight references
-let g:lsp_highlight_references_enabled = 1
+
+command! LspDebug let lsp_log_verbose=1|let lsp_log_file='c:/vim/src/lsp.log'
 
 function! s:set_lsp_configuration() abort
+    setlocal signcolumn=yes
     autocmd BufWritePre <buffer> LspDocumentFormatSync
 
     setlocal omnifunc=lsp#complete
 
     " <Leader>l is prefix for vim-lsp
     nmap <Leader>l [vim-lsp]
-    nnoremap <buffer> <C-k> :<C-u>LspNextError<CR>
+    nnoremap <buffer> [vim-lsp]n :<C-u>LspNextError<CR>
+    nnoremap <buffer> [vim-lsp]p :<C-u>LspPreviousError<CR>
     nnoremap <buffer> <C-]> :<C-u>LspDefinition<CR>
     nnoremap <buffer> [vim-lsp]d :<C-u>LspDefinition<CR>
     nnoremap <buffer> [vim-lsp]D :<C-u>LspReferences<CR>
