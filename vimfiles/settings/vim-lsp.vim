@@ -15,7 +15,7 @@ let g:lsp_preview_autoclose = 0
 let g:lsp_highlight_references_enabled = 1
 
 function! s:set_lsp_configuration() abort
-    " autocmd BufWritePre <buffer> LspDocumentFormatSync
+    autocmd BufWritePre <buffer> LspDocumentFormatSync
 
     setlocal omnifunc=lsp#complete
 
