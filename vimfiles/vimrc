@@ -1,4 +1,4 @@
-" Last Change: 21/12/2019 - 08:38:35.
+" Last Change: 27/12/2019 - 04:05:16.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -310,6 +310,23 @@ let g:polyglot_disabled = ['latex']
 let g:vim_markdown_folding_disabled=1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
+
+" #### textlint For Natural Language ####
+" npm install textlint -g
+Plug 'heavenshell/vim-textlint'
+Plug 'dannyob/quickfixstatus'
+Plug 'cohama/vim-hier'
+function! s:textlint_after(...)
+    execute ':QuickfixStatusEnable'
+    execute ':HierUpdate'
+endfunction
+let g:textlint_callbacks = {
+            \ 'after_run': function('s:textlint_after')
+            \ }
+autocmd BufWritePost *.md call textlint#run()
+autocmd InsertLeave *.md call textlint#run()
+" TextChanged triggered very often, turn off if Vim is slow.
+autocmd TextChanged,TextChangedI *.md call textlint#run()
 
 " #### Debugger Supports ####
 packadd termdebug

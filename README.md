@@ -14,6 +14,7 @@ curl -L raw.github.com/tomato3713/dotfiles/master/install.sh | bash
 - FZF
 - LaTeX
 - Language Server (Clang, gopls, ...)
+- textlint
 
 ## Functions
 
