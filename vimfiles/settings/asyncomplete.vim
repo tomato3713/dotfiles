@@ -1,5 +1,7 @@
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_compleopt = 0
+" Default value is 30
+let g:asyncomplete_popup_delay = 200
 
 let g:asyncomplete_remove_duplicates = 1
 let g:asyncomplete_smart_completion = 1
