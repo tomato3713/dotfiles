@@ -1,4 +1,4 @@
-" Last Change: 27/12/2019 - 04:05:16.
+" Last Change: 09/01/2020 - 02:19:54.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -349,12 +349,12 @@ Plug 'Shougo/neosnippet-snippets'
 runtime settings/neosnippet.vim
 
 " #### Language Server Protocol Client ####
-Plug 'prabirshrestha/vim-lsp'
-runtime settings/vim-lsp.vim
-Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-runtime settings/asyncomplete.vim
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+runtime settings/vim-lsp.vim
 
 " #### General Languages Supports ####
 Plug 'sheerun/vim-polyglot'
