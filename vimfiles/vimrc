@@ -1,4 +1,4 @@
-" Last Change: 09/01/2020 - 22:25:12.
+" Last Change: 09/01/2020 - 22:43:30.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -231,6 +231,9 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+
 " #### General Languages Supports ####
 Plug 'sheerun/vim-polyglot'
 
@@ -266,7 +269,7 @@ Plug 'luochen1990/rainbow'
 Plug 'mechatroner/rainbow_csv'
 let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 
-" Draw image and play music
+" #### Playing ####
 Plug 'thinca/vim-painter'
 call plug#end()
 call map(sort(split(globpath('$HOME/.vim', 'settings/*.vim'))), {->[execute('exec "so" v:val')]})
