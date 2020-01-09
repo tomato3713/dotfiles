@@ -1,4 +1,4 @@
-" Last Change: 09/01/2020 - 11:30:27.
+" Last Change: 09/01/2020 - 22:25:12.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -11,126 +11,114 @@ augroup MyAutoCmd
     autocmd!
 augroup END
 
-if has('vim_starting')
-    set encoding=utf-8
-    scriptencoding=utf-8
-    set t_vb=
-    set visualbell
-    set noerrorbells
+" #### encoding #### {{{
+set encoding=utf-8
+scriptencoding=utf-8
+" 文字コードの自動認識
+set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
+set fileformats=unix,dos,mac
+" ファイルに保存される文字エンコーディング
+set fileencoding=utf-8
+set fileformat=unix
+" テキスト挿入中の自動折り返しを日本語に対応させる
+" auto comment off
+autocmd MyAutoCmd FileType * setlocal formatoptions=tcqmM
+" Use Unix format end-of-line on Windows and replace \ to slash
+set viewoptions=unix,slash
+set helplang=en,ja
+" }}}
 
-    " Windows上でも Unix 形式の end-of-line を使う
-    " ファイル名内の '\' をスラッシュに置換する
-    set viewoptions=unix,slash
-    set number
+" #### Bells ####
+set t_vb=
+set visualbell
+set noerrorbells
 
-    set nrformats=alpha,hex,bin
+" #### Buffer Style ####
+set number
+set ambiwidth=double
+set synmaxcol=200
+set nrformats=alpha,hex,bin
+set nohlsearch
 
-    " enable syntax highlight
-    set synmaxcol=200
-    set cmdheight=2
-    set nohlsearch
+" faster redraw
+set lazyredraw
+set ttyfast
+set updatetime=250
 
-    " faster redraw
-    set lazyredraw
-    set ttyfast
-    set updatetime=250
+" disable indent plugin each file type
+filetype plugin indent off
+set t_Co=256
 
-    " disable indent plugin each file type
-    filetype plugin indent off
-
-    set t_Co=256
+if has('termguicolors')
     set termguicolors
     let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
     let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-
-    " インクリメンタル検索を有効にする
-    set incsearch
-    " 大文字小文字を無視
-    set ignorecase
-    " 大文字が入力されたら大文字小文字を区別する
-    set smartcase
-    set showmatch
-
-    " マウスとの連携機能を On にする
-    set mouse=a
-    set ttymouse=xterm2
-
-    " ファイル内容が変更されると自動読み込みする
-    set autoread
-    set switchbuf=useopen
-    autocmd MyAutoCmd WinEnter * checktime
-
-    if has('persistent_undo')
-        if !isdirectory(expand('$HOME/.vim/.undo'))
-            call mkdir(expand('$HOME/.vim/.undo'), 0700)
-        endif
-        set undodir=$HOME/.vim/.undo
-        set undofile
-    endif
-
-    " vimの無名レジスタとOSのクリップボードを連携させる
-    if has('clipboard')
-        set clipboard=unnamed,autoselect
-    endif
-
-    set viminfo='50,/50,:25,n$HOME/.vim/viminfo
-    " don't make back up file
-    set nobackup
-    " don't make swap file
-    set noswapfile
-    " title
-    set title
-    " 不可視文字を不可視化
-    set nolist
-    " 自動折り返ししない
-    set nowrap
-    set textwidth=0
-    " 長い行を@にさせない
-    set display=lastline
-    " 最低でも上下に表示する行数
-    set scrolloff=5
-    " 入力したコマンドを画面下に表示
-    set showcmd
-
-    " #### encoding #### {{{
-    " 文字コードの自動認識
-    set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
-    set fileformats=unix,dos,mac
-    " ファイルに保存される文字エンコーディング
-    set fileencoding=utf-8
-    " 改行文字
-    set fileformat=unix
-    set ambiwidth=double
-    " テキスト挿入中の自動折り返しを日本語に対応させる
-    " auto comment off
-    autocmd MyAutoCmd FileType * setlocal formatoptions=tcqmM
-    " }}}
-
-    " #### Indent #### {{{
-    set autoindent   " 新しい行のインデントを継続する
-    set expandtab    " tab to space
-    set tabstop=4    " 画面上でタブ文字の占める幅
-    set shiftwidth=4 " 自動インデントでずれる幅
-    set smartindent  " 折り返しの際にインデントを考慮
-    set breakindent
-    " }}}
-
-    " #### Command #### {{{
-    " the count of command history
-    set history=2000
-    " いろんなコマンドの後にカーソルを先頭に移動させない
-    set nostartofline
-    " Rename current file
-    command! -nargs=1 -complete=file Rename call rename(expand('%'), '<args>') | e <args>
-    " }}}
 endif
 
-" if miss to guess file type
-autocmd MyAutoCmd BufWritePost *
-            \ if &filetype ==# '' && exists('b:ftdetect') |
-            \ unlet! b:ftdetect |
-            \ filetype detect |
-            \ endif
+set incsearch
+set ignorecase
+set smartcase
+set showmatch
+
+" ファイル内容が変更されると自動読み込みする
+set autoread
+set switchbuf=useopen
+autocmd MyAutoCmd WinEnter * checktime
+
+if has('persistent_undo')
+    if !isdirectory(expand('$HOME/.vim/.undo'))
+        call mkdir(expand('$HOME/.vim/.undo'), 0700)
+    endif
+    set undodir=$HOME/.vim/.undo
+    set undofile
+endif
+
+" vimの無名レジスタとOSのクリップボードを連携させる
+if has('clipboard')
+    set clipboard=unnamed,autoselect
+endif
+
+set viminfo='50,/50,:25,n$HOME/.vim/viminfo
+set nobackup
+set noswapfile
+set nolist
+set nowrap
+set textwidth=0
+" 長い行を@にさせない
+set display=lastline
+set scrolloff=10
+set showcmd
+
+" #### Indent #### {{{
+set autoindent   " 新しい行のインデントを継続する
+set expandtab    " tab to space
+set tabstop=4    " 画面上でタブ文字の占める幅
+set shiftwidth=4 " 自動インデントでずれる幅
+set smartindent  " 折り返しの際にインデントを考慮
+set breakindent
+" }}}
+
+" enable mouse
+if has('mouse')
+    set mouse=a
+    if has('mouse_sgr')
+        set ttymouse=sgr
+    elseif v:version > 703 || v:version is 703 && has('patch632')
+        set ttymouse=sgr
+    else
+        set ttymouse=xterm2
+    endif
+endif
+
+" #### Command #### {{{
+" the count of command history
+set cmdheight=1
+set history=2000
+" いろんなコマンドの後にカーソルを先頭に移動させない
+set nostartofline
+" Rename current file
+command! -nargs=1 -complete=file Rename call rename(expand('%'), '<args>') | e <args>
+" }}}
 
 " Keyword highlight ex. TODO:, NOTE:, REF:, TEMP:
 augroup HilightsForce
@@ -139,49 +127,16 @@ augroup HilightsForce
     " autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=#000124 guifg=#000015
 augroup END
 
-" Enable cursor line at needed
-augroup vimrc-auto-cursorline
-    autocmd!
-    autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
-    autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
-    autocmd WinEnter * call s:auto_cursorline('WinEnter')
-    autocmd WinLeave * call s:auto_cursorline('WinLeave')
-    let s:cursorline_lock = 0
-    function! s:auto_cursorline(event)
-        if a:event ==# 'WinEnter'
-            setlocal cursorline
-            let s:cursorline_lock = 2
-        elseif a:event ==# 'WinLeave'
-            setlocal nocursorline
-        elseif a:event ==# 'CursorMoved'
-            if s:cursorline_lock
-                if 1 < s:cursorline_lock
-                    let s:cursorline_lock = 1
-                else
-                    setlocal nocursorline
-                    let s:cursorline_lock = 0
-                endif
-            endif
-        elseif a:event ==# 'CursorHold'
-            setlocal cursorline
-            let s:cursorline_lock = 1
-        endif
-    endfunction
-augroup END
-
 " ### completion ### {{{
-" 入力補完機能を有効化
 set wildmenu wildmode=longest:full
 set completeopt=menu,preview
 " Wait key time
 set timeout ttimeoutlen=100
-" spelling補完 on <C-x><C-s>
 set spell
 set spelllang+=cjk " 日本語をスペルチェックの対象 から除外する
 " When press Ctrl + L while am typing, the previous spelling mistake is
 " corrected.
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
-
 " dictionary Complete
 set dictionary=$HOME/.vim/dict/programming.dict
 " }}}
@@ -203,28 +158,19 @@ cnoremap wq x
 
 " ### Plugins ### {{{
 " automated install vim-plug
-if !filereadable(expand('$HOME/.vim/vim-plug/plug.vim'))
+if !filereadable(expand('$HOME/.vim/autoload/plug.vim'))
     let s:vim_plug_url='https://github.com/junegunn/vim-plug'
-    call system('git clone ' . s:vim_plug_url . ' ' . $HOME . '/.vim/vim-plug/')
+    call system('git clone ' . s:vim_plug_url . ' ' . $HOME . '/.vim/autoload/')
 endif
-source ~/.vim/vim-plug/plug.vim
 
 call plug#begin('~/.vim/plugged')
 " #### Help Documents ####
 Plug 'vim-jp/vimdoc-ja'
-set helplang=en,ja
 
 " #### Filer ####
-Plug 'cocopon/vaffle.vim'
-" netrw setting
-let g:netrw_liststyle = 1
-let g:netrw_sizestyle = 'H'
-let g:netrw_sort_options='i'
-let g:netrw_timefmt = '%Y/%m/%d(%a) %H:%M:%S'
-let g:netrw_preview = 1
-let g:netrw_list_hide = '.git'
-let g:netrw_altv = 1
-let g:netrw_alto = 1
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
+Plug 'iberianpig/ranger-explorer.vim'
 
 " #### Color scheme ####
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
@@ -239,9 +185,6 @@ Plug 'itchyny/vim-cursorword'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/switch.vim'
-let g:switch_mapping = '+'
-let g:switch_reverse_mapping = '-'
-Plug 'kana/vim-tabpagecd'
 Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
 autocmd MyAutoCmd Filetype markdown,tex let b:autopairs_loaded=1
@@ -249,104 +192,37 @@ Plug 'andymass/vim-matchup'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'tomato3713/vim-better-whitespace'
-let g:better_whitespace_enabled=1
-let g:strip_whitespace_on_save=1
-let g:strip_whitespace_confirm=0 " not confirm before white space is stripped."
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'skanehira/translate.vim'
-" For Writing Documentation
 Plug 'glidenote/memolist.vim'
-let g:memolist_path = expand('$HOME/code/src/github.com/tomato3713/notebox/memo')
-let g:memolist_template_dir_path = expand('$HOME/.vim/template/memolist/')
-let g:memolist_memo_suffix = 'md'
-let g:memolist_memo_date = '%Y-%m-%d %H:%M'
 Plug 'junegunn/vim-easy-align'
-vmap <Enter> <Plug>(EasyAlign)
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-" disable &foldmethod during alignment
-let g:easy_align_bypass_fold = 1
-" For General Formatter
 Plug 'vim-scripts/autodate.vim',
 let autodate_format='%d/%m/%Y\ -\ %H:%M:%S'
 Plug 'fuenor/JpFormat.vim',
-" gqコマンドを実行前に自動整形をオフにする
-nnoremap <silent> <expr> gq JpFormat_cmd("gq")
-" .txt, .mdで自動整形を有効にする。
-autocmd MyAutoCmd FileType markdown call s:set_autoformat()
-autocmd MyAutoCmd FileType text call s:set_autoformat()
-autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
-function! s:set_autoformat()
-    let JpCountChars=80
-    let JpCountOverChars=1
-    set formatexpr=jpfmt#formatexpr()
-endfunction
-function! s:set_japanese_document_format()
-    " change important keyword the last of lines ' >' and the top of lines '<'
-    if &buftype !=# 'help'
-        highlight ignore ctermfg=red
-        syntax match Error /\%>79v.*/
-        syntax match Error /、\s/
-        syntax match Error /。\s/
-        set colorcolumn=+1
-        let JpCountOverChars = 1
-        set formatexpr=jpfmt#formatexpr()
-        if has('conceal')
-            setlocal conceallevel=0
-        endif
-    endif
-endfunction
 
 " #### Runner ####
 Plug 'thinca/vim-quickrun'
-runtime settings/quickrun.vim
+
+" #### Debugger Supports ####
+packadd termdebug
+
+" #### Status Line ####
 Plug 'itchyny/vim-gitbranch'
 Plug 'itchyny/lightline.vim'
-runtime settings/statusline.vim
-
-" #### Language Settings ####
-Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled = ['latex']
-let g:vim_markdown_folding_disabled=1
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_conceal_code_blocks = 0
 
 " #### textlint For Natural Language ####
 " npm install textlint -g
 Plug 'heavenshell/vim-textlint'
 Plug 'dannyob/quickfixstatus'
 Plug 'cohama/vim-hier'
-function! s:textlint_after(...)
-    execute ':QuickfixStatusEnable'
-    execute ':HierUpdate'
-endfunction
-let g:textlint_callbacks = {
-            \ 'after_run': function('s:textlint_after')
-            \ }
-autocmd BufWritePost *.md call textlint#run()
-autocmd InsertLeave *.md call textlint#run()
-" TextChanged triggered very often, turn off if Vim is slow.
-autocmd TextChanged,TextChangedI *.md call textlint#run()
-
-" #### Debugger Supports ####
-packadd termdebug
 
 " #### template ####
 Plug 'mattn/sonictemplate-vim'
-" Tell My Template Directory
-let g:sonictemplate_vim_template_dir = [ '~/.vim/template' ]
-let g:sonictemplate_vim_vars = {
-            \ '_': {
-            \   'author': 'Taichi Watanabe',
-            \ },
-            \}
-" For making Vim Plugin
 Plug 'mopp/layoutplugin.vim'
 
 " #### Snippet ####
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
-runtime settings/neosnippet.vim
 
 " #### Language Server Protocol Client ####
 Plug 'prabirshrestha/async.vim'
@@ -354,12 +230,9 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-runtime settings/lsp.vim
 
 " #### General Languages Supports ####
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled = ['latex']
-let g:vim_markdown_conceal = 0
 
 " #### HTML/CSS Supports ####
 Plug 'mattn/emmet-vim'
@@ -377,9 +250,8 @@ let g:slimv_lisp = 'ros run'
 let g:slimv_impl = 'sbcl'
 
 " #### Markdown Supports ####
-Plug 'godlygeek/tabular' " for :TableFormat in vim-markdown
-Plug 'previm/previm'
-let g:previm_open_cmd = 'firefox'
+Plug 'skanehira/preview-markdown.vim'
+let g:preview_markdown_vertical = 1
 
 " #### LaTeX/TeX Supports ####
 Plug 'lervag/vimtex'
@@ -391,12 +263,13 @@ let g:vimtex_quickfix_mode=0
 
 " #### CSV Supports ####
 Plug 'luochen1990/rainbow'
-let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 Plug 'mechatroner/rainbow_csv'
+let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 
 " Draw image and play music
 Plug 'thinca/vim-painter'
 call plug#end()
+call map(sort(split(globpath('$HOME/.vim', 'settings/*.vim'))), {->[execute('exec "so" v:val')]})
 " }}}
 
 " ### Last Configuration ###
