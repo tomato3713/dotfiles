@@ -1,4 +1,4 @@
-" Last Change: 09/01/2020 - 23:15:47.
+" Last Change: 09/01/2020 - 23:34:27.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -14,7 +14,7 @@ augroup END
 " #### encoding ####
 set encoding=utf-8
 scriptencoding=utf-8
-" 文字コードの自動認識
+" auto detect file encoding
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
 " ファイルに保存される文字エンコーディング
@@ -80,7 +80,10 @@ endif
 
 set nobackup
 set noswapfile
-set viminfo='50,/50,:25,n$HOME/.vim/viminfo
+
+if has('viminfo')
+    set viminfo='50,/50,:25,n$HOME/.vim/viminfo
+endif
 
 " vimの無名レジスタとOSのクリップボードを連携させる
 if has('clipboard')
@@ -184,7 +187,9 @@ Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/switch.vim'
 Plug 'tpope/vim-repeat'
 Plug 'jiangmiao/auto-pairs'
-autocmd MyAutoCmd Filetype markdown,tex let b:autopairs_loaded=1
+if !empty(globpath(&rtp, 'plugged/vim-lsp'))
+    autocmd MyAutoCmd Filetype markdown,tex let b:autopairs_loaded=1
+endif
 Plug 'andymass/vim-matchup'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -241,7 +246,7 @@ Plug 'mattn/emmet-vim'
 Plug 'prakashdanish/vimport', { 'for': 'python' } " :Vimport and :Vimdrop"
 
 " #### Golang Supports ####
-Plug 'mattn/vim-goimports'
+Plug 'mattn/vim-goimports', { 'for': 'go' }
 
 " #### Lisp Supports ####
 Plug 'kovisoft/slimv'
@@ -268,6 +273,7 @@ let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
 
 " #### Playing ####
 Plug 'thinca/vim-painter'
+Plug 'vim/killersheep'
 call plug#end()
 call map(sort(split(globpath('$HOME/.vim', 'settings/*.vim'))), {->[execute('exec "so" v:val')]})
 " }}}
