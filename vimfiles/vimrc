@@ -1,4 +1,4 @@
-" Last Change: 09/01/2020 - 22:43:30.
+" Last Change: 09/01/2020 - 23:15:47.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -11,7 +11,7 @@ augroup MyAutoCmd
     autocmd!
 augroup END
 
-" #### encoding #### {{{
+" #### encoding ####
 set encoding=utf-8
 scriptencoding=utf-8
 " 文字コードの自動認識
@@ -26,7 +26,6 @@ autocmd MyAutoCmd FileType * setlocal formatoptions=tcqmM
 " Use Unix format end-of-line on Windows and replace \ to slash
 set viewoptions=unix,slash
 set helplang=en,ja
-" }}}
 
 " #### Bells ####
 set t_vb=
@@ -39,6 +38,12 @@ set ambiwidth=double
 set synmaxcol=200
 set nrformats=alpha,hex,bin
 set nohlsearch
+set list
+set scrolloff=10
+set showcmd
+set nowrap
+set display=lastline " 長い行を@にさせない
+set textwidth=0
 
 " faster redraw
 set lazyredraw
@@ -73,21 +78,14 @@ if has('persistent_undo')
     set undofile
 endif
 
+set nobackup
+set noswapfile
+set viminfo='50,/50,:25,n$HOME/.vim/viminfo
+
 " vimの無名レジスタとOSのクリップボードを連携させる
 if has('clipboard')
     set clipboard=unnamed,autoselect
 endif
-
-set viminfo='50,/50,:25,n$HOME/.vim/viminfo
-set nobackup
-set noswapfile
-set nolist
-set nowrap
-set textwidth=0
-" 長い行を@にさせない
-set display=lastline
-set scrolloff=10
-set showcmd
 
 " #### Indent #### {{{
 set autoindent   " 新しい行のインデントを継続する
@@ -124,7 +122,6 @@ command! -nargs=1 -complete=file Rename call rename(expand('%'), '<args>') | e <
 augroup HilightsForce
     autocmd!
     autocmd WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
-    " autocmd WinEnter,BufRead,BufNew,Syntax * highlight Todo guibg=#000124 guifg=#000015
 augroup END
 
 " ### completion ### {{{
@@ -210,6 +207,9 @@ packadd termdebug
 Plug 'itchyny/vim-gitbranch'
 Plug 'itchyny/lightline.vim'
 
+" #### General Languages Supports ####
+Plug 'sheerun/vim-polyglot'
+
 " #### textlint For Natural Language ####
 " npm install textlint -g
 Plug 'heavenshell/vim-textlint'
@@ -233,9 +233,6 @@ Plug 'mattn/vim-lsp-settings'
 
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
-
-" #### General Languages Supports ####
-Plug 'sheerun/vim-polyglot'
 
 " #### HTML/CSS Supports ####
 Plug 'mattn/emmet-vim'
