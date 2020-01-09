@@ -16,7 +16,7 @@ curl -L raw.github.com/tomato3713/dotfiles/master/install.sh | bash
 - Language Server (Clang, gopls, ...)
 - textlint
 
-## Functions
+## Shell script Functions
 
 - gd(): change directory to source code directory by searching FZF command.
 
