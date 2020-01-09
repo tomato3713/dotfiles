@@ -1,4 +1,4 @@
-" Last Change: 09/01/2020 - 02:19:54.
+" Last Change: 09/01/2020 - 11:30:27.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -354,29 +354,18 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-runtime settings/vim-lsp.vim
+runtime settings/lsp.vim
 
 " #### General Languages Supports ####
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['latex']
 let g:vim_markdown_conceal = 0
 
-" #### JavaScript/AltJS Supports ####
-Plug 'ryanolsonx/vim-lsp-javascript'
-" Typescript Syntax highlight
-Plug 'leafgarland/typescript-vim'
-
 " #### HTML/CSS Supports ####
 Plug 'mattn/emmet-vim'
 
 " #### Python Supports ####
 Plug 'prakashdanish/vimport', { 'for': 'python' } " :Vimport and :Vimdrop"
-
-" #### Scala Supports ####
-Plug 'derekwyatt/vim-scala'
-
-" #### Elm Supports ####
-Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
 " #### Golang Supports ####
 Plug 'mattn/vim-goimports'
@@ -407,7 +396,6 @@ Plug 'mechatroner/rainbow_csv'
 
 " Draw image and play music
 Plug 'thinca/vim-painter'
-Plug 'tomato3713/vim-play-piano'
 call plug#end()
 " }}}
 
