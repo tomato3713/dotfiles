@@ -1,4 +1,4 @@
-" Last Change: 09/01/2020 - 23:34:27.
+" Last Change: 12/01/2020 - 00:20:19.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -168,8 +168,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-jp/vimdoc-ja'
 
 " #### Filer ####
-let g:loaded_netrw       = 1
-let g:loaded_netrwPlugin = 1
+" Disable Netrw which is Vim Default Filer
+if executable('ranger') && !empty(globpath(&rtp, 'plugged/ranger-explorer.vim'))
+    let g:loaded_netrw       = 1
+    let g:loaded_netrwPlugin = 1
+endif
 Plug 'iberianpig/ranger-explorer.vim'
 
 " #### Color scheme ####
@@ -179,38 +182,40 @@ let g:solarized_termcolors=256
 Plug 'junegunn/seoul256.vim'
 " Range:   233 (darkest) ~ 239 (lightest), default: 237
 let g:seoul256_background = 234
+Plug 'luochen1990/rainbow'
+Plug 'ntpeters/vim-better-whitespace'
 
 " #### Text editing Utilities ####
-Plug 'itchyny/vim-cursorword'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/fzf', { 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Git diff のサインを表示
+Plug 'airblade/vim-gitgutter'
+Plug 'skanehira/translate.vim'
+Plug 'glidenote/memolist.vim'
+
+" #### Default Commands Extend ####
+Plug 'jiangmiao/auto-pairs'
+Plug 'andymass/vim-matchup'
+Plug 'itchyny/vim-cursorword'
 Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/switch.vim'
 Plug 'tpope/vim-repeat'
-Plug 'jiangmiao/auto-pairs'
-if !empty(globpath(&rtp, 'plugged/vim-lsp'))
-    autocmd MyAutoCmd Filetype markdown,tex let b:autopairs_loaded=1
-endif
-Plug 'andymass/vim-matchup'
-Plug 'junegunn/fzf', { 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'skanehira/translate.vim'
-Plug 'glidenote/memolist.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-scripts/autodate.vim',
 let autodate_format='%d/%m/%Y\ -\ %H:%M:%S'
 Plug 'fuenor/JpFormat.vim',
+
+" #### Status Line ####
+" Git のブランチ名を Status Line に表示
+Plug 'itchyny/vim-gitbranch'
+Plug 'itchyny/lightline.vim'
 
 " #### Runner ####
 Plug 'thinca/vim-quickrun'
 
 " #### Debugger Supports ####
 packadd termdebug
-
-" #### Status Line ####
-Plug 'itchyny/vim-gitbranch'
-Plug 'itchyny/lightline.vim'
 
 " #### General Languages Supports ####
 Plug 'sheerun/vim-polyglot'
@@ -255,7 +260,7 @@ let g:slimv_lisp = 'ros run'
 let g:slimv_impl = 'sbcl'
 
 " #### Markdown Supports ####
-Plug 'skanehira/preview-markdown.vim'
+Plug 'skanehira/preview-markdown.vim', { 'for': 'markdown' }
 let g:preview_markdown_vertical = 1
 
 " #### LaTeX/TeX Supports ####
@@ -267,9 +272,8 @@ let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 
 " #### CSV Supports ####
-Plug 'luochen1990/rainbow'
 Plug 'mechatroner/rainbow_csv'
-let g:rainbow_active=1 "0 if you want to enable it later via :RainbowToggle
+let g:rainbow_active=1 "set to 0 if you want to enable it later via :RainbowToggle
 
 " #### Playing ####
 Plug 'thinca/vim-painter'
