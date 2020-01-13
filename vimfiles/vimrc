@@ -1,4 +1,4 @@
-" Last Change: 12/01/2020 - 23:09:12.
+" Last Change: 13/01/2020 - 11:43:50.
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -7,43 +7,42 @@
 " set runtimepath+=~/.vim
 
 set all&
-augroup MyAutoCmd
-    autocmd!
-augroup END
 
 if has('vim_starting')
     set nocompatible
 endif
 
 " #### encoding ####
-set encoding=utf-8
+" Use multi-byte character in vimrc
 scriptencoding=utf-8
+set encoding=utf-8
 " auto detect file encoding
 set fileencodings=utf-8,utf-16,cp932,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
-" ファイルに保存される文字エンコーディング
-set fileencoding=utf-8
-set fileformat=unix
+
 " テキスト挿入中の自動折り返しを日本語に対応させる
 " auto comment off
-autocmd MyAutoCmd FileType * setlocal formatoptions=tcqmM
+autocmd! FileType * setlocal formatoptions=tcqmM
 " Use Unix format end-of-line on Windows and replace \ to slash
 set viewoptions=unix,slash
 set helplang=en,ja
 
-" #### Bells ####
-set t_vb=
-set visualbell
-set noerrorbells
+" #### Mute ####
+set belloff=all
 
 " #### Buffer Style ####
+" disable auto window size turning
+set noequalalways
+" auto save when moving to another buffer
+set autowrite
 set number
 set ambiwidth=double
-set synmaxcol=200
+set synmaxcol=256
 set nrformats=alpha,hex,bin
 set nohlsearch
 set list
-set scrolloff=10
+" Set cursor in center line
+set scrolloff=100
 set showcmd
 set nowrap
 set display=lastline " 長い行を@にさせない
@@ -69,10 +68,17 @@ set ignorecase
 set smartcase
 set showmatch
 
+" Result of grep show in quickfix {{{
+augroup grepWindow
+    au!
+    au QuickFixCmdPost *grep* cwindow
+augroup END
+" }}}
+
 " ファイル内容が変更されると自動読み込みする
 set autoread
 set switchbuf=useopen
-autocmd MyAutoCmd WinEnter * checktime
+autocmd! WinEnter,FocusGained * checktime
 
 if has('persistent_undo')
     if !isdirectory(expand('$HOME/.vim/.undo'))
@@ -93,6 +99,9 @@ endif
 if has('clipboard')
     set clipboard=unnamed,autoselect
 endif
+
+" 短径選択時に文字の無いところまで選択範囲を広げる
+set virtualedit=block
 
 " #### Indent #### {{{
 set autoindent   " 新しい行のインデントを継続する
@@ -127,8 +136,8 @@ command! -nargs=1 -complete=file Rename call rename(expand('%'), '<args>') | e <
 
 " Keyword highlight ex. TODO:, NOTE:, REF:, TEMP:
 augroup HilightsForce
-    autocmd!
-    autocmd WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
+    au!
+    au WinEnter,BufRead,BufNew,Syntax * :silent! call matchadd('Todo', '\(TODO\|NOTE\|REF\|TEMP\):')
 augroup END
 
 " ### completion ### {{{
@@ -158,6 +167,34 @@ cnoremap <C-p> <Up>
 nnoremap ZQ <Nop>
 " when tap :wq, make not save and close if buffer is no difference before
 cnoremap wq x
+" }}}
+
+" source all .vim files under plugin directory {{{
+function! SourceDir(...) abort
+    let l:path = getcwd()
+    if a:0 > 1
+        let l:path = a:1
+    endif
+
+    if !isdirectory(l:path)
+        return
+    endif
+
+    exe 'set rtp^=' . l:path
+    if isdirectory(l:path . '/plugin')
+        exe 'runtime plugin/*.vim'
+    endif
+
+    if isdirectory(l:path . '/autoload')
+        exe 'runtime autoload/*.vim'
+    endif
+
+    if isdirectory(l:path . '/syntax')
+        exe 'runtime syntax/*.vim'
+    endif
+endfunction
+
+command! -nargs=* Source call SourceDir(<f-args>)
 " }}}
 
 " ### Plugins ### {{{

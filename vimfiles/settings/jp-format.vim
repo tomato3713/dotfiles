@@ -4,10 +4,15 @@ endif
 
 " gqコマンドを実行前に自動整形をオフにする
 nnoremap <silent> <expr> gq JpFormat_cmd("gq")
-" .txt, .mdで自動整形を有効にする。
-autocmd MyAutoCmd FileType markdown call s:set_autoformat()
-autocmd MyAutoCmd FileType text call s:set_autoformat()
-autocmd MyAutoCmd FileType help call s:set_japanese_document_format()
+
+augroup autoFormat
+    au!
+    " .txt, .mdで自動整形を有効にする。
+    au FileType markdown call s:set_autoformat()
+    au FileType text call s:set_autoformat()
+    au FileType help call s:set_japanese_document_format()
+augroup END
+
 function! s:set_autoformat()
     let JpCountChars=80
     let JpCountOverChars=1
