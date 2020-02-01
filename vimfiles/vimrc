@@ -1,4 +1,4 @@
-" Last Change: 13/01/2020 - 11:43:50.
+" vi:set ts=8 sts=4 sw=4 noet:
 " Maintainer: Watanabe Taichi <weasel.wt(at)outlook.com>
 
 " ### Initialization ###
@@ -142,6 +142,8 @@ augroup END
 
 " ### completion ### {{{
 set wildmenu wildmode=longest:full
+set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk
+set wildignorecase
 set completeopt=menu,preview
 " Wait key time
 set timeout ttimeoutlen=100
@@ -234,6 +236,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'skanehira/translate.vim'
 Plug 'glidenote/memolist.vim'
+" Allow editing while viewing the original text
+Plug 'ferranpm/vim-isolate'
+" :UnIsolate
+vmap e :<C-u>Isolate<CR>
 
 " #### Default Commands Extend ####
 Plug 'jiangmiao/auto-pairs'
