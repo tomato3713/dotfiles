@@ -278,10 +278,6 @@ Plug 'cohama/vim-hier'
 Plug 'mattn/sonictemplate-vim'
 Plug 'mopp/layoutplugin.vim'
 
-" #### Snippet ####
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-
 " #### Language Server Protocol Client ####
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -289,8 +285,15 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
+" #### Snippet ####
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+
+" #### View and search LSP symbols, tags ####
+Plug 'liuchengxu/vista.vim'
+let g:vista_default_executive = 'vim_lsp'
 
 " #### HTML/CSS Supports ####
 Plug 'mattn/emmet-vim'
