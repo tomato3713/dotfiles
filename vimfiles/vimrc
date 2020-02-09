@@ -237,9 +237,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'skanehira/translate.vim'
 Plug 'glidenote/memolist.vim'
 " Allow editing while viewing the original text
-Plug 'ferranpm/vim-isolate'
-" :UnIsolate
-vmap e :<C-u>Isolate<CR>
+Plug 'ferranpm/vim-isolate' " :Isolate and :UnIsolate
 
 " #### Default Commands Extend ####
 Plug 'jiangmiao/auto-pairs'
@@ -329,6 +327,7 @@ let g:rainbow_active=1 "set to 0 if you want to enable it later via :RainbowTogg
 " #### Playing ####
 Plug 'thinca/vim-painter'
 Plug 'vim/killersheep'
+Plug 'twitvim/twitvim'
 call plug#end()
 call map(sort(split(globpath('$HOME/.vim', 'settings/*.vim'))), {->[execute('exec "so" v:val')]})
 " }}}
