@@ -229,6 +229,7 @@ Plug 'luochen1990/rainbow'
 Plug 'ntpeters/vim-better-whitespace'
 
 " #### Text editing Utilities ####
+" Plug
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -240,6 +241,7 @@ Plug 'glidenote/memolist.vim'
 Plug 'ferranpm/vim-isolate' " :Isolate and :UnIsolate
 
 " #### Default Commands Extend ####
+Plug 'yuttie/comfortable-motion.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'andymass/vim-matchup'
 Plug 'itchyny/vim-cursorword'
