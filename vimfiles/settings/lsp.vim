@@ -19,6 +19,7 @@ let g:lsp_signs_hint = {'text': '?'}
 " ### Syntastic Check by LSP ###
 let g:lsp_signs_enabled = 1           " enable signs
 let g:lsp_diagnostics_enabled = 1     " syntactic check enabled
+let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_diagnostics_echo_cursor = 1
 
 " ### Completions by LSP ###
