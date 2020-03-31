@@ -126,7 +126,7 @@ endif
 
 " #### Command #### {{{
 " the count of command history
-set cmdheight=1
+set cmdheight=2
 set history=2000
 " いろんなコマンドの後にカーソルを先頭に移動させない
 set nostartofline
