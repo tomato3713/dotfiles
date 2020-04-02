@@ -253,6 +253,10 @@ Plug 'vim-scripts/autodate.vim',
 let autodate_format='%d/%m/%Y\ -\ %H:%M:%S'
 Plug 'fuenor/JpFormat.vim',
 Plug 'kshenoy/vim-signature'
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-jabraces'
+Plug 'osyo-manga/vim-textobj-multiblock'
+Plug 'osyo-manga/vim-textobj-multitextobj'
 
 " #### Status Line ####
 " Git のブランチ名を Status Line に表示
