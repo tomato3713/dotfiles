@@ -1,17 +1,8 @@
-#include <iostream>
-#include <string>
-
-// data structure
-#include <deque>
-#include <map>
-#include <set>
-#include <stack>
-#include <vector>
-
-#include <algorithm>
-#include <cmath>
+// include all standard library.
+#include <bits/stdc++.h>
 
 using namespace std;
+using ll = long long;
 
 int main(int argc, char const *argv[]) {
   string in;
