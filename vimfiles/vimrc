@@ -220,7 +220,6 @@ Plug 'iberianpig/ranger-explorer.vim'
 
 " #### Color scheme ####
 Plug 'cocopon/iceberg.vim', {'do': 'cp colors/* ~/.vim/colors/'}
-Plug 'altercation/solarized', {'do': 'cp vim-colors-solarized/colors/* ~/.vim/colors/'}
 let g:solarized_termcolors=256
 Plug 'junegunn/seoul256.vim'
 " Range:   233 (darkest) ~ 239 (lightest), default: 237
