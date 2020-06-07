@@ -1,3 +1,10 @@
+if empty(globpath(&rtp, 'plugged/neosnippet'))
+    finish
+endif
+if empty(globpath(&rtp, 'plugged/neosnippet-snippets'))
+    finish
+endif
+
 " Enable snipMate compatibility feature.
 let g:neosnippet#enable_snipmate_compatibility = 1
 " Tell Neosnippet about the My Snippets Directory
