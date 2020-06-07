@@ -35,3 +35,5 @@ function fd{
 
 # additional alias
 Set-Alias grep Select-String
+# set environment variable
+Set-Item env:LESSCHARSET -value "utf-8"
