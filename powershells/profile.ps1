@@ -14,20 +14,22 @@ function fd{
     <#
     .synopsis
     Display a list of relative paths from the current directory to the specified depth.
+
     .Example
     fd | fzf | cd
     .Example
-    fd 5 | fzf | cd
+    fd -depth 3 -path $HOME | fzf | cd
     #>
     param (
-        [Int] $depth = 3
+        [Int] $depth = 3,
+        [String] $path = '.'
     )
     $origin = [System.Console]::OutputEncoding
     $utf8 = [System.Text.Encoding]::GetEncoding("utf-8")
     $OutputEncoding = $utf8
     [System.Console]::OutputEncoding = $utf8
 
-    $out = (Get-ChildItem -Name -Directory -Depth $depth | fzf)
+    $out = (Get-ChildItem -Name -Directory -Depth $depth -Path $path | fzf)
     
     [System.Console]::OutputEncoding = $origin
     return $out
