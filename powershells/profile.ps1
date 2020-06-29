@@ -88,6 +88,12 @@ function Write-PDF {
 # additional alias
 Set-Alias grep Select-String
 Set-Alias preview-pdf 'C:\Program Files\SumatraPDF\SumatraPDF.exe'
+Set-Alias go 'C:\dev\bin\Go\bin\go.exe'
+Set-Alias nkf 'C:\dev\bin\nkf32.exe'
+Set-Alias inkscape 'C:\dev\bin\inkscape\bin\inkscape.exe'
+# 将来的に texlive も C:\dev\bin 以下に格納するように変更．
+Set-Alias platex 'C:\texlive\2020\bin\win32\platex.exe'
+Set-Alias dvipdfmx 'C:\texlive\2020\bin\win32\dvipdfmx.exe'
 # set environment variable
 Set-Item env:LESSCHARSET -value "utf-8"
 
