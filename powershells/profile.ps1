@@ -7,7 +7,27 @@ function prompt {
 }
 
 # open explorer
-function el() { explorer .}
+function el {
+    <#
+    .synopsis
+    Open Explorer with the specified PATH.
+
+    .Example
+    # Open Explorer with current directory.
+    el
+    
+    .Example
+    el C:\
+
+    .Example
+    el -path C:\
+
+    #>
+    param (
+        [String] $path = '.'
+    )
+    explorer $path
+}
 
 # find directory
 function fd{
@@ -35,8 +55,39 @@ function fd{
     return $out
 }
 
+function Write-PDF {
+    <#
+    .synopsis
+    Compile from LaTeX file to PDF File.
+    "Write-PDF report" is equivalent to "platex report.tex ; platex report.tex ; dvipdfmx report.dvi"
+
+    .Example
+    Write-PDF
+    
+    .Example
+    Write-PDF report
+
+    .Example
+    el -file report
+
+    #>
+    param (
+        [String] $file = 'report'
+    )
+
+    $latex_file = "${file}.ltx"
+    $result = (Test-Path $latex_file)
+    if (!$result) {
+        $latex_file = "${file}.tex"
+    }
+    Write-Host "Compiling ${latex_file}..."
+
+    platex "${latex_file}" ; platex "${latex_file}" ; dvipdfmx "${file}.dvi"
+}
+
 # additional alias
 Set-Alias grep Select-String
+Set-Alias preview-pdf 'C:\Program Files\SumatraPDF\SumatraPDF.exe'
 # set environment variable
 Set-Item env:LESSCHARSET -value "utf-8"
 
