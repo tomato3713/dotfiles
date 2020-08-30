@@ -1,11 +1,3 @@
-# set prompt for colorful
-function prompt {
-    Write-Host "$env:USERNAME " -ForegroundColor "Green" -NoNewline
-    Write-Host "$pwd " -ForegroundColor Magenta -NoNewline
-    Write-Host "$" -ForegroundColor "Green" -NoNewline
-    return " "
-}
-
 # open explorer
 function el {
     <#
@@ -82,7 +74,15 @@ function Write-PDF {
     }
     Write-Host "Compiling ${latex_file}..."
 
-    platex "${latex_file}" ; platex "${latex_file}" ; dvipdfmx "${file}.dvi"
+    platex "${latex_file}" ; pbibtex "${latex_file}"; platex "${latex_file}" ; platex "${latex_file}" ; dvipdfmx "${file}.dvi"
+}
+
+function povray {
+    param (
+        [string] $file = "main.pov"
+    )
+
+    pvengine /EXIT /RENDER $file
 }
 
 # additional alias
@@ -94,6 +94,7 @@ Set-Alias inkscape 'C:\dev\bin\inkscape\bin\inkscape.exe'
 # 将来的に texlive も C:\dev\bin 以下に格納するように変更．
 Set-Alias platex 'C:\texlive\2020\bin\win32\platex.exe'
 Set-Alias dvipdfmx 'C:\texlive\2020\bin\win32\dvipdfmx.exe'
+Set-Alias pbibtex 'C:\texlive\2020\bin\win32\pbibtex.exe'
 # set environment variable
 Set-Item env:LESSCHARSET -value "utf-8"
 
@@ -107,3 +108,30 @@ Set-PSReadlineKeyHandler -Key 'Ctrl+p' -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key 'Ctrl+n' -Function HistorySearchForward
 Set-PSReadlineKeyHandler -Key 'Ctrl+a' -Function BeginningOfLine
 Set-PSReadlineKeyHandler -Key 'Ctrl+e' -Function EndOfLine
+
+# Customize prompt for Git
+Import-Module posh-git
+function global:prompt {
+    $realLASTEXITCODE = $LASTEXITCODE
+
+    # # Reset color, which can be messed up by Enable-GitColors
+    # $Host.UI.RawUI.ForegroundColor = $GitPromptSettings.DefaultForegroundColor
+
+    # posh-gitの出力
+    Write-VcsStatus
+
+    # カレントディレクトリの出力.改行無し
+    $idx = $pwd.ProviderPath.LastIndexOf("\")+1
+    Write-Host($pwd.ProviderPath.Remove(0, $idx)) -nonewline
+
+    # 改行
+    Write-Host 
+
+    $global:LASTEXITCODE = $realLASTEXITCODE
+    return "$('>' * ($nestedPromptLevel + 1)) "
+}
+
+# Gitの情報を表示する部分を括る文字を変更する.
+$global:GitPromptSettings.BeforeText = '['
+$global:GitPromptSettings.AfterText  = '] '
+# $global:GitPromptSettings.DefaultPromptAbbreviateHomeDirectory=$true
