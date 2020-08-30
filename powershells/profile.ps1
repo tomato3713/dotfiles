@@ -74,7 +74,7 @@ function Write-PDF {
     }
     Write-Host "Compiling ${latex_file}..."
 
-    platex "${latex_file}" ; pbibtex "${latex_file}"; platex "${latex_file}" ; platex "${latex_file}" ; dvipdfmx "${file}.dvi"
+    platex "${latex_file}" ; pbibtex "${file}"; platex "${latex_file}" ; platex "${latex_file}" ; dvipdfmx "${file}.dvi"
 }
 
 function povray {
@@ -87,7 +87,6 @@ function povray {
 
 # additional alias
 Set-Alias grep Select-String
-Set-Alias preview-pdf 'C:\Program Files\SumatraPDF\SumatraPDF.exe'
 Set-Alias go 'C:\dev\bin\Go\bin\go.exe'
 Set-Alias nkf 'C:\dev\bin\nkf32.exe'
 Set-Alias inkscape 'C:\dev\bin\inkscape\bin\inkscape.exe'
