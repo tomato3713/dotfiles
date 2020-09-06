@@ -94,6 +94,7 @@ Set-Alias inkscape 'C:\dev\bin\inkscape\bin\inkscape.exe'
 Set-Alias platex 'C:\texlive\2020\bin\win32\platex.exe'
 Set-Alias dvipdfmx 'C:\texlive\2020\bin\win32\dvipdfmx.exe'
 Set-Alias pbibtex 'C:\texlive\2020\bin\win32\pbibtex.exe'
+Set-Alias preview-pdf 'C:\Program Files\SumatraPDF\SumatraPDF.exe'
 # set environment variable
 Set-Item env:LESSCHARSET -value "utf-8"
 
