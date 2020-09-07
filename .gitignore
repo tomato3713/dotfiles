@@ -1,10 +1,12 @@
 /vimfiles/vim-plug/
+/vimfiles/doc/
 /vimfiles/plugged/
 /vimfiles/autoload/
 /vimfiles/ftplugin/
 /vimfiles/.netrwhist
 /vimfiles/colors/
-/.proxy_setting
 /vimfiles/.undo
 /vimfiles/viminfo
 /vimfiles/view/
+/vimfiles/spell/
+/.proxy_setting
