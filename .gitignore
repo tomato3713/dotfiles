@@ -10,3 +10,6 @@
 /vimfiles/view/
 /vimfiles/spell/
 /.proxy_setting
+
+/nvim/plugged/
+/nvim/autoload/
