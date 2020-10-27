@@ -1,0 +1,55 @@
+local workspace = nyagos.eval('ghq root')
+
+-- Env Path
+nyagos.envadd("PATH",
+    [[%HOME%\ws\bin]],
+    [[C:\develop\texlive\2020\bin\win32]]
+)
+
+-- XDG Base Directory Specification 
+nyagos.envadd("XDG_CONFIG_HOME",
+    [[%HOME%\.config]]
+)
+
+nyagos.envadd("GOPATH",
+    [[%HOME%\ws]]
+)
+
+nyagos.envadd("GOROOT",
+    [[%HOME%\scoop\apps\go\current]]
+)
+
+-- Coloring Prompt for NYAGOS.exe
+nyagos.prompt = function(this)
+    local prompt_message = '$e[40;36;1m'..'$P'..'$e[37;1m'
+
+    local git_branch_name = nyagos.eval('git rev-parse --abbrev-ref HEAD 2>nul')
+    if (git_branch_name ~= '') then
+        prompt_message = '[' .. git_branch_name .. '] ' .. prompt_message
+    end
+
+    local cur = nyagos.getwd():gsub('\\', '/') 
+    local title = "NYAGOS ⛄ ".. cur
+    return nyagos.default_prompt(prompt_message .. '$_$$ ', title)
+end
+
+alias {
+    clear = "cls",
+    ll = "ls -la $*",
+    rm = "del $*",
+    mv = "move $*",
+    cp = "copy $*",
+    gorepo = "cd " .. workspace .. "\\github.com\\tomato3713",
+    cat = "type $*",
+    gnvim = "nvim-qt $* &",
+ 
+    reboot = [["C:\Windows\System32\shutdown.exe" /r /t 0]],
+    shutdown = [["C:\Windows\System32\shutdown.exe" /s /t 0]],
+ 
+    firefox = [["C:\Program Files\Mozilla Firefox\firefox.exe" $* &]],
+ 
+    el = function(args)
+      return "explorer " .. args[1]:gsub("/", "\\")
+    end,
+}
+
