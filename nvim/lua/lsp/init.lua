@@ -8,6 +8,9 @@ local on_attach = function(client, bufnr)
     diagnostic.on_attach(client, bufnr)
     completion.on_attach(client, bufnr)
 
+    -- Completions
+    vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
     -- Keybindings for LSPs
     -- Note these are in on_attach so that they don't override bindings in a non-LSP setting
     vim.fn.nvim_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {noremap = true, silent = true})
@@ -37,7 +40,7 @@ lsp_status.config({
 
 nvim_lsp.sumneko_lua.setup{
     on_attach = on_attach,
-	cmd = {vim.env.HOME .. "\\.vscode\\extensions\\sumneko.lua-0.21.6\\server\\bin\\Windows\\lua-language-server.exe", "-E", vim.env.HOME .. "\\.vscode\\extensions\\sumneko.lua-0.21.6\\server\\main.lua"},
+    cmd = {vim.env.HOME .. "\\.vscode\\extensions\\sumneko.lua-1.0.5\\server\\bin\\Windows\\lua-language-server.exe", "-E", vim.env.HOME .. "\\.vscode\\extensions\\sumneko.lua-1.0.5\\server\\main.lua"},
     settings = {
         Lua = {
             diagnostics = {
@@ -50,6 +53,9 @@ nvim_lsp.gopls.setup({
     on_attach = on_attach,
 })
 nvim_lsp.texlab.setup({
+    on_attach = on_attach,
+})
+nvim_lsp.pyls.setup({
     on_attach = on_attach,
 })
 
