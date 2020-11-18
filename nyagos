@@ -1,12 +1,11 @@
-local workspace = nyagos.eval('ghq root')
-
 -- Env Path
 nyagos.envadd("PATH",
     [[%HOME%\ws\bin]],
-    [[C:\develop\texlive\2020\bin\win32]]
+    [[C:\develop\texlive\2020\bin\win32]],
+    [[C:\Users\tomato\scoop\apps\python\current\Scripts]]
 )
 
--- XDG Base Directory Specification 
+-- XDG Base Directory Specification
 nyagos.envadd("XDG_CONFIG_HOME",
     [[%HOME%\.config]]
 )
@@ -18,6 +17,10 @@ nyagos.envadd("GOPATH",
 nyagos.envadd("GOROOT",
     [[%HOME%\scoop\apps\go\current]]
 )
+
+local workspace = nyagos.eval('ghq root')
+local home = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
+local configDir = nyagos.getenv('XDG_CONFIG_HOME')
 
 -- Coloring Prompt for NYAGOS.exe
 nyagos.prompt = function(this)
@@ -51,5 +54,26 @@ alias {
     el = function(args)
       return "explorer " .. args[1]:gsub("/", "\\")
     end,
+
+    -- lua = "nyagos.exe -f $*"
 }
+
+-- Command Completions
+local function include(fname)
+  local chank, err = nyagos.loadfile(fname)
+  if err then
+    print(err)
+  elseif chank then
+    local ok, err = pcall(chank)
+    if not ok then
+      print(fname .. ': ' .. err)
+    end
+  else
+    print(fname .. ':fail to load')
+  end
+end
+
+local installedDir = nyagos.pathjoin(configDir, "nyagos.d", "nyagos-completion")
+dofile(nyagos.pathjoin(installedDir, "load-completions.lua"))
+loadCompletions(installedDir)
 

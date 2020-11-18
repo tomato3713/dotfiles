@@ -1,7 +1,8 @@
 " encoding setting
 set encoding=utf-8                     " バッファ内で扱う文字コード
 set fileencoding=utf-8                 " 書き込み時UTF-8出力
-set fileencodings=utf-8,cp932,sjis          " 読み込み時UTF-8、Shift_JISの順で自動判別
+set fileencodings=utf-8,cp932,sjis          " 読み込み時UTF-8, CP932, Shift_JISの順で自動判別
+set fileformats=unix,dos,mac
 
 " editor setting
 set number                             " 行番号表示
@@ -11,6 +12,8 @@ set splitright                         " 縦分割時を右に表示
 set noequalalways                      " 分割時に自動調整を無効化
 set wildmenu                           " コマンドモードの補完
 set smartindent                        " スマートインデントを行う
+set list
+set listchars=tab:>>,trail:_,nbsp:+
 " temporary file setting
 set noundofile                         " undofileを作らない
 set noswapfile                         " swapfileを作らない
@@ -35,6 +38,8 @@ Plug 'nathunsmitty/diagnostic-nvim'
 " Snippets
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+
+Plug 'plan9-for-vimspace/acme.vim'
 call plug#end()
 
 " LSP config, in lua
@@ -55,16 +60,13 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
-autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
-autocmd Filetype tex,latex setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
+" autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
 
 function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return 'Lsp:' . luaeval("require('lsp-status').status()")
-  endif
-  return 'Lsp off'
+    if luaeval('#vim.lsp.buf_get_clients() > 0')
+        return 'Lsp:' . luaeval("require('lsp-status').status()")
+    endif
+    return 'Lsp off'
 endfunction
 set statusline+=\ %{LspStatus()}
 
