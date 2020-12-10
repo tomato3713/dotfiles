@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-$latex = 'uplatex %O -synctex=1 -interaction=nonstopmode %S';
+$latex = 'platex %O -synctex=1 -interaction=nonstopmode %S';
 $pdflatex = 'pdflatex %O -synctex=1 -interaction=nonstopmode %S';
 $lualatex = 'lualatex %O -synctex=1 -interaction=nonstopmode %S';
 $xelatex = 'xelatex %O -synctex=1 -interaction=nonstopmode %S';
