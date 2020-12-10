@@ -2,7 +2,7 @@
 nyagos.envadd("PATH",
     [[%HOME%\ws\bin]],
     [[C:\develop\texlive\2020\bin\win32]],
-    [[C:\Users\tomato\scoop\apps\python\current\Scripts]]
+    [[%HOME%\scoop\apps\python\current\Scripts]]
 )
 
 -- XDG Base Directory Specification
@@ -73,7 +73,8 @@ local function include(fname)
   end
 end
 
-local installedDir = nyagos.pathjoin(configDir, "nyagos.d", "nyagos-completion")
-dofile(nyagos.pathjoin(installedDir, "load-completions.lua"))
-loadCompletions(installedDir)
+-- local installedDir = nyagos.pathjoin(configDir, "nyagos.d", "nyagos-completion")
+-- dofile(nyagos.pathjoin(installedDir, "load-completions.lua"))
+-- loadCompletions(installedDir)
+use("git")
 
