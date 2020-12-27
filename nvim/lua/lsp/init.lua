@@ -40,6 +40,7 @@ lsp_status.config({
 
 nvim_lsp.sumneko_lua.setup{
     on_attach = on_attach,
+    capabilities = lsp_status.capabilities,
     cmd = {vim.env.HOME .. "\\.vscode\\extensions\\sumneko.lua-1.0.5\\server\\bin\\Windows\\lua-language-server.exe", "-E", vim.env.HOME .. "\\.vscode\\extensions\\sumneko.lua-1.0.5\\server\\main.lua"},
     settings = {
         Lua = {
@@ -51,12 +52,19 @@ nvim_lsp.sumneko_lua.setup{
 }
 nvim_lsp.gopls.setup({
     on_attach = on_attach,
+    capabilities = lsp_status.capabilities,
 })
 nvim_lsp.texlab.setup({
     on_attach = on_attach,
+    capabilities = lsp_status.capabilities,
 })
 nvim_lsp.pyls.setup({
     on_attach = on_attach,
+    capabilities = lsp_status.capabilities,
+})
+nvim_lsp.vimls.setup({
+    on_attach = on_attach,
+    capabilities = lsp_status.capabilities,
 })
 
 -- More language servers here! ...
