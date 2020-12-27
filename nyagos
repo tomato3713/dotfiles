@@ -45,12 +45,16 @@ alias {
     gorepo = "cd " .. workspace .. "\\github.com\\tomato3713",
     cat = "type $*",
     gnvim = "nvim-qt $* &",
+    lmk = "latexmk $*",
  
     reboot = [["C:\Windows\System32\shutdown.exe" /r /t 0]],
     shutdown = [["C:\Windows\System32\shutdown.exe" /s /t 0]],
  
     firefox = [["C:\Program Files\Mozilla Firefox\firefox.exe" $* &]],
- 
+    okular = [["C:\Program Files\Okular\bin\okular.exe" $* &]],
+
+    gif2png = [[mkdir tmp && ffmpeg -i $* -vsync 0 tmp/$*-%03d.png]],
+
     el = function(args)
       return "explorer " .. args[1]:gsub("/", "\\")
     end,
