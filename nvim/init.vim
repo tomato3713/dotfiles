@@ -40,6 +40,11 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 
 Plug 'plan9-for-vimspace/acme.vim'
+
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-surround'
+Plug 'wellle/targets.vim'
+Plug 'tpope/vim-repeat'
 call plug#end()
 
 " LSP config, in lua
@@ -70,3 +75,10 @@ function! LspStatus() abort
 endfunction
 set statusline+=\ %{LspStatus()}
 
+
+" align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
