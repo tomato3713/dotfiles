@@ -63,6 +63,8 @@ alias {
 }
 
 -- Command Completions
+use("git")
+
 local function include(fname)
   local chank, err = nyagos.loadfile(fname)
   if err then
@@ -77,8 +79,4 @@ local function include(fname)
   end
 end
 
--- local installedDir = nyagos.pathjoin(configDir, "nyagos.d", "nyagos-completion")
--- dofile(nyagos.pathjoin(installedDir, "load-completions.lua"))
--- loadCompletions(installedDir)
-use("git")
-
+include(configDir .. "\\nyagos.d\\alias.lua")
