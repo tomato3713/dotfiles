@@ -25,6 +25,9 @@ set expandtab                          " tabを複数のspaceに置き換え
 set tabstop=4                          " tabは半角4文字
 set shiftwidth=4                       " tabの幅
 
+set wildmenu wildmode=longest:full
+set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk
+
 " terminal mode
 set sh=nyagos
 

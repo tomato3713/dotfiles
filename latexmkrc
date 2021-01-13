@@ -12,4 +12,4 @@ $ps2pdf = 'ps2pdf %O %S %D';
 $pdf_mode = 3;
 $max_repeat=5;
 $pvc_view_file_via_temporary=0;
-$pdf_previewer='"C:\Program Files\Okular\bin\okular.exe" %O %S';
+$pdf_previewer='"okular" %O %S';
