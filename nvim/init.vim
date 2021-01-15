@@ -34,9 +34,6 @@ set sh=nyagos
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/lsp-status.nvim'
-Plug 'nvim-lua/completion-nvim'
-Plug 'nathunsmitty/diagnostic-nvim'
 
 " Snippets
 Plug 'hrsh7th/vim-vsnip'
@@ -68,16 +65,7 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
-" autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
-
-function! LspStatus() abort
-    if luaeval('#vim.lsp.buf_get_clients() > 0')
-        return 'Lsp:' . luaeval("require('lsp-status').status()")
-    endif
-    return 'Lsp off'
-endfunction
-set statusline+=\ %{LspStatus()}
-
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
 
 " align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
