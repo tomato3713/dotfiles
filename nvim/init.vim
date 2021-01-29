@@ -29,15 +29,9 @@ set wildmenu wildmode=longest:full
 set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk
 
 " terminal mode
-set sh=nyagos
 
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
-
-" Snippets
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-
 Plug 'plan9-for-vimspace/acme.vim'
 
 Plug 'junegunn/vim-easy-align'
@@ -51,7 +45,6 @@ set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
 
 " align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
