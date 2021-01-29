@@ -33,7 +33,6 @@ set sh=nyagos
 
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
-Plug 'neovim/nvim-lspconfig'
 
 " Snippets
 Plug 'hrsh7th/vim-vsnip'
@@ -47,19 +46,6 @@ Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 call plug#end()
 
-" LSP config, in lua
-lua require("lsp")
-
-" Misc settings I like
-let g:diagnostic_insert_delay = 1
-let g:diagnostic_show_sign = 1
-let g:diagnostic_enable_virtual_text = 1
-" Complete parentheses for functions
-let g:completion_enable_auto_paren = 0
-" Work with vim-endwise
-let g:completion_confirm_key = "\<C-y>"
-" Set snippets source
-let g:completion_enable_snippet = 'vim-vsnip'
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
