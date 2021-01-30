@@ -73,18 +73,28 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
 
+" ### LightLine ###
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
+endfunction
+
+function! LightlineGitBlame() abort
+  let blame = get(b:, 'coc_git_blame', '')
+  " return blame
+  return winwidth(0) > 120 ? blame : ''
 endfunction
 
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+      \   'left': [
+      \     [ 'mode', 'paste' ],
+      \     [ 'cocstatus', 'currentfunction', 'git', 'blame', 'readonly', 'filename', 'modified' ]
+      \   ]
       \ },
       \ 'component_function': {
       \   'cocstatus': 'coc#status',
+      \   'blame': 'LightlineGitBlame',
       \   'currentfunction': 'CocCurrentFunction'
       \ },
       \ }
