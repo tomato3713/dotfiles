@@ -52,8 +52,12 @@ nmap <silent> <space><space> :<C-u>CocList<cr>
 nmap <silent> <space>h :<C-u>call CocAction('doHover')<cr>
 nmap <silent> <space>df <Plug>(coc-definition)
 nmap <silent> <space>rf <Plug>(coc-references)
+nmap <silent> <space>i <Plug>(coc-implementation)
 nmap <silent> <space>rn <Plug>(coc-rename)
 nmap <silent> <space>fmt <Plug>(coc-format)
+" next or prev diagnostic
+nmap <silent> <space>pg <Plug>(coc-diagnostic-prev)
+nmap <silent> <space>ng <Plug>(coc-diagnostic-next)
 
 " #### coc-snippets ####
 " Use <C-l> for trigger snippet expand.
