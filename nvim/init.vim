@@ -29,9 +29,16 @@ set wildmenu wildmode=longest:full
 set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk
 
 " terminal mode
+set shell=nyagos
+set shellcmdflag=-c
+set shellxquote=
+set shellxescape=
+set shellslash
 
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'itchyny/lightline.vim'
 Plug 'plan9-for-vimspace/acme.vim'
 
 Plug 'junegunn/vim-easy-align'
@@ -40,11 +47,35 @@ Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 call plug#end()
 
+nmap <silent> <space><space> :<C-u>CocList<cr>
+nmap <silent> <space>h :<C-u>call CocAction('doHover')<cr>
+nmap <silent> <space>df <Plug>(coc-definition)
+nmap <silent> <space>rf <Plug>(coc-references)
+nmap <silent> <space>rn <Plug>(coc-rename)
+nmap <silent> <space>fmt <Plug>(coc-format)
+
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status',
+      \   'currentfunction': 'CocCurrentFunction'
+      \ },
+      \ }
+
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
 " Avoid showing message extra message when using completion
 set shortmess+=c
 
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 " align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
