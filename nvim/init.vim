@@ -47,12 +47,27 @@ Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 call plug#end()
 
+" ### coc.nvim ###
 nmap <silent> <space><space> :<C-u>CocList<cr>
 nmap <silent> <space>h :<C-u>call CocAction('doHover')<cr>
 nmap <silent> <space>df <Plug>(coc-definition)
 nmap <silent> <space>rf <Plug>(coc-references)
 nmap <silent> <space>rn <Plug>(coc-rename)
 nmap <silent> <space>fmt <Plug>(coc-format)
+
+" #### coc-snippets ####
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
 
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
