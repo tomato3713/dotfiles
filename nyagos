@@ -62,6 +62,17 @@ alias {
       return "explorer " .. args[1]:gsub("/", "\\")
     end,
 
+    fr = function(args)
+        local ignore = { "tmp", "\\.git", "node_modules", "cache", "vendor" }
+        local cmd = "dir /ad /b /s " .. workspace
+        for i, m in ipairs(ignore) do
+            cmd = cmd .. " | grep -iv \"" .. m .. "\" 2>NUL"
+        end
+        cmd = cmd .. " | fzf"
+
+        return cmd
+    end,
+
     -- lua = "nyagos.exe -f $*"
 }
 
