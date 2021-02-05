@@ -10,7 +10,6 @@ set showcmd                            " 入力中のコマンドをステータ
 set splitbelow                         " 水平分割時に下に表示
 set splitright                         " 縦分割時を右に表示
 set noequalalways                      " 分割時に自動調整を無効化
-set wildmenu                           " コマンドモードの補完
 set smartindent                        " スマートインデントを行う
 set list
 set listchars=tab:>>,trail:_,nbsp:+
@@ -24,9 +23,10 @@ set cursorline                         " カーソルハイライト
 set expandtab                          " tabを複数のspaceに置き換え
 set tabstop=4                          " tabは半角4文字
 set shiftwidth=4                       " tabの幅
+set ignorecase
 
 set wildmenu wildmode=longest:full
-set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk
+set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk,*.pdf,*.aux,*.xlsx,*.pptx,*.docs
 
 " terminal mode
 set shell=nyagos
@@ -45,6 +45,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
+Plug 'tyru/caw.vim'
 call plug#end()
 
 " ### coc.nvim ###
@@ -56,8 +57,8 @@ nmap <silent> <space>i <Plug>(coc-implementation)
 nmap <silent> <space>rn <Plug>(coc-rename)
 nmap <silent> <space>fmt <Plug>(coc-format)
 " next or prev diagnostic
-nmap <silent> <space>pg <Plug>(coc-diagnostic-prev)
-nmap <silent> <space>ng <Plug>(coc-diagnostic-next)
+nmap <silent> <space>pd <Plug>(coc-diagnostic-prev)
+nmap <silent> <space>nd <Plug>(coc-diagnostic-next)
 
 " #### coc-snippets ####
 " Use <C-l> for trigger snippet expand.
@@ -71,7 +72,11 @@ let g:coc_snippet_prev = '<c-k>'
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
-xmap <leader>x  <Plug>(coc-convert-snippet)
+xmap <space>x  <Plug>(coc-convert-snippet)
+
+inoremap <silent><expr> <c-space> coc#refresh()
+
+nmap <space>e :CocCommand explorer<CR>
 
 " ### LightLine ###
 function! CocCurrentFunction()
@@ -112,3 +117,7 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" Caw.vim
+nmap <Leader>c <plug>(caw:zeropos:toggle)
+vmap <Leader>c <plug>(caw:zeropos:toggle)
