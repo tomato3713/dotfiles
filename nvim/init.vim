@@ -49,6 +49,17 @@ Plug 'tyru/caw.vim'
 call plug#end()
 
 " ### coc.nvim ###
+let g:coc_global_extensions = [
+            \ 'coc-snippets'
+            \, 'coc-json'
+            \, 'coc-texlab'
+            \, 'coc-go'
+            \, 'coc-explorer'
+            \, 'coc-word'
+            \, 'coc-git'
+            \, 'coc-clangd'
+            \, 'coc-lists'
+            \]
 nmap <silent> <space><space> :<C-u>CocList<cr>
 nmap <silent> <space>h :<C-u>call CocAction('doHover')<cr>
 nmap <silent> <space>df <Plug>(coc-definition)
