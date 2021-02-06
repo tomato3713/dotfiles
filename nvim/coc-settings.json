@@ -3,5 +3,6 @@
         "go",
         "latex",
         "markdown"
-    ]
+    ],
+    "latex.lint.onChange": true
 }
