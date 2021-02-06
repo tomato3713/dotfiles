@@ -46,6 +46,7 @@ Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
+Plug 'vim-jp/autofmt'
 call plug#end()
 
 " ### coc.nvim ###
@@ -132,3 +133,7 @@ nmap ga <Plug>(EasyAlign)
 " Caw.vim
 nmap <Leader>c <plug>(caw:zeropos:toggle)
 vmap <Leader>c <plug>(caw:zeropos:toggle)
+"
+" autofmt
+set formatoptions+=mM
+set formatexpr=autofmt#japanese#formatexpr() "
