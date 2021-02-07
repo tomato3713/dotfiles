@@ -4,6 +4,11 @@ set fileencoding=utf-8                 " 書き込み時UTF-8出力
 set fileencodings=utf-8,cp932,sjis          " 読み込み時UTF-8, CP932, Shift_JISの順で自動判別
 set fileformats=unix,dos,mac
 
+" view
+set pumblend=10
+set termguicolors
+set noshowmode
+
 " editor setting
 set number                             " 行番号表示
 set showcmd                            " 入力中のコマンドをステータスに表示
@@ -47,6 +52,7 @@ Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
 Plug 'vim-jp/autofmt'
+Plug 'joshdick/onedark.vim'
 call plug#end()
 
 " ### coc.nvim ###
@@ -102,7 +108,7 @@ function! LightlineGitBlame() abort
 endfunction
 
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [
       \     [ 'mode', 'paste' ],
@@ -137,3 +143,6 @@ vmap <Leader>c <plug>(caw:zeropos:toggle)
 " autofmt
 set formatoptions+=mM
 set formatexpr=autofmt#japanese#formatexpr() "
+
+colorscheme onedark
+set secure
