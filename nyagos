@@ -1,29 +1,28 @@
--- Env Path
-nyagos.envadd("PATH",
-    [[%HOME%\ws\bin]],
-    [[C:\develop\texlive\2020\bin\win32]],
-    [[%HOME%\scoop\apps\python\current\Scripts]]
-)
-
 -- XDG Base Directory Specification
 nyagos.envadd("XDG_CONFIG_HOME",
-    [[%HOME%\.config]]
+    [[%USERPROFILE%\.config]]
 )
 
 nyagos.envadd("SHELL",
-    [[%HOME%\scoop\apps\nyagos\current\nyagos.exe]]
+    [[%USERPROFILE%\scoop\apps\nyagos\current\nyagos.exe]]
 )
 
 nyagos.envadd("GOPATH",
-    [[%HOME%\ws]]
+    [[%USERPROFILE%\.go]]
 )
 
 nyagos.envadd("GOROOT",
-    [[%HOME%\scoop\apps\go\current]]
+    [[%USERPROFILE%\scoop\apps\go\current]]
+)
+
+-- Env Path
+nyagos.envadd("PATH",
+    [[%GOPATH%\bin]],
+    [[C:\develop\texlive\2020\bin\win32]],
+    [[%USERPROFILE%\scoop\apps\python\current\Scripts]]
 )
 
 local workspace = nyagos.eval('ghq root')
-local home = nyagos.getenv('HOME') or nyagos.getenv('USERPROFILE')
 local configDir = nyagos.getenv('XDG_CONFIG_HOME')
 
 -- Coloring Prompt for NYAGOS.exe
@@ -46,7 +45,7 @@ alias {
     rm = "del $*",
     mv = "move $*",
     cp = "copy $*",
-    gorepo = "cd " .. workspace .. "\\github.com\\tomato3713",
+    gorepo = "cd " .. workspace,
     cat = "type $*",
     gnvim = "nvim-qt $* &",
     lmk = "latexmk $*",
@@ -64,7 +63,7 @@ alias {
     end,
 
     fr = function(args)
-        local ignore = { "tmp", "\\.git", "node_modules", "cache", "vendor" }
+        local ignore = { "tmp", "\\.git", "node_modules", "cache", "vendor", "build" }
         local cmd = "dir /ad /b /s " .. workspace
         for i, m in ipairs(ignore) do
             cmd = cmd .. " | grep -iv \"" .. m .. "\" 2>NUL"
