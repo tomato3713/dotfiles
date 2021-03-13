@@ -1,3 +1,4 @@
+-- ## PATH ##
 -- XDG Base Directory Specification
 nyagos.envadd("XDG_CONFIG_HOME",
     [[%USERPROFILE%\.config]]
@@ -22,7 +23,7 @@ nyagos.envadd("PATH",
     [[%USERPROFILE%\scoop\apps\python\current\Scripts]]
 )
 
-local workspace = nyagos.eval('ghq root')
+local workspace = nyagos.pathjoin(nyagos.getenv('HOME'), nyagos.eval('git config ghq.root'))
 local configDir = nyagos.getenv('XDG_CONFIG_HOME')
 
 -- Coloring Prompt for NYAGOS.exe
@@ -93,4 +94,5 @@ local function include(fname)
   end
 end
 
+-- include PC Local scripts
 include(configDir .. "\\nyagos.d\\alias.lua")
