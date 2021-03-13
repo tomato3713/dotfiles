@@ -1,15 +1,2 @@
-/vimfiles/vim-plug/
-/vimfiles/doc/
-/vimfiles/plugged/
-/vimfiles/autoload/
-/vimfiles/ftplugin/
-/vimfiles/.netrwhist
-/vimfiles/colors/
-/vimfiles/.undo
-/vimfiles/viminfo
-/vimfiles/view/
-/vimfiles/spell/
-/.proxy_setting
-
-/nvim/plugged/
-/nvim/autoload/
+*.exe
+/tmp/
