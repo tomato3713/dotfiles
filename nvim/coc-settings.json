@@ -1,4 +1,5 @@
 {
+    "session.directory": "~/.config/nvim/sessions",
     "coc.preferences.formatOnSaveFiletypes": [
         "go",
         "latex",
