@@ -1,0 +1,18 @@
+# これは，LaTeX文書ビルドツール llmk 用の設定ファイルです．
+# コンパイル用のコマンド: llmk
+# 一時ファイル等削除コマンド (左: clean filesのみ，右: clean_filesに加え，clobber_filesも削除) : llmk -c | llmk -C
+
+llmk_version = "0.2"
+max_repeat = 5
+clean_files = ["%B.aux", "%B.bbl", "%B.blg", "%B.log", "%B.toc", "%B.lot", "%B.lof", "%B.fls"]
+clobber_files = ["%B.dvi", "%B.synctex.gz", "%B.fdb_latexmk"]
+
+source = ["thesis.tex"]
+
+[programs.latex]
+command = "platex"
+target = "%B.tex"
+
+[programs.bibtex]
+command = "pbibtex"
+target = "reference.bib"
