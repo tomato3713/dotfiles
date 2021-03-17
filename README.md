@@ -32,3 +32,19 @@ echo $Profile.AllUsersCurrentHost
 echo $Profile.CurrentUserAllHosts
 echo $Profile.CurrentUserCurrentHost
 ```
+
+## Windows Terminal Profile
+```
+"profiles":
+{
+    "defaults":
+    {
+        "fontSize": 9,
+        "scrollbarState": "hidden",
+        "padding": "2, 2, 2, 2"
+    },
+}
+```
+
+
+
