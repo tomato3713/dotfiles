@@ -46,7 +46,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/lightline.vim'
 Plug 'plan9-for-vimspace/acme.vim'
 
-Plug 'tversteeg/registers.nvim'
+" Plug 'tversteeg/registers.nvim'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
