@@ -20,7 +20,8 @@ nyagos.envadd("GOROOT",
 nyagos.envadd("PATH",
     [[%GOPATH%\bin]],
     [[C:\develop\texlive\2020\bin\win32]],
-    [[%USERPROFILE%\scoop\apps\python\current\Scripts]]
+    [[%USERPROFILE%\scoop\apps\python\current\Scripts]],
+    [[%USERPROFILE%\.git-secrets]]
 )
 
 local workspace = nyagos.pathjoin(nyagos.getenv('HOME'), nyagos.eval('git config ghq.root'))
