@@ -55,6 +55,7 @@ Plug 'tyru/caw.vim'
 Plug 'vim-jp/autofmt'
 Plug 'joshdick/onedark.vim'
 Plug 'Xuyuanp/scrollbar.nvim'
+Plug 'skanehira/translate.vim'
 call plug#end()
 
 " ### coc.nvim ###
@@ -153,6 +154,11 @@ augroup ScrollbarInit
   autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
   autocmd WinLeave,FocusLost             * silent! lua require('scrollbar').clear()
 augroup end
+
+" translation.vim
+let g:translate_target = 'ja'
+let g:translate_popup_window = 1
+vmap t <Plug>(VTranslate)
 
 colorscheme onedark
 set secure
