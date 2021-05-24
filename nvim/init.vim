@@ -45,6 +45,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/lightline.vim'
 Plug 'plan9-for-vimspace/acme.vim'
+Plug 'lambdalisue/gina.vim'
 
 " Plug 'tversteeg/registers.nvim'
 Plug 'junegunn/vim-easy-align'
