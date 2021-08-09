@@ -57,6 +57,11 @@ alias {
  
     firefox = [["C:\Program Files\Mozilla Firefox\firefox.exe" $* &]],
 
+    -- Open Windows Update
+    winup = function()
+        nyagos.shellexecute("open","ms-settings:windowsupdate")
+    end,
+
     gif2png = [[mkdir tmp && ffmpeg -i $* -vsync 0 tmp/$*-%03d.png]],
     avi2mp4 = [[ffmpeg -i $* -pix_fmt yuv420p $*.mp4]],
 
