@@ -57,6 +57,8 @@ Plug 'vim-jp/autofmt'
 Plug 'joshdick/onedark.vim'
 Plug 'Xuyuanp/scrollbar.nvim'
 Plug 'skanehira/translate.vim'
+
+Plug 'wellle/context.vim'
 call plug#end()
 
 " ### coc.nvim ###
