@@ -32,6 +32,7 @@ set ignorecase
 
 set wildmenu wildmode=longest:full
 set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk,*.pdf,*.aux,*.xlsx,*.pptx,*.docs
+set timeoutlen=500
 
 " terminal mode
 set shell=nyagos
@@ -59,6 +60,9 @@ Plug 'Xuyuanp/scrollbar.nvim'
 Plug 'skanehira/translate.vim'
 
 Plug 'wellle/context.vim'
+
+" for forgotting how to do
+Plug 'folke/which-key.nvim'
 call plug#end()
 
 " ### coc.nvim ###
@@ -162,6 +166,12 @@ augroup end
 let g:translate_target = 'ja'
 let g:translate_popup_window = 1
 vmap t <Plug>(VTranslate)
+
+" which-key.nvim
+lua << EOF
+require("which-key").setup {
+}
+EOF
 
 colorscheme onedark
 set secure
