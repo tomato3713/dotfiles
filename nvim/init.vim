@@ -21,6 +21,7 @@ set listchars=tab:>>,trail:_,nbsp:+
 " temporary file setting
 set noundofile                         " undofileを作らない
 set noswapfile                         " swapfileを作らない
+set backupdir=~/.config/nvim/tmp/backup " backup file dir
 " cursor setting
 set ruler                              " カーソルの位置表示
 set cursorline                         " カーソルハイライト
@@ -77,16 +78,60 @@ let g:coc_global_extensions = [
             \, 'coc-clangd'
             \, 'coc-lists'
             \]
+
 nmap <silent> <space><space> :<C-u>CocList<cr>
-nmap <silent> <space>h :<C-u>call CocAction('doHover')<cr>
+nmap <silent> <space>rn <Plug>(coc-rename)
+nmap <silent> <space>fmt <Plug>(coc-format)
+command! -nargs=0 Format :call CocAction('format')
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" show documentation in preview window.
+nmap <silent> <space>h :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" goto
 nmap <silent> <space>df <Plug>(coc-definition)
 nmap <silent> <space>rf <Plug>(coc-references)
 nmap <silent> <space>i <Plug>(coc-implementation)
-nmap <silent> <space>rn <Plug>(coc-rename)
-nmap <silent> <space>fmt <Plug>(coc-format)
+nmap <silent> <space>t <Plug>(coc-type-definition)
 " next or prev diagnostic
-nmap <silent> <space>pd <Plug>(coc-diagnostic-prev)
-nmap <silent> <space>nd <Plug>(coc-diagnostic-next)
+nmap <silent> <space>dp <Plug>(coc-diagnostic-prev)
+nmap <silent> <space>dn <Plug>(coc-diagnostic-next)
+
+" Applying codeAction to the selected region.
+" Example: `<space>aap` for current paragraph
+xmap <space>a  <Plug>(coc-codeaction-selected)
+nmap <space>a  <Plug>(coc-codeaction-selected)
+" Remap keys for applying codeAction to the current buffer.
+nmap <space>ac  <Plug>(coc-codeaction)
+
+" apply autofix to problem on the current line
+nmap <space>qf <Plug>(coc-fix-current)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
 " #### coc-snippets ####
 " Use <C-l> for trigger snippet expand.
@@ -159,7 +204,7 @@ augroup ScrollbarInit
   autocmd!
   autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
   autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
-  autocmd WinLeave,FocusLost             * silent! lua require('scrollbar').clear()
+  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 augroup end
 
 " translation.vim
