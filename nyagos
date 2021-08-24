@@ -85,6 +85,7 @@ alias {
 
 -- Command Completions
 use("git")
+use("fuzzyfinder")
 
 local function include(fname)
   local chank, err = nyagos.loadfile(fname)
