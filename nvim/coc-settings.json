@@ -5,6 +5,5 @@
         "latex",
         "markdown"
     ],
-    "explorer.icon.enableNerdfont":true,
-    "latex.lint.onChange": true
+    "explorer.icon.enableNerdfont":true
 }
