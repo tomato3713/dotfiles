@@ -45,6 +45,8 @@ set shellslash
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mattn/vim-findroot'
+Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'itchyny/lightline.vim'
 Plug 'plan9-for-vimspace/acme.vim'
 Plug 'lambdalisue/gina.vim'
@@ -217,6 +219,15 @@ lua << EOF
 require("which-key").setup {
 }
 EOF
+
+" wilder.nvim
+call wilder#setup({
+      \ 'modes': [':', '/', '?'],
+      \ 'next_key': '<C-n>',
+      \ 'previous_key': '<C-p>',
+      \ 'accept_key': '<C-y>',
+      \ 'reject_key': '<C-e>',
+      \ })
 
 colorscheme onedark
 set secure
