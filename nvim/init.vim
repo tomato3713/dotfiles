@@ -50,6 +50,7 @@ Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'itchyny/lightline.vim'
 Plug 'plan9-for-vimspace/acme.vim'
 Plug 'lambdalisue/gina.vim'
+Plug 'voldikss/vim-floaterm'
 
 " Plug 'tversteeg/registers.nvim'
 Plug 'junegunn/vim-easy-align'
@@ -228,6 +229,12 @@ call wilder#setup({
       \ 'accept_key': '<C-y>',
       \ 'reject_key': '<C-e>',
       \ })
+
+" floaterm.nvim & terminal
+noremap <A-t>n :FloatermNew<CR>
+noremap <A-t>s :FloatermShow<CR>
+tnoremap <A-t>h <C-\><C-n>:FloatermHide<CR>
+tnoremap <A-t>w <C-\><C-n><C-w><C-w>
 
 colorscheme onedark
 set secure
