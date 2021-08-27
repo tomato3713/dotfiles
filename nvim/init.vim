@@ -21,7 +21,7 @@ set listchars=tab:>>,trail:_,nbsp:+
 " temporary file setting
 set noundofile                         " undofileを作らない
 set noswapfile                         " swapfileを作らない
-set backupdir=~/.config/nvim/tmp/backup " backup file dir
+set nobackup
 " cursor setting
 set ruler                              " カーソルの位置表示
 set cursorline                         " カーソルハイライト
