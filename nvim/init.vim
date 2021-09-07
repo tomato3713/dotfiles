@@ -80,6 +80,8 @@ let g:coc_global_extensions = [
             \, 'coc-git'
             \, 'coc-clangd'
             \, 'coc-lists'
+            \, 'coc-pairs'
+            \, 'coc-project'
             \]
 
 nmap <silent> <space><space> :<C-u>CocList<cr>
@@ -229,7 +231,8 @@ augroup end
 
 " translation.vim
 let g:translate_target = 'ja'
-let g:translate_popup_window = 1
+let g:translate_popup_window = 0
+let g:translate_winsize = 5
 vmap t <Plug>(VTranslate)
 
 " which-key.nvim
