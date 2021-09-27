@@ -53,28 +53,36 @@ autocmd BufEnter * call s:NoneFileTypeSetMarkdown()
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/vim-findroot'
-Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'itchyny/lightline.vim'
-Plug 'plan9-for-vimspace/acme.vim'
-Plug 'lambdalisue/gina.vim'
-Plug 'voldikss/vim-floaterm'
+Plug 'liuchengxu/vista.vim'
 
+" extend feature
+Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'voldikss/vim-floaterm'
 " Plug 'tversteeg/registers.nvim'
+
+" edit
+Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
 Plug 'vim-jp/autofmt'
-Plug 'joshdick/onedark.vim'
-Plug 'Xuyuanp/scrollbar.nvim'
-Plug 'skanehira/translate.vim'
+Plug 'moorereason/vim-markdownfmt'
 
+" view
+Plug 'Xuyuanp/scrollbar.nvim'
 Plug 'wellle/context.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'joshdick/onedark.vim'
 
 " for forgotting how to do
 Plug 'folke/which-key.nvim'
+
+" other
+Plug 'skanehira/translate.vim'
+Plug 'plan9-for-vimspace/acme.vim'
+Plug 'skanehira/code2img.vim'
 call plug#end()
 
 " ### coc.nvim ###
@@ -90,6 +98,7 @@ let g:coc_global_extensions = [
             \, 'coc-lists'
             \, 'coc-pairs'
             \, 'coc-project'
+            \, 'coc-markdownlint'
             \]
 
 nmap <silent> <space><space> :<C-u>CocList<cr>
