@@ -1,1 +1,1 @@
-Guifont! Migu\ 1M:h10
+Guifont! Migu\ 1M:h12
