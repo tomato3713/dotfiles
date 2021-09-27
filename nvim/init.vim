@@ -172,6 +172,10 @@ xmap <space>x  <Plug>(coc-convert-snippet)
 inoremap <silent><expr> <c-space> coc#refresh()
 
 nmap <space>e :CocCommand explorer<CR>
+nmap <space>c :CocCommand<CR>
+nmap <space>p :CocList project<CR>
+nmap <space>o :CocList outline<CR>
+nmap <space>s :CocList symbols<CR>
 
 " #### coc-git ####
 " navigate chunks of current buffer
@@ -190,6 +194,9 @@ xmap ig <Plug>(coc-git-chunk-inner)
 omap ag <Plug>(coc-git-chunk-outer)
 xmap ag <Plug>(coc-git-chunk-outer)
 
+" ### Vista.vim ###
+nmap <space>v :Vista coc<CR>
+
 " ### LightLine ###
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
@@ -201,18 +208,31 @@ function! LightlineGitBlame() abort
   return winwidth(0) > 120 ? blame : ''
 endfunction
 
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+" By default vista.vim never run if you don't call it explicitly.
+"
+" If you want to show the nearest function in your statusline automatically,
+" you can add the following line to your vimrc
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
 let g:lightline = {
       \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [
       \     [ 'mode', 'paste' ],
-      \     [ 'cocstatus', 'currentfunction', 'git', 'blame', 'readonly', 'filename', 'modified' ]
+      \     [ 'filename' ],
+      \     [ 'method' ],
+      \     [ 'cocstatus', 'git', 'blame', 'readonly', 'modified' ]
       \   ]
       \ },
       \ 'component_function': {
       \   'cocstatus': 'coc#status',
       \   'blame': 'LightlineGitBlame',
-      \   'currentfunction': 'CocCurrentFunction'
+      \   'currentfunction': 'CocCurrentFunction',
+      \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
 
