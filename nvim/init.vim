@@ -42,6 +42,14 @@ set shellxquote=
 set shellxescape=
 set shellslash
 
+" set default filtype as markdown
+function! s:NoneFileTypeSetMarkdown()
+  if len(&filetype) == 0
+    set filetype=markdown
+  endif
+endfunction
+autocmd BufEnter * call s:NoneFileTypeSetMarkdown()
+
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
