@@ -83,6 +83,10 @@ Plug 'folke/which-key.nvim'
 Plug 'skanehira/translate.vim'
 Plug 'plan9-for-vimspace/acme.vim'
 Plug 'skanehira/code2img.vim'
+
+" Game
+Plug 'alec-gibson/nvim-tetris'
+Plug 'seandewar/nvimesweeper'
 call plug#end()
 
 " ### coc.nvim ###
