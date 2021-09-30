@@ -3,6 +3,7 @@ set encoding=utf-8                     " バッファ内で扱う文字コード
 set fileencoding=utf-8                 " 書き込み時UTF-8出力
 set fileencodings=utf-8,cp932,sjis          " 読み込み時UTF-8, CP932, Shift_JISの順で自動判別
 set fileformats=unix,dos,mac
+set completeslash=slash
 
 " view
 set pumblend=10
@@ -40,15 +41,14 @@ set shell=nyagos
 set shellcmdflag=-c
 set shellxquote=
 set shellxescape=
-set shellslash
 
-" set default filtype as markdown
-function! s:NoneFileTypeSetMarkdown()
+" set default filtype as plain text
+function! s:NoneFileTypeSetTxt()
   if len(&filetype) == 0
-    set filetype=markdown
+    set filetype=txt
   endif
 endfunction
-autocmd BufEnter * call s:NoneFileTypeSetMarkdown()
+autocmd BufEnter * call s:NoneFileTypeSetTxt()
 
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
