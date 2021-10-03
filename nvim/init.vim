@@ -44,9 +44,9 @@ set shellxescape=
 
 " set default filtype as plain text
 function! s:NoneFileTypeSetTxt()
-  if len(&filetype) == 0
-    set filetype=txt
-  endif
+    if len(&filetype) == 0
+        set filetype=txt
+    endif
 endfunction
 autocmd BufEnter * call s:NoneFileTypeSetTxt()
 
@@ -54,21 +54,21 @@ call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'liuchengxu/vista.vim'
+Plug 'lambdalisue/gina.vim'
 
 " extend feature
 Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'voldikss/vim-floaterm'
+Plug 'tpope/vim-surround'
 " Plug 'tversteeg/registers.nvim'
 
 " edit
-Plug 'lambdalisue/gina.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
 Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
 Plug 'vim-jp/autofmt'
-Plug 'moorereason/vim-markdownfmt'
+" Plug 'moorereason/vim-markdownfmt'
 
 " view
 Plug 'Xuyuanp/scrollbar.nvim'
@@ -106,6 +106,9 @@ let g:coc_global_extensions = [
             \]
 
 nmap <silent> <space><space> :<C-u>CocList<cr>
+nmap <silent> <space>p :CocList project<CR>
+nmap <silent> <space>o :CocList outline<CR>
+nmap <silent> <space>s :CocList symbols<CR>
 nmap <silent> <space>rn <Plug>(coc-rename)
 nmap <silent> <space>fmt <Plug>(coc-format)
 command! -nargs=0 Format :call CocAction('format')
@@ -115,13 +118,13 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " show documentation in preview window.
 nmap <silent> <space>h :call <SID>show_documentation()<CR>
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
 endfunction
 
 " goto
@@ -160,26 +163,15 @@ xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
 " #### coc-snippets ####
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
 " Use <C-j> for jump to next placeholder, it's default of coc.nvim
 let g:coc_snippet_next = '<c-j>'
 " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
 let g:coc_snippet_prev = '<c-k>'
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-" Use <leader>x for convert visual selected code to snippet
+" Use <space>x for convert visual selected code to snippet
 xmap <space>x  <Plug>(coc-convert-snippet)
-
-inoremap <silent><expr> <c-space> coc#refresh()
 
 nmap <space>e :CocCommand explorer<CR>
 nmap <space>c :CocCommand<CR>
-nmap <space>p :CocList project<CR>
-nmap <space>o :CocList outline<CR>
-nmap <space>s :CocList symbols<CR>
 
 " #### coc-git ####
 " navigate chunks of current buffer
@@ -207,13 +199,13 @@ function! CocCurrentFunction()
 endfunction
 
 function! LightlineGitBlame() abort
-  let blame = get(b:, 'coc_git_blame', '')
-  " return blame
-  return winwidth(0) > 120 ? blame : ''
+    let blame = get(b:, 'coc_git_blame', '')
+    " return blame
+    return winwidth(0) > 120 ? blame : ''
 endfunction
 
 function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
+    return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
 " By default vista.vim never run if you don't call it explicitly.
@@ -223,22 +215,22 @@ endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
-      \ 'active': {
-      \   'left': [
-      \     [ 'mode', 'paste' ],
-      \     [ 'filename' ],
-      \     [ 'method' ],
-      \     [ 'cocstatus', 'git', 'blame', 'readonly', 'modified' ]
-      \   ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status',
-      \   'blame': 'LightlineGitBlame',
-      \   'currentfunction': 'CocCurrentFunction',
-      \   'method': 'NearestMethodOrFunction'
-      \ },
-      \ }
+            \ 'colorscheme': 'onedark',
+            \ 'active': {
+            \   'left': [
+            \     [ 'mode', 'paste' ],
+            \     [ 'filename' ],
+            \     [ 'method' ],
+            \     [ 'cocstatus', 'git', 'blame', 'readonly', 'modified' ]
+            \   ]
+            \ },
+            \ 'component_function': {
+            \   'cocstatus': 'coc#status',
+            \   'blame': 'LightlineGitBlame',
+            \   'currentfunction': 'CocCurrentFunction',
+            \   'method': 'NearestMethodOrFunction'
+            \ },
+            \ }
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
@@ -264,10 +256,10 @@ set formatexpr=autofmt#japanese#formatexpr() "
 
 " scrollbar
 augroup ScrollbarInit
-  autocmd!
-  autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
-  autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
-  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
+    autocmd!
+    autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
+    autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
+    autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 augroup end
 
 " translation.vim
@@ -284,12 +276,12 @@ EOF
 
 " wilder.nvim
 call wilder#setup({
-      \ 'modes': [':', '/', '?'],
-      \ 'next_key': '<C-n>',
-      \ 'previous_key': '<C-p>',
-      \ 'accept_key': '<C-y>',
-      \ 'reject_key': '<C-e>',
-      \ })
+            \ 'modes': [':', '/', '?'],
+            \ 'next_key': '<C-n>',
+            \ 'previous_key': '<C-p>',
+            \ 'accept_key': '<C-y>',
+            \ 'reject_key': '<C-e>',
+            \ })
 
 " floaterm.nvim & terminal
 noremap <A-t>n :FloatermNew<CR>
