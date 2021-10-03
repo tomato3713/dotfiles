@@ -76,6 +76,13 @@ Plug 'wellle/context.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'joshdick/onedark.vim'
 
+" File Explorer
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/fern-hijack.vim'
+
 " for forgotting how to do
 Plug 'folke/which-key.nvim'
 
@@ -261,6 +268,10 @@ augroup ScrollbarInit
     autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
     autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 augroup end
+
+" Fern
+let g:fern#renderer = 'nerdfont'
+nnoremap <silent> <Leader>e :Fern . <CR>
 
 " translation.vim
 let g:translate_target = 'ja'
