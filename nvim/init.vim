@@ -50,6 +50,22 @@ function! s:NoneFileTypeSetTxt()
 endfunction
 autocmd BufEnter * call s:NoneFileTypeSetTxt()
 
+" toggle "，/．" and "、/。"
+function! s:comma_period(line1, line2) abort range
+    let cursor = getcurpos()
+    execute 'silent keepjumps keeppatterns' a:line1 ',' a:line2 's/、/，/ge'
+    execute 'silent keepjumps keeppatterns' a:line1 ',' a:line2 's/。/．/ge'
+    call setpos('.', cursor)
+endfunction
+command! -bar -range=% CommaPeriod call s:comma_period(<line1>, <line2>)
+function! s:kutouten(line1, line2) abort range
+    let cursor = getcurpos()
+    execute 'silent keepjumps keeppatterns' a:line1 ',' a:line2 's/，/、/ge'
+    execute 'silent keepjumps keeppatterns' a:line1 ',' a:line2 's/．/。/ge'
+    call setpos('.', cursor)
+endfunction
+command! -bar -range=% Kutouten call s:kutouten(<line1>, <line2>)
+
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
