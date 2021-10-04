@@ -85,6 +85,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
 Plug 'vim-jp/autofmt'
 Plug 'moorereason/vim-markdownfmt'
+Plug 'vim-skk/eskk.vim'
 
 " view
 Plug 'Xuyuanp/scrollbar.nvim'
@@ -178,16 +179,17 @@ omap ac <Plug>(coc-classobj-a)
 " #### coc-snippets ####
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
+" Use <C-k> for select text for visual placeholder of snippet.
+vmap <C-k> <Plug>(coc-snippets-select)
+" Use <C-p> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-p>'
+" Use <C-n> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-n>'
+" Use <C-n> for both expand and jump (make expand higher priority.)
+imap <C-n> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <space>x  <Plug>(coc-convert-snippet)
+inoremap <silent><expr> <C-y> pumvisible() ? coc#_select_confirm() : coc#refresh()
 
 inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -228,6 +230,14 @@ function! LightlineGitBlame() abort
   return winwidth(0) > 120 ? blame : ''
 endfunction
 
+function L_eskk_get_mode()
+    if (mode() == 'i') && eskk#is_enabled()
+        return g:eskk#statusline()
+    else
+        return ''
+    endif
+endfunction
+
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
@@ -242,6 +252,7 @@ let g:lightline = {
       \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [
+      \     [ 'eskk' ],
       \     [ 'mode', 'paste' ],
       \     [ 'filename' ],
       \     [ 'method' ],
@@ -252,6 +263,7 @@ let g:lightline = {
       \   'cocstatus': 'coc#status',
       \   'blame': 'LightlineGitBlame',
       \   'currentfunction': 'CocCurrentFunction',
+      \   'eskk': 'L_eskk_get_mode',
       \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
@@ -277,6 +289,62 @@ vmap <Leader>c <plug>(caw:zeropos:toggle)
 " autofmt
 set formatoptions+=mM
 set formatexpr=autofmt#japanese#formatexpr() "
+
+" eskk.vim
+set imdisable
+let g:eskk#enable_completion = 0
+let g:eskk#fix_extra_okuri = 0
+let g:eskk#marker_henkan = ";"
+let g:eskk#marker_henkan_select = ">>"
+let g:eskk#marker_okuri = "*"
+let g:eskk#marker_jisyo_touroku = "?"
+let g:eskk#set_undo_point = {
+            \	'sticky': 1,
+            \	'kakutei': 0,
+            \}
+let g:eskk#directory = "~/.config/eskk"
+let g:eskk#dictionary = { 'path': "~/.config/eskk/user-dict", 'sorted': 0, 'encoding': 'utf-8', }
+let g:eskk#large_dictionary = { 'path': "~/.config/eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
+" autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
+" autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+function! s:eskk_initial_pre()
+    let t = eskk#table#new('rom_to_hira*', 'rom_to_hira')
+    call t.add_map(',', '，')
+    call t.add_map('.', '．')
+    call eskk#register_mode_table('hira', t)
+    let t = eskk#table#new('rom_to_kata*', 'rom_to_kata')
+    call t.add_map(',', '，')
+    call t.add_map('.', '．')
+    call eskk#register_mode_table('kata', t)
+endfunction
+autocmd User eskk-initialize-pre call s:eskk_initial_pre()
+" sticky shift
+" function! s:eskk_initial_post() abort
+"     EskkUnmap -type=sticky Q
+"     EskkMap -type=sticky ;
+" endfunction
+" autocmd User eskk-initialize-post call s:eskk_initial_post()
+" toggle sticky SKK
+let g:toggle_sticky_skk = 0
+function! s:sticky_skk_toggle() abort
+    let g:toggle_sticky_skk = g:toggle_sticky_skk == 1 ? 0 : 1
+    if g:toggle_sticky_skk ==# 1
+        echomsg 'Sticky SKK ON'
+    else
+        echomsg 'Sticky SKK OFF'
+    endif
+endfunction
+function! s:eskk_on() abort
+    if g:toggle_sticky_skk ==# 1
+        call eskk#enable()
+    endif
+endfunction
+augroup sticky_skk
+    autocmd!
+    autocmd InsertEnter * call s:eskk_on()
+    autocmd User eskk-enable-post lmap <buffer> l <Plug>(eskk:disable)
+augroup END
+command! -nargs=0 StickySKKToggle call s:sticky_skk_toggle()
 
 " scrollbar
 augroup ScrollbarInit
