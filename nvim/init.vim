@@ -356,12 +356,14 @@ else
 endif
 
 " scrollbar
-augroup ScrollbarInit
-    autocmd!
-    autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
-    autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
-    autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
-augroup end
+if !empty(globpath(&rtp, 'plugged/scrollbar.nvim'))
+    augroup ScrollbarInit
+        autocmd!
+        autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
+        autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
+        autocmd WinLeave,BufLeave,BufWinLeave,FocusLost * silent! lua require('scrollbar').clear()
+    augroup end
+end
 
 " Fern
 let g:fern#renderer = 'nerdfont'
@@ -374,10 +376,9 @@ let g:translate_winsize = 5
 vmap t <Plug>(VTranslate)
 
 " which-key.nvim
-lua << EOF
-require("which-key").setup {
-    }
-EOF
+if !empty(globpath(&rtp, 'plugged/which-key.nvim'))
+    lua require("which-key").setup {}
+endif
 
 " wilder.nvim
 call wilder#setup({
