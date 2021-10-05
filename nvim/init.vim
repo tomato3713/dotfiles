@@ -11,6 +11,7 @@ set termguicolors
 set noshowmode
 
 " editor setting
+set imdisable
 set number                             " 行番号表示
 set showcmd                            " 入力中のコマンドをステータスに表示
 set splitbelow                         " 水平分割時に下に表示
@@ -296,60 +297,63 @@ set formatoptions+=mM
 set formatexpr=autofmt#japanese#formatexpr() "
 
 " eskk.vim
-set imdisable
-let g:eskk#enable_completion = 0
-let g:eskk#fix_extra_okuri = 0
-let g:eskk#marker_henkan = ";"
-let g:eskk#marker_henkan_select = ">>"
-let g:eskk#marker_okuri = "*"
-let g:eskk#marker_jisyo_touroku = "?"
-let g:eskk#set_undo_point = {
-            \	'sticky': 1,
-            \	'kakutei': 0,
-            \}
-let g:eskk#directory = "~/.config/skk"
-let g:eskk#dictionary = { 'path': "~/.config/skk/user-dict", 'sorted': 0, 'encoding': 'utf-8', }
-let g:eskk#large_dictionary = { 'path': "~/.config/skk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
-" autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
-" autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
-function! s:eskk_initial_pre()
-    let t = eskk#table#new('rom_to_hira*', 'rom_to_hira')
-    call t.add_map(',', '，')
-    call t.add_map('.', '．')
-    call eskk#register_mode_table('hira', t)
-    let t = eskk#table#new('rom_to_kata*', 'rom_to_kata')
-    call t.add_map(',', '，')
-    call t.add_map('.', '．')
-    call eskk#register_mode_table('kata', t)
-endfunction
-autocmd User eskk-initialize-pre call s:eskk_initial_pre()
-" sticky shift
-" function! s:eskk_initial_post() abort
-"     EskkUnmap -type=sticky Q
-"     EskkMap -type=sticky ;
-" endfunction
-" autocmd User eskk-initialize-post call s:eskk_initial_post()
-" toggle sticky SKK
-let g:toggle_sticky_skk = 0
-function! s:sticky_skk_toggle() abort
-    let g:toggle_sticky_skk = g:toggle_sticky_skk == 1 ? 0 : 1
-    if g:toggle_sticky_skk ==# 1
-        echomsg 'Sticky SKK ON'
-    else
-        echomsg 'Sticky SKK OFF'
-    endif
-endfunction
-function! s:eskk_on() abort
-    if g:toggle_sticky_skk ==# 1
-        call eskk#enable()
-    endif
-endfunction
-augroup sticky_skk
-    autocmd!
-    autocmd InsertEnter * call s:eskk_on()
-    autocmd User eskk-enable-post lmap <buffer> l <Plug>(eskk:disable)
-augroup END
-command! -nargs=0 StickySKKToggle call s:sticky_skk_toggle()
+if empty(globpath(&rtp, 'plugged/eskk.vim')) || empty('$HOME/.config/skk')
+    finish
+else
+    let g:eskk#enable_completion = 0
+    let g:eskk#fix_extra_okuri = 0
+    let g:eskk#marker_henkan = ";"
+    let g:eskk#marker_henkan_select = ">>"
+    let g:eskk#marker_okuri = "*"
+    let g:eskk#marker_jisyo_touroku = "?"
+    let g:eskk#set_undo_point = {
+                \	'sticky': 1,
+                \	'kakutei': 0,
+                \}
+    let g:eskk#directory = "~/.config/skk"
+    let g:eskk#dictionary = { 'path': "~/.config/skk/user-dict", 'sorted': 0, 'encoding': 'utf-8', }
+    let g:eskk#large_dictionary = { 'path': "~/.config/skk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
+    " autocmd VimEnter * imap <C-j> <Plug>(eskk:toggle)
+    " autocmd VimEnter * cmap <C-j> <Plug>(eskk:toggle)
+    function! s:eskk_initial_pre()
+        let t = eskk#table#new('rom_to_hira*', 'rom_to_hira')
+        call t.add_map(',', '，')
+        call t.add_map('.', '．')
+        call eskk#register_mode_table('hira', t)
+        let t = eskk#table#new('rom_to_kata*', 'rom_to_kata')
+        call t.add_map(',', '，')
+        call t.add_map('.', '．')
+        call eskk#register_mode_table('kata', t)
+    endfunction
+    autocmd User eskk-initialize-pre call s:eskk_initial_pre()
+    " sticky shift
+    " function! s:eskk_initial_post() abort
+    "     EskkUnmap -type=sticky Q
+    "     EskkMap -type=sticky ;
+    " endfunction
+    " autocmd User eskk-initialize-post call s:eskk_initial_post()
+    " toggle sticky SKK
+    let g:toggle_sticky_skk = 0
+    function! s:sticky_skk_toggle() abort
+        let g:toggle_sticky_skk = g:toggle_sticky_skk == 1 ? 0 : 1
+        if g:toggle_sticky_skk ==# 1
+            echomsg 'Sticky SKK ON'
+        else
+            echomsg 'Sticky SKK OFF'
+        endif
+    endfunction
+    function! s:eskk_on() abort
+        if g:toggle_sticky_skk ==# 1
+            call eskk#enable()
+        endif
+    endfunction
+    augroup sticky_skk
+        autocmd!
+        autocmd InsertEnter * call s:eskk_on()
+        autocmd User eskk-enable-post lmap <buffer> l <Plug>(eskk:disable)
+    augroup END
+    command! -nargs=0 StickySKKToggle call s:sticky_skk_toggle()
+endif
 
 " scrollbar
 augroup ScrollbarInit
@@ -372,7 +376,7 @@ vmap t <Plug>(VTranslate)
 " which-key.nvim
 lua << EOF
 require("which-key").setup {
-}
+    }
 EOF
 
 " wilder.nvim
