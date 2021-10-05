@@ -11,9 +11,8 @@ set termguicolors
 set noshowmode
 
 " editor setting
-set imdisable
+set imdisable " IM disable
 set number                             " 行番号表示
-set showcmd                            " 入力中のコマンドをステータスに表示
 set splitbelow                         " 水平分割時に下に表示
 set splitright                         " 縦分割時を右に表示
 set noequalalways                      " 分割時に自動調整を無効化
@@ -25,7 +24,7 @@ set noundofile                         " undofileを作らない
 set noswapfile                         " swapfileを作らない
 set nobackup
 " cursor setting
-set ruler                              " カーソルの位置表示
+set noruler                              " カーソルの位置表示
 set cursorline                         " カーソルハイライト
 " tab setting
 set expandtab                          " tabを複数のspaceに置き換え
