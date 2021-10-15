@@ -50,6 +50,13 @@ function! s:NoneFileTypeSetTxt()
 endfunction
 autocmd BufEnter * call s:NoneFileTypeSetTxt()
 
+function! s:remove_controll_chars(line1, line2) abort range
+    let cursor = getcurpos()
+    execute 'keeppattern' a:line1 ',' a:line2 's/[]//gc'
+    call setpos('.', cursor)
+endfunction
+command! -bar -range=% RmCtlChars call s:remove_controll_chars(<line1>, <line2>)
+
 " toggle "，/．" and "、/。"
 function! s:comma_period(line1, line2) abort range
     let cursor = getcurpos()
