@@ -96,7 +96,7 @@ Plug 'tyru/eskk.vim'
 
 " view
 Plug 'Xuyuanp/scrollbar.nvim'
-Plug 'wellle/context.vim'
+" Plug 'wellle/context.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'joshdick/onedark.vim'
 
@@ -112,7 +112,7 @@ Plug 'folke/which-key.nvim'
 
 " other
 Plug 'skanehira/translate.vim'
-Plug 'plan9-for-vimspace/acme.vim'
+" Plug 'plan9-for-vimspace/acme.vim'
 Plug 'skanehira/code2img.vim'
 
 " Game
