@@ -99,6 +99,7 @@ Plug 'Xuyuanp/scrollbar.nvim'
 " Plug 'wellle/context.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'notomo/piemenu.nvim'
 
 " File Explorer
 Plug 'lambdalisue/fern.vim'
@@ -401,6 +402,63 @@ noremap <A-t>n :FloatermNew<CR>
 noremap <A-t>s :FloatermShow<CR>
 tnoremap <A-t>h <C-\><C-n>:FloatermHide<CR>
 tnoremap <A-t>w <C-\><C-n><C-w><C-w>
+
+" piemenu.nvim
+set mouse=a
+
+augroup piemenu_setting
+  autocmd!
+  autocmd FileType piemenu call s:setting()
+augroup END
+function! s:setting() abort
+  nnoremap <buffer> <LeftDrag> <Cmd>lua require("piemenu").highlight()<CR>
+  nnoremap <buffer> <LeftRelease> <Cmd>lua require("piemenu").finish()<CR>
+  nnoremap <buffer> <RightMouse> <Cmd>lua require("piemenu").cancel()<CR>
+endfunction
+
+lua << EOF
+require("piemenu").register("menu", {
+  menus = {
+    {
+      text = "📋 copy",
+      action = function()
+        vim.cmd("normal! yy")
+      end,
+    },
+    {
+      text = "📝 paste",
+      action = function()
+        vim.cmd("normal! p")
+      end,
+    },
+    {
+      text = "✅ save",
+      action = function()
+        vim.cmd("write")
+      end,
+    },
+    {
+      text = "👉 goto file",
+      action = function()
+        vim.cmd("normal! gF")
+      end,
+    },
+    {
+      text = "📚 help",
+      action = function()
+        vim.cmd("help " .. vim.fn.expand("<cword>"))
+      end,
+    },
+    {
+      text = "❌ close",
+      action = function()
+        vim.cmd("quit")
+      end,
+    },
+  },
+})
+EOF
+nnoremap <RightMouse> <LeftMouse><Cmd>lua require("piemenu").start("menu")<CR>
 
 colorscheme onedark
 set secure
