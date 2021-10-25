@@ -116,8 +116,9 @@ Plug 'plan9-for-vimspace/acme.vim'
 Plug 'skanehira/code2img.vim'
 
 " Game
-Plug 'alec-gibson/nvim-tetris'
-Plug 'seandewar/nvimesweeper'
+Plug 'alec-gibson/nvim-tetris', { 'on': 'Tetris' }
+Plug 'seandewar/nvimesweeper', { 'on': 'Nvimesweeper' }
+Plug 'mattn/invader-vim', { 'on': 'Invader' }
 call plug#end()
 
 " ### coc.nvim ###
