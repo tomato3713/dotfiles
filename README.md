@@ -1,12 +1,10 @@
 # Dotfiles
 
-## Installation
+Clone this repository and create symbolic link for some files.
 
-```sh
-curl -L raw.github.com/tomato3713/dotfiles/master/install.sh | bash
-```
+Set environment variable XDG_CONFIG_HOME to ~/.config.
 
-## Using Software
+## Requirements
 
 - Okular
 - ghq
@@ -15,6 +13,7 @@ curl -L raw.github.com/tomato3713/dotfiles/master/install.sh | bash
 - LaTeX
 - NeoVim, Language Server (Clang, gopls, ...) & CoC Client
 - textlint
+- denops
 - nyagos & Windows Terminal
 
 ## Shell script Functions
