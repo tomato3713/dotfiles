@@ -73,6 +73,13 @@ function! s:kutouten(line1, line2) abort range
 endfunction
 command! -bar -range=% Kutouten call s:kutouten(<line1>, <line2>)
 
+function! s:update_all()
+    execute 'PlugUpgrade'
+    execute 'PlugUpdate'
+    execute 'CocUpdate'
+endfunction
+command! -nargs=0 UpdateAll call s:update_all()
+
 call plug#begin('~/.config/nvim/plugged')
 " Language Server Protocol
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
