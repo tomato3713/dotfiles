@@ -1,1 +1,1 @@
-Guifont! Migu\ 1M:h12
+Guifont! PlemolJP\ Console\ NF:h12
