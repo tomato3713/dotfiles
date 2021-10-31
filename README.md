@@ -16,6 +16,8 @@ Set environment variable XDG_CONFIG_HOME to ~/.config.
 - denops
 - nyagos & Windows Terminal
 
+I use [PlemolJP](https://github.com/yuru7/PlemolJP) in terminal emulator and text editor.
+
 ## Shell script Functions
 
 - cr(): change directory to source code directory by searching FZF command.

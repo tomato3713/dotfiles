@@ -1,0 +1,13 @@
+shell:
+    program: c:\\Users\\nekotomato\\scoop\\apps\\nyagos\\current\\nyagos.exe
+
+background_opacity: 0.8
+
+font:
+  normal:
+    family: PlemolJP Console NF
+  bold:
+    family: PlemolJP Console NF
+  italic:
+    family: PlemolJP Console NF
+
