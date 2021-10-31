@@ -24,7 +24,7 @@ nyagos.envadd("PATH",
     [[%USERPROFILE%\.git-secrets]]
 )
 
-local workspace = nyagos.pathjoin(nyagos.getenv('HOME'), nyagos.eval('git config ghq.root'))
+local workspace = nyagos.pathjoin(nyagos.getenv('HOME'), 'repos')
 local configDir = nyagos.getenv('XDG_CONFIG_HOME')
 
 -- Coloring Prompt for NYAGOS.exe
@@ -69,6 +69,7 @@ alias {
       return "explorer " .. args[1]:gsub("/", "\\")
     end,
 
+    cr = "cd `fr`",
     fr = function(args)
         local ignore = { "tmp", "\\.git", "node_modules", "cache", "vendor", "build" }
         local cmd = "dir /ad /b /s " .. workspace
