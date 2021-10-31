@@ -7,7 +7,6 @@ Set environment variable XDG_CONFIG_HOME to ~/.config.
 ## Requirements
 
 - Okular
-- ghq
 - git
 - FZF
 - LaTeX

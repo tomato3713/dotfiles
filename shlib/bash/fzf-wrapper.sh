@@ -34,4 +34,4 @@ fd() {
     }
 
 # fr - search repositories
-alias fr='fd -d 3 -p `ghq root`'
+alias fr='fd -d 3 -p ~/repos'
