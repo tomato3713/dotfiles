@@ -9,6 +9,7 @@ set completeslash=slash
 set pumblend=10
 set termguicolors
 set noshowmode
+set signcolumn=yes
 
 " editor setting
 set imdisable " IM disable
