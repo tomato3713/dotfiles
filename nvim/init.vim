@@ -417,6 +417,8 @@ nnoremap <RightMouse> <LeftMouse><Cmd>lua require("piemenu").start("menu")<CR>
 " skkeleton
 imap <C-j> <Plug>(skkeleton-toggle)
 cmap <C-j> <Plug>(skkeleton-toggle)
+autocmd User skkeleton-enable-pre let b:coc_suggest_disable = v:true
+autocmd User skkeleton-disable-pre let b:coc_suggest_disable = v:false
 
 function! s:skkeleton_init() abort
     call skkeleton#config({
