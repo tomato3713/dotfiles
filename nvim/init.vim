@@ -75,6 +75,14 @@ function! s:kutouten(line1, line2) abort range
 endfunction
 command! -bar -range=% Kutouten call s:kutouten(<line1>, <line2>)
 
+function! s:count_chars(line1, line2) abort range
+    let cursor = getcurpos()
+    execute 'keepjumps keeppatterns' a:line1 ',' a:line2 's/./&/gn'
+    call setpos('.', cursor)
+endfunction
+command! -bar -range=% CountChars call s:count_chars(<line1>, <line2>)
+vmap <space>c :CountChars<CR>
+
 function! s:update_all()
     execute 'PlugUpgrade'
     execute 'PlugUpdate'
