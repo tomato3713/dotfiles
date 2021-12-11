@@ -94,6 +94,7 @@ Plug 'lambdalisue/gina.vim'
 Plug 'gelguy/wilder.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'voldikss/vim-floaterm'
 Plug 'tpope/vim-surround'
+Plug 'simeji/winresizer'
 " Plug 'tversteeg/registers.nvim'
 
 " edit
@@ -103,6 +104,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tyru/caw.vim'
 Plug 'vim-jp/autofmt'
 Plug 'vim-skk/denops-skkeleton.vim'
+Plug 'ferranpm/vim-isolate'
 " Plug 'moorereason/vim-markdownfmt'
 
 " view
