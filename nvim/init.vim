@@ -117,10 +117,13 @@ Plug 'ferranpm/vim-isolate'
 
 " view
 Plug 'Xuyuanp/scrollbar.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 " Plug 'wellle/context.vim'
 Plug 'itchyny/lightline.vim'
-Plug 'joshdick/onedark.vim'
 Plug 'notomo/piemenu.nvim'
+" colorscheme
+Plug 'joshdick/onedark.vim'
+Plug 'Yagua/nebulous.nvim'
 
 " File Explorer
 Plug 'lambdalisue/fern.vim'
@@ -455,5 +458,46 @@ function! s:sticky_skk_toggle() abort
 endfunction
 command! -nargs=0 StickySKKToggle call s:sticky_skk_toggle()
 
-colorscheme onedark
+" tree-sitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+      enable = true,
+  }
+}
+EOF
+
+" colorscheme nebulous.nvim
+lua << EOF
+require("nebulous").setup {
+  variant = "midnight",
+  disable = {
+    background = true,
+    endOfBuffer = false,
+  },
+  italic = {
+    comments   = false,
+    keywords   = true,
+    functions  = false,
+    variables  = true,
+  },
+  custom_colors = { -- this table can hold any group of colors with their respective values
+    LineNr = { fg = "#5BBBDA", bg = "NONE", style = "NONE" },
+    CursorLineNr = { fg = "#E1CD6C", bg = "NONE", style = "NONE" },
+
+    -- it is possible to specify only the element to be changed
+    TelescopePreviewBorder = { fg = "#A13413" },
+    LspDiagnosticsDefaultError = { bg = "#E11313" },
+    TSTagDelimiter = { style = "bold,italic" },
+  }
+}
+EOF
+
 set secure
