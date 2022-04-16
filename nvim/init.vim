@@ -10,6 +10,7 @@ set pumblend=10
 set termguicolors
 set noshowmode
 set signcolumn=yes
+set laststatus=3 " v0.7.0 and later
 
 " editor setting
 set imdisable " IM disable
