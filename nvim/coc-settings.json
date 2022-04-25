@@ -5,5 +5,9 @@
         "latex",
         "markdown"
     ],
-    "explorer.icon.enableNerdfont":true
+    "explorer.icon.enableNerdfont":true,
+    "markdownlint.config": {
+        "MD041": false,
+        "MD013": false
+    }
 }
