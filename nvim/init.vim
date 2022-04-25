@@ -118,7 +118,7 @@ Plug 'ferranpm/vim-isolate'
 
 " view
 Plug 'Xuyuanp/scrollbar.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdateSync'}  " We recommend updating the parsers on update
 " Plug 'wellle/context.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'notomo/piemenu.nvim'
@@ -462,11 +462,11 @@ command! -nargs=0 StickySKKToggle call s:sticky_skk_toggle()
 " tree-sitter
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = { "go", "c", "cpp", "markdown" },
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = {},  -- list of language that will be disabled
+    disable = { "vim" },  -- list of language that will be disabled
     additional_vim_regex_highlighting = false,
   },
   indent = {
