@@ -430,6 +430,7 @@ function! s:skkeleton_init() abort
                 \ 'keepState': v:false,
                 \ 'globalJisyo': '~/.config/skk/SKK-JISYO.L',
                 \ 'userJisyo': '~/.config/skk/user-dict',
+                \ 'immediatelyJisyoRW': v:false,
                 \ 'markerHenkan': '>',
                 \ 'markerHenkanSelect': '>>'
                 \ })
