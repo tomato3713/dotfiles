@@ -1,0 +1,57 @@
+[[plugins]]
+repo = 'joshdick/onedark.vim'
+hook_add = '''
+colorscheme onedark
+'''
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'folke/which-key.nvim'
+hook_add = '''
+lua << EOF
+require('which-key').setup {}
+EOF
+'''
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'simeji/winresizer'
+
+[[plugins]]
+repo = 'tyru/caw.vim'
+hook_add = '''
+nmap <Leader>c <plug>(caw:zeropos:toggle)
+vmap <Leader>c <plug>(caw:zeropos:toggle)
+'''
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+[[plugins]]
+repo = 'lambdalisue/gina.vim'
+
+[[plugins]]
+repo = 'gelguy/wilder.nvim'
+hook_post_update = 'UpdateRemotePlugins'
+
+[[plugins]]
+repo = 'wellle/targets.vim'
+
+[[plugins]]
+repo = 'junegunn/vim-easy-align'
+hook_add = '''
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+'''
+
+[[plugins]]
+repo = 'liuchengxu/vista.vim'
+hook_add = '''
+nmap <space>v :Vista nvim_lsp<CR>
+'''
