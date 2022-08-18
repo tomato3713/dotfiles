@@ -142,40 +142,6 @@ require'nvim-treesitter.configs'.setup {
 }
 '''
 
-# start fuzzy finder
-[[plugins]]
-repo = 'Shougo/ddu.vim'
-hook_add = '''
-nmap ;f <Cmd>call ddu#start({})<CR>
-
-call ddu#custom#patch_global({
-    \   'ui': 'ff',
-    \   'sources': [{'name': 'file_rec', 'params': {}}],
-    \   'sourceOptions': {
-    \     '_': {
-    \       'matchers': ['matcher_substring'],
-    \     },
-    \   },
-    \   'kindOptions': {
-    \     'file': {
-    \       'defaultAction': 'open',
-    \     },
-    \   }
-    \ })
-'''
-
-[[plugins]]
-repo = 'Shougo/ddu-ui-ff'
-depends = ['ddu.vim']
-
-[[plugins]]
-repo = 'Shougo/ddu-kind-file'
-depends = ['ddu.vim']
-
-[[plugins]]
-repo = 'Shougo/ddu-column-filename'
-depends = ['ddu.vim']
-
 [[plugins]]
 repo = 'skanehira/translate.vim'
 hook_add = '''
