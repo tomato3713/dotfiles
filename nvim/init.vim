@@ -120,4 +120,7 @@ if dein#check_install()
     call dein#install()
 endif
 
+" Clear dein cache files command
+command! DeinClearCache call dein#recache_runtimepath()
+
 set secure
