@@ -55,15 +55,25 @@ repo = 'vim-skk/skkeleton'
 depends = ['denops.vim']
 on_source = 'ddc.vim'
 hook_add = '''
+let s:skk_dir = expand('~/.config/skk')
+let s:global_skk_jisyo = s:skk_dir . '/SKK-JISYO.L'
+let s:user_skk_jisyo = s:skk_dir . '/user-dict'
+let s:skk_dict_url = 'http://openlab.jp/skk/skk/dic/SKK-JISYO.L'
+
 imap <C-j> <Plug>(skkeleton-toggle)
 cmap <C-j> <Plug>(skkeleton-toggle)
-'''
-hook_source = '''
+
+" download skk dictionary file
+if !isdirectory(s:skk_dir)
+    call mkdir(s:skk_dir)
+    execute '!curl' s:skk_dict_url '-o' expand(s:global_skk_jisyo)
+endif
+
 call skkeleton#config({
   \ 'eggLikeNewline': v:true,
   \ 'keepState': v:false,
-  \ 'globalJisyo': '~/.config/skk/SKK-JISYO.L',
-  \ 'userJisyo': '~/.config/skk/user-dict',
+  \ 'globalJisyo': s:global_skk_jisyo,
+  \ 'userJisyo': s:user_skk_jisyo,
   \ 'immediatelyJisyoRW': v:false,
   \ 'markerHenkan': '|',
   \ 'markerHenkanSelect': '?'
