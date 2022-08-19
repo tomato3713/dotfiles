@@ -2,12 +2,14 @@
 repo = 'Shougo/ddc.vim'
 on_event = 'InsertEnter'
 hook_source = '''
+  call ddc#custom#patch_global('completionMenu', 'pum.vim')
   call ddc#custom#patch_global('sources', ['skkeleton', 'nvim-lsp', 'around'])
   call ddc#custom#patch_global('sourceOptions',
     \ {
     \   '_': {
-    \     'matchers': ['matcher_head'],
-    \     'sorters': ['sorter_rank']
+    \     'matchers': ['matcher_fuzzy'],
+    \     'sorters': ['sorter_fuzzy'],
+    \     'converters': ['converter_fuzzy']
     \   },
     \   'around': {
     \     'mark': 'around',
@@ -25,14 +27,17 @@ hook_source = '''
   call ddc#enable()
 '''
 
-# start ddc sources
 [[plugins]]
-repo = 'Shougo/ddc-around'
+repo = 'Shougo/pum.vim'
 on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
-on_source = 'ddc.vim'
+hook_source = '''
+inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
+inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
+inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
+inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
+inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
+inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
+'''
 
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
@@ -49,6 +54,15 @@ on_source = 'ddc.vim'
 hook_source = '''
 call popup_preview#enable()
 '''
+
+# start ddc sources
+[[plugins]]
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-nvim-lsp'
+on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'vim-skk/skkeleton'
@@ -88,11 +102,7 @@ call skkeleton#register_kanatable('rom', {
 
 # start ddc filters
 [[plugins]]
-repo = 'Shougo/ddc-sorter_rank'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-matcher_head'
+repo = 'tani/ddc-fuzzy'
 on_source = 'ddc.vim'
 # start ddc filters
 
