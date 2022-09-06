@@ -14,7 +14,6 @@ set laststatus=3 " v0.7.0 and later
 
 " editor setting
 set imdisable " IM disable
-set number                             " 行番号表示
 set splitbelow                         " 水平分割時に下に表示
 set splitright                         " 縦分割時を右に表示
 set noequalalways                      " 分割時に自動調整を無効化
@@ -83,6 +82,10 @@ function! s:count_chars(line1, line2) abort range
 endfunction
 command! -bar -range=% CountChars call s:count_chars(<line1>, <line2>)
 vmap <space>c :CountChars<CR>
+
+" buffer
+nmap <silent> <C-n> <Cmd>bnext<CR>
+nmap <silent> <C-p> <Cmd>bprevious<CR>
 
 "dein Scripts-----------------------------
 let s:dein_dir = expand('~/.cache/dein')
