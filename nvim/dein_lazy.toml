@@ -21,7 +21,9 @@ hook_source = '''
     \   'skkeleton': {
     \     'mark': 'skk',
     \     'matchers': ['skkeleton'],
+    \     'sorters': [],
     \     'minAutoCompleteLength': 1,
+    \     'isVolatile': v:true,
     \   },
     \ })
   call ddc#enable()
@@ -83,20 +85,26 @@ if !isdirectory(s:skk_dir)
     execute '!curl' s:skk_dict_url '-o' expand(s:global_skk_jisyo)
 endif
 
-call skkeleton#config({
-  \ 'eggLikeNewline': v:true,
-  \ 'keepState': v:false,
-  \ 'globalJisyo': s:global_skk_jisyo,
-  \ 'userJisyo': s:user_skk_jisyo,
-  \ 'immediatelyJisyoRW': v:false,
-  \ 'markerHenkan': '|',
-  \ 'markerHenkanSelect': '?'
-  \ })
-call skkeleton#register_kanatable('rom', {
-  \ "z\<Space>": ["\u3000", ''],
-  \ "z.": ["．", ''],
-  \ "z,": ["，", '']
-  \ })
+function! s:skkeleton_init() abort
+  call skkeleton#config({
+    \ 'eggLikeNewline': v:true,
+    \ 'keepState': v:false,
+    \ 'globalJisyo': s:global_skk_jisyo,
+    \ 'userJisyo': s:user_skk_jisyo,
+    \ 'immediatelyJisyoRW': v:false,
+    \ 'markerHenkan': '|',
+    \ 'markerHenkanSelect': '?'
+    \ })
+  call skkeleton#register_kanatable('rom', {
+    \ "z\<Space>": ["\u3000", ''],
+    \ "z.": ["．", ''],
+    \ "z,": ["，", '']
+    \ })
+endfunction
+augroup skkeleton-initialize-pre
+  autocmd!
+  autocmd User skkeleton-initialize-pre call s:skkeleton_init()
+augroup END
 '''
 # end ddc sources
 
