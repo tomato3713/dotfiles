@@ -87,6 +87,10 @@ vmap <space>c :CountChars<CR>
 nmap <silent> <C-n> <Cmd>bnext<CR>
 nmap <silent> <C-p> <Cmd>bprevious<CR>
 
+" tab
+nmap <silent> N <Cmd>tabnext<CR>
+nmap <silent> P <Cmd>tabprevious<CR>
+
 "dein Scripts-----------------------------
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
