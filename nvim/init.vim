@@ -34,7 +34,8 @@ set tabstop=4                          " tabは半角4文字
 set shiftwidth=4                       " tabの幅
 set ignorecase
 
-set wildmenu wildmode=longest:full
+" set wildmenu wildmode=longest:full
+set nowildmenu
 set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk,*.pdf,*.aux,*.xlsx,*.pptx,*.docs
 set timeoutlen=500
 
@@ -88,8 +89,8 @@ nmap <silent> <C-n> <Cmd>bnext<CR>
 nmap <silent> <C-p> <Cmd>bprevious<CR>
 
 " tab
-nmap <silent> N <Cmd>tabnext<CR>
-nmap <silent> P <Cmd>tabprevious<CR>
+nmap <silent> <M-n> <Cmd>tabnext<CR>
+nmap <silent> <M-p> <Cmd>tabprevious<CR>
 
 "dein Scripts-----------------------------
 let s:dein_dir = expand('~/.cache/dein')
