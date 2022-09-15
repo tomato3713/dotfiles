@@ -132,3 +132,4 @@ endif
 command! DeinClearCache call dein#recache_runtimepath()
 
 set secure
+

@@ -35,10 +35,6 @@ repo = 'tpope/vim-repeat'
 repo = 'lambdalisue/gina.vim'
 
 [[plugins]]
-repo = 'gelguy/wilder.nvim'
-hook_post_update = 'UpdateRemotePlugins'
-
-[[plugins]]
 repo = 'wellle/targets.vim'
 
 [[plugins]]
