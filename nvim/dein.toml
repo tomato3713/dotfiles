@@ -5,6 +5,25 @@ colorscheme onedark
 '''
 
 [[plugins]]
+repo = 'obaland/vfiler.vim'
+hook_add = '''
+lua << EOF
+require('vfiler/config').setup {
+    options = {
+        auto_resize = true,
+        name = 'explorer',
+        columns = 'indent,icon,name,git,mode,size,time,space',
+        git = { enabled = true, untracked = true, ignored = true },
+        width = 30,
+    },
+}
+EOF
+
+nnoremap <silent><Leader>e <Cmd>VFiler -layout=none<CR>
+nnoremap <silent><Leader>E <Cmd>VFiler -layout=left<CR>
+'''
+
+[[plugins]]
 repo = 'vim-denops/denops.vim'
 
 [[plugins]]
