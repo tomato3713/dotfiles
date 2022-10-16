@@ -73,3 +73,10 @@ repo = 'liuchengxu/vista.vim'
 hook_add = '''
 nmap <space>v :Vista nvim_lsp<CR>
 '''
+
+[[plugins]]
+repo = 'tomato3713/dps-joplin'
+hook_add = '''
+let g:joplin_token = $JOPLIN_TOKEN
+let g:joplin_debug = v:true
+'''
