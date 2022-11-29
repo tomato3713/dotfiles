@@ -5,6 +5,9 @@ colorscheme onedark
 '''
 
 [[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
 repo = 'obaland/vfiler.vim'
 hook_add = '''
 lua << EOF
@@ -75,7 +78,89 @@ nmap <space>v :Vista nvim_lsp<CR>
 '''
 
 [[plugins]]
-repo = 'tomato3713/dps-joplin'
+repo = 'Shougo/ddu.vim'
+hook_add = '''
+"ddu settings.
+
+call ddu#custom#patch_global({
+    \   'ui': 'ff',
+    \   'sources': [{'name':'file','params':{}},{'name':'mr'},{'name':'register'},{'name':'buffer'}],
+    \   'sourceOptions': {
+    \     '_': {
+    \       'matchers': ['matcher_substring'],
+    \     },
+    \   },
+    \   'kindOptions': {
+    \     'file': {
+    \       'defaultAction': 'open',
+    \     },
+    \   },
+    \ })
+
+"ddu-key-setting
+autocmd FileType ddu-ff call s:ddu_my_settings()
+function! s:ddu_my_settings() abort
+  nnoremap <buffer><silent> <CR>
+        \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> <Space>
+        \ <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+  nnoremap <buffer><silent> i
+        \ <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+  nnoremap <buffer><silent> q
+        \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+endfunction
+
+autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+function! s:ddu_filter_my_settings() abort
+  nnoremap <buffer> <CR>
+  \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> q
+  \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  inoremap <buffer> <CR>
+  \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  inoremap <buffer> <C-j>
+  \ <Cmd>call ddu#ui#ff#execute("call cursor(line('.')+1,0)")<CR>
+  inoremap <buffer> <C-k>
+  \ <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
+endfunction
+
+"ddu keymapping.
+nnoremap <SID>[ug] <Nop>
+nmap ,u <SID>[ug]
+
+"show history list
+nnoremap <silent> <SID>[ug]m :<C-u>Ddu mr<CR>
+"show buffer list
+nnoremap <silent> <SID>[ug]b :<C-u>Ddu buffer<CR>
+"show register list
+nnoremap <silent> <SID>[ug]r :<C-u>Ddu register<CR>
+"create new file
+nnoremap <silent> <SID>[ug]n :<C-u>Ddu file -source-param-new -volatile<CR>
+"show file list
+nnoremap <silent> <SID>[ug]f :<C-u>Ddu file<CR>
+'''
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-ff'
+[[plugins]]
+repo = 'Shougo/ddu-source-file'
+[[plugins]]
+repo = 'Shougo/ddu-source-register'
+[[plugins]]
+repo = 'kuuote/ddu-source-mr'
+[[plugins]]
+repo = 'lambdalisue/mr.vim'
+[[plugins]]
+repo = 'shun/ddu-source-buffer'
+[[plugins]]
+repo = 'Shougo/ddu-filter-matcher_substring'
+[[plugins]]
+repo = 'Shougo/ddu-commands.vim'
+[[plugins]]
+repo = 'Shougo/ddu-kind-file'
+
+[[plugins]]
+repo = '~/repos/dps-joplin'
 hook_add = '''
 let g:joplin_token = $JOPLIN_TOKEN
 let g:joplin_debug = v:true
