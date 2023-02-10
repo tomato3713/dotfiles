@@ -21,6 +21,7 @@ nyagos.envadd("PATH",
     [[%GOPATH%\bin]],
     [[C:\develop\texlive\2020\bin\win32]],
     [[%USERPROFILE%\scoop\apps\python\current\Scripts]],
+    [[%USERPROFILE%\.platformio\penv\Scripts\]],
     [[%USERPROFILE%\.git-secrets]]
 )
 
