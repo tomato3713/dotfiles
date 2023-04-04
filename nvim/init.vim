@@ -40,10 +40,14 @@ set wildignore+=*.o,*.obj,*.class,*.exe,*.jpg,*.png,*.jar,*.apk,*.pdf,*.aux,*.xl
 set timeoutlen=500
 
 " terminal mode
-set shell=nyagos
-set shellcmdflag=-c
-set shellxquote=
-set shellxescape=
+if has('win32') || has('win64')
+    set shell=nyagos
+    set shellcmdflag=-c
+    set shellxquote=
+    set shellxescape=
+else
+    set shell=zsh
+endif
 
 " set default filtype as plain text
 function! s:NoneFileTypeSetTxt()
