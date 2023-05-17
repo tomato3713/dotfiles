@@ -100,7 +100,6 @@ nmap <silent> <M-p> <Cmd>tabprevious<CR>
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 let s:dein_startup_toml = expand('~/.config/nvim/dein.toml')
-let s:dein_lazy_toml = expand('~/.config/nvim/dein_lazy.toml')
 
 " dein installation check
 if &runtimepath !~# '/dein.vim'
@@ -118,7 +117,6 @@ call dein#begin(s:dein_dir)
 call dein#add(s:dein_repo_dir)
 
 call dein#load_toml(s:dein_startup_toml, {'lazy': 0})
-call dein#load_toml(s:dein_lazy_toml, {'lazy': 1})
 
 " Required:
 call dein#end()
