@@ -9,63 +9,16 @@ hook_add = '''
 colorscheme onedark
 '''
 
-# --- Rich Syntax Highlight ---
-[[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter'
-merged = 0
-hook_post_update = 'TSUpdate'
-hook_source = '''
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "c", "cpp", "markdown", "toml" },
-  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "vim" },  -- list of language that will be disabled
-    additional_vim_regex_highlighting = false,
-  },
-  indent = {
-      enable = true,
-  }
-}
-'''
-
-# --- File Exploer
-[[plugins]]
-repo = 'obaland/vfiler.vim'
-hook_add = '''
-lua << EOF
---- Support operation two buffers file explorer
-require('vfiler/config').setup {
-    options = {
-        auto_resize = true,
-        name = 'explorer',
-        columns = 'indent,icon,name,git,mode,size,time,space',
-        git = { enabled = true, untracked = true, ignored = true },
-        width = 30,
-    },
-}
-EOF
-" open filer in window
-nnoremap <silent><Leader>E <Cmd>VFiler -layout=none<CR>
-" open filer in side tab
-nnoremap <silent><Leader>e <Cmd>VFiler -layout=left<CR>
-'''
-
-[[plugins]]
-repo = 'liuchengxu/vista.vim'
-hook_add = '''
-" Support LSP
-nmap <space>v :Vista nvim_lsp<CR>
-'''
-
 # --- Rich Help ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
-hook_add = '''
-lua << EOF
+lua_add = '''
 require('which-key').setup {}
-EOF
 '''
+
+# --- Faster UI Controll ---
+[[plugins]]
+repo = 'simeji/winresizer'
 
 # --- Rich Text Edit ---
 [[plugins]]
@@ -93,26 +46,66 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 '''
 
-# --- Faster UI Controll ---
-[[plugins]]
-repo = 'simeji/winresizer'
-
-# --- Git ---
-[[plugins]]
-repo = 'lambdalisue/gina.vim'
-
-[[plugins]]
-repo = 'airblade/vim-gitgutter'
-
 # --- Script Quick Runner
 [[plugins]]
 repo = 'thinca/vim-quickrun'
 
+# --- Git ---
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+
+# --- Rich Syntax Highlight ---
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+merged = 0
+hook_post_update = 'TSUpdate'
+lua_source = '''
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "go", "c", "cpp", "markdown", "toml" },
+  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "vim" },  -- list of language that will be disabled
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+      enable = true,
+  }
+}
+'''
+
+# --- File Exploer
+[[plugins]]
+repo = 'obaland/vfiler.vim'
+lua_add = '''
+--- Support operation two buffers file explorer
+require('vfiler/config').setup {
+    options = {
+        auto_resize = true,
+        name = 'explorer',
+        columns = 'indent,icon,name,git,mode,size,time,space',
+        git = { enabled = true, untracked = true, ignored = true },
+        width = 30,
+    },
+}
+local opts = { noremap=true, silent=true }
+--- open filer in window
+vim.keymap.set('n', '<Leader>E', '<Cmd>VFiler -layout=none<CR>', opts)
+--- " open filer in side tab
+vim.keymap.set('n', '<Leader>e', '<Cmd>VFiler -layout=left<CR>', opts)
+'''
+
+[[plugins]]
+repo = 'liuchengxu/vista.vim'
+hook_add = '''
+" Support LSP
+nmap <space>v :Vista nvim_lsp<CR>
+'''
+
 [[plugins]]
 repo = 'Shougo/ddu.vim'
 hook_add = '''
-"ddu settings.
-
 call ddu#custom#patch_global({
     \   'ui': 'ff',
     \   'sources': [{'name':'file','params':{}},{'name':'mr'},{'name':'register'},{'name':'buffer'}],
@@ -121,6 +114,7 @@ call ddu#custom#patch_global({
     \       'matchers': ['matcher_substring'],
     \     },
     \   },
+    \   'filterParams': { 'matcher_substring' : { 'highhtMatched': 'Search' } },
     \   'kindOptions': {
     \     'file': {
     \       'defaultAction': 'open',
@@ -156,19 +150,16 @@ function! s:ddu_filter_my_settings() abort
 endfunction
 
 "ddu keymapping.
-nnoremap <SID>[ug] <Nop>
-nmap ,u <SID>[ug]
-
 "show history list
-nnoremap <silent> <SID>[ug]m :<C-u>Ddu mr<CR>
+nnoremap <silent> ,m :<C-u>Ddu mr<CR>
 "show buffer list
-nnoremap <silent> <SID>[ug]b :<C-u>Ddu buffer<CR>
+nnoremap <silent> ,b :<C-u>Ddu buffer<CR>
 "show register list
-nnoremap <silent> <SID>[ug]r :<C-u>Ddu register<CR>
+nnoremap <silent> ,r :<C-u>Ddu register<CR>
 "create new file
-nnoremap <silent> <SID>[ug]n :<C-u>Ddu file -source-param-new -volatile<CR>
+nnoremap <silent> ,n :<C-u>Ddu file -source-param-new -volatile<CR>
 "show file list
-nnoremap <silent> <SID>[ug]f :<C-u>Ddu file<CR>
+nnoremap <silent> ,f :<C-u>Ddu file<CR>
 '''
 
 [[plugins]]
@@ -193,12 +184,11 @@ repo = 'Shougo/ddu-kind-file'
 # --- Asynchronous Completion Framwwork ---
 [[plugins]]
 repo = 'Shougo/ddc.vim'
-on_event = ['BufEnter']
 hook_source = '''
-  call pum#set_option({
-    \ 'max_width': 100,
-    \ 'padding': v:true,
-    \ })
+  " call pum#set_option({
+  "   \ 'max_width': 100,
+  "   \ 'padding': v:true,
+  "   \ })
 
   call ddc#custom#patch_global('ui', 'pum')
   call ddc#custom#patch_global('sources', ['skkeleton', 'nvim-lsp', 'around', 'file'])
@@ -296,11 +286,10 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-ui-pum'
-on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/pum.vim'
-on_source = 'ddc-ui-pum'
+on_source = 'ddc.vim'
 hook_source = '''
 inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
 inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
@@ -312,7 +301,6 @@ inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
 
 [[plugins]]
 repo = 'matsui54/denops-signature_help'
-depends = ['denops.vim']
 on_source = 'ddc.vim'
 hook_source = '''
 call signature_help#enable()
@@ -320,8 +308,6 @@ call signature_help#enable()
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
-depends = ['denops.vim']
-on_source = 'ddc.vim'
 hook_source = '''
 call popup_preview#enable()
 '''
@@ -355,15 +341,13 @@ on_source = 'ddc.vim'
 # --- SKK ---
 [[plugins]]
 repo = 'vim-skk/skkeleton'
-depends = ['denops.vim']
-on_source = 'ddc.vim'
 hook_add = '''
+imap <C-j> <Plug>(skkeleton-toggle)
+cmap <C-j> <Plug>(skkeleton-toggle)
 let s:skk_dir = expand('~/.config/skk')
 let s:global_skk_jisyo = s:skk_dir . '/SKK-JISYO.L'
 let s:user_skk_jisyo = s:skk_dir . '/user-dict'
 let s:skk_dict_url = 'http://openlab.jp/skk/skk/dic/SKK-JISYO.L'
-imap <C-j> <Plug>(skkeleton-toggle)
-cmap <C-j> <Plug>(skkeleton-toggle)
 
 " download skk dictionary file
 if !isdirectory(s:skk_dir)
@@ -395,19 +379,15 @@ augroup END
 
 [[plugins]]
 repo = 'delphinus/skkeleton_indicator.nvim'
-on_source = 'skkeleton'
-hook_source = '''
-lua << EOF
+lua_source = '''
 require('skkeleton_indicator').setup{}
-EOF
 '''
 
 # --- Language Server Protocol ---
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 on_event = 'BufEnter'
-hook_source= '''
-lua << EOF
+lua_source= '''
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client,bufnr)
 
@@ -442,17 +422,15 @@ lsp_installer.on_server_ready(function(server)
   server:setup(opts)
   vim.cmd [[do User LspAttachBuffers]]
 end)
-EOF
 '''
 
 [[plugins]]
 repo = 'williamboman/nvim-lsp-installer'
 on_source = 'nvim-lspconfig'
 
-
-[[plugins]]
-repo = '~/repos/dps-joplin'
-hook_add = '''
-let g:joplin_token = $JOPLIN_TOKEN
-let g:joplin_debug = v:true
-'''
+# [[plugins]]
+# repo = '~/repos/dps-joplin'
+# hook_add = '''
+# let g:joplin_token = $JOPLIN_TOKEN
+# let g:joplin_debug = v:true
+# '''
