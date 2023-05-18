@@ -12,7 +12,7 @@ colorscheme onedark
 # --- Rich Help ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
-lua_add = '''
+lua_source = '''
 require('which-key').setup {}
 '''
 
@@ -62,7 +62,7 @@ merged = 0
 hook_post_update = 'TSUpdate'
 lua_source = '''
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "go", "c", "cpp", "markdown", "toml" },
+  ensure_installed = { "go", "c", "cpp", "markdown", "toml", "tsx", "json", "css", "lua", "yaml" },
   sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
   highlight = {
     enable = true,              -- false will disable the whole extension
@@ -79,6 +79,12 @@ require'nvim-treesitter.configs'.setup {
 [[plugins]]
 repo = 'obaland/vfiler.vim'
 lua_add = '''
+--- open filer in window
+vim.keymap.set('n', '<Leader>E', '<Cmd>VFiler -layout=none<CR>', opts)
+--- " open filer in side tab
+vim.keymap.set('n', '<Leader>e', '<Cmd>VFiler -layout=left<CR>', opts)
+'''
+lua_source = '''
 --- Support operation two buffers file explorer
 require('vfiler/config').setup {
     options = {
@@ -90,10 +96,6 @@ require('vfiler/config').setup {
     },
 }
 local opts = { noremap=true, silent=true }
---- open filer in window
-vim.keymap.set('n', '<Leader>E', '<Cmd>VFiler -layout=none<CR>', opts)
---- " open filer in side tab
-vim.keymap.set('n', '<Leader>e', '<Cmd>VFiler -layout=left<CR>', opts)
 '''
 
 [[plugins]]
@@ -106,9 +108,27 @@ nmap <space>v :Vista nvim_lsp<CR>
 [[plugins]]
 repo = 'Shougo/ddu.vim'
 hook_add = '''
+"ddu-key-setting
+autocmd FileType ddu-ff call s:ddu_my_settings()
+function! s:ddu_my_settings() abort
+  nnoremap <buffer><silent> <CR> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
+  nnoremap <buffer><silent> i <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
+  nnoremap <buffer><silent> q <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+endfunction
+autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
+function! s:ddu_filter_my_settings() abort
+  nnoremap <buffer> <CR> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  nnoremap <buffer><silent> q <Cmd>call ddu#ui#ff#do_action('quit')<CR>
+  inoremap <buffer> <CR> <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
+  inoremap <buffer> <C-j> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')+1,0)")<CR>
+  inoremap <buffer> <C-k> <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
+endfunction
+'''
+hook_source = '''
 call ddu#custom#patch_global({
     \   'ui': 'ff',
-    \   'sources': [{'name':'file','params':{}},{'name':'mr'},{'name':'register'},{'name':'buffer'}],
+    \   'sources': [{'name':'file_rec','params':{}},{'name':'mr'},{'name':'register'},{'name':'buffer'}],
     \   'sourceOptions': {
     \     '_': {
     \       'matchers': ['matcher_substring'],
@@ -121,51 +141,14 @@ call ddu#custom#patch_global({
     \     },
     \   },
     \ })
-
-"ddu-key-setting
-autocmd FileType ddu-ff call s:ddu_my_settings()
-function! s:ddu_my_settings() abort
-  nnoremap <buffer><silent> <CR>
-        \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> <Space>
-        \ <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
-  nnoremap <buffer><silent> i
-        \ <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> q
-        \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-endfunction
-
-autocmd FileType ddu-ff-filter call s:ddu_filter_my_settings()
-function! s:ddu_filter_my_settings() abort
-  nnoremap <buffer> <CR>
-  \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> q
-  \ <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  inoremap <buffer> <CR>
-  \ <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  inoremap <buffer> <C-j>
-  \ <Cmd>call ddu#ui#ff#execute("call cursor(line('.')+1,0)")<CR>
-  inoremap <buffer> <C-k>
-  \ <Cmd>call ddu#ui#ff#execute("call cursor(line('.')-1,0)")<CR>
-endfunction
-
-"ddu keymapping.
-"show history list
-nnoremap <silent> ,m :<C-u>Ddu mr<CR>
-"show buffer list
-nnoremap <silent> ,b :<C-u>Ddu buffer<CR>
-"show register list
-nnoremap <silent> ,r :<C-u>Ddu register<CR>
-"create new file
-nnoremap <silent> ,n :<C-u>Ddu file -source-param-new -volatile<CR>
-"show file list
-nnoremap <silent> ,f :<C-u>Ddu file<CR>
 '''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-ff'
 [[plugins]]
 repo = 'Shougo/ddu-source-file'
+[[plugins]]
+repo = 'Shougo/ddu-source-file_rec'
 [[plugins]]
 repo = 'Shougo/ddu-source-register'
 [[plugins]]
@@ -178,17 +161,30 @@ repo = 'shun/ddu-source-buffer'
 repo = 'Shougo/ddu-filter-matcher_substring'
 [[plugins]]
 repo = 'Shougo/ddu-commands.vim'
+hook_add = '''
+"show history list
+nnoremap <silent> ,m :<C-u>Ddu mr<CR>
+"show buffer list
+nnoremap <silent> ,b :<C-u>Ddu buffer<CR>
+"show register list
+nnoremap <silent> ,r :<C-u>Ddu register<CR>
+"create new file
+nnoremap <silent> ,n :<C-u>Ddu file -source-param-new -volatile<CR>
+"show file list
+nnoremap <silent> ,f :<C-u>Ddu file_rec<CR>
+'''
 [[plugins]]
 repo = 'Shougo/ddu-kind-file'
 
 # --- Asynchronous Completion Framwwork ---
 [[plugins]]
 repo = 'Shougo/ddc.vim'
+depends = ['denops.vim', 'pum.vim']
 hook_source = '''
-  " call pum#set_option({
-  "   \ 'max_width': 100,
-  "   \ 'padding': v:true,
-  "   \ })
+  call pum#set_option({
+    \ 'max_width': 100,
+    \ 'padding': v:true,
+    \ })
 
   call ddc#custom#patch_global('ui', 'pum')
   call ddc#custom#patch_global('sources', ['skkeleton', 'nvim-lsp', 'around', 'file'])
@@ -286,11 +282,11 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-ui-pum'
+on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/pum.vim'
-on_source = 'ddc.vim'
-hook_source = '''
+hook_add = '''
 inoremap <C-n> <Cmd>call pum#map#insert_relative(+1)<CR>
 inoremap <C-p> <Cmd>call pum#map#insert_relative(-1)<CR>
 inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
@@ -322,7 +318,7 @@ repo = 'LumaKernel/ddc-file'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-nvim-lsp'
+repo = 'Shougo/ddc-source-nvim-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -341,6 +337,7 @@ on_source = 'ddc.vim'
 # --- SKK ---
 [[plugins]]
 repo = 'vim-skk/skkeleton'
+depends = ['denops.vim']
 hook_add = '''
 imap <C-j> <Plug>(skkeleton-toggle)
 cmap <C-j> <Plug>(skkeleton-toggle)
@@ -379,6 +376,7 @@ augroup END
 
 [[plugins]]
 repo = 'delphinus/skkeleton_indicator.nvim'
+depends = ['skkeleton']
 lua_source = '''
 require('skkeleton_indicator').setup{}
 '''
@@ -386,10 +384,10 @@ require('skkeleton_indicator').setup{}
 # --- Language Server Protocol ---
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-on_event = 'BufEnter'
+depends = ['mason-lspconfig']
 lua_source= '''
 local nvim_lsp = require('lspconfig')
-local on_attach = function(client,bufnr)
+local mason_lspconfig = require('mason-lspconfig')
 
 -- LSPの警告フォーマット
 -- ref: https://dev.classmethod.jp/articles/eetann-change-neovim-lsp-diagnostics-format/
@@ -401,32 +399,72 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   },
 })
 
-local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local bufopts = { noremap=true, silent=true }
+vim.keymap.set('n', '<Space>df', '<cmd>lua vim.diagnostic.open_float()<CR>', bufopts)
+vim.keymap.set('n',        '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>',  bufopts)
+vim.keymap.set('n',        ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>',  bufopts)
+vim.keymap.set('n',  '<Space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', bufopts)
 
-local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', 'gs', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', 'gx', '<Cmd>lua vim.lsp.buf.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', 'g[', '<Cmd>lua vim.lsp.buf.diagnostic.show_prev()<CR>', opts)
-  buf_set_keymap('n', 'g]', '<Cmd>lua vim.lsp.buf.diagnostic.show_next()<CR>', opts)
-end
+mason_lspconfig.setup_handlers({ 
+    function(server_name)
+        local opts = {}
+        opts.on_attach = function(client, bufnr)
+          local bufopts = { noremap=true, silent=true }
+          -- code reading
+          -- show information at cursor
+          --- 定義情報などを表示する
+          vim.keymap.set('n',        'K', vim.lsp.buf.hover,                                 bufopts)
+          --- 関数の引数の内容とかを表示する
+          vim.keymap.set('n',    '<c-k>', vim.lsp.buf.signature_help,                        bufopts)
 
-local lsp_installer = require("nvim-lsp-installer")
-lsp_installer.on_server_ready(function(server)
-  local opts = {}
-  opts.on_attach = on_attach
-  server:setup(opts)
-  vim.cmd [[do User LspAttachBuffers]]
-end)
+          -- code walking
+          --- 定義に移動
+          vim.keymap.set('n',       'gd', '<cmd>lua vim.lsp.buf.definition()<CR>',           bufopts)
+          --- 型定義に移動
+          vim.keymap.set('n',      'gtd', '<cmd>lua vim.lsp.buf.type_definition()<CR>',      bufopts)
+          --- 宣言に移動
+          vim.keymap.set('n',       'gD', '<cmd>lua vim.lsp.buf.declaratioin()<CR>',         bufopts)
+          --- 実装へ移動
+          vim.keymap.set('n',       'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>',       bufopts)
+          --- 参照一覧をQFに表示して、選択した場所に移動する
+          vim.keymap.set('n',       'gr', '<cmd>lua vim.lsp.buf.references()<CR>',           bufopts)
+          --- 前のエラーに移動
+          vim.keymap.set('n',       'g[', '<cmd>lua vim.lsp.buf.diagnostic.show_prev()<CR>', bufopts)
+          --- 次のエラーに移動
+          vim.keymap.set('n',       'g]', '<cmd>lua vim.lsp.buf.diagnostic.show_next()<CR>', bufopts)
+
+          -- code edit
+          --- 関数名や変数名をリネーム
+          vim.keymap.set('n', '<Space>r', '<cmd>lua vim.lsp.buf.rename()<CR>',               bufopts)
+          --- フォーマット実行
+          vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>',           bufopts)
+          --- コードアクションを実行する．構造体を埋めたり，
+          vim.keymap.set('n', '<Space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', bufopts)
+
+          -- workspace
+          --- ワークスペース一覧を表示
+          vim.keymap.set("n", "<space>wl", '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
+          --- ワークスペースにフォルダを追加する
+          vim.keymap.set("n", "<space>wa", '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
+          vim.keymap.set("n", "<space>wr", '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
+        end
+        nvim_lsp[server_name].setup(opts)
+    end
+})
 '''
 
 [[plugins]]
-repo = 'williamboman/nvim-lsp-installer'
-on_source = 'nvim-lspconfig'
+repo = 'williamboman/mason.nvim'
+lua_source = '''
+local mason = require('mason')
+mason.setup({
+  ui = { icons = { package_installed = "＊", package_pending = "∴", package_uninstalled = "×" } } 
+})
+'''
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
 
 # [[plugins]]
 # repo = '~/repos/dps-joplin'
