@@ -296,9 +296,11 @@ inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>
 '''
 
 [[plugins]]
+# to show lsp signature help
 repo = 'matsui54/denops-signature_help'
 on_source = 'ddc.vim'
 hook_source = '''
+let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
 call signature_help#enable()
 '''
 
@@ -385,7 +387,7 @@ require('skkeleton_indicator').setup{}
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 depends = ['mason-lspconfig']
-lua_source= '''
+lua_source = '''
 local nvim_lsp = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
 
