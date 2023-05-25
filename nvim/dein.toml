@@ -557,6 +557,28 @@ mason.setup({
 '''
 [[plugins]]
 repo = 'williamboman/mason-lspconfig.nvim'
+[[plugins]]
+repo = "jose-elias-alvarez/null-ls.nvim"
+depends = ['plenary.nvim']
+lua_source = '''
+local status, null_ls = pcall(require, "null-ls")
+if (not status) then return end
+
+null_ls.setup({
+    -- Linter/Formatter
+    sources = {
+        -- ローカル/グローバルのESLintのコード診断機能をnull-lsで利用する
+        null_ls.builtins.diagnostics.eslint.with({ prefier_local = "node_modules/.bin" }), -- プロジェクトローカルがある場合は、それを利用する
+        null_ls.builtins.formatting.prettier,
+    },
+    debug = false,
+})
+'''
+[[plugins]]
+repo = "nvim-lua/plenary.nvim"
+
+[[plugins]]
+repo = '~/repos/github.com/tomato3713/ddu-source-joplin'
 
 # [[plugins]]
 # repo = '~/repos/dps-joplin'
