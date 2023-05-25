@@ -89,6 +89,7 @@ require'nvim-treesitter.configs'.setup {
 [[plugins]]
 repo = 'obaland/vfiler.vim'
 lua_add = '''
+local opts = { noremap=true, silent=true }
 --- open filer in window
 vim.keymap.set('n', '<Leader>E', '<Cmd>VFiler -layout=none<CR>', opts)
 --- " open filer in side tab
@@ -96,6 +97,7 @@ vim.keymap.set('n', '<Leader>e', '<Cmd>VFiler -layout=left<CR>', opts)
 '''
 lua_source = '''
 --- Support operation two buffers file explorer
+local action = require('vfiler/action')
 require('vfiler/config').setup {
     options = {
         auto_resize = true,
@@ -104,8 +106,16 @@ require('vfiler/config').setup {
         git = { enabled = true, untracked = true, ignored = true },
         width = 30,
     },
+    mappings = {
+        ['<C-l>'] = action.reload,
+        ['<C-p>'] = action.toggle_auto_preview,
+        ['<C-s>'] = action.toggle_sort,
+        ['N'] = action.new_file,
+        ['K'] = action.new_directory,
+        ['s'] = action.open_by_split,
+        ['v'] = action.open_by_vsplit,
+    },
 }
-local opts = { noremap=true, silent=true }
 '''
 
 [[plugins]]
