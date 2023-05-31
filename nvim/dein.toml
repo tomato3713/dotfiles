@@ -222,6 +222,12 @@ repo = 'kuuote/ddu-source-mr'
 repo = 'shun/ddu-source-buffer'
 [[plugins]]
 repo = 'lambdalisue/mr.vim'
+hook_source = '''
+augroup GitCommit
+    autocmd!
+    autocmd FileType gitcommit setlocal spell
+augroup END
+'''
 [[plugins]]
 repo = 'Shougo/ddu-filter-matcher_substring'
 [[plugins]]
