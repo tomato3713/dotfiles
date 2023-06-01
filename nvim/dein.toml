@@ -135,10 +135,15 @@ call ddu#custom#patch_global(#{
     \       #{name: 'file_rec'},
     \       #{name: 'mr'},
     \       #{name: 'register'},
-    \       #{name: 'buffer'}
+    \       #{name: 'buffer'},
+    \       #{name: 'joplin'},
     \   ],
     \   sourceParams: #{
     \     file_rec: #{ ignoredDirectories: ['.git', 'node_modules', 'vendor', '.next']  },
+    \     joplin: #{
+    \       token: $JOPLIN_TOKEN,
+    \       fullPath: v:true
+    \     },
     \   },
     \   sourceOptions: {
     \     '_': #{
@@ -176,6 +181,12 @@ nmap <silent> ,g <Cmd>call ddu#start({
     \       ]
     \   }
     \   )<CR>
+nmap <silent> ,j <Cmd>call ddu#start(#{
+    \   name: 'joplin',
+    \   sources: [
+    \       #{ name: 'joplin' },
+    \   ],
+    \   })<CR>
 '''
 
 [[plugins]]
