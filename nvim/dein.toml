@@ -548,7 +548,7 @@ mason_lspconfig.setup_handlers({
           --- 関数名や変数名をリネーム
           vim.keymap.set('n', '<Space>r', '<cmd>lua vim.lsp.buf.rename()<CR>',               bufopts)
           --- フォーマット実行
-          vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>',           bufopts)
+          vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.format( { async = true } )<CR>',           bufopts)
           --- コードアクションを実行する．構造体を埋めたり，
           vim.keymap.set('n', '<Space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', bufopts)
 
@@ -587,6 +587,7 @@ null_ls.setup({
         -- ローカル/グローバルのESLintのコード診断機能をnull-lsで利用する
         null_ls.builtins.diagnostics.eslint.with({ prefier_local = "node_modules/.bin" }), -- プロジェクトローカルがある場合は、それを利用する
         null_ls.builtins.formatting.prettier,
+        null_ls.builtins.formatting.markdownlint,
     },
     debug = false,
 })
