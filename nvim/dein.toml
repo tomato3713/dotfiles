@@ -157,6 +157,9 @@ call ddu#custom#patch_global(#{
     \     file: #{
     \       defaultAction: 'open',
     \     },
+    \     joplin: #{
+    \       defaultAction: 'open',
+    \     },
     \   },
     \   uiParams: #{
     \       ff: #{ prompt: '>> ', startFilter: v:true }
@@ -181,6 +184,13 @@ nmap <silent> ,g <Cmd>call ddu#start({
     \       ]
     \   }
     \   )<CR>
+nmap <silent> ,k <Cmd>call ddu#start({
+    \       'name': 'joplin',
+    \       'sources': [
+    \           { 'name': 'joplin', 'params': { 'input': expand('<cword>') } }
+    \       ]
+    \   }
+    \   )<CR>
 nmap <silent> ,j <Cmd>call ddu#start(#{
     \   name: 'joplin',
     \   sources: [
@@ -199,6 +209,8 @@ function! s:ddu_ff_my_settings() abort
   nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
   nnoremap <buffer><silent> f       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
   nnoremap <buffer><silent> p       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
+  nnoremap <buffer><silent> nn    <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'newNote' })<CR>
+  nnoremap <buffer><silent> nt    <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'newTodo' })<CR>
 endfunction
 autocmd FileType ddu-ff-filter call s:ddu_ff_filter_my_settings()
 function! s:ddu_ff_filter_my_settings() abort
@@ -597,6 +609,8 @@ repo = "nvim-lua/plenary.nvim"
 
 [[plugins]]
 repo = '~/repos/github.com/tomato3713/ddu-source-joplin'
+[[plugins]]
+repo = '~/repos/github.com/tomato3713/ddu-kind-joplin'
 
 # [[plugins]]
 # repo = '~/repos/dps-joplin'
