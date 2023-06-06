@@ -280,7 +280,7 @@ hook_source = '''
     \ })
 
   call ddc#custom#patch_global('ui', 'pum')
-  call ddc#custom#patch_global('sources', ['skkeleton', 'nvim-lsp', 'around', 'file'])
+  call ddc#custom#patch_global('sources', ['skkeleton', 'vsnip', 'nvim-lsp', 'around', 'file'])
   call ddc#custom#patch_global('sourceOptions',
     \ {
     \   '_': {
@@ -295,6 +295,9 @@ hook_source = '''
     \   'nvim-lsp': {
     \     'mark': 'lsp',
     \     'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+    \   },
+    \   'vsnip': {
+    \       'mark': 'snip',
     \   },
     \   'skkeleton': {
     \     'mark': 'skk',
@@ -528,8 +531,6 @@ mason_lspconfig.setup_handlers({
                }
             }
         end
-    
-
 
         opts.on_attach = function(client, bufnr)
           local bufopts = { noremap=true, silent=true }
@@ -571,10 +572,40 @@ mason_lspconfig.setup_handlers({
           vim.keymap.set("n", "<space>wa", '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
           vim.keymap.set("n", "<space>wr", '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
         end
+
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
+        opts.capabilities = capabilities
+
         nvim_lsp[server_name].setup(opts)
     end
 })
 '''
+
+# --- Snippets
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_event = 'InsertEnter'
+depends = ['vim-vsnip-integ', 'friendly-snippets']
+hook_add = '''
+imap <expr> <C-k> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>'
+smap <expr> <C-k> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>'
+imap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
+smap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
+imap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
+smap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
+let g:vsnip_filetypes = {}
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+hook_source = '''
+autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
+'''
+
+# snippets collections
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
 
 [[plugins]]
 repo = 'williamboman/mason.nvim'
