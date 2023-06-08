@@ -104,14 +104,15 @@ local action = require('vfiler/action')
 require('vfiler/config').setup {
     options = {
         auto_resize = true,
+        keep = true,
         name = 'explorer',
-        columns = 'indent,icon,name,git,mode,size,time,space',
+        columns = 'indent,icon,name,git',
+        iconstring = '-',
         git = { enabled = true, untracked = true, ignored = true },
-        width = 30,
+        width = 34,
     },
     mappings = {
         ['<C-l>'] = action.reload,
-        ['<C-p>'] = action.toggle_auto_preview,
         ['<C-s>'] = action.toggle_sort,
         ['N'] = action.new_file,
         ['K'] = action.new_directory,
