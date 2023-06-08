@@ -60,6 +60,9 @@ repo = 'thinca/vim-quickrun'
 [[plugins]]
 repo = 'airblade/vim-gitgutter'
 
+# --- Docker ---
+[[plugins]]
+repo = 'skanehira/denops-docker.vim'
 
 # --- Rich Syntax Highlight ---
 # highlighting other uses of the word under the cursor 
