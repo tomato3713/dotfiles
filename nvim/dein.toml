@@ -368,7 +368,7 @@ hook_source = '''
     \ 'max_width': 100,
     \ 'padding': v:true,
     \ })
-  call ddc#custom#patch_global('completionMenu', 'pum.vim')
+
   call ddc#custom#patch_global(#{
     \   ui: 'pum',
     \   sources: ['skkeleton', 'vsnip', 'nvim-lsp', 'around', 'file'],
