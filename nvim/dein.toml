@@ -25,10 +25,20 @@ repo = 'simeji/winresizer'
 repo = 'tpope/vim-surround'
 
 [[plugins]]
-repo = 'tyru/caw.vim'
-hook_add = '''
-nmap <Leader>c <plug>(caw:zeropos:toggle)
-vmap <Leader>c <plug>(caw:zeropos:toggle)
+repo = 'echasnovski/mini.nvim'
+lua_source = '''
+require('mini.comment').setup {
+  options = {
+    custom_commentstring = function()
+      return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
+    end,
+  },
+  mappings = {
+    comment = 'gc', -- Toggle comment (like `gcip` comment inner paragraph)
+    comment_line = 'gcc',
+    textobject = 'gc',
+  },
+}
 '''
 
 [[plugins]]
@@ -91,6 +101,7 @@ repo = 'RRethy/vim-illuminate'
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
+depends = ['nvim-ts-context-commentstring']
 merged = 0
 hook_post_update = 'TSUpdate'
 lua_source = '''
@@ -103,10 +114,17 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
   indent = {
-      enable = true,
-  }
+    enable = true,
+  },
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  },
 }
 '''
+
+[[plugins]]
+repo = 'JoosepAlviste/nvim-ts-context-commentstring'
 
 # --- File Exploer
 [[plugins]]
