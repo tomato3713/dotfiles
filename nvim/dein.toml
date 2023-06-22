@@ -761,9 +761,9 @@ null_ls.setup({
 repo = "nvim-lua/plenary.nvim"
 
 [[plugins]]
-repo = '~/repos/github.com/tomato3713/ddu-source-joplin'
+repo = 'tomato3713/ddu-source-joplin'
 [[plugins]]
-repo = '~/repos/github.com/tomato3713/ddu-kind-joplin'
+repo = 'tomato3713/ddu-kind-joplin'
 
 # [[plugins]]
 # repo = '~/repos/dps-joplin'
