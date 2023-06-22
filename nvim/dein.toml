@@ -351,7 +351,7 @@ function! s:ddu_ff_filter_my_settings() abort
   inoremap <buffer><silent> <CR>  <Esc><Cmd>call ddu#ui#ff#do_action("itemAction")<CR>
   inoremap <buffer><silent> <Esc> <Esc><Cmd>call ddu#ui#ff#do_action("quit")<CR>
   inoremap <buffer><silent> <C-n> <C-o><Cmd>call ddu#ui#ff#execute("normal j")<CR>
-  inoremap <buffer><silent> <C-p> <C_o><Cmd>call ddu#ui#ff#execute("normal k")<CR>
+  inoremap <buffer><silent> <C-p> <C-o><Cmd>call ddu#ui#ff#execute("normal k")<CR>
 endfunction
 '''
 [[plugins]]
