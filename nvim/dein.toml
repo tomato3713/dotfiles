@@ -159,6 +159,7 @@ require('vfiler/config').setup {
         iconstring = '-',
         git = { enabled = true, untracked = true, ignored = true },
         width = 34,
+        listed = false,
     },
     mappings = {
         ['<C-l>'] = action.reload,
