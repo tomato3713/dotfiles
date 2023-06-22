@@ -57,6 +57,7 @@ nmap ga <Plug>(EasyAlign)
 '''
 
 [[plugins]]
+# use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
 lua_source = '''
 require('nvim-ts-autotag').setup()
