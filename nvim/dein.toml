@@ -63,7 +63,17 @@ lua_source = '''
 require('nvim-ts-autotag').setup()
 '''
 
-# --- Script Quick Runner
+# --- Search ---
+[[plugins]]
+repo = 'lambdalisue/kensaku.vim'
+
+[[plugins]]
+repo = 'lambdalisue/kensaku-search.vim'
+hook_add = '''
+cnoremap <CR> <Plug>(kensaku-search-replace)<CR>
+'''
+
+# --- Script Quick Runner ---
 [[plugins]]
 repo = 'thinca/vim-quickrun'
 
@@ -179,7 +189,6 @@ call ddu#custom#patch_global(#{
     \       #{name: 'mr'},
     \       #{name: 'register'},
     \       #{name: 'buffer'},
-    \       #{name: 'joplin'},
     \   ],
     \   sourceParams: #{
     \     file_rec: #{ ignoredDirectories: ['.git', 'node_modules', 'vendor', '.next']  },
@@ -193,14 +202,14 @@ call ddu#custom#patch_global(#{
     \   },
     \   sourceOptions: {
     \     '_': #{
-    \       matchers: ['matcher_substring'],
+    \       matchers: ['matcher_kensaku'],
     \     },
     \     'joplin_tree': #{
     \       columns: ['filename'],
     \     },
     \   },
     \   filterParams: #{
-    \       matcher_substring : #{ highhtMatched: 'Search' } 
+    \       matcher_substring : #{ highhtMatched: 'Search' },
     \   },
     \   kindOptions: #{
     \     file: #{
@@ -325,6 +334,10 @@ function! s:ddu_filer_my_settings() abort
   nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#filer#do_action('itemAction')<CR>
   nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#filer#do_action('toggleSelectItem')<CR>
   nnoremap <buffer>         o       <Cmd>call ddu#ui#filer#do_action('expandItem', { 'mode': 'toggle' })<CR>
+  nnoremap <buffer>         nf       <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'newFolder' })<CR>
+  nnoremap <buffer>         nn       <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'newNote' })<CR>
+  nnoremap <buffer>         nt       <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'newTodo' })<CR>
+  nnoremap <buffer>         dd       <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'delete' })<CR>
 endfunction
 '''
 [[plugins]]
@@ -353,6 +366,8 @@ augroup END
 '''
 [[plugins]]
 repo = 'Shougo/ddu-filter-matcher_substring'
+[[plugins]]
+repo = 'Milly/ddu-filter-kensaku'
 [[plugins]]
 repo = 'Shougo/ddu-commands.vim'
 hook_add = '''
@@ -411,7 +426,7 @@ hook_source = '''
     \     },
     \   },
     \   cmdlineSources: {
-    \     ':': ['cmdline', 'cmdline-history', 'skkeleton', 'file'],
+    \     ':': ['cmdline', 'skkeleton', 'file'],
     \   },
     \ })
 
