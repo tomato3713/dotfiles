@@ -18,6 +18,14 @@ hook_add = '''
 colorscheme falcon
 '''
 
+[[plugins]]
+repo = 'rcarriga/nvim-notify'
+lua_source = '''
+vim.notify = require('notify').setup({
+    background_colour = "#000000"
+})
+'''
+
 # --- Rich Help ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
