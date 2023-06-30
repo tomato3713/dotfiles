@@ -171,21 +171,17 @@ repo = 'JoosepAlviste/nvim-ts-context-commentstring'
 
 # --- File Exploer
 [[plugins]]
+repo = 'tomato3713/hijack-open-directory.nvim'
+
+[[plugins]]
 repo = 'obaland/vfiler.vim'
+depends = ['hijack-open-directory.nvim']
 lua_add = '''
 -- Disable embeded plugins.
 vim.api.nvim_set_var('loaded_netrwPlugin', 1)
 
-local hijack_open_directory = function()
-    local path = vim.fn.expand('%:p')
-    if not (vim.fn.isdirectory(path) == 1) then return end
-    local opts = { noremap=true, silent=true }
-    require'vfiler'.start(path, opts)
-end
-vim.api.nvim_create_augroup("hijack_open_directory", { clear = true })
-vim.api.nvim_create_autocmd({"BufEnter"}, {
-    group = 'hijack_open_directory',
-    callback = hijack_open_directory,
+require('hijack_open_directory').setup({
+     filer = function(path) require('vfiler').start(path, {noremap = true, silent = true }) end
 })
 
 local opts = { noremap=true, silent=true }
