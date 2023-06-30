@@ -114,7 +114,7 @@ call dein#begin(s:dein_dir)
 
 " Let dein manage dein
 " Required:
-call dein#add(s:dein_repo_dir)
+" call dein#add(s:dein_repo_dir)
 
 call dein#load_toml(s:dein_startup_toml, {'lazy': 0})
 
