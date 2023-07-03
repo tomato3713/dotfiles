@@ -26,6 +26,12 @@ vim.notify = require('notify').setup({
 })
 '''
 
+[[plugins]]
+repo = 'stevearc/dressing.nvim'
+lua_source = '''
+require('dressing').setup()
+'''
+
 # --- Rich Help ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
