@@ -614,6 +614,10 @@ repo = 'Shougo/ddc-source-nvim-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'uga-rosa/ddc-source-vsnip'
+on_source = 'ddc.vim'
+
+[[plugins]]
 repo = 'Shougo/ddc-cmdline-history'
 on_source = 'ddc.vim'
 
@@ -802,11 +806,11 @@ smap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
 let g:vsnip_filetypes = {}
 '''
 
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip-integ'
-hook_source = '''
-autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
-'''
+# [[plugins]]
+# repo = 'hrsh7th/vim-vsnip-integ'
+# hook_source = '''
+# autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
+# '''
 
 # snippets collections
 [[plugins]]
