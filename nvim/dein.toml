@@ -694,6 +694,16 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
     end,
   },
 })
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+    silent = true,
+    border = "single",
+})
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, {
+    silent = true,
+    border = "single"
+  }
+)
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -704,7 +714,7 @@ vim.keymap.set('n',        ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>',  buf
 vim.keymap.set('n',  '<Space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', bufopts)
 
 local on_attach = function(client, bufnr)
-  local bufopts = { noremap=true, silent=true }
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
   -- code reading
   -- show information at cursor
   --- 定義情報などを表示する
@@ -712,7 +722,7 @@ local on_attach = function(client, bufnr)
   --- 関数の引数の内容とかを表示する
   vim.keymap.set('n',    '<c-k>', vim.lsp.buf.signature_help,                        bufopts)
   --- カーソル行のエラーを表示
-  vim.keymap.set('n',       'gs', '<cmd>lua vim.lsp.buf.diagnostic.show_next()<CR>', bufopts)
+  vim.keymap.set('n',       'gs', vim.diagnostic.open_float, bufopts)
 
   -- code walking
   --- 定義に移動
