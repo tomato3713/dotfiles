@@ -11,11 +11,11 @@ o.fileformats = 'unix,dos,mac'
 o.completeslash = 'slash'
 
 -- view
-vim.o.pumblend = 10
-vim.o.termguicolors = true
-vim.o.showmode = false
-vim.o.signcolumn = 'yes'
-vim.o.laststatus = 3 -- v0.7.0 and later
+o.pumblend = 10
+o.termguicolors = true
+o.showmode = false
+o.signcolumn = 'yes'
+o.laststatus = 3 -- v0.7.0 and later
 
 -- editor setting
 o.imd = false        -- IM disable
@@ -26,7 +26,8 @@ o.list = true
 opt.listchars = { tab = '>>', trail = '_', nbsp = '+' }
 
 -- temporary file setting
-opt.undofile = false -- undofileを作らない
+opt.undofile = true
+opt.undodir = fn.stdpath("cache") .. "/undo"
 opt.swapfile = false -- swapfileを作らない
 opt.backup = false
 
