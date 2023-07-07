@@ -45,6 +45,12 @@ repo = 'simeji/winresizer'
 
 # --- Rich Text Edit ---
 [[plugins]]
+repo = 'karb94/neoscroll.nvim'
+lua_source = '''
+require('neoscroll').setup()
+'''
+
+[[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter-context'
 lua_source = '''
 require('treesitter-context').setup({ enable = false })
