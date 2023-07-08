@@ -741,10 +741,11 @@ require('skkeleton_indicator').setup{}
 # --- Language Server Protocol ---
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['mason-lspconfig']
+depends = ['mason-lspconfig', 'neodev.nvim']
 lua_source = '''
 local nvim_lsp = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
+require('neodev').setup()
 
 -- LSPの警告フォーマット
 -- ref: https://dev.classmethod.jp/articles/eetann-change-neovim-lsp-diagnostics-format/
@@ -863,6 +864,10 @@ mason_lspconfig.setup_handlers({
     end
 })
 '''
+
+[[plugins]]
+repo = 'folke/neodev.nvim'
+on_source = 'nvim-lspconfig'
 
 # --- Snippets
 [[plugins]]
