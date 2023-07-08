@@ -322,9 +322,6 @@ call ddu#custom#patch_global(#{
     \      '_': #{
     \          matchers: ['matcher_kensaku'],
     \      },
-    \      'joplin_tree': #{
-    \          columns: ['filename'],
-    \      },
     \    },
     \    filterParams: #{
     \        matcher_substring : #{ highhtMatched: 'Search' },
@@ -334,11 +331,28 @@ call ddu#custom#patch_global(#{
     \        file: #{ defaultAction: 'open' },
     \        joplin: #{ defaultAction: 'open' },
     \        lsp: #{ defaultAction: 'open' },
+    \        lsp_codeAction: #{ defaultAction: 'apply' },
     \        colorscheme: #{ defaultAction: 'set' },
     \    },
     \    uiParams: #{
-    \        ff: #{ prompt: '>> ', startFilter: v:true, split: 'floating' },
-    \        filer: #{ displayTree: v:true },
+    \      ff: #{
+    \        prompt: '>> ',
+    \        startFilter: v:true,
+    \        split: 'floating',
+    \        displayTree: v:true,
+    \        autoAction: #{ name: "preview" },
+    \        startAutoAction: v:true,
+    \        previewSplit: "vertical",
+    \        previewFloatingTitle: "Preview",
+    \        ignoreEmpty: v:true,
+    \        highlights: #{
+    \          floatingBorder: "single",
+    \        },
+    \      },
+    \      filer: #{
+    \        displayTree: v:true,
+    \        split: 'floating',
+    \      },
     \    },
     \ })
 
@@ -348,22 +362,12 @@ call ddu#custom#patch_local('grep', #{
     \   },
     \   uiParams: {
     \       'ff': #{ startFilter: v:true },
-    \       'filer': #{
-    \           sort: 'filename',
-    \           displayTree: v:true,
-    \       },
     \   }
     \ })
 
-"show vim help
 nnoremap <silent> ,h <Cmd>call ddu#start(#{ui: 'ff', name: 'help_tags', sources: [#{ name: 'help' }] })<CR>
-"show history list
 nnoremap <silent> ,m <Cmd>call ddu#start(#{ui: 'ff', name: 'mr', sources: [#{ name: 'mr' }] })<CR>
-"show buffer list
 nnoremap <silent> ,b <Cmd>call ddu#start(#{ui: 'ff', name: 'buffer', sources: [#{ name: 'buffer' }]})<CR>
-"show file list in tree format
-nnoremap <silent> ,c <Cmd>call ddu#start(#{ui: 'filer', name: 'file', sources: [#{ name: 'file' }]})<CR>
-"show file list
 nnoremap <silent> ,f <Cmd>call ddu#start(#{ui: 'ff', name: 'file_rec', sources: [#{ name: 'file_rec' }]})<CR>
 nnoremap <silent> ,c <Cmd>call ddu#start(#{ui: 'ff', name: 'colorscheme', sources: [#{ name: 'colorscheme' }]})<CR>
 " ファイル検索開始
@@ -395,7 +399,7 @@ nmap <silent> ,j <Cmd>call ddu#start(#{
     \   },
     \   })<CR>
 nmap <silent> ,t <Cmd>call ddu#start(#{
-    \   ui: 'filer',
+    \   ui: 'ff',
     \   name: 'joplin',
     \   sources: [
     \       #{ name: 'joplin_tree' },
@@ -408,7 +412,7 @@ nmap <silent> ,t <Cmd>call ddu#start(#{
     \   })<CR>
 " sources from language server
 nmap <silent> <space>h <Cmd>call ddu#start(#{
-    \   ui: 'filer',
+    \   ui: 'ff',
     \   name: 'lsp_callHierarchy',
     \   sources: [
     \       #{
@@ -431,6 +435,7 @@ nmap <silent> gr <Cmd>call ddu#start(#{
     \       },
     \   ],
     \   })<CR>
+
 nmap <silent> gi <Cmd>call ddu#start(#{
     \   ui: 'ff',
     \   name: 'lsp',
@@ -438,6 +443,16 @@ nmap <silent> gi <Cmd>call ddu#start(#{
     \       #{
     \           name: 'lsp_definition',
     \           method: 'textDocument/implementation',
+    \       },
+    \   ],
+    \   })<CR>
+
+nmap <silent> <Space>a <Cmd>call ddu#start(#{
+    \   ui: 'ff',
+    \   name: 'lsp_codeAction',
+    \   sources: [
+    \       #{
+    \           name: 'lsp_codeAction',
     \       },
     \   ],
     \   })<CR>
@@ -457,7 +472,7 @@ function! s:ddu_ff_my_settings() abort
   nnoremap <buffer><silent> nn      <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'newNote' })<CR>
   nnoremap <buffer><silent> nt      <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'newTodo' })<CR>
   nnoremap <buffer><silent> r       <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name':  'rename' })<CR>
-  nnoremap         <buffer> o       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':  'toggle' })<CR>
+  nnoremap <buffer><silent> o       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':  'toggle' })<CR>
 endfunction
 autocmd FileType ddu-ff-filter call s:ddu_ff_filter_my_settings()
 function! s:ddu_ff_filter_my_settings() abort
@@ -466,24 +481,10 @@ function! s:ddu_ff_filter_my_settings() abort
   inoremap <buffer><silent> <C-n> <C-o><Cmd>call ddu#ui#ff#execute("normal j")<CR>
   inoremap <buffer><silent> <C-p> <C-o><Cmd>call ddu#ui#ff#execute("normal k")<CR>
   inoremap <buffer><silent> <C-t>       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
+  inoremap <buffer><silent> <C-e>       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':    'toggle' })<CR>
 endfunction
 '''
-[[plugins]]
-repo = 'Shougo/ddu-ui-filer'
-on_source = 'ddu.vim'
-hook_source = '''
-autocmd FileType ddu-filer call s:ddu_filer_my_settings()
-function! s:ddu_filer_my_settings() abort
-  nnoremap <buffer><silent> q       <Cmd>call ddu#ui#filer#do_action('quit')<CR>
-  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#filer#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#filer#do_action('toggleSelectItem')<CR>
-  nnoremap         <buffer> o       <Cmd>call ddu#ui#filer#do_action('expandItem', { 'mode':    'toggle' })<CR>
-  nnoremap         <buffer> nf      <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name': 'newFolder' })<CR>
-  nnoremap         <buffer> nn      <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name':   'newNote' })<CR>
-  nnoremap         <buffer> nt      <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name':   'newTodo' })<CR>
-  nnoremap         <buffer> dd      <Cmd>call ddu#ui#filer#do_action('itemAction', { 'name':    'delete' })<CR>
-endfunction
-'''
+
 [[plugins]]
 repo = 'Shougo/ddu-column-filename'
 on_source = 'ddu.vim'
@@ -823,8 +824,6 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<Space>r', '<cmd>lua vim.lsp.buf.rename()<CR>',               bufopts)
   --- フォーマット実行
   vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.format( { async = true } )<CR>',           bufopts)
-  --- コードアクションを実行する．構造体を埋めたり，
-  vim.keymap.set('n', '<Space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', bufopts)
 
   -- workspace
   --- ワークスペース一覧を表示
