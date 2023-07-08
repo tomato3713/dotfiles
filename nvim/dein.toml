@@ -541,51 +541,55 @@ repo = 'Shougo/ddu-kind-file'
 # --- Asynchronous Completion Framwwork ---
 [[plugins]]
 repo = 'Shougo/ddc.vim'
-depends = ['denops.vim']
+depends = ['denops.vim', 'pum.vim']
 hook_source = '''
-  call pum#set_option({
-    \ 'max_width': 100,
-    \ 'padding': v:true,
-    \ })
-
   call ddc#custom#patch_global(#{
     \   ui: 'pum',
     \   sources: ['skkeleton', 'vsnip', 'nvim-lsp', 'around', 'file'],
     \   autoCompleteEvents: ['InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged'],
-    \   sourceOptions: {
-    \     '_': {
-    \       'ignoreCase': v:true,
-    \       'matchers': ['matcher_fuzzy'],
-    \       'sorters': ['sorter_fuzzy'],
-    \       'converters': ['converter_fuzzy'],
+    \   sourceOptions: #{
+    \     _: #{
+    \       ignoreCase: v:true,
+    \       matchers: ['matcher_fuzzy'],
+    \       sorters: ['sorter_fuzzy'],
+    \       converters: ['converter_fuzzy'],
     \     },
-    \     'around': {
-    \       'mark': 'around',
+    \     around: #{
+    \       mark: 'around',
     \     },
-    \     'nvim-lsp': {
-    \       'mark': 'lsp',
-    \       'forceCompletionPattern': '\.\w*|:\w*|->\w*',
+    \     nvim-lsp: #{
+    \       mark: 'lsp',
+    \       forceCompletionPattern: '\.\w*|:\w*|->\w*',
     \     },
-    \     'vsnip': {
-    \         'mark': 'snip',
+    \     vsnip: #{
+    \         mark: 'snip',
     \     },
-    \     'skkeleton': {
-    \       'mark': 'skk',
-    \       'matchers': ['skkeleton'],
-    \       'sorters': [],
-    \       'minAutoCompleteLength': 1,
-    \       'isVolatile': v:true,
+    \     skkeleton: #{
+    \       mark: 'skk',
+    \       matchers: ['skkeleton'],
+    \       sorters: [],
+    \       minAutoCompleteLength: 1,
+    \       isVolatile: v:true,
     \     },
-    \     'file': {
-    \       'mark': 'file',
-    \       'forceCompletionPattern': '\S/\S*',
-    \       'isVolatile': v:true,
+    \     file: #{
+    \       mark: 'file',
+    \       forceCompletionPattern: '\S/\S*',
+    \       isVolatile: v:true,
     \     },
-    \     'cmdline': {
-    \       'mark': 'cmd',
+    \     cmdline: #{
+    \       mark: 'cmd',
     \     },
-    \     'cmdline-history': {
-    \       'mark': 'cmd hist',
+    \     cmdline-history: #{
+    \       mark: 'cmd hist',
+    \     },
+    \   },
+    \   sourceParams: #{
+    \     nvim-lsp: #{
+    \       snippetEngine: denops#callback#register({
+    \         body -> vsnip#anonymous(body)
+    \       }),
+    \       enableResolveItem: v:true,
+    \       enableAdditionalTextEdit: v:true,
     \     },
     \   },
     \   cmdlineSources: {
@@ -641,7 +645,16 @@ inoremap <C-n> <Cmd>call pum#map#insert_relative(+1, 'loop')<CR>
 inoremap <C-p> <Cmd>call pum#map#insert_relative(-1, 'loop')<CR>
 inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
 inoremap <C-e> <Cmd>call pum#map#cancel()<CR>
+inoremap <C-u> <Cmd>call pum#map#insert_relative_page(+1, 'loop')<CR>
+inoremap <C-d> <Cmd>call pum#map#insert_relative_page(-1, 'loop')<CR>
 '''
+hook_source = '''
+  call pum#set_option(#{
+    \ max_width: 100,
+    \ border: 'single',
+    \ })
+'''
+
 
 [[plugins]]
 # to show lsp signature help
@@ -766,6 +779,9 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
     border = "single"
   }
 )
+vim.diagnostic.config {
+  float = { border = "single" },
+}
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
