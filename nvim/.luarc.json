@@ -6,5 +6,6 @@
       "vim",
       "use"
     ]
-  }
+  },
+  "workspace.checkThirdParty": false,
 }
