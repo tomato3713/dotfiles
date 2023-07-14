@@ -868,10 +868,3 @@ repo = "nvim-lua/plenary.nvim"
 repo = 'tomato3713/ddu-source-joplin'
 [[plugins]]
 repo = 'tomato3713/ddu-kind-joplin'
-
-# [[plugins]]
-# repo = '~/repos/dps-joplin'
-# hook_add = '''
-# let g:joplin_token = $JOPLIN_TOKEN
-# let g:joplin_debug = v:true
-# '''
