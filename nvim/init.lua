@@ -27,7 +27,7 @@ opt.listchars = { tab = '>>', trail = '_', nbsp = '+' }
 
 -- temporary file setting
 opt.undofile = true
-opt.undodir = fn.stdpath("cache") .. "/undo"
+vim.opt.undodir = fn.stdpath("cache") .. "/undo"
 opt.swapfile = false -- swapfileを作らない
 opt.backup = false
 
@@ -59,7 +59,6 @@ api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "help", "lspinfo", "qf" },
 	callback = function()
 		vim.keymap.set('n', 'q', '<Cmd>close<CR>')
-		-- vim.bo[api.nvim_get_current_buf()].buflisted = false
 	end,
 })
 
@@ -78,23 +77,23 @@ api.nvim_create_autocmd({ "BufEnter" }, {
 api.nvim_create_user_command(
 	'CommaPeriod', function(opts)
 		local cursor = fn.getcurpos()
-		api.nvim_exec('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/、/，/ge', false)
-		api.nvim_exec('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/。/．/ge', false)
+		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/、/，/ge')
+		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/。/．/ge')
 		fn.setpos('.', cursor)
 	end, { range = true })
 
 api.nvim_create_user_command(
 	'Kutoten', function(opts)
 		local cursor = fn.getcurpos()
-		api.nvim_exec('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/，/、/ge', false)
-		api.nvim_exec('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/．/。/ge', false)
+		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/，/、/ge')
+		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/．/。/ge')
 		fn.setpos('.', cursor)
 	end, { range = true })
 
 api.nvim_create_user_command(
 	'CountChars', function(opts)
 		local cursor = fn.getcurpos()
-		api.nvim_exec('keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/./&/gn', false)
+		vim.api.nvim_command('keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/./&/gn')
 		fn.setpos('.', cursor)
 	end, { range = true })
 
@@ -124,10 +123,10 @@ end
 
 local dein = require('dein')
 
-dein.setup({
+dein.setup {
 	auto_remote_plugins = false,
 	enable_notification = true,
-})
+}
 
 dein.begin(dein_dir)
 dein.load_toml(fn.expand('~/.config/nvim/dein.toml'), { lazy = 0 })
@@ -145,11 +144,3 @@ if vim.fn.len(removed_plugins) > 0 then
 end
 
 api.nvim_create_user_command('DeinClearCache', function() dein.recache_runtimepath() end, {})
-
-api.nvim_exec([[
-        filetype plugin indent on
-        set syntax=enable
-    ]],
-	false)
-
--- o.secure = true
