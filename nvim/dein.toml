@@ -51,6 +51,44 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
+repo = 'rgroli/other.nvim'
+lua_source = '''
+require("other-nvim").setup({
+    mappings = {
+        -- builtin mappings
+        "golang",
+        -- custom mapping
+        {
+            pattern = "/path/to/file/src/app/(.*)/.*.ext$",
+            target = "/path/to/file/src/view/%1/",
+            transformer = "lowercase"
+        }
+    },
+    transformers = {
+        -- defining a custom transformer
+        lowercase = function (inputString)
+            return inputString:lower()
+        end
+    },
+    style = {
+        -- How the plugin paints its window borders
+        -- Allowed values are none, single, double, rounded, solid and shadow
+        border = "solid",
+
+        -- Column seperator for the window
+        seperator = "|",
+
+	-- width of the window in percent. e.g. 0.5 is 50%, 1.0 is 100%
+	width = 0.7,
+
+	-- min height in rows.
+	-- when more columns are needed this value is extended automatically
+	minHeight = 2
+    },
+})
+'''
+
+[[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter-context'
 lua_source = '''
 require('treesitter-context').setup({ enable = false })
@@ -300,76 +338,27 @@ nmap <space>v :Vista nvim_lsp<CR>
 repo = 'Shougo/ddu.vim'
 depends = ['denops.vim']
 hook_source = '''
-call ddu#custom#patch_global(#{
-    \    ui: 'ff',
-    \    sources: [
-    \        #{name: 'file_rec'},
-    \        #{name: 'mr'},
-    \        #{name: 'register'},
-    \        #{name: 'buffer'},
-    \    ],
-    \    sourceParams: #{
-    \        file_rec: #{ ignoredDirectories: ['.git', 'node_modules', 'vendor', '.next']  },
-    \        joplin: #{
-    \            token: $JOPLIN_TOKEN,
-    \            fullPath: v:true,
-    \        },
-    \        joplin_tree: #{
-    \            token: $JOPLIN_TOKEN,
-    \        },
-    \    },
-    \    sourceOptions: {
-    \      '_': #{
-    \          matchers: ['matcher_kensaku'],
-    \      },
-    \    },
-    \    filterParams: #{
-    \        matcher_substring : #{ highhtMatched: 'Search' },
-    \    },
-    \    kindOptions: #{
-    \        help: #{ defaultAction: 'open' },
-    \        file: #{ defaultAction: 'open' },
-    \        joplin: #{ defaultAction: 'open' },
-    \        lsp: #{ defaultAction: 'open' },
-    \        lsp_codeAction: #{ defaultAction: 'apply' },
-    \        colorscheme: #{ defaultAction: 'set' },
-    \    },
-    \    uiParams: #{
-    \      ff: #{
-    \        prompt: '>> ',
-    \        startFilter: v:true,
-    \        split: 'floating',
-    \        displayTree: v:true,
-    \        autoAction: #{ name: "preview" },
-    \        startAutoAction: v:true,
-    \        previewSplit: "vertical",
-    \        previewFloatingTitle: "Preview",
-    \        ignoreEmpty: v:true,
-    \        highlights: #{
-    \          floatingBorder: "single",
-    \        },
-    \      },
-    \      filer: #{
-    \        displayTree: v:true,
-    \        split: 'floating',
-    \      },
-    \    },
-    \ })
+lua<<EOF
+local ddu_helper = require('rc.ddu')
 
-call ddu#custom#patch_local('grep', #{
-    \   sourceParams: {
-    \       'rg': { 'args': ['--column', '--no-heading', '--color', 'never'] },
-    \   },
-    \   uiParams: {
-    \       'ff': #{ startFilter: v:true },
-    \   }
-    \ })
+local res = {
+    { key = ',h', name = 'help', desc = 'ddu: help tags source' },
+    { key = ',m', name = 'mr', desc = 'ddu: mr source' },
+    { key = ',b', name = 'buffer', desc = 'ddu: buffer source' },
+    { key = ',f', name = 'file_rec', desc = 'ddu: file_rec source' },
+    { key = ',c', name = 'colorscheme', desc = 'ddu: colorscheme source' },
+    { key = ',j', name = 'joplin', desc = 'ddu: joplin source' },
+    { key = ',t', name = 'joplin_tree', desc = 'ddu: joplin source' },
+    { key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
+    { key = 'gr', name = 'lsp_references', desc = 'ddu: lsp references' },
+}
 
-nnoremap <silent> ,h <Cmd>call ddu#start(#{ui: 'ff', name: 'help_tags', sources: [#{ name: 'help' }] })<CR>
-nnoremap <silent> ,m <Cmd>call ddu#start(#{ui: 'ff', name: 'mr', sources: [#{ name: 'mr' }] })<CR>
-nnoremap <silent> ,b <Cmd>call ddu#start(#{ui: 'ff', name: 'buffer', sources: [#{ name: 'buffer' }]})<CR>
-nnoremap <silent> ,f <Cmd>call ddu#start(#{ui: 'ff', name: 'file_rec', sources: [#{ name: 'file_rec' }]})<CR>
-nnoremap <silent> ,c <Cmd>call ddu#start(#{ui: 'ff', name: 'colorscheme', sources: [#{ name: 'colorscheme' }]})<CR>
+for _, v in ipairs(res) do
+  vim.keymap.set('n', v.key, ddu_helper.start(v.name, v.config or {}), { silent = true, desc = v.desc })
+end
+
+EOF
+
 " ファイル検索開始
 " カーソル上のワードで grep
 nmap <silent> ,g <Cmd>call ddu#start({
@@ -386,33 +375,9 @@ nmap <silent> ,k <Cmd>call ddu#start({
     \       ]
     \   }
     \   )<CR>
-nmap <silent> ,j <Cmd>call ddu#start(#{
-    \   ui: 'ff',
-    \   name: 'joplin',
-    \   sources: [
-    \       #{ name: 'joplin' },
-    \   ],
-    \   sourceParams: #{
-    \     joplin: #{
-    \       fullPath: v:true
-    \     },
-    \   },
-    \   })<CR>
-nmap <silent> ,t <Cmd>call ddu#start(#{
-    \   ui: 'ff',
-    \   name: 'joplin',
-    \   sources: [
-    \       #{ name: 'joplin_tree' },
-    \   ],
-    \   sourceParams: #{
-    \     joplin_tree: #{
-    \       token: $JOPLIN_TOKEN,
-    \     },
-    \   },
-    \   })<CR>
+
 " sources from language server
 nmap <silent> <space>h <Cmd>call ddu#start(#{
-    \   ui: 'ff',
     \   name: 'lsp_callHierarchy',
     \   sources: [
     \       #{
@@ -426,33 +391,12 @@ nmap <silent> <space>h <Cmd>call ddu#start(#{
     \   ],
     \   })<CR>
 
-nmap <silent> gr <Cmd>call ddu#start(#{
-    \   ui: 'ff',
-    \   name: 'lsp_references',
-    \   sources: [
-    \       #{
-    \           name: 'lsp_references',
-    \       },
-    \   ],
-    \   })<CR>
-
 nmap <silent> gi <Cmd>call ddu#start(#{
-    \   ui: 'ff',
     \   name: 'lsp',
     \   sources: [
     \       #{
     \           name: 'lsp_definition',
     \           method: 'textDocument/implementation',
-    \       },
-    \   ],
-    \   })<CR>
-
-nmap <silent> <Space>a <Cmd>call ddu#start(#{
-    \   ui: 'ff',
-    \   name: 'lsp_codeAction',
-    \   sources: [
-    \       #{
-    \           name: 'lsp_codeAction',
     \       },
     \   ],
     \   })<CR>
@@ -474,12 +418,15 @@ function! s:ddu_ff_my_settings() abort
   nnoremap <buffer><silent> r       <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name':  'rename' })<CR>
   nnoremap <buffer><silent> o       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':  'toggle' })<CR>
 endfunction
+
 autocmd FileType ddu-ff-filter call s:ddu_ff_filter_my_settings()
 function! s:ddu_ff_filter_my_settings() abort
   inoremap <buffer><silent> <CR>  <Esc><Cmd>call ddu#ui#ff#do_action("itemAction")<CR>
   inoremap <buffer><silent> <Esc> <Esc><Cmd>call ddu#ui#ff#do_action("quit")<CR>
   inoremap <buffer><silent> <C-n> <C-o><Cmd>call ddu#ui#ff#execute("normal j")<CR>
   inoremap <buffer><silent> <C-p> <C-o><Cmd>call ddu#ui#ff#execute("normal k")<CR>
+  inoremap <buffer><silent> <C-d> <C-o><Cmd>call ddu#ui#ff#execute("normal \<C-d>")<CR>
+  inoremap <buffer><silent> <C-u> <C-o><Cmd>call ddu#ui#ff#execute("normal \<C-u>")<CR>
   inoremap <buffer><silent> <C-t>       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
   inoremap <buffer><silent> <C-e>       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':    'toggle' })<CR>
 endfunction
@@ -518,12 +465,6 @@ on_source = 'ddu.vim'
 [[plugins]]
 repo = 'lambdalisue/mr.vim'
 on_source = 'ddu.vim'
-hook_source = '''
-augroup GitCommit
-    autocmd!
-    autocmd FileType gitcommit setlocal spell
-augroup END
-'''
 [[plugins]]
 on_source = 'ddu.vim'
 repo = 'Shougo/ddu-filter-matcher_substring'
@@ -642,6 +583,16 @@ on_source = 'ddc.vim'
 repo = 'Shougo/pum.vim'
 on_source = 'ddc.vim'
 hook_add = '''
+lua<<EOF
+-- local res = {
+--     { key = '<C-n>', func = vim.api['pum#map#insert_relative'](+1, 'loop'), desc = 'cursor down and loop items' },
+-- }
+
+-- for _, v in ipairs(res) do
+--   vim.keymap.set('i', v.key, ddu_helper.start(v.name, v.config or {}), { silent = true, desc = v.desc })
+-- end
+EOF
+
 inoremap <C-n> <Cmd>call pum#map#insert_relative(+1, 'loop')<CR>
 inoremap <C-p> <Cmd>call pum#map#insert_relative(-1, 'loop')<CR>
 inoremap <C-y> <Cmd>call pum#map#confirm()<CR>
@@ -791,6 +742,7 @@ vim.keymap.set('n', '<Space>df', '<cmd>lua vim.diagnostic.open_float()<CR>', buf
 vim.keymap.set('n',        '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>',  bufopts)
 vim.keymap.set('n',        ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>',  bufopts)
 vim.keymap.set('n',  '<Space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', bufopts)
+vim.keymap.set('n', '<Space>f', require('rc.utils').keep_cursor(vim.lsp.buf.format), bufopts)
 
 local on_attach = function(client, bufnr)
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
@@ -823,7 +775,7 @@ local on_attach = function(client, bufnr)
   --- 関数名や変数名をリネーム
   vim.keymap.set('n', '<Space>r', '<cmd>lua vim.lsp.buf.rename()<CR>',               bufopts)
   --- フォーマット実行
-  vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.format( { async = true } )<CR>',           bufopts)
+  -- vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.format( { async = true } )<CR>',           bufopts)
 
   -- workspace
   --- ワークスペース一覧を表示
@@ -894,12 +846,6 @@ imap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
 smap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
 let g:vsnip_filetypes = {}
 '''
-
-# [[plugins]]
-# repo = 'hrsh7th/vim-vsnip-integ'
-# hook_source = '''
-# autocmd User PumCompleteDone call vsnip_integ#on_complete_done(g:pum#completed_item)
-# '''
 
 # snippets collections
 [[plugins]]
