@@ -32,6 +32,27 @@ lua_source = '''
 require('dressing').setup()
 '''
 
+[[plugins]]
+repo = 'Shougo/deol.nvim'
+hook_source = '''
+let g:deol#custom_map = #{
+  \   edit: 'e',
+  \   start_insert: 'i',
+  \   start_insert_first: 'I',
+  \   start_append: 'a',
+  \   start_append_last: 'A',
+  \   execute_line: '<CR>',
+  \   previous_prompt: '<C-p>',
+  \   next_prompt: '<C-n>',
+  \   paste_prompt: '<C-y>',
+  \   bg: '<C-z>',
+  \   quit: 'q',
+  \ }
+
+" Should set g:deol#prompt_pattern.
+let g:deol#prompt_pattern = has('win32') ? '\f\+>' : '\w*% \?'
+'''
+
 # --- Rich Help ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
@@ -59,39 +80,7 @@ require('neoscroll').setup()
 [[plugins]]
 repo = 'rgroli/other.nvim'
 lua_source = '''
-require("other-nvim").setup({
-    mappings = {
-        -- builtin mappings
-        "golang",
-        -- custom mapping
-        {
-            pattern = "/path/to/file/src/app/(.*)/.*.ext$",
-            target = "/path/to/file/src/view/%1/",
-            transformer = "lowercase"
-        }
-    },
-    transformers = {
-        -- defining a custom transformer
-        lowercase = function (inputString)
-            return inputString:lower()
-        end
-    },
-    style = {
-        -- How the plugin paints its window borders
-        -- Allowed values are none, single, double, rounded, solid and shadow
-        border = "solid",
-
-        -- Column seperator for the window
-        seperator = "|",
-
-	-- width of the window in percent. e.g. 0.5 is 50%, 1.0 is 100%
-	width = 0.7,
-
-	-- min height in rows.
-	-- when more columns are needed this value is extended automatically
-	minHeight = 2
-    },
-})
+require('rc.other-nvim')
 '''
 
 [[plugins]]
@@ -106,18 +95,7 @@ repo = 'tpope/vim-surround'
 [[plugins]]
 repo = 'echasnovski/mini.nvim'
 lua_source = '''
-require('mini.comment').setup {
-    options = {
-        custom_commentstring = function()
-            return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
-        end,
-    },
-    mappings = {
-        comment = 'gc', -- Toggle comment (like `gcip` comment inner paragraph)
-        comment_line = 'gcc',
-        textobject = 'gc',
-    },
-}
+require('rc.mini')
 '''
 
 [[plugins]]
@@ -157,8 +135,14 @@ cnoremap <CR> <Plug>(kensaku-search-replace)<CR>
 repo = 'thinca/vim-quickrun'
 
 # --- Git ---
+# [[plugins]]
+# repo = 'airblade/vim-gitgutter'
+
 [[plugins]]
-repo = 'airblade/vim-gitgutter'
+repo = 'lewis6991/gitsigns.nvim'
+lua_source = '''
+require('rc.gitsigns')
+'''
 
 [[plugins]]
 repo = 'rhysd/committia.vim'
@@ -279,69 +263,8 @@ nmap <space>v :Vista nvim_lsp<CR>
 [[plugins]]
 repo = 'Shougo/ddu.vim'
 depends = ['denops.vim']
-hook_source = '''
-lua<<EOF
+lua_source = '''
 local ddu_helper = require('rc.ddu')
-
-local res = {
-    { key = ',h', name = 'help', desc = 'ddu: help tags source' },
-    { key = ',m', name = 'mr', desc = 'ddu: mr source' },
-    { key = ',b', name = 'buffer', desc = 'ddu: buffer source' },
-    { key = ',f', name = 'file_rec', desc = 'ddu: file_rec source' },
-    { key = ',c', name = 'colorscheme', desc = 'ddu: colorscheme source' },
-    { key = ',j', name = 'joplin', desc = 'ddu: joplin source' },
-    { key = ',t', name = 'joplin_tree', desc = 'ddu: joplin source' },
-    { key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
-    { key = 'gr', name = 'lsp_references', desc = 'ddu: lsp references' },
-}
-
-for _, v in ipairs(res) do
-  vim.keymap.set('n', v.key, ddu_helper.start(v.name, v.config or {}), { silent = true, desc = v.desc })
-end
-
-EOF
-
-" ファイル検索開始
-" カーソル上のワードで grep
-nmap <silent> ,g <Cmd>call ddu#start({
-    \       'name': 'grep',
-    \       'sources': [
-    \           { 'name': 'rg', 'params': { 'input': expand('<cword>') } }
-    \       ]
-    \   }
-    \   )<CR>
-nmap <silent> ,k <Cmd>call ddu#start({
-    \       'name': 'joplin',
-    \       'sources': [
-    \           { 'name': 'joplin', 'params': { 'input': expand('<cword>') } }
-    \       ]
-    \   }
-    \   )<CR>
-
-" sources from language server
-nmap <silent> <space>h <Cmd>call ddu#start(#{
-    \   name: 'lsp_callHierarchy',
-    \   sources: [
-    \       #{
-    \           name: 'lsp_callHierarchy',
-    \           params: #{ method: 'callHierarchy/outgoingCalls' },
-    \       },
-    \       #{
-    \           name: 'lsp_callHierarchy',
-    \           params: #{ method: 'callHierarchy/incommingCalls' },
-    \       },
-    \   ],
-    \   })<CR>
-
-nmap <silent> gi <Cmd>call ddu#start(#{
-    \   name: 'lsp',
-    \   sources: [
-    \       #{
-    \           name: 'lsp_definition',
-    \           method: 'textDocument/implementation',
-    \       },
-    \   ],
-    \   })<CR>
 '''
 
 [[plugins]]
@@ -430,7 +353,7 @@ hook_source = '''
   call ddc#custom#patch_global(#{
     \   ui: 'pum',
     \   sources: ['skkeleton', 'vsnip', 'nvim-lsp', 'around', 'file'],
-    \   autoCompleteEvents: ['InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged'],
+    \   autoCompleteEvents: ['InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged', 'CmdlineEnter', 'TextChangedT' ],
     \   sourceOptions: #{
     \     _: #{
     \       ignoreCase: v:true,
@@ -483,6 +406,20 @@ hook_source = '''
 
   inoremap <expr> <C-l> ddc#map#manual_complete()
 
+  " terminal completion
+  call ddc#enable_terminal_completion()
+  " For deol buffer.
+  call ddc#custom#patch_filetype(['deol'], #{
+  \   specialBufferCompletion: v:true,
+  \   sources: ['zsh', 'shell-history', 'around'],
+  \   sourceOptions: #{
+  \     _: #{
+  \       keywordPattern: '[0-9a-zA-Z_./#:-]*',
+  \     },
+  \   },
+  \ })
+
+  " commandline completion
   nnoremap :       <Cmd>call CommandlinePre()<CR>:
 
   function! CommandlinePre() abort
@@ -578,6 +515,10 @@ repo = 'Shougo/ddc-source-nvim-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'Shougo/ddc-source-zsh'
+on_source = 'ddc.vim'
+
+[[plugins]]
 repo = 'uga-rosa/ddc-source-vsnip'
 on_source = 'ddc.vim'
 
@@ -646,126 +587,7 @@ require('skkeleton_indicator').setup{}
 repo = 'neovim/nvim-lspconfig'
 depends = ['mason-lspconfig', 'neodev.nvim']
 lua_source = '''
-local nvim_lsp = require('lspconfig')
-local mason_lspconfig = require('mason-lspconfig')
-require('neodev').setup()
-
--- LSPの警告フォーマット
--- ref: https://dev.classmethod.jp/articles/eetann-change-neovim-lsp-diagnostics-format/
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  virtual_text = {
-    format = function(diagnostic)
-      return string.format('%s (%s: %s)', diagnostic.message, diagnostic.source, diagnostic.code)
-    end,
-  },
-})
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-    silent = true,
-    border = "single",
-})
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-  vim.lsp.handlers.signature_help, {
-    silent = true,
-    border = "single"
-  }
-)
-vim.diagnostic.config {
-  float = { border = "single" },
-}
-
--- Global mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local bufopts = { noremap=true, silent=true }
-vim.keymap.set('n', '<Space>df', '<cmd>lua vim.diagnostic.open_float()<CR>', bufopts)
-vim.keymap.set('n',        '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>',  bufopts)
-vim.keymap.set('n',        ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>',  bufopts)
-vim.keymap.set('n',  '<Space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', bufopts)
-vim.keymap.set('n', '<Space>f', require('rc.utils').keep_cursor(vim.lsp.buf.format), bufopts)
-
-local on_attach = function(client, bufnr)
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-  -- code reading
-  -- show information at cursor
-  --- 定義情報などを表示する
-  vim.keymap.set('n',        'K', vim.lsp.buf.hover,                                 bufopts)
-  --- 関数の引数の内容とかを表示する
-  vim.keymap.set('n',    '<c-k>', vim.lsp.buf.signature_help,                        bufopts)
-  --- カーソル行のエラーを表示
-  vim.keymap.set('n',       'gs', vim.diagnostic.open_float, bufopts)
-
-  -- code walking
-  --- 定義に移動
-  vim.keymap.set('n',       'gd', '<cmd>lua vim.lsp.buf.definition()<CR>',           bufopts)
-  --- 型定義に移動
-  vim.keymap.set('n',      'gtd', '<cmd>lua vim.lsp.buf.type_definition()<CR>',      bufopts)
-  --- 宣言に移動
-  vim.keymap.set('n',       'gD', '<cmd>lua vim.lsp.buf.declaratioin()<CR>',         bufopts)
-  --- 実装へ移動
-  -- vim.keymap.set('n',       'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>',       bufopts)
-  --- 参照一覧をQFに表示して、選択した場所に移動する
-  -- vim.keymap.set('n',       'gr', '<cmd>lua vim.lsp.buf.references()<CR>',           bufopts)
-  --- 前のエラーに移動
-  vim.keymap.set('n',       'g[', '<cmd>lua vim.lsp.buf.diagnostic.show_prev()<CR>', bufopts)
-  --- 次のエラーに移動
-  vim.keymap.set('n',       'g]', '<cmd>lua vim.lsp.buf.diagnostic.show_next()<CR>', bufopts)
-
-  -- code edit
-  --- 関数名や変数名をリネーム
-  vim.keymap.set('n', '<Space>r', '<cmd>lua vim.lsp.buf.rename()<CR>',               bufopts)
-  --- フォーマット実行
-  -- vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.format( { async = true } )<CR>',           bufopts)
-
-  -- workspace
-  --- ワークスペース一覧を表示
-  vim.keymap.set("n", "<space>wl", '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
-  --- ワークスペースにフォルダを追加する
-  vim.keymap.set("n", "<space>wa", '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
-  vim.keymap.set("n", "<space>wr", '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
-
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = buffer,
-        callback = require('rc.utils').keep_cursor(vim.lsp.buf.format)
-    })
-  end
-end
-
-mason_lspconfig.setup_handlers({
-    function(server_name)
-        -- tsserverとdenolsを出し分ける
-        local node_root_dir = nvim_lsp.util.root_pattern("package.json")
-        local is_node_repo = node_root_dir(vim.api.nvim_buf_get_name(0)) ~= nil
-
-        local opts = {}
-        if server_name == "tsserver" then
-            if not is_node_repo then return end
-            opts.root_dir = node_root_dir
-        elseif server_name == "eslint" then
-            if not is_node_repo then return end
-            opts.root_dir = node_root_dir
-        elseif server_name == "denols" then
-            if is_node_repo then return end
-            opts.root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json", "denops")
-            opts.init_options = {
-               lint = true,
-               unstable = true,
-               suggest = {
-                 imports = {
-                   hosts = { ["https://deno.land"] = true, ["https://cdn.nest.land"] = true, ["https://crux.land"] = true }
-                 }
-               }
-            }
-        end
-
-        opts.on_attach = on_attach
-
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities.textDocument.completion.completionItem.snippetSupport = true
-        opts.capabilities = capabilities
-
-        nvim_lsp[server_name].setup(opts)
-    end
-})
+require('rc.nvim-lspconfig')
 '''
 
 [[plugins]]

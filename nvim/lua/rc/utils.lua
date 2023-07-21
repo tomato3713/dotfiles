@@ -18,13 +18,12 @@ M.keep_cursor = function(cmd)
 		M.try_catch({
 			try = cmd,
 			finally = function()
-				-- if vim.fn.win_getid() == curwin_id then
-				vim.fn.winrestview(view)
-				-- end
+				if vim.fn.win_getid() == curwin_id then
+					vim.fn.winrestview(view)
+				end
 			end
 		})
 	end
 end
-
 
 return M

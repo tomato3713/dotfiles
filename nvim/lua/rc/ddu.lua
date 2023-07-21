@@ -97,4 +97,89 @@ vim.api.nvim_create_autocmd("VimResized", {
 	callback = resize,
 })
 
+-- mappings
+local res = {
+	{ key = ',h',       name = 'help',           desc = 'ddu: help tags source' },
+	{ key = ',m',       name = 'mr',             desc = 'ddu: mr source' },
+	{ key = ',b',       name = 'buffer',         desc = 'ddu: buffer source' },
+	{ key = ',f',       name = 'file_rec',       desc = 'ddu: file_rec source' },
+	{ key = ',c',       name = 'colorscheme',    desc = 'ddu: colorscheme source' },
+	{ key = ',j',       name = 'joplin',         desc = 'ddu: joplin source' },
+	{ key = ',t',       name = 'joplin_tree',    desc = 'ddu: joplin source' },
+	{ key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
+	{ key = 'gr',       name = 'lsp_references', desc = 'ddu: lsp references' },
+}
+
+for _, v in ipairs(res) do
+	vim.keymap.set('n', v.key, M.start(v.name, v.config or {}), { silent = true, desc = v.desc })
+end
+
+-- ファイル検索開始
+-- カーソル上のワードで grep
+vim.keymap.set('n', ',g',
+	function()
+		local word = vim.fn.expand('<cword>')
+		vim.fn['ddu#start']({
+			name = 'grep',
+			sources = {
+				{
+					name = 'rg',
+					params = {
+						input = word
+					}
+				}
+			}
+		})
+	end,
+	{ silent = true })
+
+vim.keymap.set('n', ',k',
+	function()
+		local word = vim.fn.expand('<cword>')
+		vim.fn['ddu#start']({
+			name = 'joplin',
+			sources = {
+				{
+					name = 'joplin',
+					params = {
+						input = word
+					}
+				}
+			}
+		}
+		)
+	end,
+	{ silent = true })
+
+-- sources from language server
+vim.keymap.set('n', '<space>h',
+	function()
+		vim.fn['ddu#start']({
+			name = 'lsp_callHierarchy',
+			sources = {
+				{
+					name = 'lsp_callHierarchy',
+					params = { method = 'callHierarchy/outgoingCalls' },
+				},
+				{
+					name = 'lsp_callHierarchy',
+					params = { method = 'callHierarchy/incommingCalls' },
+				},
+			},
+		})
+	end, { silent = true })
+
+vim.keymap.set('n', 'gi',
+	function()
+		vim.fn['ddu#start']({
+			name = 'lsp',
+			sources = {
+				{
+					name = 'lsp_definition',
+					method = 'textDocument/implementation',
+				},
+			},
+		})
+	end, {})
+
 return M
