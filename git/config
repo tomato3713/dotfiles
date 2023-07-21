@@ -1,0 +1,11 @@
+[ghq]
+	root = ~/repos
+[alias]
+	pushf = push --force-with-lease --force-if-includes
+[core]
+	editor = nvim
+	quotepath = false
+[color]
+	ui = true
+[init]
+	defaultBranch = main
