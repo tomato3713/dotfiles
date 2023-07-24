@@ -270,31 +270,8 @@ local ddu_helper = require('rc.ddu')
 [[plugins]]
 repo = 'Shougo/ddu-ui-ff'
 on_source = 'ddu.vim'
-hook_source = '''
-autocmd FileType ddu-ff call s:ddu_ff_my_settings()
-function! s:ddu_ff_my_settings() abort
-  nnoremap <buffer><silent> q       <Cmd>call ddu#ui#ff#do_action('quit')<CR>
-  nnoremap <buffer><silent> <CR>    <Cmd>call ddu#ui#ff#do_action('itemAction')<CR>
-  nnoremap <buffer><silent> <Space> <Cmd>call ddu#ui#ff#do_action('toggleSelectItem')<CR>
-  nnoremap <buffer><silent> f       <Cmd>call ddu#ui#ff#do_action('openFilterWindow')<CR>
-  nnoremap <buffer><silent> p       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
-  nnoremap <buffer><silent> nn      <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'newNote' })<CR>
-  nnoremap <buffer><silent> nt      <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name': 'newTodo' })<CR>
-  nnoremap <buffer><silent> r       <Cmd>call ddu#ui#ff#do_action('itemAction', { 'name':  'rename' })<CR>
-  nnoremap <buffer><silent> o       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':  'toggle' })<CR>
-endfunction
-
-autocmd FileType ddu-ff-filter call s:ddu_ff_filter_my_settings()
-function! s:ddu_ff_filter_my_settings() abort
-  inoremap <buffer><silent> <CR>  <Esc><Cmd>call ddu#ui#ff#do_action("itemAction")<CR>
-  inoremap <buffer><silent> <Esc> <Esc><Cmd>call ddu#ui#ff#do_action("quit")<CR>
-  inoremap <buffer><silent> <C-n> <C-o><Cmd>call ddu#ui#ff#execute("normal j")<CR>
-  inoremap <buffer><silent> <C-p> <C-o><Cmd>call ddu#ui#ff#execute("normal k")<CR>
-  inoremap <buffer><silent> <C-d> <C-o><Cmd>call ddu#ui#ff#execute("normal \<C-d>")<CR>
-  inoremap <buffer><silent> <C-u> <C-o><Cmd>call ddu#ui#ff#execute("normal \<C-u>")<CR>
-  inoremap <buffer><silent> <C-t>       <Cmd>call ddu#ui#ff#do_action('preview')<CR>
-  inoremap <buffer><silent> <C-e>       <Cmd>call ddu#ui#ff#do_action('expandItem', { 'mode':    'toggle' })<CR>
-endfunction
+lua_source = '''
+require('rc.ddu-ui-ff')
 '''
 
 [[plugins]]
