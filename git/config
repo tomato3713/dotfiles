@@ -2,6 +2,7 @@
 	root = ~/repos
 [alias]
 	pushf = push --force-with-lease --force-if-includes
+	graph = log --graph --oneline
 [core]
 	editor = nvim
 	quotepath = false
