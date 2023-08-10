@@ -70,11 +70,11 @@ vim.fn['ddu#custom#patch_global']({
 
 local function resize()
 	local lines = vim.opt.lines:get()
-	local height, row = math.floor(lines * 0.5), math.floor(lines * 0.1)
-	local previewHeight = math.floor(height * 1.3)
+	local height, row = math.floor(lines * 0.2), math.floor(lines * 0.1)
+	local previewHeight = math.floor(lines - height - row - 2 - 5)
 	local columns = vim.opt.columns:get()
 	local width, col = math.floor(columns * 0.8), math.floor(columns * 0.1)
-	local previewWidth = math.floor(width / 3 * 2)
+	local previewWidth = width
 
 	vim.fn['ddu#custom#patch_global']({
 		uiParams = {
@@ -84,9 +84,9 @@ local function resize()
 				winWidth = width,
 				winCol = col,
 				previewHeight = previewHeight,
-				previewRow = row + 2,
+				previewRow = row + height + 2,
 				previewWidth = previewWidth,
-				previewCol = col + (width - previewWidth - 5),
+				previewCol = col
 			},
 		},
 	})
