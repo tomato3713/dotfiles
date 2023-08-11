@@ -27,12 +27,11 @@ vim.diagnostic.config {
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local bufopts = { noremap = true, silent = true }
-vim.keymap.set('n', '<Space>df', '<cmd>lua vim.diagnostic.open_float()<CR>', bufopts)
-vim.keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', bufopts)
-vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', bufopts)
-vim.keymap.set('n', '<Space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', bufopts)
-vim.keymap.set('n', '<Space>f', require('rc.utils').keep_cursor(vim.lsp.buf.format), bufopts)
+vim.keymap.set('n', '<Space>df', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Space>f', require('rc.utils').keep_cursor(vim.lsp.buf.format), { noremap = true, silent = true })
 
 local on_attach = function(client, bufnr)
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -46,16 +45,6 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', 'gs', vim.diagnostic.open_float, bufopts)
 
 	-- code walking
-	--- 定義に移動
-	vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', bufopts)
-	--- 型定義に移動
-	vim.keymap.set('n', 'gtd', '<cmd>lua vim.lsp.buf.type_definition()<CR>', bufopts)
-	--- 宣言に移動
-	vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaratioin()<CR>', bufopts)
-	--- 実装へ移動
-	-- vim.keymap.set('n',       'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>',       bufopts)
-	--- 参照一覧をQFに表示して、選択した場所に移動する
-	-- vim.keymap.set('n',       'gr', '<cmd>lua vim.lsp.buf.references()<CR>',           bufopts)
 	--- 前のエラーに移動
 	vim.keymap.set('n', 'g[', '<cmd>lua vim.lsp.buf.diagnostic.show_prev()<CR>', bufopts)
 	--- 次のエラーに移動
@@ -76,7 +65,7 @@ local on_attach = function(client, bufnr)
 
 	if client.server_capabilities.documentFormattingProvider then
 		vim.api.nvim_create_autocmd("BufWritePre", {
-			buffer = buffer,
+			buffer = bufnr,
 			callback = require('rc.utils').keep_cursor(vim.lsp.buf.format)
 		})
 	end

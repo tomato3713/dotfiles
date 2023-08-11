@@ -1,5 +1,22 @@
 local M = {}
 
+--- https://zenn.dev/uga_rosa/articles/ace68bd6ba3480
+---@class Source
+---@field name string
+---@field params? table
+
+---@param word string
+---@param color string
+---@return Source
+local function separator(word, color)
+	local hlGroup = "DduDummy" .. color:gsub("[^a-zA-Z0-9]", "")
+	vim.api.nvim_set_hl(0, hlGroup, { fg = color })
+	return {
+		name = "dummy",
+		params = { word = word, hlGroup = hlGroup },
+	}
+end
+
 ---@param source_name string
 ---@param config? table
 ---@return function
@@ -107,7 +124,7 @@ local res = {
 	{ key = ',j',       name = 'joplin',         desc = 'ddu: joplin source' },
 	{ key = ',t',       name = 'joplin_tree',    desc = 'ddu: joplin source' },
 	{ key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
-	{ key = 'gr',       name = 'lsp_references', desc = 'ddu: lsp references' },
+	{ key = ',d',       name = 'lsp_diagnostic', desc = 'ddu: lsp diagnostics' },
 }
 
 for _, v in ipairs(res) do
@@ -157,17 +174,19 @@ vim.keymap.set('n', '<space>h',
 		vim.fn['ddu#start']({
 			name = 'lsp_callHierarchy',
 			sources = {
+				separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
 				{
 					name = 'lsp_callHierarchy',
 					params = { method = 'callHierarchy/outgoingCalls' },
 				},
+				separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
 				{
 					name = 'lsp_callHierarchy',
 					params = { method = 'callHierarchy/incommingCalls' },
 				},
 			},
 		})
-	end, { silent = true })
+	end, { silent = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
 
 vim.keymap.set('n', 'gi',
 	function()
@@ -180,6 +199,62 @@ vim.keymap.set('n', 'gi',
 				},
 			},
 		})
-	end, {})
+	end, { desc = 'textDocument/implementation' })
 
+vim.keymap.set('n', 'gD',
+	function()
+		vim.fn['ddu#start']({
+			name = 'lsp',
+			sources = {
+				{
+					name = 'lsp_definition',
+					method = 'textDocument/declaration',
+				},
+			},
+		})
+	end, { desc = 'textDocument/declaration' })
+
+vim.keymap.set('n', 'gtd',
+	function()
+		vim.fn['ddu#start']({
+			name = 'lsp',
+			sources = {
+				{
+					name = 'lsp_definition',
+					method = 'textDocument/typeDefinition',
+				},
+			},
+		})
+	end, { desc = 'textDocument/typeDefinition' })
+
+vim.keymap.set('n', 'gd',
+	function()
+		vim.fn['ddu#start']({
+			name = 'lsp',
+			sources = {
+				{
+					name = 'lsp_definition',
+					method = 'textDocument/definition',
+				},
+			},
+		})
+	end, { desc = 'textDocument/definition' })
+
+vim.keymap.set('n', 'gr',
+	function()
+		vim.fn['ddu#start']({
+			name = 'lsp',
+			sources = {
+				separator('>>Definition<<', '#fc514e'),
+				{
+					name = 'lsp_definition',
+				},
+				separator('>>References<<', '#fc514e'),
+				{
+					name = 'lsp_references',
+					params = { includeDeclaration = false },
+				},
+			},
+		})
+	end, { desc = 'textDocument/definition' })
 return M
