@@ -47,7 +47,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		local opts = { silent = true, buffer = true, noremap = true }
 		-- close filter window
-		vim.keymap.set('n', '<Esc>', do_action("closeFilterWindow"), opts)
+		vim.keymap.set('i', '<Esc>', do_action("closeFilterWindow", nil, true), opts)
 		-- close ui
 		vim.keymap.set('i', '<C-c>', do_action("quit", nil, true), opts)
 
@@ -67,6 +67,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set('n', 'i', do_action('openFilterWindow'), opts)
 		-- close ui
 		vim.keymap.set('n', '<Esc>', do_action('quit'), opts)
+		vim.keymap.set('n', 'q', do_action('quit'), opts)
 
 		vim.keymap.set('n', '<CR>', do_action('itemAction'), opts)
 		vim.keymap.set('n', 'j', move_ignore_dummy(1), opts)
