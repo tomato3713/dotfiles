@@ -8,15 +8,18 @@ repo = 'vim-denops/denops.vim'
 # --- Colorscheme
 [[plugins]]
 repo = 'joshdick/onedark.vim'
-# hook_add = '''
-#  colorscheme onedark
-# '''
+
+[[plugins]]
+repo = 'vigoux/oak'
+hook_add = '''
+colorscheme oak
+'''
+
+[[plugins]]
+repo = 'folke/tokyonight.nvim'
 
 [[plugins]]
 repo = 'fenetikm/falcon'
-hook_add = '''
-colorscheme falcon
-'''
 
 [[plugins]]
 repo = 'rcarriga/nvim-notify'
