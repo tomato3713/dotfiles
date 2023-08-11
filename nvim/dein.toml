@@ -278,6 +278,9 @@ require('rc.ddu-ui-ff')
 repo = 'Shougo/ddu-column-filename'
 on_source = 'ddu.vim'
 [[plugins]]
+repo = 'Shougo/ddu-source-dummy'
+on_source = 'ddu.vim'
+[[plugins]]
 repo = 'Shougo/ddu-source-file'
 on_source = 'ddu.vim'
 [[plugins]]
