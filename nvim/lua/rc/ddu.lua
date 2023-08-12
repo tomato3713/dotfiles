@@ -65,7 +65,6 @@ vim.fn['ddu#custom#patch_global']({
 			prompt = '>> ',
 			startFilter = true,
 			split = 'floating',
-			displayTree = true,
 			autoAction = { name = "preview" },
 			startAutoAction = true,
 			previewFloating = true,
@@ -79,8 +78,11 @@ vim.fn['ddu#custom#patch_global']({
 			},
 		},
 		filer = {
+			statusline = false,
+			displayRoot = false,
 			displayTree = true,
 			split = 'floating',
+			floatingBorder = "single",
 		},
 	},
 })
@@ -122,7 +124,7 @@ local res = {
 	{ key = ',f',       name = 'file_rec',       desc = 'ddu: file_rec source' },
 	{ key = ',c',       name = 'colorscheme',    desc = 'ddu: colorscheme source' },
 	{ key = ',j',       name = 'joplin',         desc = 'ddu: joplin source' },
-	{ key = ',t',       name = 'joplin_tree',    desc = 'ddu: joplin source' },
+	{ key = ',t',       name = 'joplin_tree',    config = { ui = 'filer' },          desc = 'ddu: joplin source' },
 	{ key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
 	{ key = ',d',       name = 'lsp_diagnostic', desc = 'ddu: lsp diagnostics' },
 }
