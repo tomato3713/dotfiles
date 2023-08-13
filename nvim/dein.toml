@@ -489,3 +489,5 @@ repo = "nvim-lua/plenary.nvim"
 repo = 'tomato3713/ddu-source-joplin'
 [[plugins]]
 repo = 'tomato3713/ddu-kind-joplin'
+[[plugins]]
+repo = 'tomato3713/ddu-column-joplin'

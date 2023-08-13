@@ -48,6 +48,8 @@ vim.fn['ddu#custom#patch_global']({
 		_ = {
 			matchers = { 'matcher_kensaku' },
 		},
+		joplin = { columns = { 'joplin' } },
+		joplin_tree = { columns = { 'joplin' } },
 	},
 	filterParams = {
 		matcher_substring = { highhtMatched = 'Search' },
