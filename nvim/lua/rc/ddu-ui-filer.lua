@@ -1,4 +1,4 @@
-local ui_helper = require('lua.rc.ddu-ui')
+local ui_helper = require('rc.ddu-ui')
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = 'ddu-filer',

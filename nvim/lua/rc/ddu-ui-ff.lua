@@ -1,4 +1,4 @@
-local ui_helper = require('lua.rc.ddu-ui')
+local ui_helper = require('rc.ddu-ui')
 
 ---@param cmd string
 ---@param is_stopinsert? boolean
