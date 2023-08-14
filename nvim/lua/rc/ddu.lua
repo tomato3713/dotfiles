@@ -51,6 +51,15 @@ vim.fn['ddu#custom#patch_global']({
 		joplin = { columns = { 'joplin' } },
 		joplin_tree = { columns = { 'joplin' } },
 	},
+	columnParams = {
+		joplin = {
+			collapsedIcon = '',
+			expandedIcon = '',
+			noteIcon = "",
+			checkedIcon = "",
+			uncheckedIcon = ""
+		},
+	},
 	filterParams = {
 		matcher_substring = { highhtMatched = 'Search' },
 	},
