@@ -57,7 +57,7 @@ vim.fn['ddu#custom#patch_global']({
 			expandedIcon = '',
 			noteIcon = "",
 			checkedIcon = "",
-			uncheckedIcon = ""
+			uncheckedIcon = ""
 		},
 	},
 	filterParams = {
