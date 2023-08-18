@@ -257,11 +257,11 @@ require('vfiler/config').setup {
 '''
 
 [[plugins]]
-repo = 'liuchengxu/vista.vim'
-hook_add = '''
-" Support LSP
-nmap <space>v :Vista nvim_lsp<CR>
+repo = 'stevearc/aerial.nvim'
+lua_source = '''
+require('rc.aerial')
 '''
+
 
 [[plugins]]
 repo = 'Shougo/ddu.vim'
