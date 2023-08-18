@@ -130,7 +130,8 @@ vim.api.nvim_create_autocmd("VimResized", {
 -- mappings
 local res = {
 	{ key = ',h',       name = 'help',           desc = 'ddu: help tags source' },
-	{ key = ',m',       name = 'mr',             desc = 'ddu: mr source' },
+	{ key = ',o',       name = 'mr',             desc = 'ddu: mr source' },
+	{ key = ',m',       name = 'marks',          desc = 'ddu: marks source' },
 	{ key = ',b',       name = 'buffer',         desc = 'ddu: buffer source' },
 	{ key = ',f',       name = 'file_rec',       desc = 'ddu: file_rec source' },
 	{ key = ',c',       name = 'colorscheme',    desc = 'ddu: colorscheme source' },
@@ -161,7 +162,7 @@ vim.keymap.set('n', ',g',
 			}
 		})
 	end,
-	{ silent = true })
+	{ silent = true, desc = 'grep files' })
 
 vim.keymap.set('n', ',k',
 	function()
@@ -179,7 +180,7 @@ vim.keymap.set('n', ',k',
 		}
 		)
 	end,
-	{ silent = true })
+	{ silent = true, desc = 'grep Joplin notes and todos' })
 
 -- sources from language server
 vim.keymap.set('n', '<space>h',
