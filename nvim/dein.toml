@@ -138,9 +138,6 @@ cnoremap <CR> <Plug>(kensaku-search-replace)<CR>
 repo = 'thinca/vim-quickrun'
 
 # --- Git ---
-# [[plugins]]
-# repo = 'airblade/vim-gitgutter'
-
 [[plugins]]
 repo = 'lewis6991/gitsigns.nvim'
 lua_source = '''
