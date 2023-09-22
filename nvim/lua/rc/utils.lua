@@ -26,4 +26,15 @@ M.keep_cursor = function(cmd)
 	end
 end
 
+-- @params list list
+-- @return bool
+M.contains = function(list, element)
+	for _, v in pairs(list) do
+		if v == element then
+			return true
+		end
+	end
+	return false
+end
+
 return M

@@ -1,3 +1,4 @@
+local utils = require('rc.utils')
 local o = vim.o
 local opt = vim.opt
 local fn = vim.fn
@@ -98,14 +99,29 @@ api.nvim_create_user_command(
 	end, { range = true })
 
 -- buffer and tab
-for k, v in pairs({
-	['<C-n>'] = '<Cmd>bnext<CR>',
-	['<C-p>'] = '<Cmd>bprevious<CR>',
-	['<M-n>'] = '<Cmd>tabnext<CR>',
-	['<M-p>'] = '<Cmd>tabprevious<CR>',
-}) do
-	vim.keymap.set('', k, v)
-end
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = "*",
+	callback = function()
+		local l = {
+			['<C-n>'] = '<Cmd>bnext<CR>',
+			['<C-p>'] = '<Cmd>bprevious<CR>',
+			['<M-n>'] = '<Cmd>tabnext<CR>',
+			['<M-p>'] = '<Cmd>tabprevious<CR>',
+		}
+		if utils.contains({ 'ddu-ff', 'ddu-ff-filter', 'ddu-filer' }, vim.bo.filetype) then
+			print(vim.bo.filetype)
+			for k, _ in pairs(l) do
+				utils.try_catch({
+					try = function() vim.keymap.del('n', k, { silent = true, buffer = true }) end,
+				})
+			end
+			return
+		end
+		for k, v in pairs(l) do
+			vim.keymap.set('n', k, v, { silent = true, buffer = true })
+		end
+	end,
+})
 
 -- dein Scripts
 local dein_dir = fn.expand('~/.cache/dein')
