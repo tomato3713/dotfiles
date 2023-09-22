@@ -59,7 +59,7 @@ vim.fn['ddc#enable_terminal_completion']()
 -- For deol buffer.
 vim.fn['ddc#custom#patch_filetype']({ 'deol' }, {
 	specialBufferCompletion = true,
-	sources = { 'zsh', 'shell-history', 'around' },
+	sources = { 'shell-native', 'shell-history', 'around' },
 	sourceOptions = {
 		_ = {
 			keywordPattern = '[0-9a-zA-Z_./#:-]*',
