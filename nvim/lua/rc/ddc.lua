@@ -37,6 +37,12 @@ vim.fn['ddc#custom#patch_global']({
 		["cmdline-history"] = {
 			mark = 'Hist',
 		},
+		["shell-native"] = {
+			mark = 'Sh',
+		},
+		["shell-history"] = {
+			mark = 'Hist',
+		},
 	},
 	sourceParams = {
 		["nvim-lsp"] = {
@@ -45,6 +51,12 @@ vim.fn['ddc#custom#patch_global']({
 			}),
 			enableResolveItem = true,
 			enableAdditionalTextEdit = true,
+		},
+		deol = {
+			command = { 'zsh' },
+		},
+		["shell-native"] = {
+			shell = 'zsh',
 		},
 	},
 	cmdlineSources = {
