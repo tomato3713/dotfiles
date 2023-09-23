@@ -69,7 +69,7 @@ vim.keymap.set({ 'i', 'c' }, '<C-l>', vim.fn['ddc#map#manual_complete'], { silen
 -- terminal completion
 vim.fn['ddc#enable_terminal_completion']()
 -- For deol buffer.
-vim.fn['ddc#custom#patch_filetype']({ 'deol' }, {
+vim.fn['ddc#custom#patch_filetype']({ 'deol', 'zsh', 'deol-edit' }, {
 	specialBufferCompletion = true,
 	sources = { 'shell-native', 'shell-history', 'around' },
 	sourceOptions = {

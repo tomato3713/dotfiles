@@ -109,7 +109,6 @@ vim.api.nvim_create_autocmd('FileType', {
 			['<M-p>'] = '<Cmd>tabprevious<CR>',
 		}
 		if utils.contains({ 'ddu-ff', 'ddu-ff-filter', 'ddu-filer' }, vim.bo.filetype) then
-			print(vim.bo.filetype)
 			for k, _ in pairs(l) do
 				utils.try_catch({
 					try = function() vim.keymap.del('n', k, { silent = true, buffer = true }) end,
