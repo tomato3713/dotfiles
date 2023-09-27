@@ -19,6 +19,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set('i', '<C-c>', ui_helper.do_action("quit", nil, true), opts)
 
 		vim.keymap.set('i', '<CR>', ui_helper.item_action("default", nil, true), opts)
+		vim.keymap.set('i', '<S-CR>', ui_helper.item_action("open", { command = 'split' }, true), opts)
 		vim.keymap.set('i', '<C-n>', execute('normal j'), opts)
 		vim.keymap.set('i', '<C-p>', execute('normal k'), opts)
 		vim.keymap.set('i', '<C-t>', ui_helper.do_action("preview"), opts)
