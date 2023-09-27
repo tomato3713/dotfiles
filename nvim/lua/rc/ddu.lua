@@ -149,18 +149,30 @@ end
 -- カーソル上のワードで grep
 vim.keymap.set('n', ',g',
 	function()
-		local word = vim.fn.expand('<cword>')
-		vim.fn['ddu#start']({
-			name = 'grep',
-			sources = {
-				{
-					name = 'rg',
-					params = {
-						input = word
+		local grep = function(word)
+			vim.fn['ddu#start']({
+				name = 'grep',
+				sources = {
+					{
+						name = 'rg',
+						params = {
+							input = word
+						}
 					}
 				}
-			}
-		})
+			})
+		end
+
+		local input = vim.fn.expand('<cword>')
+		if string.len(input) <= 2 then
+			vim.ui.input(
+				{
+					prompt = 'Enter word for grep',
+				},
+				grep);
+		else
+			grep(input)
+		end
 	end,
 	{ silent = true, desc = 'grep files' })
 
