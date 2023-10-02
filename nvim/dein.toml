@@ -313,19 +313,18 @@ on_source = 'ddu.vim'
 repo = 'lambdalisue/mr.vim'
 on_source = 'ddu.vim'
 [[plugins]]
-on_source = 'ddu.vim'
 repo = 'Shougo/ddu-filter-matcher_substring'
-[[plugins]]
 on_source = 'ddu.vim'
+[[plugins]]
 repo = 'Milly/ddu-filter-kensaku'
-[[plugins]]
 on_source = 'ddu.vim'
+[[plugins]]
 repo = 'Shougo/ddu-commands.vim'
-hook_add = '''
-'''
-[[plugins]]
 on_source = 'ddu.vim'
+on_cmd = 'Ddu'
+[[plugins]]
 repo = 'Shougo/ddu-kind-file'
+on_source = 'ddu.vim'
 
 # --- Asynchronous Completion Framwwork ---
 [[plugins]]
