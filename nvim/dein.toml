@@ -430,6 +430,7 @@ require('skkeleton_indicator').setup{}
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
 depends = ['mason-lspconfig', 'neodev.nvim']
+on_event = ['BufRead']
 lua_source = '''
 require('rc.nvim-lspconfig')
 '''
