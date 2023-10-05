@@ -76,7 +76,7 @@ vim.fn['ddu#custom#patch_global']({
 			prompt = '>> ',
 			startFilter = true,
 			split = 'floating',
-			autoAction = { name = "preview" },
+			-- autoAction = { name = "preview" },
 			startAutoAction = true,
 			previewFloating = true,
 			previewFloatingBorder = "double",
