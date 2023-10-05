@@ -1,5 +1,6 @@
 local nvim_lsp = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
+local utils = require('rc.utils')
 require('neodev').setup()
 
 -- LSPの警告フォーマット
@@ -64,9 +65,13 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<space>wr", '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
 
 	if client.server_capabilities.documentFormattingProvider then
-		vim.api.nvim_create_autocmd("BufWritePre", {
+		vim.api.nvim_create_autocmd("BufWritePost", {
 			buffer = bufnr,
-			callback = require('rc.utils').keep_cursor(vim.lsp.buf.format)
+			callback = function()
+				if utils.contains({ 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' }, vim.bo.filetype) then
+				end
+				require('rc.utils').keep_cursor(vim.lsp.buf.format)
+			end
 		})
 	end
 end

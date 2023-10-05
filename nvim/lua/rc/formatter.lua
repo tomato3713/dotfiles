@@ -1,10 +1,11 @@
 -- Utilities for creating configurations
 local util = require "formatter.util"
+local defaults = require("formatter.defaults")
 
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
 require("formatter").setup {
 	-- Enable or disable logging
-	logging = true,
+	logging = false,
 	-- Set the log level
 	log_level = vim.log.levels.WARN,
 	-- All formatter configurations are opt-in
@@ -28,8 +29,7 @@ require("formatter").setup {
 				return {
 					exe = "stylua",
 					args = {
-						"--search-parent-directories",
-						"--stdin-filepath",
+						"--search-parent-directories", "--stdin-filepath",
 						util.escape_path(util.get_current_buffer_file_path()),
 						"--",
 						"-",
@@ -37,6 +37,14 @@ require("formatter").setup {
 					stdin = true,
 				}
 			end
+		},
+
+		typescript = {
+			defaults.prettier,
+		},
+
+		javascript = {
+			defaults.prettier,
 		},
 
 		-- Use the special "*" filetype for defining formatter configurations on
@@ -48,13 +56,3 @@ require("formatter").setup {
 		}
 	}
 }
-
-vim.api.nvim_create_augroup("FormatAutogroup", {
-	clear = false,
-})
-vim.api.nvim_create_autocmd("BufWritePost", {
-	filetype = { '*' },
-	callback = function()
-		require("formatter.format").format(<q-args>, <q-mods>, <line1>, <line2>, {lock = true})
-	end,
-})

@@ -114,6 +114,18 @@ nmap ga <Plug>(EasyAlign)
 '''
 
 [[plugins]]
+repo = 'mhartington/formatter.nvim'
+hook_add = '''
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost * FormatWrite
+augroup END
+'''
+lua_source = '''
+require('rc.formatter')
+'''
+
+[[plugins]]
 # use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
 lua_source = '''
