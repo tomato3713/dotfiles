@@ -75,9 +75,6 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
-repo = 'lambdalisue/guise.vim'
-
-[[plugins]]
 repo = 'rgroli/other.nvim'
 lua_source = '''
 require('rc.other-nvim')
