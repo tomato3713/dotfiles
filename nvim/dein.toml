@@ -82,7 +82,7 @@ require('rc.other-nvim')
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter-context'
-depends = 'nvim-treesitter/nvim-treesitter'
+depends = ['nvim-treesitter']
 lua_source = '''
 require('treesitter-context').setup({ enable = false })
 '''
@@ -126,7 +126,7 @@ require('rc.formatter')
 [[plugins]]
 # use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
-depends = 'nvim-treesitter/nvim-treesitter'
+depends = ['nvim-treesitter']
 lua_source = '''
 require('nvim-ts-autotag').setup()
 '''
@@ -175,7 +175,7 @@ endfunction
 
 [[plugins]]
 repo = 'ruifm/gitlinker.nvim'
-depends = 'nvim-lua/plenary.nvim'
+depends = ['plenary.nvim']
 lua_source = '''
 require('rc.gitlinker')
 '''
@@ -342,7 +342,7 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-ui-pum'
-depends = 'pum.vim'
+depends = ['pum.vim']
 on_source = 'ddc.vim'
 
 [[plugins]]
