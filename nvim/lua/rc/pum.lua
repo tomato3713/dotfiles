@@ -18,7 +18,7 @@ local res = {
 		}
 	},
 	{
-		mode = { 't', 'i', 'c' },
+		mode = { 'i', 'c' },
 		key = '<C-y>',
 		func = function() vim.fn['pum#map#confirm']() end,
 		opts = {
@@ -27,7 +27,7 @@ local res = {
 		}
 	},
 	{
-		mode = { 't', 'i', 'c' },
+		mode = { 'i', 'c' },
 		key = '<C-e>',
 		func = function() vim.fn['pum#map#cancel']() end,
 		opts = {
@@ -36,7 +36,7 @@ local res = {
 		}
 	},
 	{
-		mode = { 't', 'i', 'c' },
+		mode = { 'i', 'c' },
 		key = '<C-u>',
 		func = function() vim.fn['pum#map#insert_relative_page'](1, 'loop') end,
 		opts = {
@@ -45,7 +45,7 @@ local res = {
 		}
 	},
 	{
-		mode = { 't', 'i', 'c' },
+		mode = { 'i', 'c' },
 		key = '<C-d>',
 		func = function() vim.fn['pum#map#insert_relative_page'](-1, 'loop') end,
 		opts = {
@@ -54,7 +54,7 @@ local res = {
 		}
 	},
 	{
-		mode = { 't', 'i', 'c' },
+		mode = { 'i', 'c' },
 		key = '<Tab>',
 		func = function()
 			if vim.fn['pum#visible']() then
@@ -69,7 +69,7 @@ local res = {
 		}
 	},
 	{
-		mode = { 't', 'i', 'c' },
+		mode = { 'i', 'c' },
 		key = '<S-Tab>',
 		func = function()
 			if vim.fn['pum#visible']() then
