@@ -82,6 +82,7 @@ require('rc.other-nvim')
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter-context'
+depends = 'nvim-treesitter/nvim-treesitter'
 lua_source = '''
 require('treesitter-context').setup({ enable = false })
 '''
@@ -125,6 +126,7 @@ require('rc.formatter')
 [[plugins]]
 # use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
+depends = 'nvim-treesitter/nvim-treesitter'
 lua_source = '''
 require('nvim-ts-autotag').setup()
 '''
@@ -189,27 +191,11 @@ repo = 'RRethy/vim-illuminate'
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
-depends = ['nvim-ts-context-commentstring']
 on_event = ['BufRead', 'CursorHold']
 merged = 0
 hook_post_update = 'TSUpdate'
 lua_source = '''
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "go", "c", "cpp", "markdown", "toml", "tsx", "json", "css", "lua", "yaml" },
-    sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-    highlight = {
-        enable = true,              -- false will disable the whole extension
-        disable = { "vim" },  -- list of language that will be disabled
-        additional_vim_regex_highlighting = false,
-    },
-    indent = {
-        enable = true,
-    },
-    context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-    },
-}
+require('rc.treesitter')
 '''
 
 [[plugins]]

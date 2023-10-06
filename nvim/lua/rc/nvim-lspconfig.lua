@@ -108,6 +108,12 @@ mason_lspconfig.setup_handlers({
 			}
 		end
 
+		if server_name == 'perlnavigator' then
+			opts = {
+				cmd = { "perlnavigator", "--stdio" },
+			}
+		end
+
 		opts.on_attach = on_attach
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
