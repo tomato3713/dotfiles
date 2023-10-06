@@ -1,5 +1,4 @@
-vim.keymap.set('i', '<C-j>', '<Plug>(skkeleton-toggle)')
-vim.keymap.set('c', '<C-j>', '<Plug>(skkeleton-toggle)')
+vim.keymap.set({'i', 'c', 't'}, '<C-j>', '<Plug>(skkeleton-toggle)')
 
 local skk_dir = vim.fn.expand('~/.config/skk')
 local global_skk_jisyo = skk_dir .. '/SKK-JISYO.L'
