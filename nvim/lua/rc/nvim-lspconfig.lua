@@ -111,6 +111,7 @@ mason_lspconfig.setup_handlers({
 		if server_name == 'perlnavigator' then
 			opts = {
 				cmd = { 'perlnavigator', '--stdio' },
+				single_file_support = true,
 				root_dir = nvim_lsp.util.root_pattern(
 					'.git',
 					'.perl-vertion',
