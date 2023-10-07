@@ -110,7 +110,24 @@ mason_lspconfig.setup_handlers({
 
 		if server_name == 'perlnavigator' then
 			opts = {
-				cmd = { "perlnavigator", "--stdio" },
+				cmd = { 'perlnavigator', '--stdio' },
+				root_dir = nvim_lsp.util.root_pattern(
+					'.git',
+					'.perl-vertion',
+					'.perltidyrc',
+					'.perlcriticrc',
+					'lib'
+				),
+				settings = {
+					perlnavigator = {
+						perlPath = 'perl',
+						includeLib = true,
+						perlImportsTidyEnabled = true,
+						perlTidyEnabled = true,
+						perlcriticEnabled = true,
+						enableWarnings = true,
+					},
+				},
 			}
 		end
 
