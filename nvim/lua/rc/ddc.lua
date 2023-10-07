@@ -15,7 +15,7 @@ vim.fn['ddc#custom#patch_global']({
 		},
 		["nvim-lsp"] = {
 			mark = 'LS',
-			keywordPattern = "\\k*",
+			keywordPattern = '\\k+',
 		},
 		vsnip = {
 			mark = 'Snip',
@@ -47,7 +47,7 @@ vim.fn['ddc#custom#patch_global']({
 	sourceParams = {
 		["nvim-lsp"] = {
 			snippetEngine = vim.fn['denops#callback#register']({
-				function(body) vim.fn['vsnipanonymous'](body) end,
+				function(body) vim.fn['vsnip#anonymous'](body) end,
 			}),
 			enableResolveItem = true,
 			enableAdditionalTextEdit = true,
