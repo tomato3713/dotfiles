@@ -1,9 +1,8 @@
 -- Utilities for creating configurations
-local util = require "formatter.util"
-local defaults = require("formatter.defaults")
+local util = require("formatter.util")
 
 -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-require("formatter").setup {
+require("formatter").setup({
 	-- Enable or disable logging
 	logging = false,
 	-- Set the log level
@@ -29,22 +28,42 @@ require("formatter").setup {
 				return {
 					exe = "stylua",
 					args = {
-						"--search-parent-directories", "--stdin-filepath",
+						"--search-parent-directories",
+						"--stdin-filepath",
 						util.escape_path(util.get_current_buffer_file_path()),
 						"--",
 						"-",
 					},
 					stdin = true,
 				}
-			end
+			end,
+		},
+
+		typescriptreact = {
+			require("formatter.filetypes.typescriptreact").prettier,
 		},
 
 		typescript = {
-			defaults.prettier,
+			require("formatter.filetypes.typescript").prettier,
 		},
 
 		javascript = {
-			defaults.prettier,
+			require("formatter.filetypes.javascript").prettier,
+		},
+
+		css = {
+			require("formatter.filetypes.css").prettier,
+		},
+
+		sql = {
+			function()
+				return {
+					exe = "sql-formatter",
+					args = {
+						"--fix",
+					},
+				}
+			end,
 		},
 
 		-- Use the special "*" filetype for defining formatter configurations on
@@ -52,7 +71,7 @@ require("formatter").setup {
 		["*"] = {
 			-- "formatter.filetypes.any" defines default configurations for any
 			-- filetype
-			require("formatter.filetypes.any").remove_trailing_whitespace
-		}
-	}
-}
+			require("formatter.filetypes.any").remove_trailing_whitespace,
+		},
+	},
+})
