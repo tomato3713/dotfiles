@@ -9,10 +9,10 @@ local M = {}
 ---@param color string
 ---@return Source
 local function separator(word, color)
-	local hlGroup = "DduDummy" .. color:gsub("[^a-zA-Z0-9]", "")
+	local hlGroup = 'DduDummy' .. color:gsub('[^a-zA-Z0-9]', '')
 	vim.api.nvim_set_hl(0, hlGroup, { fg = color })
 	return {
-		name = "dummy",
+		name = 'dummy',
 		params = { word = word, hlGroup = hlGroup },
 	}
 end
@@ -39,7 +39,7 @@ vim.fn['ddu#custom#patch_global']({
 		{ name = 'buffer' },
 	},
 	sourceParams = {
-		file_rec = { ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next' } },
+		file_rec = { ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next', 'tmp' } },
 		rg = { args = { '--column', '--no-heading', '--color', 'never' } },
 		joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
 		joplin_tree = { token = vim.env.JOPLIN_TOKEN },
@@ -50,14 +50,35 @@ vim.fn['ddu#custom#patch_global']({
 		},
 		joplin = { columns = { 'joplin' } },
 		joplin_tree = { columns = { 'joplin' } },
+		file_rec = {
+			matchers = {
+				'matcher_kensaku',
+			},
+			converters = {
+				'converter_relativepath',
+				'converter_devicon',
+			},
+			ignoreCase = true,
+		},
+		mr = {
+			matchers = {
+				'matcher_kensaku',
+				'merge',
+			},
+			converters = {
+				'converter_relativepath',
+				'converter_devicon',
+			},
+			ignoreCase = true,
+		},
 	},
 	columnParams = {
 		joplin = {
 			collapsedIcon = '',
 			expandedIcon = '',
-			noteIcon = "",
-			checkedIcon = "",
-			uncheckedIcon = ""
+			noteIcon = '',
+			checkedIcon = '',
+			uncheckedIcon = '',
 		},
 	},
 	filterParams = {
@@ -70,22 +91,23 @@ vim.fn['ddu#custom#patch_global']({
 		lsp = { defaultAction = 'open' },
 		lsp_codeAction = { defaultAction = 'apply' },
 		colorscheme = { defaultAction = 'set' },
+		chooseAction = { defaultAction = 'do' },
 	},
 	uiParams = {
 		ff = {
 			prompt = '>> ',
 			startFilter = true,
 			split = 'floating',
-			autoAction = { name = "preview" },
+			autoAction = { name = 'preview' },
 			startAutoAction = false,
 			previewFloating = true,
-			previewFloatingBorder = "double",
-			previewSplit = "vertical",
-			previewFloatingTitle = "Preview",
+			previewFloatingBorder = 'double',
+			previewSplit = 'vertical',
+			previewFloatingTitle = 'Preview',
 			ignoreEmpty = true,
-			floatingBorder = "single",
+			floatingBorder = 'single',
 			highlights = {
-				floatingBorder = "Verbose",
+				floatingBorder = 'Verbose',
 			},
 		},
 		filer = {
@@ -93,7 +115,7 @@ vim.fn['ddu#custom#patch_global']({
 			displayRoot = false,
 			displayTree = true,
 			split = 'floating',
-			floatingBorder = "single",
+			floatingBorder = 'single',
 		},
 	},
 })
@@ -116,14 +138,14 @@ local function resize()
 				previewHeight = previewHeight,
 				previewRow = row + height + 2,
 				previewWidth = previewWidth,
-				previewCol = col
+				previewCol = col,
 			},
 		},
 	})
 end
 resize()
 
-vim.api.nvim_create_autocmd("VimResized", {
+vim.api.nvim_create_autocmd('VimResized', {
 	callback = resize,
 })
 
@@ -147,140 +169,127 @@ end
 
 -- ファイル検索開始
 -- カーソル上のワードで grep
-vim.keymap.set('n', ',g',
-	function()
-		local grep = function(word)
-			vim.fn['ddu#start']({
-				name = 'grep',
-				sources = {
-					{
-						name = 'rg',
-						params = {
-							input = word
-						}
-					}
-				}
-			})
-		end
-
-		local input = vim.fn.expand('<cword>')
-		if string.len(input) <= 2 then
-			vim.ui.input(
-				{
-					prompt = 'Enter word for grep',
-				},
-				grep);
-		else
-			grep(input)
-		end
-	end,
-	{ silent = true, desc = 'grep files' })
-
-vim.keymap.set('n', ',k',
-	function()
-		local word = vim.fn.expand('<cword>')
+vim.keymap.set('n', ',g', function()
+	local grep = function(word)
 		vim.fn['ddu#start']({
-			name = 'joplin',
+			name = 'grep',
 			sources = {
 				{
-					name = 'joplin',
+					name = 'rg',
 					params = {
-						input = word
-					}
-				}
-			}
-		}
-		)
-	end,
-	{ silent = true, desc = 'grep Joplin notes and todos' })
+						input = word,
+					},
+				},
+			},
+		})
+	end
+
+	local input = vim.fn.expand('<cword>')
+	if string.len(input) <= 2 then
+		vim.ui.input({
+			prompt = 'Enter word for grep',
+		}, grep)
+	else
+		grep(input)
+	end
+end, { silent = true, desc = 'grep files' })
+
+vim.keymap.set('n', ',k', function()
+	local word = vim.fn.expand('<cword>')
+	vim.fn['ddu#start']({
+		name = 'joplin',
+		sources = {
+			{
+				name = 'joplin',
+				params = {
+					input = word,
+				},
+			},
+		},
+	})
+end, { silent = true, desc = 'grep Joplin notes and todos' })
 
 -- sources from language server
-vim.keymap.set('n', '<space>h',
-	function()
-		vim.fn['ddu#start']({
-			name = 'lsp_callHierarchy',
-			sources = {
-				separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
-				{
-					name = 'lsp_callHierarchy',
-					params = { method = 'callHierarchy/outgoingCalls' },
-				},
-				separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
-				{
-					name = 'lsp_callHierarchy',
-					params = { method = 'callHierarchy/incommingCalls' },
-				},
+vim.keymap.set('n', '<space>h', function()
+	vim.fn['ddu#start']({
+		name = 'lsp_callHierarchy',
+		sources = {
+			separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
+			{
+				name = 'lsp_callHierarchy',
+				params = { method = 'callHierarchy/outgoingCalls' },
 			},
-		})
-	end, { silent = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
+			separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
+			{
+				name = 'lsp_callHierarchy',
+				params = { method = 'callHierarchy/incommingCalls' },
+			},
+		},
+	})
+end, { silent = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
 
-vim.keymap.set('n', 'gi',
-	function()
-		vim.fn['ddu#start']({
-			name = 'lsp',
-			sources = {
-				{
-					name = 'lsp_definition',
-					method = 'textDocument/implementation',
-				},
+vim.keymap.set('n', 'gi', function()
+	vim.fn['ddu#start']({
+		name = 'lsp',
+		sources = {
+			{
+				name = 'lsp_definition',
+				method = 'textDocument/implementation',
 			},
-		})
-	end, { desc = 'textDocument/implementation' })
+		},
+	})
+end, { desc = 'textDocument/implementation' })
 
-vim.keymap.set('n', 'gD',
-	function()
-		vim.fn['ddu#start']({
-			name = 'lsp',
-			sources = {
-				{
-					name = 'lsp_definition',
-					method = 'textDocument/declaration',
-				},
+vim.keymap.set('n', 'gD', function()
+	vim.fn['ddu#start']({
+		name = 'lsp',
+		sources = {
+			{
+				name = 'lsp_definition',
+				method = 'textDocument/declaration',
 			},
-		})
-	end, { desc = 'textDocument/declaration' })
+		},
+	})
+end, { desc = 'textDocument/declaration' })
 
-vim.keymap.set('n', 'gtd',
-	function()
-		vim.fn['ddu#start']({
-			name = 'lsp',
-			sources = {
-				{
-					name = 'lsp_definition',
-					method = 'textDocument/typeDefinition',
-				},
+vim.keymap.set('n', 'gtd', function()
+	vim.fn['ddu#start']({
+		name = 'lsp',
+		sources = {
+			{
+				name = 'lsp_definition',
+				method = 'textDocument/typeDefinition',
 			},
-		})
-	end, { desc = 'textDocument/typeDefinition' })
+		},
+	})
+end, { desc = 'textDocument/typeDefinition' })
 
-vim.keymap.set('n', 'gd',
-	function()
-		vim.fn['ddu#start']({
-			name = 'lsp',
-			sources = {
-				{
-					name = 'lsp_definition',
-					method = 'textDocument/definition',
-				},
+vim.keymap.set('n', 'gd', function()
+	vim.fn['ddu#start']({
+		name = 'lsp',
+		sources = {
+			{
+				name = 'lsp_definition',
+				method = 'textDocument/definition',
 			},
-		})
-	end, { desc = 'textDocument/definition' })
+		},
+	})
+end, { desc = 'textDocument/definition' })
 
-vim.keymap.set('n', 'gr',
-	function()
-		vim.fn['ddu#start']({
-			name = 'lsp',
-			sources = {
-				separator('>>Definition<<', '#fc514e'),
-				{
-					name = 'lsp_definition',
-				},
-				separator('>>References<<', '#fc514e'),
-				{
-					name = 'lsp_references',
-					params = { includeDeclaration = false },
-				},
+vim.keymap.set('n', 'gr', function()
+	vim.fn['ddu#start']({
+		name = 'lsp',
+		sources = {
+			separator('>>Definition<<', '#fc514e'),
+			{
+				name = 'lsp_definition',
 			},
-		})
-	end, { desc = 'textDocument/definition' })
+			separator('>>References<<', '#fc514e'),
+			{
+				name = 'lsp_references',
+				params = { includeDeclaration = false },
+			},
+		},
+	})
+end, { desc = 'textDocument/definition' })
 return M

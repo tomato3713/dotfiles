@@ -314,12 +314,23 @@ repo = '4513ECHO/ddu-source-colorscheme'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'lambdalisue/mr.vim'
+lua_source = '''
+require('rc.mr')
+'''
+[[plugins]]
+repo = 'uga-rosa/ddu-filter-converter_devicon'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'Shougo/ddu-filter-matcher_substring'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'Milly/ddu-filter-kensaku'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Milly/ddu-filter-merge'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'gamoutatsumi/ddu-filter-converter_relativepath'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'Shougo/ddu-commands.vim'
