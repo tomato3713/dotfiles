@@ -65,22 +65,6 @@ local on_attach = function(client, bufnr)
 	--- ワークスペースにフォルダを追加する
 	vim.keymap.set("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>")
 	vim.keymap.set("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>")
-
-	if client.server_capabilities.documentFormattingProvider then
-		vim.api.nvim_create_autocmd("BufWritePost", {
-			buffer = bufnr,
-			callback = function()
-				if
-					utils.contains(
-						{ "typescript", "typescriptreact", "javascript", "javascriptreact" },
-						vim.bo.filetype
-					)
-				then
-				end
-				require("rc.utils").keep_cursor(vim.lsp.buf.format)
-			end,
-		})
-	end
 end
 
 -- Perl root > Git repository root > current directory

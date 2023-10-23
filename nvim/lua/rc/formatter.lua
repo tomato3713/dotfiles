@@ -55,6 +55,10 @@ require("formatter").setup({
 			require("formatter.filetypes.css").prettier,
 		},
 
+		go = {
+			require("formatter.filetypes.go").gofmt,
+		},
+
 		sql = {
 			function()
 				return {
@@ -62,6 +66,19 @@ require("formatter").setup({
 					args = {
 						"--fix",
 					},
+				}
+			end,
+		},
+
+		perl = {
+			function()
+				return {
+					exe = "perltidy",
+					args = {
+						-- ファイルに出力せず、標準出力に出力する
+						"-st",
+					},
+					stdin = true,
 				}
 			end,
 		},
