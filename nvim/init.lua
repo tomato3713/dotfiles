@@ -28,7 +28,7 @@ opt.listchars = { tab = '>>', trail = '_', nbsp = '+' }
 
 -- temporary file setting
 opt.undofile = true
-vim.opt.undodir = fn.stdpath("cache") .. "/undo"
+vim.opt.undodir = fn.stdpath('cache') .. '/undo'
 opt.swapfile = false -- swapfileを作らない
 opt.backup = false
 
@@ -40,8 +40,21 @@ o.ignorecase = true
 
 -- set wildmenu wildmode=longest:full
 o.wildmenu = false
-opt.wildignore = { '*.o', '*.obj', '*.class', '*.exe', '*.jpg', '*.png', '*.jar', '*.apk', '*.pdf', '*.aux', '*.xlsx',
-	'*.pptx', '*.docs' }
+opt.wildignore = {
+	'*.o',
+	'*.obj',
+	'*.class',
+	'*.exe',
+	'*.jpg',
+	'*.png',
+	'*.jar',
+	'*.apk',
+	'*.pdf',
+	'*.aux',
+	'*.xlsx',
+	'*.pptx',
+	'*.docs',
+}
 o.timeoutlen = 500
 
 -- terminal mode
@@ -56,10 +69,12 @@ else
 end
 
 --- close by 'q'
-api.nvim_create_autocmd({ "FileType" }, {
-	pattern = { "help", "lspinfo", "qf" },
+api.nvim_create_autocmd({ 'FileType' }, {
+	pattern = { 'help', 'lspinfo', 'qf' },
 	callback = function()
-		vim.keymap.set('n', 'q', function() vim.api.nvim_win_close(0, true) end, { buffer = true })
+		vim.keymap.set('n', 'q', function()
+			vim.api.nvim_win_close(0, true)
+		end, { buffer = true })
 	end,
 })
 
@@ -70,37 +85,34 @@ function NoneFileTypeSetTxt()
 	end
 end
 
-api.nvim_create_autocmd({ "BufEnter" }, {
+api.nvim_create_autocmd({ 'BufEnter' }, {
 	callback = NoneFileTypeSetTxt,
 })
 
 -- toggle "，/．" and "、/。"
-api.nvim_create_user_command(
-	'CommaPeriod', function(opts)
-		local cursor = fn.getcurpos()
-		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/、/，/ge')
-		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/。/．/ge')
-		fn.setpos('.', cursor)
-	end, { range = true })
+api.nvim_create_user_command('CommaPeriod', function(opts)
+	local cursor = fn.getcurpos()
+	vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/、/，/ge')
+	vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/。/．/ge')
+	fn.setpos('.', cursor)
+end, { range = true })
 
-api.nvim_create_user_command(
-	'Kutoten', function(opts)
-		local cursor = fn.getcurpos()
-		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/，/、/ge')
-		vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/．/。/ge')
-		fn.setpos('.', cursor)
-	end, { range = true })
+api.nvim_create_user_command('Kutoten', function(opts)
+	local cursor = fn.getcurpos()
+	vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/，/、/ge')
+	vim.api.nvim_command('silent keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/．/。/ge')
+	fn.setpos('.', cursor)
+end, { range = true })
 
-api.nvim_create_user_command(
-	'CountChars', function(opts)
-		local cursor = fn.getcurpos()
-		vim.api.nvim_command('keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/./&/gn')
-		fn.setpos('.', cursor)
-	end, { range = true })
+api.nvim_create_user_command('CountChars', function(opts)
+	local cursor = fn.getcurpos()
+	vim.api.nvim_command('keepjumps keeppatterns' .. opts.line1 .. ',' .. opts.line2 .. 's/./&/gn')
+	fn.setpos('.', cursor)
+end, { range = true })
 
 -- buffer and tab
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = "*",
+	pattern = '*',
 	callback = function()
 		local l = {
 			['<C-n>'] = '<Cmd>bnext<CR>',
@@ -111,13 +123,28 @@ vim.api.nvim_create_autocmd('FileType', {
 		if utils.contains({ 'ddu-ff', 'ddu-ff-filter', 'ddu-filer' }, vim.bo.filetype) then
 			for k, _ in pairs(l) do
 				utils.try_catch({
-					try = function() vim.keymap.del('n', k, { silent = true, buffer = true }) end,
+					try = function()
+						vim.keymap.del('n', k, { silent = true, buffer = true })
+					end,
 				})
 			end
 			return
 		end
 		for k, v in pairs(l) do
 			vim.keymap.set('n', k, v, { silent = true, buffer = true })
+		end
+	end,
+})
+
+local my_gruop = vim.api.nvim_create_augroup('vimrcEx', { clear = true })
+-- http://advweb.seesaa.net/article/13443981.html
+-- jump to the last line the cursor was on.
+vim.api.nvim_create_autocmd({ 'BufRead' }, {
+	group = my_gruop,
+	callback = function()
+		if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line('$') then
+			vim.cmd.stopinsert()
+			vim.api.nvim_feedkeys('g`"', 'n', false)
 		end
 	end,
 })
@@ -138,17 +165,17 @@ end
 
 local dein = require('dein')
 
-dein.setup {
+dein.setup({
 	auto_remote_plugins = false,
 	enable_notification = true,
-}
+})
 
 dein.begin(dein_dir)
 dein.load_toml(fn.expand('~/.config/nvim/dein.toml'), { lazy = 0 })
 dein.end_()
 dein.save_state()
 
-if (dein.check_install()) then
+if dein.check_install() then
 	dein.install()
 end
 
@@ -158,4 +185,6 @@ if vim.fn.len(removed_plugins) > 0 then
 	dein.recache_runtimepath()
 end
 
-api.nvim_create_user_command('DeinClearCache', function() dein.recache_runtimepath() end, {})
+api.nvim_create_user_command('DeinClearCache', function()
+	dein.recache_runtimepath()
+end, {})
