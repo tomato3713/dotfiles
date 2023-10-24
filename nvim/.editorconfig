@@ -1,3 +1,0 @@
-[*.lua]
-quote_style = single
-remove_empty_header_and_footer_lines_in_function = true
