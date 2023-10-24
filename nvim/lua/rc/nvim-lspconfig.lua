@@ -5,7 +5,7 @@ require("neodev").setup()
 
 require("mason").setup()
 
-vim.lsp.log_levels = 0
+-- vim.lsp.log_levels = 0
 
 -- LSPの警告フォーマット
 -- ref: https://dev.classmethod.jp/articles/eetann-change-neovim-lsp-diagnostics-format/
@@ -56,8 +56,6 @@ local on_attach = function(client, bufnr)
 	-- code edit
 	--- 関数名や変数名をリネーム
 	vim.keymap.set("n", "<Space>r", "<cmd>lua vim.lsp.buf.rename()<CR>", bufopts)
-	--- フォーマット実行
-	-- vim.keymap.set('n', '<Space>f', '<cmd>lua vim.lsp.buf.format( { async = true } )<CR>',           bufopts)
 
 	-- workspace
 	--- ワークスペース一覧を表示
@@ -70,7 +68,7 @@ end
 -- Perl root > Git repository root > current directory
 local perl_root_dir = function(pattern)
 	local root =
-		nvim_lsp.util.root_pattern(".perl-version", ".perltidyrc", ".perlcriticrc", "cpanfile", ".git")(pattern)
+	    nvim_lsp.util.root_pattern(".perl-version", ".perltidyrc", ".perlcriticrc", "cpanfile", ".git")(pattern)
 	local cwd = vim.loop.cwd()
 
 	return root or cwd
@@ -98,7 +96,7 @@ mason_lspconfig.setup_handlers({
 				return
 			end
 			opts.root_dir =
-				nvim_lsp.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json", "denops")
+			    nvim_lsp.util.root_pattern("deno.json", "deno.jsonc", "deps.ts", "import_map.json", "denops")
 			opts.init_options = {
 				lint = true,
 				unstable = true,
