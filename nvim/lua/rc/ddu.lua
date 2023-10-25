@@ -95,11 +95,11 @@ vim.fn['ddu#custom#patch_global']({
 	},
 	uiParams = {
 		ff = {
-			prompt = '>> ',
+			prompt = '$ ',
 			startFilter = true,
 			split = 'floating',
 			autoAction = { name = 'preview' },
-			startAutoAction = false,
+			startAutoAction = true,
 			previewFloating = true,
 			previewFloatingBorder = 'double',
 			previewSplit = 'vertical',
