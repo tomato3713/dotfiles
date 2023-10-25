@@ -14,12 +14,22 @@ repo = 'joshdick/onedark.vim'
 
 [[plugins]]
 repo = 'vigoux/oak'
-hook_add = '''
-colorscheme oak
+
+[[plugins]]
+repo = 'tanvirtin/monokai.nvim'
+lua_source = '''
+vim.cmd('colorscheme monokai')
 '''
 
 [[plugins]]
 repo = 'folke/tokyonight.nvim'
+lua_source = '''
+require('tokyonight').setup {
+  style = 'night',
+  transparent = false,
+  terminal_colors = true,
+}
+'''
 
 [[plugins]]
 repo = 'fenetikm/falcon'
