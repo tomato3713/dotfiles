@@ -164,6 +164,10 @@ require('rc.gitsigns')
 '''
 
 [[plugins]]
+repo = 'lambdalisue/gin.vim'
+depends = ['denops.vim']
+
+[[plugins]]
 repo = 'rhysd/committia.vim'
 hook_source = '''
 let g:committia_hooks = {}
@@ -198,6 +202,12 @@ repo = 'skanehira/denops-docker.vim'
 # highlighting other uses of the word under the cursor
 [[plugins]]
 repo = 'RRethy/vim-illuminate'
+
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+lua_source = '''
+require('colorizer').setup()
+'''
 
 [[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
