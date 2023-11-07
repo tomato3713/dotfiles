@@ -1,8 +1,14 @@
 vim.fn['ddc#custom#patch_global']({
 	ui = 'pum',
 	sources = { 'skkeleton', 'vsnip', 'nvim-lsp', 'around', 'file' },
-	autoCompleteEvents = { 'InsertEnter', 'TextChangedI', 'TextChangedP', 'CmdlineChanged', 'CmdlineEnter',
+	autoCompleteEvents = {
+		'InsertEnter',
+		'TextChangedI',
+		'TextChangedP',
+		'CmdlineChanged',
+		'CmdlineEnter',
 		'TextChangedT' },
+	backspaceCompletion = true,
 	sourceOptions = {
 		_ = {
 			ignoreCase = true,
@@ -46,11 +52,12 @@ vim.fn['ddc#custom#patch_global']({
 	},
 	sourceParams = {
 		["nvim-lsp"] = {
-			snippetEngine = vim.fn['denops#callback#register']({
-				function(body) vim.fn['vsnip#anonymous'](body) end,
-			}),
+			snippetEngine = vim.fn['denops#callback#register'](
+				function(body) vim.fn['vsnip#anonymous'](body) end
+			),
 			enableResolveItem = true,
 			enableAdditionalTextEdit = true,
+			confirmBehavior = 'replace',
 		},
 		deol = {
 			command = { 'zsh' },
