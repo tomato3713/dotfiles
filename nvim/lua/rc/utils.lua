@@ -1,5 +1,8 @@
 local M = {}
 
+--- try catch
+---@param what table
+---@return object
 M.try_catch = function(what)
 	local status, result = pcall(what.try)
 	if not status then
@@ -13,7 +16,9 @@ M.try_catch = function(what)
 	return result
 end
 
--- @return function
+--- keep cursor
+---@param cmd function
+---@return nil
 M.keep_cursor = function(cmd)
 	return function()
 		local curwin_id = vim.fn.win_getid()

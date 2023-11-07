@@ -1,6 +1,5 @@
 local nvim_lsp = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
-local utils = require("rc.utils")
 require("neodev").setup()
 
 require("mason").setup()
@@ -34,9 +33,10 @@ vim.keymap.set("n", "<Space>df", "<cmd>lua vim.diagnostic.open_float()<CR>", { n
 vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>f", require("rc.utils").keep_cursor(vim.lsp.buf.format), { noremap = true, silent = true })
+vim.keymap.set("n", "<Space>f", function() require("rc.utils").keep_cursor(vim.lsp.buf.format) end,
+	{ noremap = true, silent = true })
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 	-- code reading
 	-- show information at cursor
