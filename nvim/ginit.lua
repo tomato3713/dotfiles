@@ -1,1 +1,1 @@
-vim.cmd[[set guifont=Hack\ Nerd\ Font:h12]]
+vim.cmd[[set guifont=Hack Nerd Font:h12]]
