@@ -43,6 +43,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "q", ui_helper.do_action("quit"), opts)
 
 		vim.keymap.set("n", "<CR>", ui_helper.item_action("default"), opts)
+		vim.keymap.set("n", "<S-CR>", ui_helper.item_action("open", { command = "split" }, true), opts)
 		vim.keymap.set("n", "j", ui_helper.move_ignore_dummy(1), opts)
 		vim.keymap.set("n", "k", ui_helper.move_ignore_dummy(-1), opts)
 		vim.keymap.set("n", "a", ui_helper.do_action("chooseAction"), opts)
