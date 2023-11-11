@@ -1,11 +1,28 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
+[[plugins]]
+repo = 'haya14busa/dein-command.vim'
+on_cmd = ['Dein']
+
 # --- Framework ---
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-hook_source = '''
-command! RestartDenopsServer call denops#server#restart()
+hook_add = '''
+let g:denops_server_addr = '127.0.0.1:32123'
+'''
+
+[[plugins]]
+repo = 'vim-denops/denops-shared-server.vim'
+depends = ['denops.vim']
+hook_add = '''
+function! s:dss(action) abort
+  call denops_shared_server#{a:action}()
+endfunction
+function! s:dss_complete(...) abort
+  return ['install', 'uninstall', 'restart']->join("\n")
+endfunction
+command! -nargs=1 -complete=custom,s:dss_complete -bar DenopsSharedServer call s:dss(<f-args>)
 '''
 
 # --- Colorscheme
