@@ -53,6 +53,7 @@ repo = 'fenetikm/falcon'
 
 [[plugins]]
 repo = 'rcarriga/nvim-notify'
+on_lua = ['notify']
 lua_source = '''
 require('notify').setup({
   background_colour = "#000000"
@@ -382,6 +383,7 @@ repo = '4513ECHO/ddu-source-colorscheme'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'lambdalisue/mr.vim'
+on_event = ['BufNewFile', 'BufReadPre', 'BufWritePre']
 lua_source = '''
 require('rc.mr')
 '''
@@ -439,7 +441,6 @@ require('rc.pum')
 # to show lsp signature help
 repo = 'matsui54/denops-signature_help'
 on_source = 'ddc.vim'
-depends = ['denops.vim']
 hook_source = '''
 let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
 call signature_help#enable()
