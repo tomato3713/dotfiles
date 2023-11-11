@@ -32,12 +32,7 @@ end
 
 vim.fn['ddu#custom#patch_global']({
 	ui = 'ff',
-	sources = {
-		{ name = 'file_rec' },
-		{ name = 'mr' },
-		{ name = 'register' },
-		{ name = 'buffer' },
-	},
+	sync = true,
 	sourceParams = {
 		file_rec = { ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next', 'tmp' } },
 		rg = { args = { '--column', '--no-heading', '--color', 'never' } },
@@ -47,6 +42,7 @@ vim.fn['ddu#custom#patch_global']({
 	sourceOptions = {
 		_ = {
 			matchers = { 'matcher_kensaku' },
+			ignoreCase = true,
 		},
 		joplin = { columns = { 'joplin' } },
 		joplin_tree = { columns = { 'joplin' } },
@@ -58,7 +54,6 @@ vim.fn['ddu#custom#patch_global']({
 				'converter_relativepath',
 				'converter_devicon',
 			},
-			ignoreCase = true,
 		},
 		mr = {
 			matchers = {
@@ -69,7 +64,6 @@ vim.fn['ddu#custom#patch_global']({
 				'converter_relativepath',
 				'converter_devicon',
 			},
-			ignoreCase = true,
 		},
 	},
 	columnParams = {
@@ -96,9 +90,13 @@ vim.fn['ddu#custom#patch_global']({
 	uiParams = {
 		ff = {
 			prompt = '$ ',
+			displaySourceName = true,
 			startFilter = true,
 			split = 'floating',
-			autoAction = { name = 'preview' },
+			autoAction = {
+				name = 'preview',
+			},
+			maxDisplayItems = 500,
 			startAutoAction = true,
 			previewFloating = true,
 			previewFloatingBorder = 'double',
@@ -164,7 +162,7 @@ local res = {
 }
 
 for _, v in ipairs(res) do
-	vim.keymap.set('n', v.key, M.start(v.name, v.config or {}), { silent = true, desc = v.desc })
+	vim.keymap.set('n', v.key, M.start(v.name, v.config or {}), { silent = true, noremap = true, desc = v.desc })
 end
 
 -- ファイル検索開始
@@ -192,7 +190,7 @@ vim.keymap.set('n', ',g', function()
 	else
 		grep(input)
 	end
-end, { silent = true, desc = 'grep files' })
+end, { silent = true, noremap = true, desc = 'grep files' })
 
 vim.keymap.set('n', ',k', function()
 	local word = vim.fn.expand('<cword>')
@@ -207,7 +205,7 @@ vim.keymap.set('n', ',k', function()
 			},
 		},
 	})
-end, { silent = true, desc = 'grep Joplin notes and todos' })
+end, { silent = true, noremap = true, desc = 'grep Joplin notes and todos' })
 
 -- sources from language server
 vim.keymap.set('n', '<space>h', function()
@@ -226,7 +224,7 @@ vim.keymap.set('n', '<space>h', function()
 			},
 		},
 	})
-end, { silent = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
+end, { silent = true, noremap = true , desc = 'lsp_callHierarchy/outgoing and incomming calls'})
 
 vim.keymap.set('n', 'gi', function()
 	vim.fn['ddu#start']({
@@ -238,7 +236,7 @@ vim.keymap.set('n', 'gi', function()
 			},
 		},
 	})
-end, { desc = 'textDocument/implementation' })
+end, { silent = true, noremap = true, desc = 'textDocument/implementation'})
 
 vim.keymap.set('n', 'gD', function()
 	vim.fn['ddu#start']({
@@ -250,7 +248,7 @@ vim.keymap.set('n', 'gD', function()
 			},
 		},
 	})
-end, { desc = 'textDocument/declaration' })
+end, { silent = true, noremap = true, desc = 'textDocument/declaration' })
 
 vim.keymap.set('n', 'gtd', function()
 	vim.fn['ddu#start']({
@@ -262,7 +260,7 @@ vim.keymap.set('n', 'gtd', function()
 			},
 		},
 	})
-end, { desc = 'textDocument/typeDefinition' })
+end, { silent = true, noremap = true, desc = 'textDocument/typeDefinition' })
 
 vim.keymap.set('n', 'gd', function()
 	vim.fn['ddu#start']({
@@ -274,7 +272,7 @@ vim.keymap.set('n', 'gd', function()
 			},
 		},
 	})
-end, { desc = 'textDocument/definition' })
+end, { silent = true, noremap = true, desc = 'textDocument/definition' })
 
 vim.keymap.set('n', 'gr', function()
 	vim.fn['ddu#start']({
@@ -291,5 +289,5 @@ vim.keymap.set('n', 'gr', function()
 			},
 		},
 	})
-end, { desc = 'textDocument/definition' })
+end, { silent = true, noremap = true, desc = 'textDocument/definition' })
 return M

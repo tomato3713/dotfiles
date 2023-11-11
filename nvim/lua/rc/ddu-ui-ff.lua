@@ -16,7 +16,8 @@ end
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "ddu-ff-filter",
 	callback = function()
-		local opts = { silent = true, buffer = true }
+		vim.opt_local.cursorline = false
+		local opts = { silent = true, buffer = true, noremap = true }
 		-- close filter window
 		vim.keymap.set("i", "<Esc>", ui_helper.do_action("closeFilterWindow", nil, true), opts)
 		-- close ui
@@ -35,7 +36,8 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "ddu-ff",
 	callback = function()
-		local opts = { silent = true, buffer = true }
+		vim.opt_local.cursorline = true
+		local opts = { silent = true, buffer = true, noremap = true }
 		-- open filter window
 		vim.keymap.set("n", "i", ui_helper.do_action("openFilterWindow"), opts)
 		-- close ui
