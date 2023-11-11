@@ -110,32 +110,6 @@ api.nvim_create_user_command('CountChars', function(opts)
 	fn.setpos('.', cursor)
 end, { range = true })
 
--- buffer and tab
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = '*',
-	callback = function()
-		local l = {
-			['<C-n>'] = '<Cmd>bnext<CR>',
-			['<C-p>'] = '<Cmd>bprevious<CR>',
-			['<M-n>'] = '<Cmd>tabnext<CR>',
-			['<M-p>'] = '<Cmd>tabprevious<CR>',
-		}
-		if utils.contains({ 'ddu-ff', 'ddu-ff-filter', 'ddu-filer' }, vim.bo.filetype) then
-			for k, _ in pairs(l) do
-				utils.try_catch({
-					try = function()
-						vim.keymap.del('n', k, { silent = true, buffer = true })
-					end,
-				})
-			end
-			return
-		end
-		for k, v in pairs(l) do
-			vim.keymap.set('n', k, v, { silent = true, buffer = true })
-		end
-	end,
-})
-
 local my_gruop = vim.api.nvim_create_augroup('vimrcEx', { clear = true })
 -- http://advweb.seesaa.net/article/13443981.html
 -- jump to the last line the cursor was on.
