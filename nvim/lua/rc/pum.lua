@@ -90,6 +90,7 @@ for _, v in ipairs(res) do
 end
 
 vim.fn['pum#set_option']({
+	item_orders = { 'kind', 'space', 'abbr', 'space', 'menu' },
 	max_width = 100,
-	border = 'single',
+	border = 'rounded',
 })
