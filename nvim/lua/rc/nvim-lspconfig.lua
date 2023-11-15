@@ -137,8 +137,7 @@ mason_lspconfig.setup_handlers({
 
 		opts.on_attach = on_attach
 
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities.textDocument.completion.completionItem.snippetSupport = true
+		local capabilities = require("ddc_nvim_lsp").make_client_capabilities()
 		opts.capabilities = capabilities
 
 		nvim_lsp[server_name].setup(opts)
@@ -147,7 +146,7 @@ mason_lspconfig.setup_handlers({
 
 -- has no completion capability
 nvim_lsp.perlls.setup({
-	capabilities = vim.lsp.protocol.make_client_capabilities(),
+	capabilities = require("ddc_nvim_lsp").make_client_capabilities(),
 	on_attach = on_attach,
 	root_dir = perl_root_dir,
 	cmd = {

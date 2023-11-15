@@ -20,10 +20,17 @@ local res = {
 	{
 		mode = { 'i', 'c' },
 		key = '<C-y>',
-		func = function() vim.fn['pum#map#confirm']() end,
+		func = function()
+			local info = vim.fn["pum#complete_info"]()
+			if info.pum_visible then
+				vim.fn['pum#map#confirm']()
+			end
+		end,
 		opts = {
-			desc = 'confirm the item',
-			noremap = true,
+			desc             = 'confirm the item',
+			silent           = true,
+			expr             = true,
+			replace_keycodes = false,
 		}
 	},
 	{
