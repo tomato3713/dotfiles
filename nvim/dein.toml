@@ -517,7 +517,10 @@ require('rc.skkeleton')
 repo = 'delphinus/skkeleton_indicator.nvim'
 depends = ['skkeleton']
 lua_source = '''
-require('skkeleton_indicator').setup{}
+require('skkeleton_indicator').setup{
+	alwaysShown = false,
+	ignoreFt = { 'ddu-ui-filter' },
+}
 '''
 
 # --- Language Server Protocol ---
