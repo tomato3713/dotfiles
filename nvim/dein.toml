@@ -568,10 +568,10 @@ repo = "nvim-lua/plenary.nvim"
 
 [[plugins]]
 repo = 'tomato3713/ddu-source-joplin'
-depends = ['denops.vim']
+on_source = 'ddu.vim'
 [[plugins]]
 repo = 'tomato3713/ddu-kind-joplin'
-depends = ['denops.vim']
+on_source = 'ddu.vim'
 [[plugins]]
 repo = 'tomato3713/ddu-column-joplin'
-depends = ['denops.vim']
+on_source = 'ddu.vim'

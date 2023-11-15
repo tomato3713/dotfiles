@@ -36,16 +36,12 @@ vim.fn['ddu#custom#patch_global']({
 	sourceParams = {
 		file_rec = { ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next', 'tmp' } },
 		rg = { args = { '--column', '--no-heading', '--color', 'never' } },
-		joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
-		joplin_tree = { token = vim.env.JOPLIN_TOKEN },
 	},
 	sourceOptions = {
 		_ = {
 			matchers = { 'matcher_kensaku' },
 			ignoreCase = true,
 		},
-		joplin = { columns = { 'joplin' } },
-		joplin_tree = { columns = { 'joplin' } },
 		file_rec = {
 			matchers = {
 				'matcher_kensaku',
@@ -66,22 +62,12 @@ vim.fn['ddu#custom#patch_global']({
 			},
 		},
 	},
-	columnParams = {
-		joplin = {
-			collapsedIcon = '',
-			expandedIcon = '',
-			noteIcon = '',
-			checkedIcon = '',
-			uncheckedIcon = '',
-		},
-	},
 	filterParams = {
 		matcher_substring = { highhtMatched = 'Search' },
 	},
 	kindOptions = {
 		help = { defaultAction = 'open' },
 		file = { defaultAction = 'open' },
-		joplin = { defaultAction = 'open' },
 		lsp = { defaultAction = 'open' },
 		lsp_codeAction = { defaultAction = 'apply' },
 		colorscheme = { defaultAction = 'set' },
@@ -149,13 +135,41 @@ vim.api.nvim_create_autocmd('VimResized', {
 
 -- mappings
 local res = {
-	{ key = ',h',       name = 'help',           desc = 'ddu: help tags source' },
-	{ key = ',o',       name = 'mr',             desc = 'ddu: mr source' },
-	{ key = ',m',       name = 'marks',          desc = 'ddu: marks source' },
-	{ key = ',b',       name = 'buffer',         desc = 'ddu: buffer source' },
-	{ key = ',f',       name = 'file_rec',       desc = 'ddu: file_rec source' },
-	{ key = ',c',       name = 'colorscheme',    desc = 'ddu: colorscheme source' },
-	{ key = ',j',       name = 'joplin',         desc = 'ddu: joplin source' },
+	{ key = ',h', name = 'help',        desc = 'ddu: help tags source' },
+	{ key = ',o', name = 'mr',          desc = 'ddu: mr source' },
+	{ key = ',m', name = 'marks',       desc = 'ddu: marks source' },
+	{ key = ',b', name = 'buffer',      desc = 'ddu: buffer source' },
+	{ key = ',f', name = 'file_rec',    config = {
+		uiParams = { ff = { startAutoAction = false }
+		}}, desc = 'ddu: file_rec source' },
+	{ key = ',c', name = 'colorscheme', desc = 'ddu: colorscheme source' },
+	{
+		key = ',j',
+		name = 'joplin',
+		config = {
+			sourceParams = {
+				joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
+				joplin_tree = { token = vim.env.JOPLIN_TOKEN },
+			},
+			sourceOptions = {
+				joplin = { columns = { 'joplin' } },
+				joplin_tree = { columns = { 'joplin' } },
+			},
+			columnParams = {
+				joplin = {
+					collapsedIcon = '',
+					expandedIcon = '',
+					noteIcon = '',
+					checkedIcon = '',
+					uncheckedIcon = '',
+				},
+			},
+			kindOptions = {
+				joplin = { defaultAction = 'open' },
+			},
+		},
+		desc = 'ddu: joplin source'
+	},
 	{ key = ',t',       name = 'joplin_tree',    config = { ui = 'filer' },          desc = 'ddu: joplin source' },
 	{ key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
 	{ key = ',d',       name = 'lsp_diagnostic', desc = 'ddu: lsp diagnostics' },
@@ -224,7 +238,7 @@ vim.keymap.set('n', '<space>h', function()
 			},
 		},
 	})
-end, { silent = true, noremap = true , desc = 'lsp_callHierarchy/outgoing and incomming calls'})
+end, { silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
 
 vim.keymap.set('n', 'gi', function()
 	vim.fn['ddu#start']({
@@ -236,7 +250,7 @@ vim.keymap.set('n', 'gi', function()
 			},
 		},
 	})
-end, { silent = true, noremap = true, desc = 'textDocument/implementation'})
+end, { silent = true, noremap = true, desc = 'textDocument/implementation' })
 
 vim.keymap.set('n', 'gD', function()
 	vim.fn['ddu#start']({
