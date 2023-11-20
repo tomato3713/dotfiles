@@ -67,4 +67,21 @@ M.dump = function(o)
 	return dumper(o, 0)
 end
 
+M.my_group = vim.api.nvim_create_augroup('vimrcEx', {})
+
+--- create autocmd in vimrcEx group
+---@param event any
+---@param opts? table<string, any>
+-- @return number
+M.nvim_create_autocmd = function(event, opts)
+	opts.group = M.my_group
+	vim.api.nvim_create_autocmd(event, opts)
+end
+
+M.clear_vimrc_autocmd = function()
+	vim.api.nvim_clear_autocmds({
+		group = M.my_group,
+	})
+end
+
 return M

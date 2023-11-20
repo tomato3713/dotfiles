@@ -13,7 +13,7 @@ local execute = function(cmd, is_stopinsert)
 	end
 end
 
-vim.api.nvim_create_autocmd("FileType", {
+require('rc.utils').nvim_create_autocmd("FileType", {
 	pattern = "ddu-ff-filter",
 	callback = function()
 		vim.opt_local.cursorline = false
@@ -31,9 +31,10 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("i", "<C-e>", ui_helper.do_action("expandItem", { mode = "toggle" }), opts)
 		vim.keymap.set("i", "<C-a>", ui_helper.do_action("chooseAction"), opts)
 	end,
+	desc = 'set keymap for ddu-ff-filter',
 })
 
-vim.api.nvim_create_autocmd("FileType", {
+require('rc.utils').nvim_create_autocmd("FileType", {
 	pattern = "ddu-ff",
 	callback = function()
 		vim.opt_local.cursorline = true
@@ -50,4 +51,5 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "k", ui_helper.move_ignore_dummy(-1), opts)
 		vim.keymap.set("n", "a", ui_helper.do_action("chooseAction"), opts)
 	end,
+	desc = 'set keymap for ddu-ff',
 })

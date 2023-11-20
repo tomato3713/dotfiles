@@ -1,4 +1,6 @@
-local my_gruop = vim.api.nvim_create_augroup('vimrcEx', { clear = true })
+local utils = require('rc.utils')
+
+utils.clear_vimrc_autocmd()
 
 -- encoding setting
 vim.o.encoding = 'utf-8'                             -- バッファ内で扱う文字コード
@@ -59,14 +61,14 @@ elseif sysname == 'Darwin' then
 end
 
 --- close by 'q'
-vim.api.nvim_create_autocmd({ 'FileType' }, {
-	group = my_gruop,
+utils.nvim_create_autocmd({ 'FileType' }, {
 	pattern = { 'help', 'lspinfo', 'qf' },
 	callback = function()
 		vim.keymap.set('n', 'q', function()
 			vim.api.nvim_win_close(0, true)
 		end, { buffer = true, noremap = true })
 	end,
+	desc = 'close window with "q"',
 })
 
 -- set default filtype as plain text
@@ -76,9 +78,9 @@ function NoneFileTypeSetTxt()
 	end
 end
 
-vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-	group = my_gruop,
+utils.nvim_create_autocmd({ 'BufEnter' }, {
 	callback = NoneFileTypeSetTxt,
+	desc = 'set default filetype as plain text',
 })
 
 -- toggle "，/．" and "、/。"
@@ -104,14 +106,14 @@ end, { range = true })
 
 -- http://advweb.seesaa.net/article/13443981.html
 -- jump to the last line the cursor was on.
-vim.api.nvim_create_autocmd({ 'BufRead' }, {
-	group = my_gruop,
+utils.nvim_create_autocmd({ 'BufRead' }, {
 	callback = function()
 		if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line('$') then
 			vim.cmd.stopinsert()
 			vim.api.nvim_feedkeys('g`"', 'n', false)
 		end
 	end,
+	desc = 'jump to the last line the cursor was on',
 })
 
 -- dein Scripts

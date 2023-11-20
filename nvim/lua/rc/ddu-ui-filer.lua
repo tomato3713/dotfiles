@@ -1,6 +1,6 @@
 local ui_helper = require('rc.ddu-ui')
 
-vim.api.nvim_create_autocmd("FileType", {
+require('rc.utils').nvim_create_autocmd("FileType", {
 	pattern = 'ddu-filer',
 	callback = function()
 		local opts = { silent = true, buffer = true }
@@ -12,5 +12,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set('n', '<CR>', ui_helper.item_action('default'), opts)
 		vim.keymap.set('n', 'j', ui_helper.move_ignore_dummy(1), opts)
 		vim.keymap.set('n', 'k', ui_helper.move_ignore_dummy(-1), opts)
-	end
+	end,
+	desc = 'set keymap ddu-filer',
 })

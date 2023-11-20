@@ -129,20 +129,27 @@ local function resize()
 end
 resize()
 
-vim.api.nvim_create_autocmd('VimResized', {
+require('rc.utils').nvim_create_autocmd('VimResized', {
 	callback = resize,
+	desc = 'calculate ddu window size',
 })
 
 -- mappings
 local res = {
-	{ key = ',h', name = 'help',        desc = 'ddu: help tags source' },
-	{ key = ',o', name = 'mr',          desc = 'ddu: mr source' },
-	{ key = ',m', name = 'marks',       desc = 'ddu: marks source' },
-	{ key = ',b', name = 'buffer',      desc = 'ddu: buffer source' },
-	{ key = ',f', name = 'file_rec',    config = {
-		uiParams = { ff = { startAutoAction = false }
-		}}, desc = 'ddu: file_rec source' },
-	{ key = ',c', name = 'colorscheme', desc = 'ddu: colorscheme source' },
+	{ key = ',h', name = 'help',   desc = 'ddu: help tags source' },
+	{ key = ',o', name = 'mr',     desc = 'ddu: mr source' },
+	{ key = ',m', name = 'marks',  desc = 'ddu: marks source' },
+	{ key = ',b', name = 'buffer', desc = 'ddu: buffer source' },
+	{
+		key = ',f',
+		name = 'file_rec',
+		config = {
+			uiParams = { ff = { startAutoAction = false }
+			}
+		},
+		desc = 'ddu: file_rec source'
+	},
+	{ key = ',c',       name = 'colorscheme',    desc = 'ddu: colorscheme source' },
 	{
 		key = ',j',
 		name = 'joplin',
