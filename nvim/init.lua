@@ -25,6 +25,7 @@ o.sr = false         -- 縦分割時を右に表示
 o.smartindent = true -- スマートインデントを行う
 o.list = true
 opt.listchars = { tab = '>>', trail = '_', nbsp = '+' }
+vim.opt.wrapscan = false
 
 -- temporary file setting
 opt.undofile = true
