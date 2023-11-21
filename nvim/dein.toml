@@ -103,6 +103,12 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
+repo = 'https://github.com/ggandor/leap.nvim'
+lua_source = '''
+require('leap').add_default_mappings()
+'''
+
+[[plugins]]
 repo = 'romgrk/barbar.nvim'
 lua_source = '''
 local opts = { noremap = true, silent = true }
