@@ -519,14 +519,13 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'vim-skk/skkeleton'
 depends = ['denops.vim']
-on_event = 'CursorHold'
 lua_source = '''
 require('rc.skkeleton')
 '''
 
 [[plugins]]
 repo = 'delphinus/skkeleton_indicator.nvim'
-depends = ['skkeleton']
+on_source = ['skkeleton']
 lua_source = '''
 require('skkeleton_indicator').setup{
 	alwaysShown = false,
