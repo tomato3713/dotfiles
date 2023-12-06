@@ -1,6 +1,6 @@
 vim.fn['ddc#custom#patch_global']({
 	ui = 'pum',
-	sources = { 'skkeleton', 'vsnip', 'nvim-lsp', 'around', 'file' },
+	sources = { 'skkeleton', 'vsnip', 'lsp', 'around', 'file' },
 	autoCompleteEvents = {
 		'InsertEnter',
 		'TextChangedI',
@@ -19,7 +19,7 @@ vim.fn['ddc#custom#patch_global']({
 		around = {
 			mark = 'Around',
 		},
-		["nvim-lsp"] = {
+		lsp = {
 			mark = 'LS',
 			keywordPattern = '\\k+',
 		},
@@ -51,7 +51,7 @@ vim.fn['ddc#custom#patch_global']({
 		},
 	},
 	sourceParams = {
-		["nvim-lsp"] = {
+		lsp = {
 			snippetEngine = vim.fn['denops#callback#register'](
 				function(body) vim.fn['vsnip#anonymous'](body) end
 			),
