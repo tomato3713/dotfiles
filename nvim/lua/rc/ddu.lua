@@ -41,6 +41,7 @@ vim.fn['ddu#custom#patch_global']({
 		_ = {
 			matchers = { 'matcher_kensaku' },
 			ignoreCase = true,
+			maxItems = 500,
 		},
 		file_rec = {
 			matchers = {
