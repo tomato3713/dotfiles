@@ -546,6 +546,12 @@ require('rc.nvim-lspconfig')
 repo = 'folke/neodev.nvim'
 on_source = 'nvim-lspconfig'
 
+[[plugins]]
+repo = 'https://github.com/soulis-1256/hoverhints.nvim'
+lua_source = '''
+require("hoverhints").setup({})
+'''
+
 # --- Snippets
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip'

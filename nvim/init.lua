@@ -21,6 +21,8 @@ vim.opt.listchars = { tab = '>>', trail = '_', nbsp = '+' }
 -- editor setting
 vim.o.smartindent = true -- スマートインデントを行う
 
+vim.opt.mousemoveevent = true
+
 -- temporary file setting
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath('cache') .. '/undo'
