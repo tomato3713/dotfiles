@@ -151,34 +151,6 @@ local res = {
 		desc = 'ddu: file_rec source'
 	},
 	{ key = ',c',       name = 'colorscheme',    desc = 'ddu: colorscheme source' },
-	{
-		key = ',j',
-		name = 'joplin',
-		config = {
-			sourceParams = {
-				joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
-				joplin_tree = { token = vim.env.JOPLIN_TOKEN },
-			},
-			sourceOptions = {
-				joplin = { columns = { 'joplin' } },
-				joplin_tree = { columns = { 'joplin' } },
-			},
-			columnParams = {
-				joplin = {
-					collapsedIcon = '',
-					expandedIcon = '',
-					noteIcon = '',
-					checkedIcon = '',
-					uncheckedIcon = '',
-				},
-			},
-			kindOptions = {
-				joplin = { defaultAction = 'open' },
-			},
-		},
-		desc = 'ddu: joplin source'
-	},
-	{ key = ',t',       name = 'joplin_tree',    config = { ui = 'filer' },          desc = 'ddu: joplin source' },
 	{ key = '<Space>a', name = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
 	{ key = ',d',       name = 'lsp_diagnostic', desc = 'ddu: lsp diagnostics' },
 }
@@ -312,4 +284,42 @@ vim.keymap.set('n', 'gr', function()
 		},
 	})
 end, { silent = true, noremap = true, desc = 'textDocument/definition' })
+
+if vim.env.JOPLIN_TOKEN ~= nil then
+	local joplin_mapping = {
+		{
+			key = ',j',
+			name = 'joplin',
+			config = {
+				sourceParams = {
+					joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
+					joplin_tree = { token = vim.env.JOPLIN_TOKEN },
+				},
+				sourceOptions = {
+					joplin = { columns = { 'joplin' } },
+					joplin_tree = { columns = { 'joplin' } },
+				},
+				columnParams = {
+					joplin = {
+						collapsedIcon = '',
+						expandedIcon = '',
+						noteIcon = '',
+						checkedIcon = '',
+						uncheckedIcon = '',
+					},
+				},
+				kindOptions = {
+					joplin = { defaultAction = 'open' },
+				},
+			},
+			desc = 'ddu: joplin source'
+		},
+		{ key = ',t', name = 'joplin_tree', config = { ui = 'filer' }, desc = 'ddu: joplin source' },
+	}
+
+	for _, v in ipairs(joplin_mapping) do
+		vim.keymap.set('n', v.key, M.start(v.name, v.config or {}),
+			{ silent = true, noremap = true, desc = v.desc })
+	end
+end
 return M
