@@ -287,6 +287,7 @@ require('rc.treesitter')
 [[plugins]]
 repo = 'JoosepAlviste/nvim-ts-context-commentstring'
 lua_source = '''
+vim.g.skip_ts_context_commentstring_module = true
 require('ts_context_commentstring').setup {
 	enable_autocmd = false,
 }
