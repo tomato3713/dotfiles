@@ -181,8 +181,10 @@ depends = ['denops.vim']
 
 [[plugins]]
 repo = 'lambdalisue/kensaku-search.vim'
-hook_add = '''
-cnoremap <CR> <Plug>(kensaku-search-replace)<CR>
+lua_add = '''
+vim.keymap.set('c', '<CR>', function()
+	return vim.fn.getcmdtype() == '/' and '<Plug>(kensaku-search-replace)<CR>' or '<CR>'
+end, {expr = true})
 '''
 
 # --- Script Quick Runner ---
