@@ -558,13 +558,16 @@ require("hoverhints").setup({})
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip'
 on_event = 'InsertEnter'
-depends = ['vim-vsnip-integ', 'friendly-snippets']
-hook_add = '''
-imap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
-smap <expr> <C-f> vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : '<C-f>'
-imap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
-smap <expr> <C-b> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-b>'
-let g:vsnip_filetypes = {}
+depends = ['friendly-snippets']
+lua_add = '''
+vim.keymap.set({'i', 's'}, '<C-f>',  function()
+    return vim.fn['vsnip#jumpable'](1) == 1 and '<Plug>(vsnip-jump-next)' or '<C-f>'
+end, { expr = true, noremap = false })
+vim.keymap.set({'i', 's'}, '<C-b>',  function()
+    return vim.fn['vsnip#jumpable'](-1) == 1 and '<Plug>(vsnip-jump-prev)' or '<C-b>'
+end, { expr = true, noremap = false })
+
+-- vim.g.vsnip_filetypes = {}
 '''
 
 # snippets collections
