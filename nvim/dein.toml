@@ -365,9 +365,9 @@ depends = ['denops.vim']
 lua_source = '''
 require('rc.ddu')
 '''
-# hook_post_update = '''
-# call ddu#set_static_import_path()
-# '''
+hook_post_update = '''
+call ddu#set_static_import_path()
+'''
 
 [[plugins]]
 repo = 'Shougo/ddu-commands.vim'
@@ -465,9 +465,9 @@ on_event = ['InsertEnter']
 lua_source = '''
 require('rc.ddc')
 '''
-# hook_post_update = '''
-# call ddc#set_static_import_path()
-# '''
+hook_post_update = '''
+call ddc#set_static_import_path()
+'''
 
 # ---- ddc ui ----
 # [[plugins]]
