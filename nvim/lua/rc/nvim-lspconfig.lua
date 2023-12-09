@@ -1,8 +1,9 @@
 local nvim_lsp = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
-require("neodev").setup()
 
-require("mason").setup()
+require('mason').setup({
+	ui = { icons = { package_installed = "＊", package_pending = "∴", package_uninstalled = "×" } }
+})
 
 -- vim.lsp.log_levels = 0
 
@@ -137,16 +138,12 @@ mason_lspconfig.setup_handlers({
 
 		opts.on_attach = on_attach
 
-		local capabilities = require("ddc_source_lsp").make_client_capabilities()
-		opts.capabilities = capabilities
-
 		nvim_lsp[server_name].setup(opts)
 	end,
 })
 
 -- has no completion capability
 nvim_lsp.perlls.setup({
-	capabilities = require("ddc_source_lsp").make_client_capabilities(),
 	on_attach = on_attach,
 	root_dir = perl_root_dir,
 	cmd = {
