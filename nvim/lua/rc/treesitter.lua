@@ -2,7 +2,7 @@ require 'nvim-treesitter.configs'.setup {
 	ensure_installed = {
 		"go",
 		"c", "cpp",
-		"tsx",  "css",
+		"tsx", "css",
 		"lua",
 		"perl",
 		"markdown", "toml", "yaml", "json",
@@ -17,7 +17,6 @@ require 'nvim-treesitter.configs'.setup {
 		enable = true,
 	},
 	context_commentstring = {
-		enable = true,
 		enable_autocmd = false,
 	},
 }
