@@ -59,6 +59,7 @@ vim.fn['ddc#custom#patch_global']({
 			enableAdditionalTextEdit = true,
 			confirmBehavior = 'replace',
 		},
+		-- TODO: windows support
 		deol = {
 			command = { 'zsh' },
 		},
