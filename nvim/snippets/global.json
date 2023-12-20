@@ -1,0 +1,17 @@
+{
+  "basename": {
+    "prefix": ["base"],
+    "body": "$TM_FILENAME_BASE",
+    "description": "base name"
+  },
+  "filename": {
+    "prefix": ["fname"],
+    "body": "$TM_FILENAME",
+    "description": "file name"
+  },
+  "Today": {
+    "prefix": ["dateYMD"],
+    "body": "$CURRENT_YEAR\/$CURRENT_MONTH\/$CURRENT_DATE",
+    "description": "today date"
+  }
+}

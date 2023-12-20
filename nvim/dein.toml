@@ -606,6 +606,7 @@ vim.keymap.set({'i', 's'}, '<C-b>',  function()
 end, { expr = true, noremap = false })
 
 -- vim.g.vsnip_filetypes = {}
+vim.g.vsnip_snippet_dir = vim.fn.expand('~/.config/nvim/snippets')
 '''
 
 # snippets collections
