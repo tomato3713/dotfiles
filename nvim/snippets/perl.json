@@ -3,7 +3,7 @@
         "prefix": [
             "pp"
         ],
-        "body": "use DDP; print 'dump\\n'; p $1",
+        "body": "use DDP; print \"dump\\n\"; p $1",
         "description": "pretty print"
     }
 }
