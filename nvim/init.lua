@@ -53,11 +53,9 @@ vim.opt.wildignore = {
 
 -- terminal mode
 local sysname = vim.loop.os_uname().sysname
-if sysname == 'win32' or sysname == 'win64' then
+if sysname == 'Windows_NT' then
 	vim.o.shell = 'nyagos'
 	vim.o.shcf = '-c'
-	vim.fn.shellxquote('')
-	vim.fn.shellxescape('')
 elseif sysname == 'Darwin' then
 	vim.o.shell = 'zsh'
 end
