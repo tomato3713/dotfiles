@@ -208,6 +208,12 @@ require('rc.formatter')
 '''
 
 [[plugins]]
+repo = 'https://github.com/mfussenegger/nvim-lint'
+lua_source = '''
+require('rc.lint')
+'''
+
+[[plugins]]
 repo = 'danymat/neogen'
 depends = ['nvim-treesitter']
 lua_add = '''
