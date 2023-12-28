@@ -93,6 +93,12 @@ lua_source = '''
 require('nvim-web-devicons').setup()
 '''
 
+[[plugins]]
+repo = 'https://github.com/goolord/alpha-nvim'
+lua_source = '''
+require'alpha'.setup(require'alpha.themes.startify'.config)
+'''
+
 # [[plugins]]
 # repo = 'Shougo/deol.nvim'
 # hook_source = '''
