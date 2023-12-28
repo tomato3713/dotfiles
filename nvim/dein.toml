@@ -79,15 +79,6 @@ require('dressing').setup()
 '''
 
 [[plugins]]
-repo = 'romgrk/barbar.nvim'
-lua_source = '''
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap('n', '<C-n>', '<Cmd>BufferPrevious<CR>', opts)
-vim.api.nvim_set_keymap('n', '<C-p>', '<Cmd>BufferPrevious<CR>', opts)
-vim.api.nvim_set_keymap('n', '<C-h>', '<Cmd>BufferClose<CR>', opts)
-'''
-
-[[plugins]]
 repo = 'nvim-tree/nvim-web-devicons'
 lua_source = '''
 require('nvim-web-devicons').setup()
@@ -449,6 +440,9 @@ repo = 'kuuote/ddu-source-mr'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'shun/ddu-source-buffer'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'https://github.com/kamecha/ddu-source-tab'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'matsui54/ddu-source-help'

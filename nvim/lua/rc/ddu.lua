@@ -24,7 +24,7 @@ function M.start(config)
 		return function()
 			vim.fn['ddu#start']({
 				sources = {
-					{ name = config},
+					{ name = config },
 				}
 			})
 		end
@@ -83,6 +83,8 @@ vim.fn['ddu#custom#patch_global']({
 		colorscheme = { defaultAction = 'set' },
 		chooseAction = { defaultAction = 'do' },
 		joplin = { defaultAction = 'open' },
+		tab = { defaultAction = 'open' },
+		action = { defaultAction = 'do' },
 	},
 	uiParams = {
 		ff = {
@@ -179,6 +181,7 @@ local res = {
 	{ key = ',c',       config = 'colorscheme',    desc = 'ddu: colorscheme source' },
 	{ key = '<Space>a', config = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
 	{ key = ',d',       config = 'lsp_diagnostic', desc = 'ddu: lsp diagnostics' },
+	{ key = ',t',       config = 'tab',            desc = 'ddu: tabs source' },
 }
 
 for _, v in ipairs(res) do
@@ -327,7 +330,7 @@ if vim.env.JOPLIN_TOKEN ~= nil then
 			},
 		},
 		{
-			key = ',t',
+			key = ',J',
 			config = {
 				name = 'joplin',
 				ui = 'filer',
