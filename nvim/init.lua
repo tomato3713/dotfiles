@@ -60,6 +60,45 @@ elseif sysname == 'Darwin' then
 	vim.o.shell = 'zsh'
 end
 
+vim.keymap.set('n', '<C-n>', ':bnext<CR>')
+vim.keymap.set('n', '<C-p>', ':bnext<CR>')
+
+utils.nvim_create_autocmd({ 'ColorScheme' }, {
+	callback = function()
+		vim.api.nvim_set_hl(0, "TabLineSel", { fg = 'White', bg = 'Green' })
+	end,
+	desc = 'set selected tab highlight',
+})
+
+function TabLineUpdate()
+	local tabline = ""
+	for index = 1, vim.fn.tabpagenr('$') do
+		-- select the highlighting
+		if index == vim.fn.tabpagenr() then
+			tabline = tabline .. '%#TabLineSel#'
+		else
+			tabline = tabline .. '%#TabLine#'
+		end
+
+		-- set the tab page number (for mouse clicks)
+		tabline = tabline .. '%' .. index .. 'T'
+
+		tabline = tabline .. " # " .. index .. ' #' .. " |"
+	end
+
+	-- after the last tab fill with TabLineFill and reset tab page nr
+	tabline = tabline .. '%#TabLineFill#%T'
+
+	-- right-align the label to close the current tab page
+	if vim.fn.tabpagenr('$') > 1 then
+		tabline = tabline .. '%=%#TabLine#%999Xclose'
+	end
+
+	return tabline
+end
+
+vim.go.tabline = "%!v:lua.TabLineUpdate()"
+
 --- close by 'q'
 utils.nvim_create_autocmd({ 'FileType' }, {
 	pattern = { 'help', 'lspinfo', 'qf' },
