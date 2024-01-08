@@ -318,10 +318,11 @@ require('rc.gitlinker')
 # --- File Exploer
 [[plugins]]
 repo = 'obaland/vfiler.vim'
-depends = ['hijack-open-directory.nvim']
 lua_add = '''
 -- Disable embeded plugins.
+vim.api.nvim_set_var('loaded_netrw', 1)
 vim.api.nvim_set_var('loaded_netrwPlugin', 1)
+
 
 local opts = { noremap=true, silent=true }
 --- open filer in window

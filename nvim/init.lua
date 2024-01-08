@@ -51,6 +51,9 @@ vim.opt.wildignore = {
 	'*.docs',
 }
 
+vim.api.nvim_set_var('loaded_vimball', 1)
+vim.api.nvim_set_var('loaded_vimballPlugin', 1)
+
 -- terminal mode
 local sysname = vim.loop.os_uname().sysname
 if sysname == 'Windows_NT' then
