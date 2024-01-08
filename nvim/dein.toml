@@ -26,6 +26,9 @@ repo = 'vim-denops/denops.vim'
 [[plugins]]
 repo = "nvim-lua/plenary.nvim"
 
+[[plugins]]
+repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
+
 # --- Key Mapping Helper ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
