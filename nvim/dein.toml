@@ -195,10 +195,8 @@ nmap ga <Plug>(EasyAlign)
 [[plugins]]
 repo = 'mhartington/formatter.nvim'
 hook_add = '''
-augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost * FormatWrite
-augroup END
+nnoremap <silent> <leader>F :Format<CR>
+nnoremap <silent> <leader>f :FormatWrite<CR>
 '''
 lua_source = '''
 require('rc.formatter')
