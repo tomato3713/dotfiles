@@ -121,7 +121,7 @@ ddu_patch_local('node-files', {
 	sources = { 'file_rec' },
 	sourceParams = {
 		file_rec = {
-			ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next', 'tmp' },
+			ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next', '.vscode', 'tmp' },
 		},
 	},
 })
