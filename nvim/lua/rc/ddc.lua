@@ -1,6 +1,29 @@
+local M = {}
+
+-- https://github.com/uga-rosa/dotfiles/blob/92a4de22aa1722d3285b6ffd39c50cbf3925272c/nvim/lua/rc/helper/ddc.lua#L19
+function M.patch_buffer(...)
+	vim.fn["ddc#custom#patch_buffer"](...)
+end
+
+---@param ... string
+function M.remove_buffer(...)
+	local options = vim.fn["ddc#custom#get_buffer"]()
+	local root = options
+	local keys = { ... }
+	local last_key = table.remove(keys)
+	for _, key in ipairs(keys) do
+		options = options[key]
+	end
+	options[last_key] = nil
+	if vim.tbl_isempty(root) then
+		root = vim.empty_dict()
+	end
+	vim.fn["ddc#custom#set_buffer"](root)
+end
+
 vim.fn['ddc#custom#patch_global']({
 	ui = 'pum',
-	sources = { 'skkeleton', 'vsnip', 'lsp', 'around', 'file' },
+	sources = { 'vsnip', 'lsp', 'around', 'file' },
 	autoCompleteEvents = {
 		'InsertEnter',
 		'TextChangedI',
@@ -91,3 +114,5 @@ vim.fn['ddc#custom#patch_filetype']({ 'deol', 'zsh', 'deol-edit' }, {
 vim.keymap.set({ 'n', 'x' }, ':', '<Cmd>call ddc#enable_cmdline_completion()<CR>:')
 
 vim.fn['ddc#enable']()
+
+return M
