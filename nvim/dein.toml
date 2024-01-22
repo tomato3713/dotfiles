@@ -195,6 +195,11 @@ nmap ga <Plug>(EasyAlign)
 [[plugins]]
 repo = 'mhartington/formatter.nvim'
 hook_add = '''
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost *.go,*.pl,*.pm,*.tsx FormatWrite
+augroup END
+
 nnoremap <silent> <leader>F :Format<CR>
 nnoremap <silent> <leader>f :FormatWrite<CR>
 '''
