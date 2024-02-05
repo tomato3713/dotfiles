@@ -90,6 +90,12 @@ lua_source = '''
 require'alpha'.setup(require'alpha.themes.startify'.config)
 '''
 
+[[plugins]]
+repo = 'https://github.com/0xAdk/full_visual_line.nvim'
+lua_source = '''
+  require 'full_visual_line'.setup {}
+'''
+
 # [[plugins]]
 # repo = 'Shougo/deol.nvim'
 # hook_source = '''
