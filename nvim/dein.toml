@@ -548,6 +548,10 @@ on_source = 'ddc.vim'
 repo = 'Shougo/ddc-cmdline'
 on_source = 'ddc.vim'
 
+[[plugins]]
+repo = 'https://github.com/Shougo/ddc-source-copilot'
+on_source = 'ddc.vim'
+
 # ---- ddc filter ----
 [[plugins]]
 repo = 'tani/ddc-fuzzy'
@@ -620,3 +624,10 @@ vim.g.vsnip_snippet_dir = vim.fn.expand('~/.config/nvim/snippets')
 # snippets collections
 [[plugins]]
 repo = 'rafamadriz/friendly-snippets'
+
+# --- AI Support ---
+[[plugins]]
+repo = 'https://github.com/github/copilot.vim'
+lua_source = '''
+vim.g.copilot_no_maps = true
+'''

@@ -23,7 +23,7 @@ end
 
 vim.fn['ddc#custom#patch_global']({
 	ui = 'pum',
-	sources = { 'vsnip', 'lsp', 'around', 'file' },
+	sources = { 'copilot', 'vsnip', 'lsp', 'around', 'file' },
 	autoCompleteEvents = {
 		'InsertEnter',
 		'TextChangedI',
@@ -71,6 +71,12 @@ vim.fn['ddc#custom#patch_global']({
 		},
 		["shell-history"] = {
 			mark = 'Hist',
+		},
+		copilot = {
+			mark = 'copilot',
+			matchers = {},
+			minAutoCompleteLength = 0,
+			isVolatile = true,
 		},
 	},
 	sourceParams = {
