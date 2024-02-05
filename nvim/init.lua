@@ -66,6 +66,8 @@ end
 vim.keymap.set('n', '<C-n>', ':bnext<CR>')
 vim.keymap.set('n', '<C-p>', ':bnext<CR>')
 
+vim.keymap.set('n', '<C-w>t', ':split | terminal<CR>')
+
 utils.nvim_create_autocmd({ 'ColorScheme' }, {
 	callback = function()
 		vim.api.nvim_set_hl(0, "TabLineSel", { fg = 'White', bg = 'Green' })
