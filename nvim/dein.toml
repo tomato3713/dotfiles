@@ -605,9 +605,9 @@ require("neodev").setup()
 '''
 
 [[plugins]]
-repo = 'https://github.com/soulis-1256/hoverhints.nvim'
+repo = 'https://github.com/soulis-1256/eagle.nvim'
 lua_source = '''
-require("hoverhints").setup({})
+require("eagle").setup({})
 '''
 
 # --- Snippets
