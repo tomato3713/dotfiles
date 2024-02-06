@@ -150,15 +150,15 @@ end, { range = true })
 
 -- http://advweb.seesaa.net/article/13443981.html
 -- jump to the last line the cursor was on.
-utils.nvim_create_autocmd({ 'BufRead' }, {
-	callback = function()
-		if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line('$') then
-			vim.cmd.stopinsert()
-			vim.api.nvim_feedkeys('g`"', 'n', false)
-		end
-	end,
-	desc = 'jump to the last line the cursor was on',
-})
+-- utils.nvim_create_autocmd({ 'BufRead' }, {
+-- 	callback = function()
+-- 		if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line('$') then
+-- 			vim.cmd.stopinsert()
+-- 			vim.api.nvim_feedkeys('g`"', 'n', false)
+-- 		end
+-- 	end,
+-- 	desc = 'jump to the last line the cursor was on',
+-- })
 
 -- dein Scripts
 local dein_dir = vim.fn.expand('~/.cache/dein')
