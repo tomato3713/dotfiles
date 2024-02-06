@@ -203,7 +203,7 @@ repo = 'mhartington/formatter.nvim'
 hook_add = '''
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.go,*.pl,*.pm,*.tsx FormatWrite
+  autocmd BufWritePost *.go,*.pl,*.pm,*.tsx,*.lua FormatWrite
 augroup END
 
 nnoremap <silent> <leader>F :Format<CR>
