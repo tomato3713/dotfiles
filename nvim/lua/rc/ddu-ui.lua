@@ -42,7 +42,7 @@ _M.sync_action = function(cmd, params, is_stopinsert)
 	params = params or vim.empty_dict()
 	return function()
 		if is_stopinsert then vim.cmd.stopinsert() end
-		vim.schedule(function() vim.fn['ddu#ui#sync_action'](cmd, params) end)
+		vim.schedule(function() vim.fn['ddu#ui#async_action'](cmd, params) end)
 	end
 end
 

@@ -378,6 +378,7 @@ require('rc.ddu')
 '''
 hook_post_update = '''
 call ddu#set_static_import_path()
+echomsg '[INFO] call ddu#set_static_import_path()'
 '''
 
 [[plugins]]
@@ -409,6 +410,7 @@ repo = 'Shougo/ddu-filter-matcher_substring'
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'Milly/ddu-filter-kensaku'
+depends = ['kensaku.vim']
 on_source = 'ddu.vim'
 [[plugins]]
 repo = 'Milly/ddu-filter-merge'
@@ -481,6 +483,7 @@ require('rc.ddc')
 '''
 hook_post_update = '''
 call ddc#set_static_import_path()
+echomsg '[INFO] call ddc#set_static_import_path()'
 '''
 
 # ---- ddc ui ----

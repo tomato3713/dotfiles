@@ -89,7 +89,6 @@ vim.fn['ddu#custom#patch_global']({
 	uiParams = {
 		ff = {
 			prompt = '$ ',
-			displaySourceName = true,
 			startFilter = true,
 			split = 'floating',
 			autoAction = {
