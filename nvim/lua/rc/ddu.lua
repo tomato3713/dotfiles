@@ -1,48 +1,6 @@
-local M = {}
+local ddu_helper = require('rc.helper.ddu')
 
---- https://zenn.dev/uga_rosa/articles/ace68bd6ba3480
----@class Source
----@field name string
----@field params? table
-
----@param word string
----@param color string
----@return Source
-local function separator(word, color)
-	local hlGroup = 'DduDummy' .. color:gsub('[^a-zA-Z0-9]', '')
-	vim.api.nvim_set_hl(0, hlGroup, { fg = color })
-	return {
-		name = 'dummy',
-		params = { word = word, hlGroup = hlGroup },
-	}
-end
-
----@param config table | string
----@return function
-function M.start(config)
-	if type(config) == 'string' then
-		return function()
-			vim.fn['ddu#start']({
-				sources = {
-					{ name = config },
-				}
-			})
-		end
-	else
-		return function()
-			vim.fn['ddu#start'](config)
-		end
-	end
-end
-
---- patch local for ddu.vim
----@param name string
----@param config table
-local function ddu_patch_local(name, config)
-	vim.fn['ddu#custom#patch_local'](name, config)
-end
-
-vim.fn['ddu#custom#patch_global']({
+ddu_helper.patch_global({
 	ui = 'ff',
 	sourceParams = {
 		rg = { args = { '--column', '--no-heading', '--color', 'never' } },
@@ -99,8 +57,6 @@ vim.fn['ddu#custom#patch_global']({
 			previewFloating = true,
 			previewFloatingBorder = 'double',
 			previewSplit = 'vertical',
-			previewFloatingTitle = 'Preview',
-			ignoreEmpty = true,
 			floatingBorder = 'single',
 			highlights = {
 				floatingBorder = 'Verbose',
@@ -116,7 +72,7 @@ vim.fn['ddu#custom#patch_global']({
 	},
 })
 
-ddu_patch_local('node-files', {
+ddu_helper.patch_local('node-files', {
 	sources = { 'file_rec' },
 	sourceParams = {
 		file_rec = {
@@ -125,7 +81,7 @@ ddu_patch_local('node-files', {
 	},
 })
 
-ddu_patch_local('jp-files', {
+ddu_helper.patch_local('jp-files', {
 	sources = { 'file_rec' },
 	sourceOptions = {
 		file_rec = {
@@ -144,7 +100,7 @@ local function resize()
 	local width, col = math.floor(columns * 0.8), math.floor(columns * 0.1)
 	local previewWidth = width
 
-	vim.fn['ddu#custom#patch_global']({
+	ddu_helper.patch_global({
 		uiParams = {
 			ff = {
 				winHeight = height,
@@ -168,30 +124,26 @@ require('rc.utils').nvim_create_autocmd('VimResized', {
 
 -- mappings
 local res = {
-	{ key = ',h', config = 'help',   desc = 'ddu: help tags source' },
-	{ key = ',o', config = 'mr',     desc = 'ddu: mr source' },
-	{ key = ',m', config = 'marks',  desc = 'ddu: marks source' },
-	{ key = ',b', config = 'buffer', desc = 'ddu: buffer source' },
-	{
-		key = ',f',
-		config = { name = 'node-files' },
-		desc = 'ddu: file_rec source'
-	},
-	{ key = ',c',       config = 'colorscheme',    desc = 'ddu: colorscheme source' },
-	{ key = '<Space>a', config = 'lsp_codeAction', desc = 'ddu: lsp codeAction source' },
-	{ key = ',d',       config = 'lsp_diagnostic', desc = 'ddu: lsp diagnostics' },
-	{ key = ',t',       config = 'tab',            desc = 'ddu: tabs source' },
+	{ key = ',h',       config = { sources = { 'help' } },           desc = 'ddu: help tags source' },
+	{ key = ',o',       config = { sources = { 'mr' } },             desc = 'ddu: mr source' },
+	{ key = ',m',       config = { sources = { 'marks' } },          desc = 'ddu: marks source' },
+	{ key = ',b',       config = { sources = { 'buffer' } },         desc = 'ddu: buffer source' },
+	{ key = ',f',       config = { name = 'node-files' },            desc = 'ddu: file_rec source' },
+	{ key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
+	{ key = '<Space>a', config = { sources = { 'lsp_codeAction' } }, desc = 'ddu: lsp codeAction source' },
+	{ key = ',d',       config = { sources = { 'lsp_diagnostic' } }, desc = 'ddu: lsp diagnostics' },
+	{ key = ',t',       config = { sources = { 'tab' } },            desc = 'ddu: tabs source' },
 }
 
 for _, v in ipairs(res) do
-	vim.keymap.set('n', v.key, M.start(v.config or {}), { silent = true, noremap = true, desc = v.desc })
+	vim.keymap.set('n', v.key, ddu_helper.start(v.config), { silent = true, noremap = true, desc = v.desc })
 end
 
 -- ファイル検索開始
 -- カーソル上のワードで grep
 vim.keymap.set('n', ',g', function()
 	local grep = function(word)
-		vim.fn['ddu#start']({
+		ddu_helper.start({
 			name = 'grep',
 			sources = {
 				{
@@ -216,15 +168,15 @@ end, { silent = true, noremap = true, desc = 'grep files' })
 
 -- sources from language server
 vim.keymap.set('n', '<space>h', function()
-	vim.fn['ddu#start']({
+	ddu_helper.start({
 		name = 'lsp_callHierarchy',
 		sources = {
-			separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
+			ddu_helper.separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
 			{
 				name = 'lsp_callHierarchy',
 				params = { method = 'callHierarchy/outgoingCalls' },
 			},
-			separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
+			ddu_helper.separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
 			{
 				name = 'lsp_callHierarchy',
 				params = { method = 'callHierarchy/incommingCalls' },
@@ -234,7 +186,7 @@ vim.keymap.set('n', '<space>h', function()
 end, { silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
 
 vim.keymap.set('n', 'gi', function()
-	vim.fn['ddu#start']({
+	ddu_helper.start({
 		name = 'lsp',
 		sources = {
 			{
@@ -246,7 +198,7 @@ vim.keymap.set('n', 'gi', function()
 end, { silent = true, noremap = true, desc = 'textDocument/implementation' })
 
 vim.keymap.set('n', 'gD', function()
-	vim.fn['ddu#start']({
+	ddu_helper.start({
 		name = 'lsp',
 		sources = {
 			{
@@ -258,7 +210,7 @@ vim.keymap.set('n', 'gD', function()
 end, { silent = true, noremap = true, desc = 'textDocument/declaration' })
 
 vim.keymap.set('n', 'gtd', function()
-	vim.fn['ddu#start']({
+	ddu_helper.start({
 		name = 'lsp',
 		sources = {
 			{
@@ -270,7 +222,7 @@ vim.keymap.set('n', 'gtd', function()
 end, { silent = true, noremap = true, desc = 'textDocument/typeDefinition' })
 
 vim.keymap.set('n', 'gd', function()
-	vim.fn['ddu#start']({
+	ddu_helper.start({
 		name = 'lsp',
 		sources = {
 			{
@@ -282,14 +234,14 @@ vim.keymap.set('n', 'gd', function()
 end, { silent = true, noremap = true, desc = 'textDocument/definition' })
 
 vim.keymap.set('n', 'gr', function()
-	vim.fn['ddu#start']({
+	ddu_helper.start({
 		name = 'lsp',
 		sources = {
-			separator('>>Definition<<', '#fc514e'),
+			ddu_helper.separator('>>Definition<<', '#fc514e'),
 			{
 				name = 'lsp_definition',
 			},
-			separator('>>References<<', '#fc514e'),
+			ddu_helper.separator('>>References<<', '#fc514e'),
 			{
 				name = 'lsp_references',
 				params = { includeDeclaration = false },
@@ -299,7 +251,7 @@ vim.keymap.set('n', 'gr', function()
 end, { silent = true, noremap = true, desc = 'textDocument/definition' })
 
 if vim.env.JOPLIN_TOKEN ~= nil then
-	ddu_patch_local('joplin', {
+	ddu_helper.patch_local('joplin', {
 		sourceParams = {
 			joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
 			joplin_tree = { token = vim.env.JOPLIN_TOKEN },
@@ -340,13 +292,13 @@ if vim.env.JOPLIN_TOKEN ~= nil then
 	}
 
 	for _, v in ipairs(joplin_mapping) do
-		vim.keymap.set('n', v.key, M.start(v.config or {}),
+		vim.keymap.set('n', v.key, ddu_helper.start(v.config or {}),
 			{ silent = true, noremap = true, desc = v.desc })
 	end
 
 	vim.keymap.set('n', ',k', function()
 		local word = vim.fn.expand('<cword>')
-		vim.fn['ddu#start']({
+		ddu_helper.start({
 			name = 'joplin',
 			sources = {
 				{
@@ -359,4 +311,3 @@ if vim.env.JOPLIN_TOKEN ~= nil then
 		})
 	end, { silent = true, noremap = true, desc = 'grep Joplin notes and todos' })
 end
-return M

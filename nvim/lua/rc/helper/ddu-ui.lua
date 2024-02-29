@@ -53,4 +53,17 @@ _M.item_action = function(name, params, is_stopinsert)
 	return _M.do_action('itemAction', { name = name, params = params }, is_stopinsert)
 end
 
+---@param cmd string
+---@param is_stopinsert? boolean
+_M.execute = function(cmd, is_stopinsert)
+	return function()
+		if is_stopinsert then
+			vim.cmd.stopinsert()
+		end
+		vim.schedule(function()
+			vim.fn["ddu#ui#ff#execute"](cmd)
+		end)
+	end
+end
+
 return _M

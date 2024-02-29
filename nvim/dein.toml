@@ -396,7 +396,7 @@ lua_source = '''
 repo = 'Shougo/ddu-ui-filer'
 on_source = 'ddu.vim'
 lua_source = '''
-require('rc.ddu-ui-filer')
+  require('rc.ddu-ui-filer')
 '''
 
 [[plugins]]

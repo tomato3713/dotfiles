@@ -37,14 +37,14 @@ end
 require('rc.utils').nvim_create_autocmd("User", {
 	pattern = "skkeleton-enable-post",
 	callback = function()
-		require('rc.ddc').patch_buffer("sources", { "skkeleton" })
+		require('rc.helper.ddc').patch_buffer("sources", { "skkeleton" })
 	end,
 })
 
 require('rc.utils').nvim_create_autocmd("User", {
 	pattern = "skkeleton-disable-post",
 	callback = function()
-		require('rc.ddc').remove_buffer("sources")
+		require('rc.helper.ddc').remove_buffer("sources")
 	end,
 })
 

@@ -1,17 +1,4 @@
-local ui_helper = require("rc.ddu-ui")
-
----@param cmd string
----@param is_stopinsert? boolean
-local execute = function(cmd, is_stopinsert)
-	return function()
-		if is_stopinsert then
-			vim.cmd.stopinsert()
-		end
-		vim.schedule(function()
-			vim.fn["ddu#ui#ff#execute"](cmd)
-		end)
-	end
-end
+local ui_helper = require("rc.helper.ddu-ui")
 
 require('rc.utils').nvim_create_autocmd("FileType", {
 	pattern = "ddu-ff-filter",
@@ -25,8 +12,8 @@ require('rc.utils').nvim_create_autocmd("FileType", {
 
 		vim.keymap.set("i", "<CR>", ui_helper.item_action("default", nil, true), opts)
 		vim.keymap.set("i", "<S-CR>", ui_helper.item_action("open", { command = "split" }, true), opts)
-		vim.keymap.set("i", "<C-n>", execute("normal j"), opts)
-		vim.keymap.set("i", "<C-p>", execute("normal k"), opts)
+		vim.keymap.set("i", "<C-n>", ui_helper.execute("normal j"), opts)
+		vim.keymap.set("i", "<C-p>", ui_helper.execute("normal k"), opts)
 		vim.keymap.set("i", "<C-t>", ui_helper.do_action("preview"), opts)
 		vim.keymap.set("i", "<C-e>", ui_helper.do_action("expandItem", { mode = "toggle" }), opts)
 		vim.keymap.set("i", "<C-a>", ui_helper.do_action("chooseAction"), opts)
