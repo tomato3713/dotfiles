@@ -545,6 +545,10 @@ lua_source = '''
 repo = 'Shougo/ddc-source-shell-native'
 on_source = 'ddc.vim'
 
+# [[plugins]]
+# repo = 'https://github.com/delphinus/ddc-shell-history'
+# on_source = 'ddc.vim'
+
 [[plugins]]
 repo = 'uga-rosa/ddc-source-vsnip'
 on_source = 'ddc.vim'
