@@ -27,6 +27,7 @@ ddc_helper.patch_global({
 		lsp = {
 			mark = "LS",
 			keywordPattern = "\\k+",
+			dup = "keep",
 		},
 		vsnip = {
 			mark = "Snip",
@@ -36,6 +37,8 @@ ddc_helper.patch_global({
 			matchers = { "skkeleton" },
 			minAutoCompleteLength = 1,
 			isVolatile = true,
+			sorters = {},
+			converters = {},
 		},
 		file = {
 			mark = "File",
@@ -67,7 +70,10 @@ vim.keymap.set({ 'i', 'c' }, '<C-l>', vim.fn['ddc#map#manual_complete'], { silen
 ddc_helper.patch_global({
 	backspaceCompletion = true,
 	cmdlineSources = {
-		[':'] = { 'cmdline-history', 'cmdline', 'file' },
+		[':'] = { 'cmdline', 'cmdline-history', 'file' },
+		['/'] = { 'around' },
+		['?'] = { 'around' },
+		['='] = { 'input' },
 	},
 	sourceOptions = {
 		cmdline = {
