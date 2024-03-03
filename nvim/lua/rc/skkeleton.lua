@@ -9,9 +9,9 @@ local download_global_skk_dictionary = function(global_dictionary)
 	os.execute('curl ' .. skk_dict_url .. ' -o ' .. vim.fn.expand(global_dictionary))
 end
 
-local init_skk_dictionary = function(dir, global_dictionary)
-	if not (vim.fn.isdirectory(dir) == 0) then
-		vim.fn.mkdir(dir)
+local init_skk_dictionary = function(global_dictionary)
+	if vim.fn.filereadable(vim.fn.expand(global_dictionary)) == 0 then
+		vim.fn.mkdir(dir, "p")
 
 		download_global_skk_dictionary(global_dictionary)
 	end
@@ -58,6 +58,6 @@ require('rc.utils').nvim_create_autocmd('User', {
 	desc = 'init skkeleton',
 })
 
-init_skk_dictionary(skk_dir, global_skk_jisyo)
+init_skk_dictionary(global_skk_jisyo)
 
 init()
