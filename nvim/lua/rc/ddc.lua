@@ -7,13 +7,15 @@ ddc_helper.patch_global('autoCompleteEvents', {
 	"InsertEnter",
 	"TextChangedI",
 	"TextChangedP",
-	"TextChangedT",
 	"CmdlineChanged",
+	"TextChangedT",
 })
 
+ddc_helper.patch_global('sources', { "copilot", "vsnip", "lsp", "around", "file" })
+
 ddc_helper.patch_global({
-	sources = { "copilot", "vsnip", "lsp", "around", "file" },
 	backspaceCompletion = true,
+	specialBufferCompletion = true,
 	sourceOptions = {
 		_ = {
 			ignoreCase = true,
@@ -48,7 +50,7 @@ ddc_helper.patch_global({
 		copilot = {
 			mark = "copilot",
 			matchers = {},
-			minAutoCompleteLength = 0,
+			minAutoCompleteLength = 1,
 			isVolatile = true,
 		},
 	},
@@ -64,26 +66,28 @@ ddc_helper.patch_global({
 	},
 })
 
-vim.keymap.set({ 'i', 'c' }, '<C-l>', vim.fn['ddc#map#manual_complete'], { silent = true })
-
 -- commandline completion
-ddc_helper.patch_global({
-	backspaceCompletion = true,
-	cmdlineSources = {
-		[':'] = { 'cmdline', 'cmdline-history', 'file' },
-		['/'] = { 'around' },
-		['?'] = { 'around' },
-		['='] = { 'input' },
+ddc_helper.patch_global('cmdlineSources', {
+	[':'] = { 'cmdline', 'cmdline-history', 'file' },
+	['/'] = { 'around' },
+	['?'] = { 'around' },
+	['='] = { 'input' },
+})
+ddc_helper.patch_global('sourceOptions', {
+	cmdline = {
+		mark = '[Cmd]',
+		maxItems = 5,
 	},
-	sourceOptions = {
-		cmdline = {
-			mark = 'Cmd',
-			maxItems = 5,
-		},
-		["cmdline-history"] = {
-			mark = 'Hist',
-			maxItems = 5,
-		},
+	["cmdline-history"] = {
+		mark = '[Hist]',
+		maxItems = 5,
+	},
+	["input"] = {
+		mark = '[input]',
+		matchers = {},
+		minAutoCompleteLength = 0,
+		forceCompletionPattern = { [['\S/\S*|\.\w*']] },
+		isVolatile = true,
 	},
 })
 
@@ -95,27 +99,37 @@ utils.nvim_create_autocmd("CmdlineEnter", {
 })
 
 -- terminal completion
--- vim.fn['ddc#custom#patch_filetype']({ 'zsh' }, {
--- 	ui = 'pum',
--- 	sources = { 'shell-native', 'file', 'shell-history' },
--- 	specialBufferCompletion = true,
--- 	sourceOptions = {
--- 		_ = {
--- 			keywordPattern = '[0-9a-zA-Z_./#:-]*',
--- 		},
--- 		["shell-native"] = {
--- 			mark = 'Sh',
--- 		},
--- 		-- ["shell-history"] = {
--- 		-- 	mark = 'Hist',
--- 		-- },
--- 	},
--- 	sourceParams = {
--- 		["shell-native"] = {
--- 			shell = 'zsh',
--- 		},
--- 	},
--- })
--- ddc_helper.enable_terminal_completion()
+ddc_helper.patch_global('sourceOptions', {
+	["shell-native"] = {
+		mark = '[Shell]',
+		isVolatile = true,
+		keywordPattern = "[0-9a-zA-Z_./#:-]*",
+		minAutoCompleteLength = 1,
+		forceCompletionPattern = "\\S/\\S*",
+	},
+	-- ["shell-history"] = {
+	-- 	mark = 'Hist',
+	-- 	keywordPattern = '[0-9a-zA-Z_./#:-]*',
+	-- },
+})
+
+ddc_helper.patch_global('sourceParams', {
+	["shell-native"] = {
+		shell = 'zsh',
+	},
+})
+
+utils.nvim_create_autocmd("TermEnter", {
+	callback = function()
+		ddc_helper.patch_global('sources', { "shell-native", "file", "around" })
+	end,
+})
+
+utils.nvim_create_autocmd("TermLeave", {
+	callback = function()
+		ddc_helper.remove_buffer('sources')
+	end,
+})
+ddc_helper.enable_terminal_completion()
 
 ddc_helper.enable()

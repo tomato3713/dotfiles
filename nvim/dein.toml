@@ -494,6 +494,64 @@ echomsg '[INFO] call ddc#set_static_import_path()'
 [[plugins]]
 repo = 'Shougo/pum.vim'
 on_source = 'ddc.vim'
+hook_add = '''
+" insert mode completion
+inoremap <expr> <TAB>
+      \ pum#visible() ?
+      \   '<Cmd>call pum#map#insert_relative(+1, "empty")<CR>' :
+      \ col('.') <= 1 ? '<TAB>' :
+      \ getline('.')[col('.') - 2] =~# '\s' ? '<TAB>' :
+      \ ddc#map#manual_complete()
+inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1, 'empty')<CR>
+inoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
+inoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
+inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+inoremap <C-o>   <Cmd>call pum#map#confirm_word()<CR>
+inoremap <Home>  <Cmd>call pum#map#insert_relative(-9999, 'ignore')<CR>
+inoremap <End>   <Cmd>call pum#map#insert_relative(+9999, 'ignore')<CR>
+"inoremap <C-z>   <Cmd>call pum#update_current_item(#{ display: 'hoge' })<CR>
+inoremap <expr> <C-e> pum#visible()
+      \ ? '<Cmd>call pum#map#cancel()<CR>'
+      \ : '<End>'
+inoremap <expr> <C-l>  ddc#map#manual_complete()
+"inoremap <C-y>   <Cmd>call pum#map#scroll_preview(+1)<CR>
+"inoremap <C-e>   <Cmd>call pum#map#scroll_preview(-1)<CR>
+
+" command line completion
+cnoremap <expr> <Tab>
+      \ wildmenumode() ? &wildcharm->nr2char() :
+      \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :
+      \ ddc#map#manual_complete()
+cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+cnoremap <C-o>   <Cmd>call pum#map#confirm()<CR>
+cnoremap <C-q>   <Cmd>call pum#map#select_relative(+1)<CR>
+cnoremap <C-z>   <Cmd>call pum#map#select_relative(-1)<CR>
+cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+cnoremap <expr> <C-e> pum#visible()
+      \ ? '<Cmd>call pum#map#cancel()<CR>'
+      \ : '<End>'
+"cnoremap <C-y>   <Cmd>call pum#map#scroll_preview(+1)<CR>
+"cnoremap <C-e>   <Cmd>call pum#map#scroll_preview(-1)<CR>
+
+cnoremap <expr> <C-t>       ddc#map#insert_item(0)
+inoremap <C-t>   <C-v><Tab>
+
+xnoremap <Tab>   "_R<Cmd>call ddc#map#manual_complete()<CR>
+snoremap <Tab>   <C-o>"_di<Cmd>call ddc#map#manual_complete()<CR>
+
+" terminal mode completion
+tnoremap <C-t> <Tab>
+tnoremap <expr> <Tab> pum#visible() ?
+      \ '<Cmd>call pum#map#select_relative(+1)<CR>' :
+      \ '<Tab>'
+tnoremap <expr> <S-Tab> pum#visible() ?
+      \ '<Cmd>call pum#map#select_relative(-1)<CR>' :
+      \ '<S-Tab>'
+tnoremap <Down>   <Cmd>call pum#map#insert_relative(+1)<CR>
+tnoremap <Up>     <Cmd>call pum#map#insert_relative(-1)<CR>
+tnoremap <C-y>    <Cmd>call pum#map#confirm()<CR>
+tnoremap <C-o>    <Cmd>call pum#map#confirm()<CR>
+'''
 lua_source = '''
 require('rc.pum')
 '''
@@ -540,6 +598,10 @@ lua_source = '''
 -- capabilities and forceCompletePattern are automatically set
 -- require("ddc_source_lsp_setup").setup()
 '''
+
+[[plugins]]
+repo = 'https://github.com/Shougo/ddc-source-input'
+on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'Shougo/ddc-source-shell-native'
