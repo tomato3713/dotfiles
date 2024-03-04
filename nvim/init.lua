@@ -63,8 +63,8 @@ elseif sysname == 'Darwin' then
 	vim.o.shell = 'zsh'
 end
 
-vim.keymap.set('n', '<C-n>', ':bnext<CR>')
-vim.keymap.set('n', '<C-p>', ':bnext<CR>')
+-- vim.keymap.set('n', '<C-n>', ':bnext<CR>')
+-- vim.keymap.set('n', '<C-p>', ':bnext<CR>')
 
 vim.keymap.set('n', '<C-w>t', ':split | terminal<CR>')
 
