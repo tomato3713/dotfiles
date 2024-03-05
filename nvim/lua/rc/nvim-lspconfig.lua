@@ -78,7 +78,14 @@ end
 mason_lspconfig.setup_handlers({
 	function(server_name)
 		-- tsserverとdenolsを出し分ける
-		local deno_root_dir = nvim_lsp.util.root_pattern("deno.json")
+		local deno_root_dir = nvim_lsp.util.root_pattern(
+			"deno.json",
+			"deno.jsonc",
+			"deps.ts",
+			"import_map.json",
+			"denops"
+		)
+		local node_root_dir = nvim_lsp.util.root_pattern("node_modules")
 		local is_deno_repo = deno_root_dir(vim.api.nvim_buf_get_name(0)) ~= nil
 
 		local opts = {}
@@ -86,23 +93,17 @@ mason_lspconfig.setup_handlers({
 			if is_deno_repo then
 				return
 			end
-			opts.root_dir = deno_root_dir
+			opts.root_dir = node_root_dir
 		elseif server_name == "eslint" then
 			if is_deno_repo then
 				return
 			end
-			opts.root_dir = deno_root_dir
+			opts.root_dir = node_root_dir
 		elseif server_name == "denols" then
 			if not is_deno_repo then
 				return
 			end
-			opts.root_dir = nvim_lsp.util.root_pattern(
-				"deno.json",
-				"deno.jsonc",
-				"deps.ts",
-				"import_map.json",
-				"denops"
-			)
+			opts.root_dir = deno_root_dir
 			opts.init_options = {
 				lint = true,
 				unstable = true,
