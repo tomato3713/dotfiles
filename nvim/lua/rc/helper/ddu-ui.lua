@@ -31,18 +31,7 @@ _M.do_action = function(cmd, params, is_stopinsert)
 	params = params or vim.empty_dict()
 	return function()
 		if is_stopinsert then vim.cmd.stopinsert() end
-		vim.schedule(function() vim.fn['ddu#ui#do_action'](cmd, params) end)
-	end
-end
-
----@param cmd string
----@param params? table
----@param is_stopinsert? boolean
-_M.sync_action = function(cmd, params, is_stopinsert)
-	params = params or vim.empty_dict()
-	return function()
-		if is_stopinsert then vim.cmd.stopinsert() end
-		vim.schedule(function() vim.fn['ddu#ui#async_action'](cmd, params) end)
+		vim.fn['ddu#ui#do_action'](cmd, params)
 	end
 end
 
