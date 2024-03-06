@@ -1,12 +1,12 @@
 require 'nvim-treesitter.configs'.setup {
 	ensure_installed = {
 		"go",
-		"c", "cpp",
 		"tsx", "css",
 		"lua",
 		"perl",
 		"markdown", "toml", "yaml", "json",
 	},
+	auto_install = false,
 	sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
 	highlight = {
 		enable = true, -- false will disable the whole extension
