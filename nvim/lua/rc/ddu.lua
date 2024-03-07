@@ -251,11 +251,12 @@ vim.keymap.set('n', 'gr', function()
 end, { silent = true, noremap = true, desc = 'textDocument/definition' })
 
 if vim.env.JOPLIN_TOKEN ~= nil then
+	ddu_helper.patch_global('sourceParams', {
+		joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
+		joplin_tree = { token = vim.env.JOPLIN_TOKEN },
+	})
+
 	ddu_helper.patch_local('joplin', {
-		sourceParams = {
-			joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
-			joplin_tree = { token = vim.env.JOPLIN_TOKEN },
-		},
 		sourceOptions = {
 			joplin = { columns = { 'joplin' } },
 			joplin_tree = { columns = { 'joplin' } },
@@ -292,7 +293,7 @@ if vim.env.JOPLIN_TOKEN ~= nil then
 	}
 
 	for _, v in ipairs(joplin_mapping) do
-		vim.keymap.set('n', v.key, ddu_helper.start(v.config or {}),
+		vim.keymap.set('n', v.key, ddu_helper.start(v.config),
 			{ silent = true, noremap = true, desc = v.desc })
 	end
 
