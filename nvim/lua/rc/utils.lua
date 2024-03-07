@@ -2,7 +2,7 @@ local M = {}
 
 --- try catch
 ---@param what table
----@return object
+---@return unknown
 M.try_catch = function(what)
 	local status, result = pcall(what.try)
 	if not status then
