@@ -9,6 +9,10 @@ function M.patch_global(...)
 	vim.fn["ddc#custom#patch_global"](...)
 end
 
+function M.patch_filetype(...)
+	vim.fn["ddc#custom#patch_filetype"](...)
+end
+
 ---@param ... string
 function M.remove_buffer(...)
 	local options = vim.fn["ddc#custom#get_buffer"]()

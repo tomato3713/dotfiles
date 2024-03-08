@@ -66,6 +66,9 @@ ddc_helper.patch_global({
 	},
 })
 
+-- disable completion in partial filetype
+ddc_helper.patch_filetype({ 'ddu-ff-filter', 'ddu-ff', 'ddu-filer' }, 'sources', {})
+
 -- commandline completion
 ddc_helper.patch_global('cmdlineSources', {
 	[':'] = { 'cmdline', 'cmdline-history', 'file' },
