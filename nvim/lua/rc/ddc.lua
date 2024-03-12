@@ -11,7 +11,9 @@ ddc_helper.patch_global('autoCompleteEvents', {
 	"TextChangedT",
 })
 
-ddc_helper.patch_global('sources', { "copilot", "vsnip", "lsp", "around", "file" })
+ddc_helper.patch_global('sources', {
+	-- "copilot",
+	"vsnip", "lsp", "around", "file" })
 
 ddc_helper.patch_global({
 	backspaceCompletion = true,

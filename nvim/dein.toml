@@ -710,5 +710,5 @@ repo = 'rafamadriz/friendly-snippets'
 [[plugins]]
 repo = 'https://github.com/github/copilot.vim'
 lua_source = '''
-vim.g.copilot_no_maps = true
+-- vim.g.copilot_no_maps = true
 '''
