@@ -1,8 +1,18 @@
 # -----------------------------------
 # -------- ENABLE FEATURE -----------
 # -----------------------------------
-autoload -U compinit; compinit
+autoload -U compinit; compinit; zstyle ":completion:*:commands" rehash 1
 autoload -U colors; colors
+
+# completions
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source $(brew --prefix)/opt/zsh-git-prompt/zshrc.sh
+    autoload -Uz compinit
+    compinit
+fi
 
 # -----------------------------------
 # ------------ History --------------
@@ -26,20 +36,36 @@ export PATH="`go env GOPATH`/bin:$PATH"
 alias n=nvim --cmd "let g:useShared=v:true" $*
 alias nn=nvim $*
 alias g=git
+alias gcd='cd `git rev-parse --show-toplevel`'
 
 # -----------------------------------
 # ----------- Shortcut --------------
 # -----------------------------------
-function gcd() {
-  local destination_dir=$(echo "$(ghq list --full-path) $ENV_CACHE_SDL" | fzf)
-  if [ -n "$destination_dir" ]; then
-    BUFFER="cd $destination_dir"
-    zle accept-line
-  fi
-  zle clear-screen
+ghq-cd () {
+    if [ -n "$1" ]; then
+        dir="$(ghq list --full-path --exact "$1")"
+        if [ -z "$dir" ]; then
+            echo "no directories found for '$1'"
+            return 1
+        fi
+        cd "$dir"
+        return
+    fi
+    echo 'usage: ghq-cd $repo'
+    return 1
 }
-zle -N gcd
-bindkey '^]' gcd
+
+peco-src () {
+    local repo=$(ghq list | peco --query "$LBUFFER")
+    if [ -n "$repo" ]; then
+        repo=$(ghq list --full-path --exact $repo)
+        BUFFER="cd ${repo}"
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-src
+bindkey '^]' peco-src
 
 # -----------------------------------
 # ------------ PROMPT ---------------
