@@ -639,6 +639,13 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'https://github.com/Shougo/ddc-source-copilot'
 on_source = 'ddc.vim'
+hook_source = '''
+let g:copilot_filetypes = {
+      \ 'ddu-ff': v:false,
+      \ 'ddu-ff-filter': v:false,
+      \ 'ddu-filer': v:false,
+      \ }
+'''
 
 # ---- ddc filter ----
 [[plugins]]
