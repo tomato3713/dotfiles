@@ -13,6 +13,9 @@ ddu_helper.patch_global({
 				'matcher_substring',
 			},
 		},
+		file = {
+			columns = { 'filename' },
+		},
 		file_rec = {
 			converters = {
 				'converter_relativepath',
@@ -63,10 +66,13 @@ ddu_helper.patch_global({
 		},
 		filer = {
 			statusline = false,
-			displayRoot = false,
+			displayRoot = true,
 			displayTree = true,
 			split = 'floating',
 			floatingBorder = 'single',
+			autoAction = {
+				name = 'preview',
+			},
 		},
 	},
 })
@@ -77,9 +83,6 @@ ddu_helper.patch_local('node-files', {
 		file_rec = {
 			ignoredDirectories = { '.git', 'node_modules', 'vendor', '.next', '.vscode', 'tmp' },
 		},
-	},
-	uiParams = {
-		-- ff = { startFilter = true }, -- アップデートで削除
 	},
 })
 
@@ -135,10 +138,23 @@ local res = {
 		,
 		desc = 'ddu: help tags source'
 	},
-	{ key = ',o',       config = { sources = { 'mr' } },             desc = 'ddu: mr source' },
-	{ key = ',m',       config = { sources = { 'marks' } },          desc = 'ddu: marks source' },
-	{ key = ',b',       config = { sources = { 'buffer' } },         desc = 'ddu: buffer source' },
-	{ key = ',f',       config = { name = 'node-files' },            desc = 'ddu: file_rec source' },
+	{ key = ',o', config = { sources = { 'mr' } },     desc = 'ddu: mr source' },
+	{ key = ',m', config = { sources = { 'marks' } },  desc = 'ddu: marks source' },
+	{ key = ',b', config = { sources = { 'buffer' } }, desc = 'ddu: buffer source' },
+	{ key = ',f', config = { name = 'node-files' },    desc = 'ddu: file_rec source' },
+	{
+		key = ',F',
+		config = {
+			ui = 'filer',
+			sources = { 'file' },
+			uiParams = {
+				filer = {
+					displayTree = true,
+				}
+			}
+		},
+		desc = 'ddu: file_rec source'
+	},
 	{ key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
 	{ key = '<Space>a', config = { sources = { 'lsp_codeAction' } }, desc = 'ddu: lsp codeAction source' },
 	{ key = ',d',       config = { sources = { 'lsp_diagnostic' } }, desc = 'ddu: lsp diagnostics' },

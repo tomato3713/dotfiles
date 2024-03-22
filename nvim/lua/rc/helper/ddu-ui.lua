@@ -55,4 +55,13 @@ _M.execute = function(cmd, is_stopinsert)
 	end
 end
 
+_M.get_item = function()
+	return vim.fn["ddu#ui#get_item"]()
+end
+
+
+_M.isTree = function()
+	local item = _M.get_item()
+	return item.isTree == nil and false or item.isTree
+end
 return _M
