@@ -7,6 +7,7 @@ require('rc.utils').nvim_create_autocmd("FileType", {
 		-- close ui
 		vim.keymap.set('n', '<Esc>', ui_helper.do_action('quit'), opts)
 		vim.keymap.set('n', 'q', ui_helper.do_action('quit'), opts)
+		vim.keymap.set("n", "a", ui_helper.do_action("chooseAction"), opts)
 
 		vim.keymap.set('n', 'e', ui_helper.do_action("expandItem", { mode = "toggle" }), opts)
 		vim.keymap.set('n', 'l', ui_helper.do_action("expandItem", { mode = "toggle" }), opts)
@@ -20,7 +21,7 @@ require('rc.utils').nvim_create_autocmd("FileType", {
 			if ui_helper.isTree() then
 				ui_helper.item_action('narrow')()
 			else
-				ui_helper.item_action('open', { command = 'vsplit' })()
+				ui_helper.item_action('default')()
 			end
 		end, opts)
 
@@ -28,7 +29,7 @@ require('rc.utils').nvim_create_autocmd("FileType", {
 			if ui_helper.isTree() then
 				ui_helper.item_action('narrow')()
 			else
-				ui_helper.item_action('open', { command = 'split' })()
+				ui_helper.item_action('default')()
 			end
 		end, opts)
 
