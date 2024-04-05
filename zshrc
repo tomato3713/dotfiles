@@ -17,14 +17,25 @@ fi
 # -----------------------------------
 # ------------ History --------------
 # -----------------------------------
-export HISTFILE=${HOME}/.zsh_history
-export HISTSIZE=1000
+export HISTSIZE=100000
 export SAVEHIST=100000
-setopt share_history
 setopt hist_ignore_dups
-setopt hist_ignore_all_dups
-setopt hist_reduce_blanks
-
+setopt share_history
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+function history-all { history -E 1 }
+# http://mollifier.hatenablog.com/entry/20090728/p1
+zshaddhistory() {
+    local line=${1%%$'\n'} #コマンドライン全体から改行を除去したもの
+    local cmd=${line%% *}  # １つ目のコマンド
+    # 以下の条件をすべて満たすものだけをヒストリに追加する
+    [[ ${#line} -ge 5
+        && ${cmd} != (l[sal])
+        && ${cmd} != (cd)
+        && ${cmd} != (man)
+        && ${cmd} != (git [(status)|(diff)])
+    ]]
+}
 # -----------------------------------
 # ------------- PATH ----------------
 # -----------------------------------
@@ -39,8 +50,13 @@ alias g=git
 alias gcd='cd `git rev-parse --show-toplevel`'
 
 # -----------------------------------
-# ----------- Shortcut --------------
+# ------- Custom Functions ----------
 # -----------------------------------
+tgz() {
+    # Usage: tgz nekotoma.tgz file1 file2 dir1 dir2
+    env COPYFILE_DISABLE=1 tar zcvf "$1" --exclude=".DS_Store" "${@:2}"
+}
+
 ghq-cd () {
     if [ -n "$1" ]; then
         dir="$(ghq list --full-path --exact "$1")"
@@ -64,6 +80,13 @@ peco-src () {
     fi
     zle clear-screen
 }
+
+start-emacs-daemon() {
+     emacs --fg-daemon
+}
+# -----------------------------------
+# ----------- Shortcut --------------
+# -----------------------------------
 zle -N peco-src
 bindkey '^]' peco-src
 
