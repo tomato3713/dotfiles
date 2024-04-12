@@ -25,7 +25,10 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 	border = "single",
 })
 vim.diagnostic.config({
-	float = { border = "single" },
+	float = {
+		border = "single",
+		severity_sort = true,
+	},
 })
 
 -- Global mappings.
