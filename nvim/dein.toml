@@ -35,6 +35,9 @@ repo = "nvim-lua/plenary.nvim"
 [[plugins]]
 repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
 
+[[plugins]]
+repo = "https://github.com/uga-rosa/utf8.nvim"
+
 # --- Key Mapping Helper ---
 [[plugins]]
 repo = 'folke/which-key.nvim'
@@ -117,6 +120,12 @@ lua_source = '''
 # --- General Rich Text Editing ---
 [[plugins]]
 repo = 'simeji/winresizer'
+
+[[plugins]]
+repo = 'https://github.com/monaqa/general-converter.nvim'
+lua_source = '''
+require('rc.general_converter')
+'''
 
 [[plugins]]
 repo = 'karb94/neoscroll.nvim'
