@@ -105,6 +105,12 @@ lua_source = '''
   require 'full_visual_line'.setup {}
 '''
 
+[[plugins]]
+repo = 'https://github.com/lukas-reineke/indent-blankline.nvim'
+lua_source = '''
+  require('rc.indent_blankline')
+'''
+
 # [[plugins]]
 # repo = 'Shougo/deol.nvim'
 # hook_source = '''

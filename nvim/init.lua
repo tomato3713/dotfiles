@@ -16,7 +16,14 @@ vim.o.signcolumn = 'yes'
 vim.o.laststatus = 3 -- v0.7.0 and later
 vim.opt.cursorline = true
 vim.o.list = true
-vim.opt.listchars = { tab = '>>', trail = '_', nbsp = '+' }
+vim.opt.listchars = {
+	tab = '| ',
+	trail = '·',
+	eol = '↲',
+	extends = '»',
+	precedes = '←',
+	nbsp = '␣',
+}
 
 -- editor setting
 vim.o.smartindent = true -- スマートインデントを行う
