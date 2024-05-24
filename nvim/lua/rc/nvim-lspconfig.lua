@@ -129,12 +129,12 @@ mason_lspconfig.setup_handlers({
 				root_dir = perl_root_dir,
 				settings = {
 					perlnavigator = {
-						perlPath = vim.env.HOME .. "/.plenv/shims/perl",
+						-- perlPath = vim.env.HOME .. "/.plenv/shims/perl",
 						includeLib = true,
 						includePaths = {
+							"$workspaceFolder/lib",
 							"$workspaceFolder/local/lib/perl5",
 							"$workspaceFolder/local/lib/perl5/darwin-2level",
-							"$workspaceFolder/lib",
 						},
 						perlImportsTidyEnabled = true,
 						perlTidyEnabled = true,
@@ -149,41 +149,4 @@ mason_lspconfig.setup_handlers({
 
 		nvim_lsp[server_name].setup(opts)
 	end,
-})
-
--- has no completion capability
-nvim_lsp.perlls.setup({
-	on_attach = on_attach,
-	root_dir = perl_root_dir,
-	cmd = {
-		vim.env.HOME .. "/.plenv/shims/perl",
-		"-MPerl::LanguageServer",
-		"-e",
-		"Perl::LanguageServer::run",
-		"--",
-		-- "--debug",
-		"--port 27011",
-		-- "--nostdio 0",
-		-- "--enable",
-	},
-	settings = {
-		perl = {
-			perlCmd = vim.env.HOME .. "/.plenv/shims/perl",
-			perlInc = {
-				-- https://github.com/richterger/Perl-LanguageServer#module-not-found-when-debugging-or-during-syntax-check
-				-- set to a fixed absolute path
-				perl_root_dir(vim.api.nvim_buf_get_name(0)) .. "/lib",
-				perl_root_dir(vim.api.nvim_buf_get_name(0)) .. "/local/lib/perl5",
-				perl_root_dir(vim.api.nvim_buf_get_name(0)) .. "/local/lib/perl5/darwin-2level/",
-			},
-			ignoreDirs = {
-				".git",
-				".vscode", -- create cache files in this directory.
-				"tmp",
-				".tmp",
-				"node_modules",
-			},
-			enable = true,
-		},
-	},
 })
