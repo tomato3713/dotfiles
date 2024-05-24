@@ -139,6 +139,12 @@ lua_source = '''
 require('neoscroll').setup()
 '''
 
+[[plugins]]
+repo = 'https://github.com/monaqa/dial.nvim'
+lua_source = '''
+require('rc.dial')
+'''
+
 # [[plugins]]
 # repo = 'https://github.com/ggandor/leap.nvim'
 # lua_source = '''
