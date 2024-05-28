@@ -11,7 +11,7 @@ end
 
 local init_skk_dictionary = function(global_dictionary)
 	if vim.fn.filereadable(vim.fn.expand(global_dictionary)) == 0 then
-		vim.fn.mkdir(dir, "p")
+		vim.fn.mkdir(global_dictionary, "p")
 
 		download_global_skk_dictionary(global_dictionary)
 	end
