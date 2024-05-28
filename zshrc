@@ -99,7 +99,7 @@ git_prompt() {
   if [ -z $branchname ]; then
     PROMPT="%~"$'\n'"%# "
   fi
-  PROMPT="%~ ($branchname)"$'\n'"%# "
+  PROMPT="%~"$'\n'"[$branchname] %# "
 }
 precmd() {
   git_prompt
