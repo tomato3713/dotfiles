@@ -81,11 +81,9 @@ ddc_helper.patch_global('cmdlineSources', {
 ddc_helper.patch_global('sourceOptions', {
 	cmdline = {
 		mark = '[Cmd]',
-		maxItems = 5,
 	},
 	["cmdline-history"] = {
 		mark = '[Hist]',
-		maxItems = 5,
 	},
 	["input"] = {
 		mark = '[input]',

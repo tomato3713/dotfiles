@@ -57,7 +57,7 @@ ddu_helper.patch_global({
 			maxDisplayItems = 500,
 			startAutoAction = true,
 			previewFloating = true,
-			previewFloatingBorder = 'double',
+			previewFloatingBorder = 'single',
 			previewSplit = 'vertical',
 			floatingBorder = 'single',
 			highlights = {
@@ -99,23 +99,28 @@ ddu_helper.patch_local('jp-files', {
 
 local function resize()
 	local lines = vim.opt.lines:get()
-	local height, row = math.floor(lines * 0.2), math.floor(lines * 0.1)
-	local previewHeight = math.floor(lines - height - row - 2 - 5)
 	local columns = vim.opt.columns:get()
-	local width, col = math.floor(columns * 0.8), math.floor(columns * 0.1)
-	local previewWidth = width
+
+	local winHeight = math.max(math.floor(lines / 3), 8)
+	local winWidth = math.max(math.floor(columns / 2) - 2, 40)
+
+	local previewHeight = winHeight - 3
+	local previewWidth = winWidth
+
+	local winRow, winCol = lines - winHeight - 4, 1
+	local previewRow, previewCol = winRow + 3, math.floor(winWidth / 2)
 
 	ddu_helper.patch_global({
 		uiParams = {
 			ff = {
-				winHeight = height,
-				winRow = row,
-				winWidth = width,
-				winCol = col,
+				winHeight = winHeight,
+				winRow = winRow,
+				winWidth = winWidth,
+				winCol = winCol,
 				previewHeight = previewHeight,
-				previewRow = row + height + 2,
+				previewRow = previewRow,
 				previewWidth = previewWidth,
-				previewCol = col,
+				previewCol = previewCol,
 			},
 		},
 	})
