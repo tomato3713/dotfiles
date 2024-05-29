@@ -26,20 +26,17 @@ end
 
 ---@param cmd string
 ---@param params? table
----@param is_stopinsert? boolean
-_M.do_action = function(cmd, params, is_stopinsert)
+_M.do_action = function(cmd, params)
 	params = params or vim.empty_dict()
 	return function()
-		if is_stopinsert then vim.cmd.stopinsert() end
 		vim.fn['ddu#ui#do_action'](cmd, params)
 	end
 end
 
 ---@param name string
 ---@param params? table
----@param is_stopinsert? boolean
-_M.item_action = function(name, params, is_stopinsert)
-	return _M.do_action('itemAction', { name = name, params = params }, is_stopinsert)
+_M.item_action = function(name, params)
+	return _M.do_action('itemAction', { name = name, params = params })
 end
 
 ---@param cmd string
