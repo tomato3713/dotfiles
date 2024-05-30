@@ -44,7 +44,7 @@ export PATH="`go env GOPATH`/bin:$PATH"
 # -----------------------------------
 # ------------- Alias ---------------
 # -----------------------------------
-alias n=nvim --cmd "let g:useShared=v:true" $*
+alias n='nvim --cmd "let g:useShared=v:true"' $*
 alias nn=nvim $*
 alias g=git
 alias Gin=git
