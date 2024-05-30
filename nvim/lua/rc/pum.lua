@@ -3,4 +3,5 @@ vim.fn['pum#set_option']({
 	max_width = 80,
 	max_height = 10,
 	border = 'rounded',
+	offset_cmdrow = 3,
 })

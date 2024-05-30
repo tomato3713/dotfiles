@@ -1,19 +1,19 @@
 local ddc_helper = require("rc.helper.ddc")
-local utils = require("rc.utils")
 
 ddc_helper.patch_global('ui', "pum")
-
-ddc_helper.patch_global('autoCompleteEvents', {
+local autoCompleteEvents = {
 	"InsertEnter",
 	"TextChangedI",
 	"TextChangedP",
-	"CmdlineChanged",
 	"TextChangedT",
-})
+}
+ddc_helper.patch_global('autoCompleteEvents', autoCompleteEvents)
 
 ddc_helper.patch_global('sources', {
-	-- "copilot",
-	"vsnip", "lsp", "around", "file" })
+	"copilot",
+	"vsnip", "lsp",
+	"around", "file",
+})
 
 ddc_helper.patch_global({
 	backspaceCompletion = true,
@@ -68,71 +68,77 @@ ddc_helper.patch_global({
 	},
 })
 
--- disable completion in partial filetype
-ddc_helper.patch_filetype({ 'ddu-ff-filter', 'ddu-ff', 'ddu-filer' }, 'sources', {})
-
 -- commandline completion
-ddc_helper.patch_global('cmdlineSources', {
-	[':'] = { 'cmdline', 'cmdline-history', 'file' },
-	['/'] = { 'around' },
-	['?'] = { 'around' },
-	['='] = { 'input' },
-})
 ddc_helper.patch_global('sourceOptions', {
 	cmdline = {
-		mark = '[Cmd]',
+		mark = 'Ex',
+	},
+	["shell-native"] = {
+		-- ref: https://blog.atusy.net/2023/12/20/ddc-fish-alias-completion/
+		mark = 'Ex',
+		matchers = { "matcher_head" },
+		isVolatile = true,
+		minAutoCompleteLength = 0,
+		minKeywordLength = 0,
+		-- コマンドラインが `!`、`Make `、`Gin `、`GinBuffer `のいずれかで始まる場合のみ有効
+		enabledIf = string.format(
+			[[getcmdline() =~# "^\\(%s\\)" ? v:true : v:false]],
+			table.concat({ "!", "Make ", "Gin ", "GinBuffer " }, [[\\|]])
+		),
 	},
 	["cmdline-history"] = {
-		mark = '[Hist]',
+		mark = 'Hist',
 	},
 	["input"] = {
-		mark = '[input]',
+		mark = 'input',
 		matchers = {},
 		minAutoCompleteLength = 0,
 		forceCompletionPattern = { [['\S/\S*|\.\w*']] },
 		isVolatile = true,
 	},
 })
-
-utils.nvim_create_autocmd("CmdlineEnter", {
-	callback = function()
-		ddc_helper.enable_cmdline_completion()
-	end,
-	desc = 'enable ddc.vim cmdline completion',
-})
-
--- terminal completion
-ddc_helper.patch_global('sourceOptions', {
-	["shell-native"] = {
-		mark = '[Shell]',
-		isVolatile = true,
-		keywordPattern = "[0-9a-zA-Z_./#:-]*",
-		minAutoCompleteLength = 1,
-		forceCompletionPattern = "\\S/\\S*",
-	},
-	-- ["shell-history"] = {
-	-- 	mark = 'Hist',
-	-- 	keywordPattern = '[0-9a-zA-Z_./#:-]*',
-	-- },
-})
-
 ddc_helper.patch_global('sourceParams', {
 	["shell-native"] = {
 		shell = 'zsh',
 	},
 })
-
-utils.nvim_create_autocmd("TermEnter", {
-	callback = function()
-		ddc_helper.patch_global('sources', { "shell-native", "file", "around" })
-	end,
+ddc_helper.patch_global('cmdlineSources', {
+	[':'] = { 'cmdline', 'shell-native', 'cmdline-history', 'shell-native', 'file' },
+	['/'] = { 'around' },
+	['?'] = { 'around' },
+	['='] = { 'input' },
 })
 
-utils.nvim_create_autocmd("TermLeave", {
-	callback = function()
-		ddc_helper.remove_buffer('sources')
-	end,
-})
-ddc_helper.enable_terminal_completion()
+local commandlinePost = function()
+	ddc_helper.patch_global("autoCompleteEvents", autoCompleteEvents)
+	ddc_helper.enable_cmdline_completion()
+end
+
+local commandLinePre = function(ch)
+	ddc_helper.patch_global("autoCompleteEvents", {
+		"CmdlineEnter",
+		"CmdlineChanged",
+	})
+
+	require('rc.utils').nvim_create_autocmd("User", {
+		pattern = "DDCCmdlineLeave",
+		callback = function()
+			commandlinePost()
+		end,
+		once = true,
+	})
+
+	ddc_helper.enable_cmdline_completion()
+	vim.fn.feedkeys(vim.api.nvim_replace_termcodes(ch, true, true, true), "n")
+end
+vim.keymap.set("n", ":", function()
+	commandLinePre(":")
+end, { noremap = true, silent = true })
+vim.keymap.set("n", "/", function()
+	commandLinePre("/")
+end, { noremap = true, silent = true })
+vim.keymap.set("n", "?", function()
+	commandLinePre("?")
+end, { noremap = true, silent = true })
 
 ddc_helper.enable()

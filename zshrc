@@ -47,7 +47,9 @@ export PATH="`go env GOPATH`/bin:$PATH"
 alias n=nvim --cmd "let g:useShared=v:true" $*
 alias nn=nvim $*
 alias g=git
-alias gcd='cd `git rev-parse --show-toplevel`'
+alias Gin=git
+alias GinBuffer=git
+# alias gcd='cd `git rev-parse --show-toplevel`'
 
 # -----------------------------------
 # ------- Custom Functions ----------

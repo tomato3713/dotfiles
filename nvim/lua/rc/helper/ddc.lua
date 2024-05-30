@@ -1,5 +1,9 @@
 local M = {}
 
+function M.alias(...)
+	vim.fn["ddc#custom#alias"](...)
+end
+
 -- https://github.com/uga-rosa/dotfiles/blob/92a4de22aa1722d3285b6ffd39c50cbf3925272c/nvim/lua/rc/helper/ddc.lua#L19
 function M.patch_buffer(...)
 	vim.fn["ddc#custom#patch_buffer"](...)
