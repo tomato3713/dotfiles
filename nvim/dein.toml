@@ -77,8 +77,11 @@ repo = 'rcarriga/nvim-notify'
 on_lua = ['notify']
 lua_source = '''
 require('notify').setup({
-  background_colour = "#000000"
+  background_colour = "#000000",
+  max_width = math.floor(vim.opt.columns:get() * 0.3)
 })
+
+vim.notify = require('notify')
 '''
 
 [[plugins]]
