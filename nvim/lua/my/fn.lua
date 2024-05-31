@@ -22,4 +22,12 @@ _M.count_characters_in_selected_range = function(opts)
 	vim.fn.setpos('.', cursor)
 end
 
+-- set default filtype as plain text
+_M.none_ft_set_txt = function()
+	if string.len(vim.o.filetype) == 0 then
+		vim.o.filetype = 'txt'
+	end
+end
+
+
 return _M

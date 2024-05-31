@@ -1,4 +1,4 @@
-local utils = require('rc.utils')
+local utils = require('my.utils')
 
 utils.clear_vimrc_autocmd()
 
@@ -8,7 +8,9 @@ require('my.cmd').setup()
 require('my.keymap').global_mapping()
 require('my.keymap').filetype_mapping()
 
-vim.opt.number = true
+vim.api.nvim_set_var('loaded_vimball', 1)
+vim.api.nvim_set_var('loaded_vimballPlugin', 1)
+
 -- encoding setting
 vim.o.encoding = 'utf-8'                             -- バッファ内で扱う文字コード
 vim.o.fileencoding = 'utf-8'                         -- 書き込み時UTF-8出力
@@ -16,6 +18,7 @@ vim.opt.fileencodings = { 'utf-8', 'cp932', 'sjis' } -- 読み込み時UTF-8, CP
 vim.opt.fileformats = { 'unix', 'dos', 'mac' }
 
 -- view
+vim.opt.number = true
 vim.o.pumblend = 10
 vim.o.termguicolors = true
 vim.o.showmode = false
@@ -31,6 +34,20 @@ vim.opt.listchars = {
 	precedes = '←',
 	nbsp = '␣',
 }
+vim.go.tabline = [[%!v:lua.require('my.tab').tabLineUpdate()]]
+utils.nvim_create_autocmd({ 'ColorScheme' }, {
+	callback = function()
+		vim.api.nvim_set_hl(0, "my.utils", { fg = 'White', bg = 'Green' })
+	end,
+	desc = 'set selected tab highlight',
+})
+-- https://zenn.dev/kawarimidoll/articles/18ee967072def7
+vim.treesitter.start = (function(wrapped)
+	return function(bufnr, lang)
+		lang = lang or vim.fn.getbufvar(bufnr or '', '&filetype')
+		pcall(wrapped, bufnr, lang)
+	end
+end)(vim.treesitter.start)
 
 -- editor setting
 vim.o.smartindent = true -- スマートインデントを行う
@@ -65,17 +82,6 @@ vim.opt.wildignore = {
 	'*.docs',
 }
 
--- https://zenn.dev/kawarimidoll/articles/18ee967072def7
-vim.treesitter.start = (function(wrapped)
-	return function(bufnr, lang)
-		lang = lang or vim.fn.getbufvar(bufnr or '', '&filetype')
-		pcall(wrapped, bufnr, lang)
-	end
-end)(vim.treesitter.start)
-
-vim.api.nvim_set_var('loaded_vimball', 1)
-vim.api.nvim_set_var('loaded_vimballPlugin', 1)
-
 -- terminal mode
 local sysname = vim.loop.os_uname().sysname
 if sysname == 'Windows_NT' then
@@ -85,23 +91,8 @@ elseif sysname == 'Darwin' then
 	vim.o.shell = 'zsh'
 end
 
-utils.nvim_create_autocmd({ 'ColorScheme' }, {
-	callback = function()
-		vim.api.nvim_set_hl(0, "TabLineSel", { fg = 'White', bg = 'Green' })
-	end,
-	desc = 'set selected tab highlight',
-})
-
-vim.go.tabline = [[%!v:lua.require('my.tab').tabLineUpdate()]]
--- set default filtype as plain text
-function NoneFileTypeSetTxt()
-	if string.len(vim.o.filetype) == 0 then
-		vim.o.filetype = 'txt'
-	end
-end
-
 utils.nvim_create_autocmd({ 'BufEnter' }, {
-	callback = NoneFileTypeSetTxt,
+	callback = require('my.fn').none_ft_set_txt,
 	desc = 'set default filetype as plain text',
 })
 

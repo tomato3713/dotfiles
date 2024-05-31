@@ -34,14 +34,14 @@ local init = function()
 	})
 end
 
-require('rc.utils').nvim_create_autocmd("User", {
+require('my.utils').nvim_create_autocmd("User", {
 	pattern = "skkeleton-enable-post",
 	callback = function()
 		require('rc.helper.ddc').patch_buffer("sources", { "skkeleton" })
 	end,
 })
 
-require('rc.utils').nvim_create_autocmd("User", {
+require('my.utils').nvim_create_autocmd("User", {
 	pattern = "skkeleton-disable-post",
 	callback = function()
 		require('rc.helper.ddc').remove_buffer("sources")
@@ -52,7 +52,7 @@ vim.api.nvim_create_user_command('DownloadSKKDict', function()
 	download_global_skk_dictionary(global_skk_jisyo)
 end, {})
 
-require('rc.utils').nvim_create_autocmd('User', {
+require('my.utils').nvim_create_autocmd('User', {
 	pattern = 'skkeleton-initialize-pre',
 	callback = init,
 	desc = 'init skkeleton',

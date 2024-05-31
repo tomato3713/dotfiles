@@ -1,6 +1,6 @@
 local ui_helper = require('rc.helper.ddu-ui')
 
-require('rc.utils').nvim_create_autocmd("FileType", {
+require('my.utils').nvim_create_autocmd("FileType", {
 	pattern = 'ddu-filer',
 	callback = function()
 		local opts = { silent = true, buffer = true }

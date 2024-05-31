@@ -120,7 +120,7 @@ local commandLinePre = function(ch)
 		"CmdlineChanged",
 	})
 
-	require('rc.utils').nvim_create_autocmd("User", {
+	require('my.utils').nvim_create_autocmd("User", {
 		pattern = "DDCCmdlineLeave",
 		callback = function()
 			commandlinePost()

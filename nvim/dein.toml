@@ -337,7 +337,7 @@ require('rc.gitsigns')
 repo = 'lambdalisue/gin.vim'
 depends = ['denops.vim']
 lua_source = '''
-require('rc.utils').nvim_create_autocmd({ 'FileType' }, {
+require('my.utils').nvim_create_autocmd({ 'FileType' }, {
   pattern = 'gin-status',
   callback = function()
     local keymap = vim.keymap.set

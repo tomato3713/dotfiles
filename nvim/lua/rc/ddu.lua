@@ -127,7 +127,7 @@ local function resize()
 end
 resize()
 
-require('rc.utils').nvim_create_autocmd('VimResized', {
+require('my.utils').nvim_create_autocmd('VimResized', {
 	callback = resize,
 	desc = 'calculate ddu window size',
 })

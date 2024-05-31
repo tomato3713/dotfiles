@@ -9,7 +9,7 @@ end
 
 _M.filetype_mapping = function()
 	--- close by 'q'
-	require('rc.utils').nvim_create_autocmd({ 'FileType' }, {
+	require('my.utils').nvim_create_autocmd({ 'FileType' }, {
 		pattern = { 'help', 'lspinfo', 'qf' },
 		callback = function()
 			vim.keymap.set('n', 'q', function()

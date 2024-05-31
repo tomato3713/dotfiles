@@ -29,7 +29,7 @@ require("dial.config").augends:register_group {
 vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual("visual"), { noremap = true })
 vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual("visual"), { noremap = true })
 
-require('rc.utils').nvim_create_autocmd({ 'FileType' }, {
+require('my.utils').nvim_create_autocmd({ 'FileType' }, {
 	pattern = 'typescript',
 	callback = function()
 		vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal("typescript"),
@@ -39,7 +39,7 @@ require('rc.utils').nvim_create_autocmd({ 'FileType' }, {
 	end
 })
 
-require('rc.utils').nvim_create_autocmd({ 'FileType' }, {
+require('my.utils').nvim_create_autocmd({ 'FileType' }, {
 	pattern = 'lua',
 	callback = function()
 		vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal("lua"),

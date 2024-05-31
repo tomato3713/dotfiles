@@ -1,6 +1,6 @@
 local ui_helper = require("rc.helper.ddu-ui")
 
-require('rc.utils').nvim_create_autocmd("FileType", {
+require('my.utils').nvim_create_autocmd("FileType", {
 	pattern = "ddu-ff",
 	callback = function()
 		vim.opt_local.cursorline = true

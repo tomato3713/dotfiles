@@ -37,7 +37,7 @@ vim.keymap.set("n", "<Space>df", "<cmd>lua vim.diagnostic.open_float()<CR>", { n
 vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<Space>f", function() require("rc.utils").keep_cursor(vim.lsp.buf.format) end,
+vim.keymap.set("n", "<Space>f", function() require("my.utils").keep_cursor(vim.lsp.buf.format) end,
 	{ noremap = true, silent = true })
 
 local on_attach = function(_, bufnr)
