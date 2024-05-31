@@ -1,0 +1,144 @@
+[[plugins]]
+repo = 'Shougo/pum.vim'
+hook_add = '''
+  " insert mode completion
+  inoremap <expr> <TAB>
+        \ pum#visible() ?
+        \   '<Cmd>call pum#map#insert_relative(+1, "empty")<CR>' :
+        \ col('.') <= 1 ? '<TAB>' :
+        \ getline('.')[col('.') - 2] =~# '\s' ? '<TAB>' :
+        \ ddc#map#manual_complete()
+  inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1, 'empty')<CR>
+  inoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
+  inoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
+  inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+  inoremap <C-o>   <Cmd>call pum#map#confirm_word()<CR>
+  inoremap <Home>  <Cmd>call pum#map#insert_relative(-9999, 'ignore')<CR>
+  inoremap <End>   <Cmd>call pum#map#insert_relative(+9999, 'ignore')<CR>
+  inoremap <expr> <C-e> pum#visible()
+        \ ? '<Cmd>call pum#map#cancel()<CR>'
+        \ : '<End>'
+  inoremap <expr> <C-l>  ddc#map#manual_complete()
+  inoremap <C-f>   <Cmd>call pum#map#scroll_preview(+1)<CR>
+  inoremap <C-b>   <Cmd>call pum#map#scroll_preview(-1)<CR>
+  
+  " command line completion
+  cnoremap <expr> <Tab>
+        \ wildmenumode() ? &wildcharm->nr2char() :
+        \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :
+        \ ddc#map#manual_complete()
+  cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
+  cnoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
+  cnoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
+  cnoremap <C-o>   <Cmd>call pum#map#confirm_word()<CR>
+  cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
+  cnoremap <expr> <CR> pum#visible()
+        \ ? '<Cmd>call pum#map#confirm()<CR><CR>'
+        \ : '<CR>'
+  cnoremap <expr> <C-e> pum#visible()
+        \ ? '<Cmd>call pum#map#cancel()<CR>'
+        \ : '<End>'
+  cnoremap <C-f>   <Cmd>call pum#map#scroll_preview(+1)<CR>
+  cnoremap <C-b>   <Cmd>call pum#map#scroll_preview(-1)<CR>
+  
+  cnoremap <expr> <C-t>       ddc#map#insert_item(0)
+  inoremap <C-t>   <C-v><Tab>
+  
+  xnoremap <Tab>   "_R<Cmd>call ddc#map#manual_complete()<CR>
+  snoremap <Tab>   <C-o>"_di<Cmd>call ddc#map#manual_complete()<CR>
+  
+  " terminal mode completion
+  tnoremap <C-t> <Tab>
+  tnoremap <expr> <Tab> pum#visible() ?
+        \ '<Cmd>call pum#map#select_relative(+1)<CR>' :
+        \ '<Tab>'
+  tnoremap <expr> <S-Tab> pum#visible() ?
+        \ '<Cmd>call pum#map#select_relative(-1)<CR>' :
+        \ '<S-Tab>'
+  tnoremap <C-y>    <Cmd>call pum#map#confirm()<CR>
+  tnoremap <C-o>    <Cmd>call pum#map#confirm_word()<CR>
+'''
+lua_source = '''
+  require('rc.pum')
+'''
+
+# --- Asynchronous Completion Framwwork ---
+[[plugins]]
+repo = 'Shougo/ddc.vim'
+depends = ['denops.vim', 'pum.vim']
+on_event = ['InsertEnter']
+lua_source = '''
+  require('rc.ddc')
+'''
+hook_post_update = '''
+  call ddc#set_static_import_path()
+  echomsg '[INFO] call ddc#set_static_import_path()'
+'''
+
+# ---- ddc ui ----
+# [[plugins]]
+# repo = 'Shougo/ddc-ui-native'
+# on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-ui-pum'
+depends = ['pum.vim']
+on_source = 'ddc.vim'
+
+#  ---- ddc source ----
+[[plugins]]
+repo = 'Shougo/ddc-around'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'LumaKernel/ddc-file'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-source-lsp'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'https://github.com/uga-rosa/ddc-source-lsp-setup'
+on_source = 'nvim-lspconfig'
+lua_source = '''
+-- capabilities and forceCompletePattern are automatically set
+-- require("ddc_source_lsp_setup").setup()
+'''
+
+[[plugins]]
+repo = 'https://github.com/Shougo/ddc-source-input'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-source-shell-native'
+on_source = 'ddc.vim'
+
+# [[plugins]]
+# repo = 'https://github.com/delphinus/ddc-shell-history'
+# on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'uga-rosa/ddc-source-vsnip'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-cmdline-history'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'Shougo/ddc-cmdline'
+on_source = 'ddc.vim'
+
+[[plugins]]
+repo = 'https://github.com/Shougo/ddc-source-copilot'
+on_source = 'ddc.vim'
+
+# ---- ddc filter ----
+[[plugins]]
+repo = 'https://github.com/Shougo/ddc-filter-matcher_head'
+on_source = 'ddc.vim'
+[[plugins]]
+repo = 'tani/ddc-fuzzy'
+on_source = 'ddc.vim'
+

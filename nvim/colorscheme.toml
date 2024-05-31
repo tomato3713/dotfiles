@@ -1,0 +1,22 @@
+# --- Colorscheme
+[[plugins]]
+repo = 'joshdick/onedark.vim'
+
+[[plugins]]
+repo = 'vigoux/oak'
+
+[[plugins]]
+repo = 'tanvirtin/monokai.nvim'
+
+[[plugins]]
+repo = 'folke/tokyonight.nvim'
+lua_source = '''
+require('tokyonight').setup {
+  style = 'night',
+  transparent = false,
+  terminal_colors = true,
+}
+'''
+
+[[plugins]]
+repo = 'fenetikm/falcon'

@@ -96,4 +96,13 @@ utils.nvim_create_autocmd({ 'BufEnter' }, {
 	desc = 'set default filetype as plain text',
 })
 
-require('rc.dein').init('~/.config/nvim/dein.toml')
+require('rc.dein').init()
+
+require('my.utils').try_catch( {
+	try = function()
+		vim.cmd('colorscheme monokai')
+	end,
+	catch = function(err)
+		print('Error: ' .. err)
+	end,
+	})

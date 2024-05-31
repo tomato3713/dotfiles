@@ -2,44 +2,43 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 lua_add = '''
-require('rc.dein').setup_mapping()
+  require('rc.dein').setup_mapping()
 '''
 
 [[plugins]]
 repo = 'haya14busa/dein-command.vim'
-lazy = true
 depends = ['dein.vim']
-on_cmd = ['Dein']
+# on_cmd = ['Dein'] # TODO: lazy
 
 # --- Framework && Library ---
-[[plugins]]
-repo = 'vim-denops/denops-shared-server.vim'
-on_source = ['denops.vim']
-hook_add = '''
-function! s:dss(action) abort
-  call denops_shared_server#{a:action}()
-endfunction
-function! s:dss_complete(...) abort
-  return ['install', 'uninstall', 'restart']->join("\n")
-endfunction
-
-command! -nargs=1 -complete=custom,s:dss_complete -bar DenopsSharedServer call s:dss(<f-args>)
-
-if exists("g:useShared")
-  let g:useShared = v:true
-  let g:denops_server_addr = '127.0.0.1:32123'
-fi
-'''
-
 [[plugins]]
 repo = 'vim-denops/denops.vim'
 
 [[plugins]]
-repo = "nvim-lua/plenary.nvim"
+repo = 'vim-denops/denops-shared-server.vim'
+on_source = ['denops.vim']
+hook_add = '''
+  function! s:dss(action) abort
+    call denops_shared_server#{a:action}()
+  endfunction
+  function! s:dss_complete(...) abort
+    return ['install', 'uninstall', 'restart']->join("\n")
+  endfunction
+  
+  command! -nargs=1 -complete=custom,s:dss_complete -bar DenopsSharedServer call s:dss(<f-args>)
+  
+  if exists("g:useShared")
+    let g:useShared = v:true
+    let g:denops_server_addr = '127.0.0.1:32123'
+  fi
+'''
 
-# [[plugins]]
-# repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
+[[plugins]]
+repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
 # :DenopsStartupRecorderDisplayEvents
+
+[[plugins]]
+repo = "nvim-lua/plenary.nvim"
 
 [[plugins]]
 repo = "https://github.com/uga-rosa/utf8.nvim"
@@ -51,36 +50,9 @@ lua_source = '''
 require('which-key').setup {}
 '''
 
-# --- Colorscheme
-[[plugins]]
-repo = 'joshdick/onedark.vim'
-
-[[plugins]]
-repo = 'vigoux/oak'
-
-[[plugins]]
-repo = 'tanvirtin/monokai.nvim'
-lua_source = '''
-vim.cmd('colorscheme monokai')
-'''
-
-[[plugins]]
-repo = 'folke/tokyonight.nvim'
-lua_source = '''
-require('tokyonight').setup {
-  style = 'night',
-  transparent = false,
-  terminal_colors = true,
-}
-'''
-
-[[plugins]]
-repo = 'fenetikm/falcon'
-
 # --- Rich UI
 [[plugins]]
 repo = 'rcarriga/nvim-notify'
-lazy = true
 on_lua = ['notify']
 lua_source = '''
 require('notify').setup({
@@ -111,7 +83,6 @@ require'alpha'.setup(require'alpha.themes.startify'.config)
 
 [[plugins]]
 repo = 'https://github.com/0xAdk/full_visual_line.nvim'
-lazy = 1
 on_event = ['ModeChanged']
 lua_source = '''
   require 'full_visual_line'.setup {}
@@ -119,7 +90,6 @@ lua_source = '''
 
 [[plugins]]
 repo = 'https://github.com/lukas-reineke/indent-blankline.nvim'
-lazy = true
 on_event = ['BufReadPre', 'BufNewFile']
 lua_source = '''
 --  require('rc.indent_blankline')
@@ -127,7 +97,6 @@ lua_source = '''
 
 [[plugins]]
 repo = 'https://github.com/shellRaining/hlchunk.nvim'
-lazy = true
 on_event = ['BufReadPre', 'BufNewFile']
 lua_source = '''
   require('rc.hlchunk')
@@ -166,12 +135,6 @@ repo = 'https://github.com/monaqa/dial.nvim'
 lua_source = '''
 require('rc.dial')
 '''
-
-# [[plugins]]
-# repo = 'https://github.com/ggandor/leap.nvim'
-# lua_source = '''
-# require('leap').add_default_mappings()
-# '''
 
 [[plugins]]
 repo = 'norcalli/nvim-colorizer.lua'
@@ -214,16 +177,16 @@ depends = ['denops.vim']
 repo = 'lambdalisue/kensaku-search.vim'
 depends = ['kensaku.vim']
 lua_add = '''
-vim.keymap.set('c', '<CR>', function()
-	return vim.fn.getcmdtype() == '/' and '<Plug>(kensaku-search-replace)<CR>' or '<CR>'
-end, {expr = true})
+  vim.keymap.set('c', '<CR>', function()
+  	return vim.fn.getcmdtype() == '/' and '<Plug>(kensaku-search-replace)<CR>' or '<CR>'
+  end, {expr = true})
 '''
 
 [[plugins]]
 repo = 'https://github.com/Shougo/junkfile.vim'
 hook_add = '''
-	command! -nargs=0 JunkfileDiary call junkfile#open_immediately('%Y-%m-%d.md'->strftime())
-	command! -nargs=0 JunkNote call junkfile#open_immediately('main.md')
+  command! -nargs=0 JunkfileDiary call junkfile#open_immediately('%Y-%m-%d.md'->strftime())
+  command! -nargs=0 JunkNote call junkfile#open_immediately('main.md')
 '''
 
 # --- Rich Code Editing ---
@@ -233,7 +196,7 @@ repo = 'thinca/vim-quickrun'
 [[plugins]]
 repo = 'rgroli/other.nvim'
 lua_source = '''
-require('rc.other-nvim')
+  require('rc.other-nvim')
 '''
 
 [[plugins]]
@@ -248,41 +211,36 @@ repo = 'wellle/targets.vim'
 [[plugins]]
 repo = 'junegunn/vim-easy-align'
 hook_add = '''
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+  " Start interactive EasyAlign in visual mode (e.g. vipga)
+  xmap ga <Plug>(EasyAlign)
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
 '''
 
 [[plugins]]
 repo = 'mhartington/formatter.nvim'
 hook_add = '''
-augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost *.go,*.pl,*.pm,*.tsx,*.lua FormatWrite
-augroup END
-
-nnoremap <silent> <leader>F :Format<CR>
-nnoremap <silent> <leader>f :FormatWrite<CR>
+  nnoremap <silent> <leader>F :Format<CR>
+  nnoremap <silent> <leader>f :FormatWrite<CR>
 '''
 lua_source = '''
-require('rc.formatter')
+  require('rc.formatter')
 '''
 
 [[plugins]]
 repo = 'danymat/neogen'
 depends = ['nvim-treesitter']
 lua_add = '''
-local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", opts)
+  local opts = { noremap = true, silent = true }
+  vim.api.nvim_set_keymap("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", opts)
 '''
 lua_source = '''
-require('neogen').setup()
+  require('neogen').setup()
 '''
 
 # highlighting other uses of the word under the cursor
 [[plugins]]
-repo = 'RRethy/vim-illuminate'
+repo = 'https://github.com/RRethy/vim-illuminate'
 
 [[plugins]]
 repo = 'echasnovski/mini.nvim'
@@ -301,7 +259,7 @@ require('treesitter-context').setup({ enable = false })
 [[plugins]]
 repo = 'JoosepAlviste/nvim-ts-context-commentstring'
 depends = ['nvim-treesitter']
-on_cmd = ['TSContextToggle']
+# on_cmd = ['TSContextToggle'] # TODO: lazy
 lua_source = '''
 vim.g.skip_ts_context_commentstring_module = true
 require('ts_context_commentstring').setup {
@@ -348,26 +306,6 @@ require('my.utils').nvim_create_autocmd({ 'FileType' }, {
 })
 '''
 
-# [[plugins]]
-# repo = 'rhysd/committia.vim'
-# hook_source = '''
-# let g:committia_hooks = {}
-# function! g:committia_hooks.edit_open(info)
-#     " Additional settings
-#     setlocal spell
-#
-#     " If no commit message, start with insert mode
-#     if a:info.vcs ==# 'git' && getline(1) ==# ''
-#         " startinsert
-#     endif
-#
-#     " Scroll the diff window from insert mode
-#     " Map <C-n> and <C-p>
-#     imap <buffer><C-n> <Plug>(committia-scroll-diff-down-half)
-#     imap <buffer><C-p> <Plug>(committia-scroll-diff-up-half)
-# endfunction
-# '''
-
 [[plugins]]
 repo = 'ruifm/gitlinker.nvim'
 depends = ['plenary.nvim']
@@ -383,13 +321,11 @@ require('rc.gitlinker')
 # --- File Exploer
 [[plugins]]
 repo = 'obaland/vfiler.vim'
-lazy = true
-on_cmd = ['VFiler']
+# on_cmd = ['VFiler'] # TODO: lazy
 lua_add = '''
 -- Disable embeded plugins.
 vim.api.nvim_set_var('loaded_netrw', 1)
 vim.api.nvim_set_var('loaded_netrwPlugin', 1)
-
 
 local opts = { noremap=true, silent=true }
 --- open filer in window
@@ -401,24 +337,24 @@ lua_source = '''
 --- Support operation two buffers file explorer
 local action = require('vfiler/action')
 require('vfiler/config').setup {
-    options = {
-        auto_resize = true,
-        keep = true,
-        name = 'explorer',
-        columns = 'indent,icon,name,git',
-        iconstring = '-',
-        git = { enabled = true, untracked = true, ignored = true },
-        width = 34,
-        listed = false,
-    },
-    mappings = {
-        ['<C-l>'] = action.reload,
-        ['<C-s>'] = action.toggle_sort,
-        ['N'] = action.new_file,
-        ['K'] = action.new_directory,
-        ['s'] = action.open_by_split,
-        ['v'] = action.open_by_vsplit,
-    },
+   options = {
+       auto_resize = true,
+       keep = true,
+       name = 'explorer',
+       columns = 'indent,icon,name,git',
+       iconstring = '-',
+       git = { enabled = true, untracked = true, ignored = true },
+       width = 34,
+       listed = false,
+   },
+   mappings = {
+       ['<C-l>'] = action.reload,
+       ['<C-s>'] = action.toggle_sort,
+       ['N'] = action.new_file,
+       ['K'] = action.new_directory,
+       ['s'] = action.open_by_split,
+       ['v'] = action.open_by_vsplit,
+   },
 }
 '''
 
@@ -428,293 +364,25 @@ lua_source = '''
 require('rc.aerial')
 '''
 
-[[plugins]]
-repo = 'Shougo/ddu.vim'
-depends = ['denops.vim']
-lua_source = '''
-require('rc.ddu')
-'''
-hook_post_update = '''
-call ddu#set_static_import_path()
-echomsg '[INFO] call ddu#set_static_import_path()'
-'''
-
-[[plugins]]
-repo = 'Shougo/ddu-commands.vim'
-on_source = 'ddu.vim'
-on_cmd = 'Ddu'
-
-[[plugins]]
-repo = 'Shougo/ddu-ui-ff'
-on_source = 'ddu.vim'
-lua_source = '''
-  require('rc.ddu-ui-ff')
-'''
-[[plugins]]
-repo = 'Shougo/ddu-ui-filer'
-on_source = 'ddu.vim'
-lua_source = '''
-  require('rc.ddu-ui-filer')
-'''
-
-[[plugins]]
-repo = 'Shougo/ddu-column-filename'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'uga-rosa/ddu-filter-converter_devicon'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Shougo/ddu-filter-matcher_substring'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Milly/ddu-filter-kensaku'
-depends = ['kensaku.vim']
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Milly/ddu-filter-merge'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'gamoutatsumi/ddu-filter-converter_relativepath'
-on_source = 'ddu.vim'
-
-[[plugins]]
-repo = 'Shougo/ddu-kind-file'
-on_source = 'ddu.vim'
-
-[[plugins]]
-repo = 'Shougo/ddu-source-dummy'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Shougo/ddu-source-action'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Shougo/ddu-source-file'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Shougo/ddu-source-file_rec'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'uga-rosa/ddu-source-lsp'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'k-ota106/ddu-source-marks'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'https://github.com/shun/ddu-source-rg'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'Shougo/ddu-source-register'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'kuuote/ddu-source-mr'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'shun/ddu-source-buffer'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'https://github.com/kamecha/ddu-source-tab'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'matsui54/ddu-source-help'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = '4513ECHO/ddu-source-colorscheme'
-on_source = 'ddu.vim'
-
-[[plugins]]
-repo = 'tomato3713/ddu-source-joplin'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'tomato3713/ddu-kind-joplin'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'tomato3713/ddu-column-joplin'
-on_source = 'ddu.vim'
-
-# --- Asynchronous Completion Framwwork ---
-[[plugins]]
-repo = 'Shougo/ddc.vim'
-depends = ['denops.vim', 'pum.vim']
-on_event = ['InsertEnter']
-lua_source = '''
-require('rc.ddc')
-'''
-hook_post_update = '''
-call ddc#set_static_import_path()
-echomsg '[INFO] call ddc#set_static_import_path()'
-'''
-
-# ---- ddc ui ----
-# [[plugins]]
-# repo = 'Shougo/ddc-ui-native'
-# on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/pum.vim'
-on_source = 'ddc.vim'
-hook_add = '''
-" insert mode completion
-inoremap <expr> <TAB>
-      \ pum#visible() ?
-      \   '<Cmd>call pum#map#insert_relative(+1, "empty")<CR>' :
-      \ col('.') <= 1 ? '<TAB>' :
-      \ getline('.')[col('.') - 2] =~# '\s' ? '<TAB>' :
-      \ ddc#map#manual_complete()
-inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1, 'empty')<CR>
-inoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
-inoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
-inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-inoremap <C-o>   <Cmd>call pum#map#confirm_word()<CR>
-inoremap <Home>  <Cmd>call pum#map#insert_relative(-9999, 'ignore')<CR>
-inoremap <End>   <Cmd>call pum#map#insert_relative(+9999, 'ignore')<CR>
-inoremap <expr> <C-e> pum#visible()
-      \ ? '<Cmd>call pum#map#cancel()<CR>'
-      \ : '<End>'
-inoremap <expr> <C-l>  ddc#map#manual_complete()
-inoremap <C-f>   <Cmd>call pum#map#scroll_preview(+1)<CR>
-inoremap <C-b>   <Cmd>call pum#map#scroll_preview(-1)<CR>
-
-" command line completion
-cnoremap <expr> <Tab>
-      \ wildmenumode() ? &wildcharm->nr2char() :
-      \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :
-      \ ddc#map#manual_complete()
-cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-cnoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
-cnoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
-cnoremap <C-o>   <Cmd>call pum#map#confirm_word()<CR>
-cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-cnoremap <expr> <C-e> pum#visible()
-      \ ? '<Cmd>call pum#map#cancel()<CR>'
-      \ : '<End>'
-cnoremap <C-f>   <Cmd>call pum#map#scroll_preview(+1)<CR>
-cnoremap <C-b>   <Cmd>call pum#map#scroll_preview(-1)<CR>
-
-cnoremap <expr> <C-t>       ddc#map#insert_item(0)
-inoremap <C-t>   <C-v><Tab>
-
-xnoremap <Tab>   "_R<Cmd>call ddc#map#manual_complete()<CR>
-snoremap <Tab>   <C-o>"_di<Cmd>call ddc#map#manual_complete()<CR>
-
-" terminal mode completion
-tnoremap <C-t> <Tab>
-tnoremap <expr> <Tab> pum#visible() ?
-      \ '<Cmd>call pum#map#select_relative(+1)<CR>' :
-      \ '<Tab>'
-tnoremap <expr> <S-Tab> pum#visible() ?
-      \ '<Cmd>call pum#map#select_relative(-1)<CR>' :
-      \ '<S-Tab>'
-tnoremap <C-y>    <Cmd>call pum#map#confirm()<CR>
-tnoremap <C-o>    <Cmd>call pum#map#confirm_word()<CR>
-'''
-lua_source = '''
-require('rc.pum')
-'''
-
-[[plugins]]
-repo = 'Shougo/ddc-ui-pum'
-depends = ['pum.vim']
-on_source = 'ddc.vim'
-
-[[plugins]]
-# to show lsp signature help
-repo = 'matsui54/denops-signature_help'
-on_source = 'ddc.vim'
-hook_source = '''
-let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
-call signature_help#enable()
-'''
-
-[[plugins]]
-repo = 'matsui54/denops-popup-preview.vim'
-on_source = 'ddc.vim'
-depends = ['denops.vim']
-hook_source = '''
-call popup_preview#enable()
-'''
-
-#  ---- ddc source ----
-[[plugins]]
-repo = 'Shougo/ddc-around'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'LumaKernel/ddc-file'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-source-lsp'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'https://github.com/uga-rosa/ddc-source-lsp-setup'
-on_source = 'nvim-lspconfig'
-lua_source = '''
--- capabilities and forceCompletePattern are automatically set
--- require("ddc_source_lsp_setup").setup()
-'''
-
-[[plugins]]
-repo = 'https://github.com/Shougo/ddc-source-input'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-source-shell-native'
-on_source = 'ddc.vim'
-
-# [[plugins]]
-# repo = 'https://github.com/delphinus/ddc-shell-history'
-# on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'uga-rosa/ddc-source-vsnip'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-cmdline-history'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'Shougo/ddc-cmdline'
-on_source = 'ddc.vim'
-
-[[plugins]]
-repo = 'https://github.com/Shougo/ddc-source-copilot'
-on_source = 'ddc.vim'
-depends = ['copilot.vim']
-hook_source = '''
-let g:copilot_filetypes = {
-      \ 'ddu-ff': v:false,
-      \ 'ddu-ff-filter': v:false,
-      \ 'ddu-filer': v:false,
-      \ }
-'''
-
-# ---- ddc filter ----
-[[plugins]]
-repo = 'https://github.com/Shougo/ddc-filter-matcher_head'
-on_source = 'ddc.vim'
-[[plugins]]
-repo = 'tani/ddc-fuzzy'
-on_source = 'ddc.vim'
-
 # --- SKK ---
 [[plugins]]
 repo = 'vim-skk/skkeleton'
 depends = ['denops.vim']
-on_source = 'ddc.vim'
+lua_add = '''
+  vim.keymap.set({ 'i', 'c', 't' }, '<C-j>', '<Plug>(skkeleton-toggle)')
+'''
 lua_source = '''
-require('rc.skkeleton')
+  require('rc.skkeleton')
 '''
 
 [[plugins]]
 repo = 'delphinus/skkeleton_indicator.nvim'
-on_source = ['skkeleton']
+depends = ['skkeleton']
 lua_source = '''
-require('skkeleton_indicator').setup{
-	alwaysShown = false,
-	ignoreFt = { 'ddu-ui-filter' },
-}
+  require('skkeleton_indicator').setup{
+  	alwaysShown = false,
+  	ignoreFt = { 'ddu-ui-filter' },
+  }
 '''
 
 # --- Language Server Protocol ---
@@ -726,15 +394,30 @@ repo = 'williamboman/mason-lspconfig.nvim'
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['mason.nvim', 'mason-lspconfig']
+depends = ['mason.nvim', 'mason-lspconfig.nvim']
 on_event = ['BufRead']
 lua_source = '''
 require('rc.nvim-lspconfig')
 '''
 
 [[plugins]]
+# to show lsp signature help
+repo = 'matsui54/denops-signature_help'
+depends = ['denops.vim']
+hook_source = '''
+  let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
+  call signature_help#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+depends = ['denops.vim']
+hook_source = '''
+call popup_preview#enable()
+'''
+
+[[plugins]]
 repo = 'folke/neodev.nvim'
-lazy = true
 on_ft = ['lua']
 on_source = 'nvim-lspconfig'
 lua_source = '''
@@ -752,31 +435,33 @@ vim.o.mousemoveevent = true
 # --- Snippets
 [[plugins]]
 repo = 'hrsh7th/vim-vsnip'
-lazy = true
 on_event = 'InsertEnter'
 depends = ['friendly-snippets']
 lua_add = '''
-vim.keymap.set({'i', 's'}, '<C-f>',  function()
-    return vim.fn['vsnip#jumpable'](1) == 1 and '<Plug>(vsnip-jump-next)' or '<C-f>'
-end, { expr = true, noremap = false })
-vim.keymap.set({'i', 's'}, '<C-b>',  function()
-    return vim.fn['vsnip#jumpable'](-1) == 1 and '<Plug>(vsnip-jump-prev)' or '<C-b>'
-end, { expr = true, noremap = false })
-
--- vim.g.vsnip_filetypes = {}
-vim.g.vsnip_snippet_dir = vim.fn.expand('~/.config/nvim/snippets')
+  vim.keymap.set({'i', 's'}, '<C-f>',  function()
+      return vim.fn['vsnip#jumpable'](1) == 1 and '<Plug>(vsnip-jump-next)' or '<C-f>'
+  end, { expr = true, noremap = false })
+  vim.keymap.set({'i', 's'}, '<C-b>',  function()
+      return vim.fn['vsnip#jumpable'](-1) == 1 and '<Plug>(vsnip-jump-prev)' or '<C-b>'
+  end, { expr = true, noremap = false })
+  
+  -- vim.g.vsnip_filetypes = {}
+  vim.g.vsnip_snippet_dir = vim.fn.expand('~/.config/nvim/snippets')
 '''
 
 # snippets collections
 [[plugins]]
-lazy = true
+on_source = ['vim-vsnip']
 repo = 'rafamadriz/friendly-snippets'
 
 # --- AI Support ---
 [[plugins]]
 repo = 'https://github.com/github/copilot.vim'
-lua_add = '''
-vim.g.copilot_no_maps = true
+# on_cmd = ['Copilot'] # TODO: lazy
+lua_source = '''
+  vim.g.copilot_no_maps = true
+  -- vim.g.copilot_hide_during_completions = true
+  vim.g.copilot_filetypes = { text = true }
 '''
 
 [[plugins]]
@@ -784,5 +469,5 @@ repo = 'https://github.com/CopilotC-Nvim/CopilotChat.nvim'
 depends = ['copilot.vim', 'plenary.nvim']
 rev = 'canary'
 lua_source = '''
-require('rc.copilot')
+  require('rc.copilot')
 '''

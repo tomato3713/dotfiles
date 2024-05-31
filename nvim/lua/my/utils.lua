@@ -71,7 +71,7 @@ M.my_group = vim.api.nvim_create_augroup('vimrcEx', {})
 
 --- create autocmd in vimrcEx group
 ---@param event any
----@param opts? table<string, any>
+-- ---@param opts? vim.api.keyset.create_autocmd_opts
 -- @return number
 M.nvim_create_autocmd = function(event, opts)
 	opts.group = M.my_group

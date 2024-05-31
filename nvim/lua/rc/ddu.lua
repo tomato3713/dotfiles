@@ -1,5 +1,37 @@
+local _M = {}
+
 local ddu_helper = require('rc.helper.ddu')
 
+local function resize()
+	local lines = vim.opt.lines:get()
+	local columns = vim.opt.columns:get()
+
+	local winHeight = math.max(math.floor(lines / 3), 8)
+	local winWidth = math.max(math.floor(columns / 2) - 2, 40)
+
+	local previewHeight = winHeight - 3
+	local previewWidth = winWidth
+
+	local winRow, winCol = lines - winHeight - 4, 1
+	local previewRow, previewCol = winRow + 3, math.floor(winWidth / 2)
+
+	ddu_helper.patch_global({
+		uiParams = {
+			ff = {
+				winHeight = winHeight,
+				winRow = winRow,
+				winWidth = winWidth,
+				winCol = winCol,
+				previewHeight = previewHeight,
+				previewRow = previewRow,
+				previewWidth = previewWidth,
+				previewCol = previewCol,
+			},
+		},
+	})
+end
+
+_M.setup = function()
 ddu_helper.patch_global({
 	ui = 'ff',
 	sourceParams = {
@@ -97,34 +129,63 @@ ddu_helper.patch_local('jp-files', {
 	},
 })
 
-local function resize()
-	local lines = vim.opt.lines:get()
-	local columns = vim.opt.columns:get()
-
-	local winHeight = math.max(math.floor(lines / 3), 8)
-	local winWidth = math.max(math.floor(columns / 2) - 2, 40)
-
-	local previewHeight = winHeight - 3
-	local previewWidth = winWidth
-
-	local winRow, winCol = lines - winHeight - 4, 1
-	local previewRow, previewCol = winRow + 3, math.floor(winWidth / 2)
-
-	ddu_helper.patch_global({
-		uiParams = {
-			ff = {
-				winHeight = winHeight,
-				winRow = winRow,
-				winWidth = winWidth,
-				winCol = winCol,
-				previewHeight = previewHeight,
-				previewRow = previewRow,
-				previewWidth = previewWidth,
-				previewCol = previewCol,
-			},
+-- sources from language server
+ddu_helper.patch_local('lsp_callHierarchy', {
+	sources = {
+		ddu_helper.separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
+		{
+			name = 'lsp_callHierarchy',
+			params = { method = 'callHierarchy/outgoingCalls' },
 		},
-	})
-end
+		ddu_helper.separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
+		{
+			name = 'lsp_callHierarchy',
+			params = { method = 'callHierarchy/incommingCalls' },
+		},
+	},
+	uiParams = {
+		ff = {
+			displayTree = true,
+		}
+	}
+})
+
+ddu_helper.patch_local('lsp_implementation', {
+	sources = {
+		{
+			name = 'lsp_definition',
+			method = 'textDocument/implementation',
+		},
+	},
+})
+
+ddu_helper.patch_local('lsp_declaration', {
+	sources = {
+		{
+			name = 'lsp_definition',
+			method = 'textDocument/declaration',
+		},
+	},
+})
+
+ddu_helper.patch_local('lsp_typeDefinition', {
+	sources = {
+		{
+			name = 'lsp_definition',
+			method = 'textDocument/typeDefinition',
+		},
+	},
+})
+
+ddu_helper.patch_local('lsp_definition', {
+	sources = {
+		{
+			name = 'lsp_definition',
+			method = 'textDocument/definition',
+		},
+	},
+})
+
 resize()
 
 require('my.utils').nvim_create_autocmd('VimResized', {
@@ -132,7 +193,12 @@ require('my.utils').nvim_create_autocmd('VimResized', {
 	desc = 'calculate ddu window size',
 })
 
+end
+
+
+
 -- mappings
+_M.set_keymap = function()
 local res = {
 	{
 		key = ',h',
@@ -201,63 +267,6 @@ vim.keymap.set('n', ',g', function()
 		grep(input)
 	end
 end, { silent = true, noremap = true, desc = 'grep files' })
-
--- sources from language server
-ddu_helper.patch_local('lsp_callHierarchy', {
-	sources = {
-		ddu_helper.separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
-		{
-			name = 'lsp_callHierarchy',
-			params = { method = 'callHierarchy/outgoingCalls' },
-		},
-		ddu_helper.separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
-		{
-			name = 'lsp_callHierarchy',
-			params = { method = 'callHierarchy/incommingCalls' },
-		},
-	},
-	uiParams = {
-		ff = {
-			displayTree = true,
-		}
-	}
-})
-
-ddu_helper.patch_local('lsp_implementation', {
-	sources = {
-		{
-			name = 'lsp_definition',
-			method = 'textDocument/implementation',
-		},
-	},
-})
-
-ddu_helper.patch_local('lsp_declaration', {
-	sources = {
-		{
-			name = 'lsp_definition',
-			method = 'textDocument/declaration',
-		},
-	},
-})
-
-ddu_helper.patch_local('lsp_typeDefinition', {
-	sources = {
-		{
-			name = 'lsp_definition',
-			method = 'textDocument/typeDefinition',
-		},
-	},
-})
-
-ddu_helper.patch_local('lsp_definition', {
-	sources = {
-		{
-			name = 'lsp_definition',
-			method = 'textDocument/definition',
-		},
-	},
-})
 
 vim.keymap.set('n', '<space>h', ddu_helper.start({ name = 'lsp_callHierarchy' }),
 	{ silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
@@ -352,3 +361,6 @@ if vim.env.JOPLIN_TOKEN ~= nil then
 		})
 	end, { silent = true, noremap = true, desc = 'grep Joplin notes and todos' })
 end
+end
+
+return _M

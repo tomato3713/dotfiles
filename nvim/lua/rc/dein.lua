@@ -14,13 +14,13 @@ _M.setup_mapping = function()
 end
 
 --- init dein.vim
----@param config_file string toml file path
-_M.init = function(config_file)
+_M.init = function()
 	if (_M.dein_loaded) then return end
 
 	-- https://github.com/settings/tokens
 	vim.api.nvim_set_var('dein#install_github_api_token', os.getenv('DEIN_GITHUB_TOKEN'))
-	vim.api.nvim_set_option('runtimepath', dein_repo_dir .. ',' .. vim.api.nvim_get_option('runtimepath'))
+	local current_runtimepath = vim.api.nvim_get_option_value('runtimepath', { scope = 'global' })
+	vim.api.nvim_set_option_value('runtimepath', dein_repo_dir .. ',' .. current_runtimepath, { scope = 'global' })
 
 	-- if not installed dein.vim, install.
 	if not (vim.fn.isdirectory(dein_repo_dir) == 1) then
@@ -36,7 +36,10 @@ _M.init = function(config_file)
 	})
 
 	dein.begin(dein_dir)
-	dein.load_toml(vim.fn.expand(config_file), { lazy = 0 })
+	dein.load_toml(vim.fn.expand('~/.config/nvim/colorscheme.toml'), { lazy = 0 })
+	dein.load_toml(vim.fn.expand('~/.config/nvim/dein.toml'), { lazy = 0 })
+	dein.load_toml(vim.fn.expand('~/.config/nvim/ddu.toml'), { lazy = 1 })
+	dein.load_toml(vim.fn.expand('~/.config/nvim/ddc.toml'), { lazy = 1 })
 	dein.end_()
 	dein.save_state()
 
@@ -48,7 +51,7 @@ _M.init = function(config_file)
 	if vim.fn.len(removed_plugins) > 0 then
 		vim.fn.map(removed_plugins, "delete(v:val, 'rf')")
 		dein.recache_runtimepath()
-	end
+		end
 end
 
 return _M

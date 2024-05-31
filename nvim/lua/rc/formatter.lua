@@ -65,3 +65,11 @@ require('formatter').setup({
 		},
 	},
 })
+
+require('my.utils').nvim_create_autocmd({ 'BufWritePost' }, {
+	pattern = { '*.go', '*.pl', '*.pm', '*.tsx', '*.lua' },
+	callback = function()
+		vim.cmd('FormatWrite')
+	end,
+	desc = 'format on write',
+})

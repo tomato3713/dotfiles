@@ -53,7 +53,7 @@ ddc_helper.patch_global({
 			mark = "copilot",
 			matchers = {},
 			minAutoCompleteLength = 1,
-			isVolatile = true,
+			-- isVolatile = true,
 		},
 	},
 	sourceParams = {

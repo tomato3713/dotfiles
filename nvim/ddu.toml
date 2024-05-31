@@ -1,0 +1,118 @@
+[[plugins]]
+repo = 'Shougo/ddu.vim'
+depends = ['denops.vim']
+lua_add = '''
+  require('rc.ddu').set_keymap()
+'''
+lua_source = '''
+  require('rc.ddu').setup()
+'''
+hook_post_update = '''
+  call ddu#set_static_import_path()
+  echomsg '[INFO] call ddu#set_static_import_path()'
+'''
+
+[[plugins]]
+repo = 'Shougo/ddu-commands.vim'
+lazy = true
+depends = ['ddu.vim']
+on_cmd = 'Ddu'
+
+# --- ui ---
+[[plugins]]
+repo = 'Shougo/ddu-ui-ff'
+lazy = true
+on_source = 'ddu.vim'
+lua_add = '''
+  require('rc.ddu-ui-ff')
+'''
+
+[[plugins]]
+repo = 'Shougo/ddu-ui-filer'
+lazy = true
+on_source = 'ddu.vim'
+lua_add = '''
+  require('rc.ddu-ui-filer')
+'''
+
+# -- column --
+[[plugins]]
+repo = 'Shougo/ddu-column-filename'
+on_source = 'ddu.vim'
+
+# -- filter --
+[[plugins]]
+repo = 'uga-rosa/ddu-filter-converter_devicon'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Shougo/ddu-filter-matcher_substring'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Milly/ddu-filter-kensaku'
+depends = ['kensaku.vim']
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Milly/ddu-filter-merge'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'gamoutatsumi/ddu-filter-converter_relativepath'
+on_source = 'ddu.vim'
+
+# --- Kind ---
+[[plugins]]
+repo = 'Shougo/ddu-kind-file'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'https://github.com/Shougo/ddu-kind-word'
+on_source = 'ddu.vim'
+
+# -- source ---
+[[plugins]]
+repo = 'Shougo/ddu-source-file'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Shougo/ddu-source-dummy'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Shougo/ddu-source-action'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Shougo/ddu-source-file_rec'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'uga-rosa/ddu-source-lsp'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'k-ota106/ddu-source-marks'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'https://github.com/shun/ddu-source-rg'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'Shougo/ddu-source-register'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'kuuote/ddu-source-mr'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'shun/ddu-source-buffer'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'https://github.com/kamecha/ddu-source-tab'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'matsui54/ddu-source-help'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = '4513ECHO/ddu-source-colorscheme'
+on_source = 'ddu.vim'
+
+[[plugins]]
+repo = 'tomato3713/ddu-source-joplin'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'tomato3713/ddu-kind-joplin'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'tomato3713/ddu-column-joplin'
+on_source = 'ddu.vim'
