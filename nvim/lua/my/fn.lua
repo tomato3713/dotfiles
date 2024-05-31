@@ -29,5 +29,16 @@ _M.none_ft_set_txt = function()
 	end
 end
 
+--- Open the URL under the cursor in the browser.
+--- ref: https://blog.atusy.net/2023/12/09/gf-open-url/
+_M.open_browser_or_buffer_under_cursor = function()
+	local cfile = vim.fn.expand("<cfile>")
+	if cfile:match("^https?://") then
+		vim.ui.open(cfile)
+	else
+		vim.cmd("normal! gF")
+	end
+end
+
 
 return _M
