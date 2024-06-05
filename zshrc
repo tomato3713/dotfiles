@@ -4,6 +4,8 @@
 autoload -U compinit; compinit; zstyle ":completion:*:commands" rehash 1
 autoload -U colors; colors
 
+# zmodload -a zsh/zpty zpty
+
 # completions
 if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
