@@ -116,7 +116,6 @@ end
 
 local commandLinePre = function(ch)
 	ddc_helper.patch_global("autoCompleteEvents", {
-		"CmdlineEnter",
 		"CmdlineChanged",
 	})
 

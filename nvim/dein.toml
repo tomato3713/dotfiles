@@ -1,4 +1,5 @@
 # --- Plugin Manager ---
+
 [[plugins]]
 repo = 'Shougo/dein.vim'
 lua_add = '''
@@ -13,6 +14,9 @@ depends = ['dein.vim']
 # --- Framework && Library ---
 [[plugins]]
 repo = 'vim-denops/denops.vim'
+hook_add = '''
+  command! DenopsCacheUpdate call denops#cache#update(#{reload: v:true})
+'''
 
 [[plugins]]
 repo = 'vim-denops/denops-shared-server.vim'
@@ -454,20 +458,3 @@ lua_add = '''
 on_source = ['vim-vsnip']
 repo = 'rafamadriz/friendly-snippets'
 
-# --- AI Support ---
-[[plugins]]
-repo = 'https://github.com/github/copilot.vim'
-# on_cmd = ['Copilot'] # TODO: lazy
-lua_source = '''
-  vim.g.copilot_no_maps = true
-  -- vim.g.copilot_hide_during_completions = true
-  vim.g.copilot_filetypes = { text = true }
-'''
-
-[[plugins]]
-repo = 'https://github.com/CopilotC-Nvim/CopilotChat.nvim'
-depends = ['copilot.vim', 'plenary.nvim']
-rev = 'canary'
-lua_source = '''
-  require('rc.copilot')
-'''
