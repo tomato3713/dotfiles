@@ -5,6 +5,12 @@ require("dial.config").augends:register_group {
 		augend.integer.alias.hex,
 		augend.date.alias["%Y/%m/%d"],
 	},
+	go = {
+		augend.integer.alias.decimal,
+		augend.integer.alias.hex,
+		augend.constant.new { elements = { "true", "false" } },
+		augend.constant.new { elements = { "var", "const" } },
+	},
 	typescript = {
 		augend.integer.alias.decimal,
 		augend.integer.alias.hex,
@@ -45,6 +51,16 @@ require('my.utils').nvim_create_autocmd({ 'FileType' }, {
 		vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal("lua"),
 			{ noremap = true, buffer = true })
 		vim.keymap.set("n", "<C-x>", require("dial.map").dec_normal("lua"),
+			{ noremap = true, buffer = true })
+	end
+})
+
+require('my.utils').nvim_create_autocmd({ 'FileType' }, {
+	pattern = 'go',
+	callback = function()
+		vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal("go"),
+			{ noremap = true, buffer = true })
+		vim.keymap.set("n", "<C-x>", require("dial.map").dec_normal("go"),
 			{ noremap = true, buffer = true })
 	end
 })
