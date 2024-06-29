@@ -299,15 +299,7 @@ require('rc.gitsigns')
 repo = 'lambdalisue/gin.vim'
 depends = ['denops.vim']
 lua_source = '''
-require('my.utils').nvim_create_autocmd({ 'FileType' }, {
-  pattern = 'gin-status',
-  callback = function()
-    local keymap = vim.keymap.set
-    local opts = { buffer = true, noremap = true }
-    keymap({ 'n' }, 'h', '<Plug>(gin-action-stage)', opts)
-    keymap({ 'n' }, 'l', '<Plug>(gin-action-unstage)', opts)
-  end,
-})
+require('rc.gin')
 '''
 
 [[plugins]]

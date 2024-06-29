@@ -30,14 +30,14 @@ require('gitsigns').setup({
 			opts.buffer = bufnr
 			vim.keymap.set(mode, l, r, opts)
 		end
-		map('n', ']c', function()
-			if vim.wo.diff then return ']c' end
+		map('n', ']d', function()
+			if vim.wo.diff then return ']d' end
 			vim.schedule(function() gs.next_hunk() end)
 			return '<Ignore>'
 		end, { expr = true, desc = 'goto git diff next hunk' })
 
-		map('n', '[c', function()
-			if vim.wo.diff then return '[c' end
+		map('n', '[d', function()
+			if vim.wo.diff then return '[d' end
 			vim.schedule(function() gs.prev_hunk() end)
 			return '<Ignore>'
 		end, { expr = true, desc = 'goto git diff prev hunk' })
