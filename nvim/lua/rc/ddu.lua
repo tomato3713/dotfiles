@@ -292,8 +292,8 @@ _M.set_keymap = function()
 	vim.keymap.set('n', 'gtd', ddu_helper.start({ name = 'lsp_typeDefinition' }),
 		{ silent = true, noremap = true, desc = 'textDocument/typeDefinition' })
 
-	vim.keymap.set('n', 'gd', ddu_helper.start({ name = 'lsp_definition' }),
-		{ silent = true, noremap = true, desc = 'textDocument/definition' })
+	-- vim.keymap.set('n', 'gd', ddu_helper.start({ name = 'lsp_definition' }),
+	-- 	{ silent = true, noremap = true, desc = 'textDocument/definition' })
 
 	vim.keymap.set('n', 'gr',
 		ddu_helper.start({
@@ -312,51 +312,56 @@ _M.set_keymap = function()
 		, { silent = true, noremap = true, desc = 'textDocument/definition' })
 
 	if vim.env.JOPLIN_TOKEN ~= nil then
-		ddu_helper.patch_global('sourceParams', {
-			joplin = { token = vim.env.JOPLIN_TOKEN, fullPath = true },
-			joplin_tree = { token = vim.env.JOPLIN_TOKEN },
-		})
+		-- ddu_helper.patch_global('sourceParams', {
+		-- 	joplin = {
+		-- 		token = vim.env.JOPLIN_TOKEN,
+		-- 		fullPath = true,
+		-- 	},
+		-- 	joplin_tree = {
+		-- 		token = vim.env.JOPLIN_TOKEN,
+		-- 	},
+		-- })
 
-		ddu_helper.patch_local('joplin', {
-			sourceOptions = {
-				joplin = { columns = { 'joplin' } },
-				joplin_tree = { columns = { 'joplin' } },
-			},
-			columnParams = {
-				joplin = {
-					collapsedIcon = '',
-					expandedIcon = '',
-					noteIcon = '',
-					checkedIcon = '',
-					uncheckedIcon = '',
-				},
-			},
-		})
+		-- ddu_helper.patch_local('joplin', {
+		-- 	sourceOptions = {
+		-- 		joplin = { columns = { 'joplin' } },
+		-- 		joplin_tree = { columns = { 'joplin' } },
+		-- 	},
+		-- 	columnParams = {
+		-- 		joplin = {
+		-- 			collapsedIcon = '',
+		-- 			expandedIcon = '',
+		-- 			noteIcon = '',
+		-- 			checkedIcon = '',
+		-- 			uncheckedIcon = '',
+		-- 		},
+		-- 	},
+		-- })
+		--
+		-- local joplin_mapping = {
+		-- 	{
+		-- 		key = ',j',
+		-- 		desc = 'ddu: joplin source',
+		-- 		config = {
+		-- 			name = 'joplin',
+		-- 			sources = { 'joplin' },
+		-- 		},
+		-- 	},
+		-- 	{
+		-- 		key = ',J',
+		-- 		config = {
+		-- 			name = 'joplin',
+		-- 			ui = 'filer',
+		-- 			sources = { 'joplin_tree' },
+		-- 		},
+		-- 		desc = 'ddu: joplin source'
+		-- 	},
+		-- }
 
-		local joplin_mapping = {
-			{
-				key = ',j',
-				desc = 'ddu: joplin source',
-				config = {
-					name = 'joplin',
-					sources = { 'joplin' },
-				},
-			},
-			{
-				key = ',J',
-				config = {
-					name = 'joplin',
-					ui = 'filer',
-					sources = { 'joplin_tree' },
-				},
-				desc = 'ddu: joplin source'
-			},
-		}
-
-		for _, v in ipairs(joplin_mapping) do
-			vim.keymap.set('n', v.key, ddu_helper.start(v.config),
-				{ silent = true, noremap = true, desc = v.desc })
-		end
+		-- for _, v in ipairs(joplin_mapping) do
+		-- 	vim.keymap.set('n', v.key, ddu_helper.start(v.config),
+		-- 		{ silent = true, noremap = true, desc = v.desc })
+		-- end
 
 		vim.keymap.set('n', ',k', function()
 			local word = vim.fn.expand('<cword>')
