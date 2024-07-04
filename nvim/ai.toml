@@ -1,7 +1,6 @@
 # --- AI Support ---
 [[plugins]]
 repo = 'https://github.com/github/copilot.vim'
-on_event = ['InsertEnter']
 lua_source = '''
   vim.g.copilot_no_maps = true
   -- vim.g.copilot_hide_during_completions = true

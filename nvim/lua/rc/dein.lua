@@ -38,9 +38,9 @@ _M.init = function()
 	dein.begin(dein_dir)
 	dein.load_toml(vim.fn.expand('~/.config/nvim/colorscheme.toml'), { lazy = 0 })
 	dein.load_toml(vim.fn.expand('~/.config/nvim/dein.toml'), { lazy = 0 })
+	dein.load_toml(vim.fn.expand('~/.config/nvim/ai.toml'), { lazy = 0 })
 	dein.load_toml(vim.fn.expand('~/.config/nvim/ddu.toml'), { lazy = 1 })
 	dein.load_toml(vim.fn.expand('~/.config/nvim/ddc.toml'), { lazy = 1 })
-	dein.load_toml(vim.fn.expand('~/.config/nvim/ai.toml'), { lazy = 1 })
 	dein.end_()
 	dein.save_state()
 
@@ -52,7 +52,7 @@ _M.init = function()
 	if vim.fn.len(removed_plugins) > 0 then
 		vim.fn.map(removed_plugins, "delete(v:val, 'rf')")
 		dein.recache_runtimepath()
-		end
+	end
 end
 
 return _M
