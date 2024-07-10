@@ -19,13 +19,18 @@ _M.init = function()
 
 	-- https://github.com/settings/tokens
 	vim.api.nvim_set_var('dein#install_github_api_token', os.getenv('DEIN_GITHUB_TOKEN'))
+
 	local current_runtimepath = vim.api.nvim_get_option_value('runtimepath', { scope = 'global' })
 	vim.api.nvim_set_option_value('runtimepath', dein_repo_dir .. ',' .. current_runtimepath, { scope = 'global' })
 
 	-- if not installed dein.vim, install.
 	if not (vim.fn.isdirectory(dein_repo_dir) == 1) then
-		os.execute('git clone https://github.com/Shougo/dein.vim ' .. dein_repo_dir)
-		return
+		local result = os.execute('git clone https://github.com/Shougo/dein.vim ' .. dein_repo_dir)
+		if (result) then
+			print('dein was installed in:', dein_repo_dir)
+		else
+			print('failed to install dein')
+		end
 	end
 
 	local dein = require('dein')
