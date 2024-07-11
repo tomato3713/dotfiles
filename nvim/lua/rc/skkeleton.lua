@@ -1,18 +1,9 @@
 local skk_dir = '~/.config/skk'
 local global_skk_jisyo = vim.fn.expand(skk_dir .. '/SKK-JISYO.L')
 
--- download skk dictionary file
-local download_global_skk_dictionary = function(global_dictionary)
-	local skk_dict_url = 'http://openlab.jp/skk/skk/dic/SKK-JISYO.L'
-	os.execute('curl ' .. skk_dict_url .. ' -o ' .. vim.fn.expand(global_dictionary))
-end
-
-local init_skk_dictionary = function(global_dictionary)
-	if vim.fn.filereadable(vim.fn.expand(global_dictionary)) == 0 then
-		vim.fn.mkdir(global_dictionary, "p")
-
-		download_global_skk_dictionary(global_dictionary)
-	end
+local init_skk_dictionary = function(global_dictionary_path, is_override)
+	local dictionary_url = 'http://openlab.jp/skk/skk/dic/SKK-JISYO.L'
+	require('my.utils').download_file(dictionary_url, global_dictionary_path, is_override)
 end
 
 local init = function()
@@ -47,7 +38,7 @@ require('my.utils').nvim_create_autocmd("User", {
 })
 
 vim.api.nvim_create_user_command('DownloadSKKDict', function()
-	download_global_skk_dictionary(global_skk_jisyo)
+init_skk_dictionary(global_skk_jisyo, true)
 end, {})
 
 require('my.utils').nvim_create_autocmd('User', {
@@ -56,6 +47,6 @@ require('my.utils').nvim_create_autocmd('User', {
 	desc = 'init skkeleton',
 })
 
-init_skk_dictionary(global_skk_jisyo)
+init_skk_dictionary(global_skk_jisyo, false)
 
 init()

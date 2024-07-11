@@ -84,4 +84,18 @@ M.clear_vimrc_autocmd = function()
 	})
 end
 
+M.is_file_exists = function(path)
+	return vim.fn.filereadable(vim.fn.expand(path)) == 1
+end
+
+M.download_file = function(url, path, is_override)
+	if M.is_file_exists(path) then
+		if not is_override then return end
+	end
+
+	-- vim.fn.mkdir(path, "p")
+
+	os.execute('curl -o ' .. vim.fn.expand(path) .. ' ' .. url)
+end
+
 return M
