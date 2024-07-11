@@ -1,0 +1,97 @@
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+hook_add = '''
+  command! DenopsCacheUpdate call denops#cache#update(#{reload: v:true})
+'''
+
+[[plugins]]
+repo = 'vim-denops/denops-shared-server.vim'
+on_source = ['denops.vim']
+hook_add = '''
+  function! s:dss(action) abort
+    call denops_shared_server#{a:action}()
+  endfunction
+  function! s:dss_complete(...) abort
+    return ['install', 'uninstall', 'restart']->join("\n")
+  endfunction
+  
+  command! -nargs=1 -complete=custom,s:dss_complete -bar DenopsSharedServer call s:dss(<f-args>)
+  
+  if exists("g:useShared")
+    let g:useShared = v:true
+    let g:denops_server_addr = '127.0.0.1:32123'
+  fi
+'''
+
+[[plugins]]
+repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
+# :DenopsStartupRecorderDisplayEvents
+
+# --- Denops plugins ---
+
+[[plugins]]
+repo = 'lambdalisue/kensaku.vim'
+depends = ['denops.vim']
+
+[[plugins]]
+repo = 'lambdalisue/kensaku-search.vim'
+depends = ['kensaku.vim']
+lua_add = '''
+  vim.keymap.set('c', '<CR>', function()
+  	return vim.fn.getcmdtype() == '/' and '<Plug>(kensaku-search-replace)<CR>' or '<CR>'
+  end, {expr = true})
+'''
+
+# --- Git ---
+
+[[plugins]]
+repo = 'lambdalisue/gin.vim'
+depends = ['denops.vim']
+lua_source = '''
+require('rc.gin')
+'''
+
+# --- SKK ---
+[[plugins]]
+repo = 'vim-skk/skkeleton'
+depends = ['denops.vim']
+lua_add = '''
+  vim.keymap.set({ 'i', 'c', 't' }, '<C-j>', '<Plug>(skkeleton-toggle)')
+'''
+lua_source = '''
+  require('rc.skkeleton')
+'''
+
+[[plugins]]
+repo = 'delphinus/skkeleton_indicator.nvim'
+depends = ['skkeleton']
+lua_source = '''
+  require('skkeleton_indicator').setup{
+  	alwaysShown = false,
+  	ignoreFt = { 'ddu-ui-filter' },
+  }
+'''
+
+# --- LSP ---
+
+[[plugins]]
+# to show lsp signature help
+repo = 'matsui54/denops-signature_help'
+depends = ['denops.vim']
+hook_source = '''
+  let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
+  call signature_help#enable()
+'''
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+depends = ['denops.vim']
+hook_source = '''
+call popup_preview#enable()
+'''
+
+# --- Docker ---
+# [[plugins]]
+# repo = 'skanehira/denops-docker.vim'
+# depends = ['denops.vim' ]
+
