@@ -88,12 +88,23 @@ M.is_file_exists = function(path)
 	return vim.fn.filereadable(vim.fn.expand(path)) == 1
 end
 
+--- @param path string
+M.dirpath = function(path)
+	return string.match(path, '^.+/')
+end
+
+--- download a file from path.
+--- if is_override is true, override already existed file.
+---@param url string
+---@param path string
+---@param is_override boolean
 M.download_file = function(url, path, is_override)
 	if M.is_file_exists(path) then
 		if not is_override then return end
 	end
 
-	-- vim.fn.mkdir(path, "p")
+	local dir = M.dirpath(path)
+	vim.fn.mkdir(dir, "p")
 
 	os.execute('curl -o ' .. vim.fn.expand(path) .. ' ' .. url)
 end
