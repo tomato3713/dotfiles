@@ -107,12 +107,3 @@ on_source = 'ddu.vim'
 repo = '4513ECHO/ddu-source-colorscheme'
 on_source = 'ddu.vim'
 
-[[plugins]]
-repo = 'tomato3713/ddu-source-joplin'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'tomato3713/ddu-kind-joplin'
-on_source = 'ddu.vim'
-[[plugins]]
-repo = 'tomato3713/ddu-column-joplin'
-on_source = 'ddu.vim'
