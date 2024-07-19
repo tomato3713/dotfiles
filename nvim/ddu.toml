@@ -21,7 +21,6 @@ on_cmd = 'Ddu'
 # --- ui ---
 [[plugins]]
 repo = 'Shougo/ddu-ui-ff'
-lazy = true
 on_source = 'ddu.vim'
 lua_add = '''
   require('rc.ddu-ui-ff')
@@ -29,7 +28,6 @@ lua_add = '''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-filer'
-lazy = true
 on_source = 'ddu.vim'
 lua_add = '''
   require('rc.ddu-ui-filer')
