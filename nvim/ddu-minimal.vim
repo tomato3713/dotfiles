@@ -5,14 +5,13 @@ set runtimepath+=~/repos/github.com/vim-denops/denops.vim
 
 " --- load plugins ---
 " テスト対象のPluginをロードする
-" set runtimepath+=~/repos/dps-joplin
+" set runtimepath+=~/path/to/plugin
 
 source ~/repos/github.com/vim-denops/denops.vim/plugin/denops.vim
 set runtimepath+=~/repos/github.com/Shougo/ddu.vim
 set runtimepath+=~/repos/github.com/Shougo/ddu-ui-ff
-set runtimepath+=~/repos/github.com/tomato3713/ddu-source-joplin
-set runtimepath+=~/repos/github.com/tomato3713/ddu-kind-joplin
-set runtimepath+=~/repos/github.com/tomato3713/ddu-column-joplin
+set runtimepath+=~/repos/github.com/Shougo/ddu-source-file
+set runtimepath+=~/repos/github.com/tomato3713/ddu-kind-file
 
 " --- 追加設定 ---
 " Vimのファイルタイプ検出,ファイルタイププラグインとインデントプラグインをオンにする設定
@@ -20,44 +19,15 @@ filetype plugin indent on
 
 " --- denopsの設定 ---
 " Denoの起動時型チェックを有効化(開発が安定したら明示指定を削除する
-let g:denops#server#service#deno_args = [
-      \ '-q',
-      \ '--unstable',
-      \ '-A',
-      \ ]
+" let g:denops#server#service#deno_args = [
+"       \ '-q',
+"       \ '-A',
+"       \ ]
 
 nnoremap ,t <Cmd>call ddu#start(#{
 	\ ui: 'ff',
-	\ name: 'joplin',
-	\ sources: [ #{ name: 'joplin_tree' } ],
-	\ sourceParams: #{ joplin_tree: #{ token: $JOPLIN_TOKEN } },
-	\ sourceOptions: #{
-	\ 	joplin: #{ columns: ['joplin'] },
-	\ 	joplin_tree: #{ columns: ['joplin'] },
-	\ },
-	\ columnParams: #{
-	\ 	joplin: #{ collapsedIcon: "\uea83", expandedIcon: "\ueaf7", noteIcon: "\ueb26", checkedIcon: "\uf4a7", uncheckedIcon: "\ue640" },
-	\ },
-	\ kindOptions: #{
-	\ 	joplin: #{ defaultAction: 'open' },
-	\ },
-	\ })<CR>
-
-nnoremap ,j <Cmd>call ddu#start(#{
-	\ ui: 'ff',
-	\ name: 'joplin',
-	\ sources: [ #{ name: 'joplin' } ],
-	\ sourceParams: #{ joplin: #{ token: $JOPLIN_TOKEN } },
-	\ sourceOptions: #{
-	\ 	joplin: #{ columns: ['joplin'] },
-	\ 	joplin_tree: #{ columns: ['joplin'] },
-	\ },
-	\ columnParams: #{
-	\ 	joplin: #{ collapsedIcon: "\uea83", expandedIcon: "\ueaf7", noteIcon: "\ueb26", checkedIcon: "\uf4a7", uncheckedIcon: "\ue640" },
-	\ },
-	\ kindOptions: #{
-	\ 	joplin: #{ defaultAction: 'open' },
-	\ },
+	\ name: 'file',
+	\ sources: [ #{ name: 'file' } ],
 	\ })<CR>
 
 lua<<EOF
