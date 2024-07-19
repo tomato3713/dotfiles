@@ -7,6 +7,9 @@ repo = 'vigoux/oak'
 
 [[plugins]]
 repo = 'tanvirtin/monokai.nvim'
+hook_source = '''
+  au VimEnter * nested colorscheme monokai
+'''
 
 [[plugins]]
 repo = 'folke/tokyonight.nvim'

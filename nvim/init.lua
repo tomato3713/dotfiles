@@ -98,11 +98,3 @@ utils.nvim_create_autocmd({ 'BufEnter' }, {
 
 require('rc.dein').init()
 
-require('my.utils').try_catch( {
-	try = function()
-		vim.cmd('colorscheme monokai')
-	end,
-	catch = function(err)
-		print('Error: ' .. err)
-	end,
-	})
