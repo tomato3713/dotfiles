@@ -106,12 +106,6 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
-repo = 'https://github.com/monaqa/dial.nvim'
-lua_source = '''
-require('rc.dial')
-'''
-
-[[plugins]]
 repo = 'norcalli/nvim-colorizer.lua'
 lua_source = '''
 require('colorizer').setup()
