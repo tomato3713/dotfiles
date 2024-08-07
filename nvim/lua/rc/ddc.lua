@@ -38,11 +38,11 @@ ddc_helper.patch_global({
 		},
 		skkeleton = {
 			mark = "SKK",
-			matchers = { "skkeleton" },
-			minAutoCompleteLength = 1,
-			isVolatile = true,
+			matchers = {},
 			sorters = {},
 			converters = {},
+			isVolatile = true,
+			minAutoCompleteLength = 1,
 		},
 		file = {
 			mark = "File",
