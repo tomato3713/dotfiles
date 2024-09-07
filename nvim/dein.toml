@@ -194,6 +194,21 @@ lua_source = '''
   require('neogen').setup()
 '''
 
+[[plugins]]
+repo = 'https://github.com/cameron-wags/rainbow_csv.nvim'
+on_ft = [
+  'csv',
+  'tsv',
+  'csv_semicolon',
+  'csv_whitespace',
+  'csv_pipe',
+  'rfc_csv',
+  'rfc_semicolon'
+]
+lua_source = '''
+  require 'rainbow_csv'.setup()
+'''
+
 # highlighting other uses of the word under the cursor
 [[plugins]]
 repo = 'https://github.com/RRethy/vim-illuminate'
@@ -344,7 +359,7 @@ lua_add = '''
   vim.keymap.set({'i', 's'}, '<C-b>',  function()
       return vim.fn['vsnip#jumpable'](-1) == 1 and '<Plug>(vsnip-jump-prev)' or '<C-b>'
   end, { expr = true, noremap = false })
-  
+
   -- vim.g.vsnip_filetypes = {}
   vim.g.vsnip_snippet_dir = vim.fn.expand('~/.config/nvim/snippets')
 '''
@@ -353,4 +368,3 @@ lua_add = '''
 [[plugins]]
 on_source = ['vim-vsnip']
 repo = 'rafamadriz/friendly-snippets'
-
