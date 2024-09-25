@@ -255,6 +255,13 @@ lua_source = '''
 require('rc.treesitter')
 '''
 
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+depends = ['nvim-treesitter']
+lua_source = '''
+require('rc.treesitter-textobjects')
+'''
+
 # --- Git ---
 [[plugins]]
 repo = 'lewis6991/gitsigns.nvim'
