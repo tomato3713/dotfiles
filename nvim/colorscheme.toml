@@ -8,7 +8,7 @@ repo = 'vigoux/oak'
 [[plugins]]
 repo = 'tanvirtin/monokai.nvim'
 hook_source = '''
-  au VimEnter * nested colorscheme monokai
+  " au VimEnter * nested colorscheme monokai
 '''
 
 [[plugins]]
@@ -23,3 +23,6 @@ require('tokyonight').setup {
 
 [[plugins]]
 repo = 'fenetikm/falcon'
+hook_source = '''
+  au VimEnter * nested colorscheme falcon
+'''
