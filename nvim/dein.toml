@@ -128,6 +128,10 @@ require("todo-comments").setup({
 		PERF = { icon = "P", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
 		NOTE = { icon = "N", color = "hint", alt = { "INFO" } },
 	},
+        highlight = {
+		pattern = [[.*<(KEYWORDS)]],
+		after = [[.?[\(.+)]?]],
+	},
 })
 '''
 
@@ -239,6 +243,10 @@ require('ts_context_commentstring').setup {
 '''
 
 [[plugins]]
+repo = 'https://github.com/ngalaiko/tree-sitter-go-template'
+depends = ['nvim-treesitter']
+
+[[plugins]]
 # use treesitter to autoclose and autorename html tag
 repo = 'windwp/nvim-ts-autotag'
 depends = ['nvim-treesitter']
@@ -281,7 +289,7 @@ require('rc.gitlinker')
 repo = 'obaland/vfiler.vim'
 # on_cmd = ['VFiler'] # TODO: lazy
 lua_add = '''
--- Disable embeded plugins.
+-- Disable embedded plugins.
 vim.api.nvim_set_var('loaded_netrw', 1)
 vim.api.nvim_set_var('loaded_netrwPlugin', 1)
 
