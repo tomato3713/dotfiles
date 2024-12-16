@@ -4,7 +4,7 @@ hook_add = '''
   " insert mode completion
   inoremap <expr> <TAB>
         \ pum#visible() ?
-        \   '<Cmd>call pum#map#insert_relative(+1, "empty")<CR>' :
+        \   '<Cmd>call pum#map#insert_relative(+1, "ignore")<CR>' :
         \ col('.') <= 1 ? '<TAB>' :
         \ getline('.')[col('.') - 2] =~# '\s' ? '<TAB>' :
         \ ddc#map#manual_complete()
