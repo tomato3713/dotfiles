@@ -10,7 +10,6 @@ lua_source = '''
 [[plugins]]
 repo = 'https://github.com/CopilotC-Nvim/CopilotChat.nvim'
 depends = ['copilot.vim', 'plenary.nvim']
-rev = 'canary'
 lua_source = '''
   require('rc.copilot')
 '''
