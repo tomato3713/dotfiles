@@ -25,7 +25,10 @@ function M.separator(word, color)
 	vim.api.nvim_set_hl(0, hlGroup, { fg = color })
 	return {
 		name = 'dummy',
-		params = { word = word, hlGroup = hlGroup },
+		params = {
+			word = word,
+			hlGroup = hlGroup
+		},
 	}
 end
 

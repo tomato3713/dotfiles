@@ -2,39 +2,11 @@ local _M = {}
 
 local ddu_helper = require('rc.helper.ddu')
 
-local function resize()
-	local lines = vim.opt.lines:get()
-	local columns = vim.opt.columns:get()
-
-	local winHeight = math.max(math.floor(lines / 3), 8)
-	local winWidth = math.max(math.floor(columns / 2) - 2, 40)
-
-	local previewHeight = winHeight - 3
-	local previewWidth = winWidth
-
-	local winRow, winCol = lines - winHeight - 4, 1
-	local previewRow, previewCol = winRow + 3, math.floor(winWidth * 0.7)
-
-	ddu_helper.patch_global({
-		uiParams = {
-			ff = {
-				winHeight = winHeight,
-				winRow = winRow,
-				winWidth = winWidth,
-				winCol = winCol,
-				previewHeight = previewHeight,
-				previewRow = previewRow,
-				previewWidth = previewWidth,
-				previewCol = previewCol,
-			},
-		},
-	})
-end
-
 local function setup_ui_params()
 	ddu_helper.patch_global('ui', 'ff')
 	ddu_helper.patch_global('uiParams', {
 		ff = {
+			autoResize = true,
 			prompt = '$ ',
 			split = 'floating',
 			autoAction = {
@@ -44,10 +16,10 @@ local function setup_ui_params()
 			startAutoAction = true,
 			previewFloating = true,
 			previewFloatingBorder = 'single',
-			previewSplit = 'vertical',
+			previewSplit = 'horizontal',
 			floatingBorder = 'single',
 			highlights = {
-				floatingBorder = 'Verbose',
+				floatingBorder = 'Special',
 			},
 		},
 		filer = {
@@ -60,12 +32,6 @@ local function setup_ui_params()
 				name = 'preview',
 			},
 		},
-	})
-
-	resize()
-	require('my.utils').nvim_create_autocmd('VimResized', {
-		callback = resize,
-		desc = 'calculate ddu window size',
 	})
 end
 
@@ -167,7 +133,15 @@ _M.setup = function()
 	})
 
 	ddu_helper.patch_global('sourceParams', {
-		rg = { args = { '--column', '--no-heading', '--color', 'never' } },
+		rg = {
+			args = {
+				'--smart-case',
+				'--column',
+				'--no-heading',
+				'--color',
+				'never'
+			}
+		},
 	})
 
 	ddu_helper.patch_global('filterParams', {
@@ -280,7 +254,7 @@ _M.set_keymap = function()
 	end, { silent = true, noremap = true, desc = 'grep files' })
 
 	vim.keymap.set('n', '<space>h', ddu_helper.start({ name = 'lsp_callHierarchy' }),
-		{ silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incomming calls' })
+		{ silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incoming calls' })
 
 	vim.keymap.set('n', 'gi', ddu_helper.start({ name = 'lsp_implementation' }),
 		{ silent = true, noremap = true, desc = 'textDocument/implementation' })
