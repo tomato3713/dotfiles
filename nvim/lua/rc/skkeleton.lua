@@ -21,9 +21,11 @@ local init = function()
 	})
 
 	vim.fn['skkeleton#register_kanatable']('rom', {
-		["z."] = { "．", '' },
-		["z,"] = { "，", '' },
-		["z<Space>"] = { "　", '' },
+		["z."] = { "．" },
+		["z,"] = { "，" },
+		["z<Space>"] = { "　" },
+		["z("] = { "（" },
+		["z)"] = { "）" },
 	})
 end
 
