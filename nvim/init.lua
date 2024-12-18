@@ -96,5 +96,13 @@ utils.nvim_create_autocmd({ 'BufEnter' }, {
 	desc = 'set default filetype as plain text',
 })
 
-require('rc.dein').init()
+-- https://kankodori-blog.com/posts/2024-12-09/
+-- Example: Redir Dein list
+vim.api.nvim_create_user_command('Redir', function(ctx)
+	local _, function_return = pcall(vim.fn.execute, ctx.args)
+	vim.cmd('new')
+	vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(function_return, '\n', { plain = true }))
+	vim.opt_local.modified = false
+end, { nargs = '+', complete = 'command' })
 
+require('rc.dein').init()
