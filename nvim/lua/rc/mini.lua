@@ -11,3 +11,16 @@ require('mini.comment').setup {
 		textobject = 'gc',
 	},
 }
+
+require('mini.splitjoin').setup {
+	mappings = {
+		toggle = 'gs',
+		split = '',
+		join = '',
+	},
+	detect = {
+		brackets = { '%b()', '%b[]', '%b{}', '%b<>' },
+		separator = ',',
+		exclude_regions = { '%b()', '%b[]', '%b{}', '%b""', "%b''" }
+	}
+}
