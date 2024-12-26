@@ -8,6 +8,11 @@ require("other-nvim").setup({
 			pattern = "/components/(.*)/(.*).tsx$",
 			target = "/components/%1/%2.stories.tsx",
 			context = "storybook"
+		},
+		{
+			pattern = "/components/(.*)/(.*).stories.tsx$",
+			target = "/components/%1/%2..tsx",
+			context = "implementation"
 		}
 	},
 	transformers = {
