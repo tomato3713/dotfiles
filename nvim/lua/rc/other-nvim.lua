@@ -3,17 +3,37 @@ require("other-nvim").setup({
 		-- builtin mappings
 		"golang",
 		"react",
-		-- open storybook
+		-- frontend
 		{
 			pattern = "/components/(.*)/(.*).tsx$",
 			target = "/components/%1/%2.stories.tsx",
 			context = "storybook"
 		},
 		{
+			pattern = "/components/(.*)/(.*).tsx$",
+			target = "/components/%1/%2.module.scss",
+			context = "css module"
+		},
+		{
 			pattern = "/components/(.*)/(.*).stories.tsx$",
-			target = "/components/%1/%2..tsx",
+			target = "/components/%1/%2.tsx",
 			context = "implementation"
-		}
+		},
+		{
+			pattern = "/components/(.*)/(.*).stories.tsx$",
+			target = "/components/%1/%2.module.scss",
+			context = "css module"
+		},
+		{
+			pattern = "/components/(.*)/(.*).module.scss$",
+			target = "/components/%1/%2.stories.tsx",
+			context = "storybook"
+		},
+		{
+			pattern = "/components/(.*)/(.*).module.scss$",
+			target = "/components/%1/%2.tsx",
+			context = "implementation"
+		},
 	},
 	transformers = {
 		-- defining a custom transformer
@@ -21,6 +41,7 @@ require("other-nvim").setup({
 			return inputString:lower()
 		end
 	},
+	rememberBuffers = false,
 	style = {
 		-- How the plugin paints its window borders
 		-- Allowed values are none, single, double, rounded, solid and shadow
