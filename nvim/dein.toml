@@ -169,6 +169,12 @@ repo = 'tpope/vim-repeat'
 repo = 'wellle/targets.vim'
 
 [[plugins]]
+repo = 'https://github.com/stevearc/quicker.nvim'
+lua_source = '''
+require("quicker").setup()
+'''
+
+[[plugins]]
 repo = 'junegunn/vim-easy-align'
 hook_add = '''
   " Start interactive EasyAlign in visual mode (e.g. vipga)
