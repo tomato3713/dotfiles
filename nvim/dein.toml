@@ -178,6 +178,10 @@ hook_add = '''
 '''
 
 [[plugins]]
+repo = 'https://github.com/tyru/capture.vim'
+on_cmd = ['Capture']
+
+[[plugins]]
 repo = 'mhartington/formatter.nvim'
 hook_add = '''
   nnoremap <silent> <leader>F :Format<CR>
