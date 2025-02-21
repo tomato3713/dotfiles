@@ -104,4 +104,12 @@ on_source = 'ddu.vim'
 [[plugins]]
 repo = '4513ECHO/ddu-source-colorscheme'
 on_source = 'ddu.vim'
-
+[[plugins]]
+repo = 'https://github.com/kyoh86/ddu-source-git_log'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'https://github.com/peacock0803sz/ddu-source-git_stash'
+on_source = 'ddu.vim'
+[[plugins]]
+repo = 'https://github.com/kuuote/ddu-source-git_status'
+on_source = 'ddu.vim'

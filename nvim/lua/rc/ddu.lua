@@ -259,8 +259,14 @@ _M.set_keymap = function()
 	vim.keymap.set('n', 'gi', ddu_helper.start({ name = 'lsp_implementation' }),
 		{ silent = true, noremap = true, desc = 'textDocument/implementation' })
 
+	vim.keymap.set('n', 'gd', ddu_helper.start({ name = 'lsp_definition' }),
+		{ silent = true, noremap = true, desc = 'textDocument/definition' })
+
 	vim.keymap.set('n', 'gD', ddu_helper.start({ name = 'lsp_declaration' }),
 		{ silent = true, noremap = true, desc = 'textDocument/declaration' })
+
+	vim.keymap.set('n', '<space>wl', ddu_helper.start({ name = 'workspace' }),
+		{ silent = true, noremap = true, desc = 'workspaceFolder' })
 
 	vim.keymap.set('n', 'gtd', ddu_helper.start({ name = 'lsp_typeDefinition' }),
 		{ silent = true, noremap = true, desc = 'textDocument/typeDefinition' })

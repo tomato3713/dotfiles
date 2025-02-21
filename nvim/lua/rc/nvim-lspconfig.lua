@@ -59,7 +59,7 @@ local on_attach = function(_, bufnr)
 	vim.keymap.set("n", "g]", "<cmd>:lua vim.lsp.buf.diagnostic.show_next()<CR>", bufopts)
 
 	--- 定義に移動
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+	-- vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 
 	-- code edit
 	--- 関数名や変数名をリネーム
@@ -67,7 +67,7 @@ local on_attach = function(_, bufnr)
 
 	-- workspace
 	--- ワークスペース一覧を表示
-	vim.keymap.set("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
+	-- vim.keymap.set("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>")
 	--- ワークスペースにフォルダを追加する
 	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder)
 	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder)
