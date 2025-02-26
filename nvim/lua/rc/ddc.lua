@@ -73,7 +73,7 @@ ddc_helper.patch_global('sourceOptions', {
 	cmdline = {
 		mark = 'Ex',
 	},
-	["shell-native"] = {
+	["shell_native"] = {
 		-- ref: https://blog.atusy.net/2023/12/20/ddc-fish-alias-completion/
 		mark = 'Ex',
 		matchers = { "matcher_head" },
@@ -86,7 +86,7 @@ ddc_helper.patch_global('sourceOptions', {
 			table.concat({ "!", "Make ", "Gin ", "GinBuffer " }, [[\\|]])
 		),
 	},
-	["cmdline-history"] = {
+	["cmdline_history"] = {
 		mark = 'Hist',
 	},
 	["input"] = {
@@ -98,12 +98,12 @@ ddc_helper.patch_global('sourceOptions', {
 	},
 })
 ddc_helper.patch_global('sourceParams', {
-	["shell-native"] = {
+	["shell_native"] = {
 		shell = 'zsh',
 	},
 })
 ddc_helper.patch_global('cmdlineSources', {
-	[':'] = { 'cmdline', 'shell-native', 'cmdline-history', 'shell-native', 'file' },
+	[':'] = { 'cmdline', 'shell_native', 'cmdline_history', 'file' },
 	['/'] = { 'around' },
 	['?'] = { 'around' },
 	['='] = { 'input' },

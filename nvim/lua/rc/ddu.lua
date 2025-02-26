@@ -111,6 +111,11 @@ _M.setup = function()
 				'matcher_substring',
 			},
 		},
+		dummy = {
+			matchers = {},
+			sorters = {},
+			converters = {},
+		},
 		file = {
 			columns = { 'filename' },
 		},

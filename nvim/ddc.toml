@@ -70,10 +70,10 @@ on_event = ['InsertEnter']
 lua_source = '''
   require('rc.ddc')
 '''
-hook_post_update = '''
-  call ddc#set_static_import_path()
-  echomsg '[INFO] call ddc#set_static_import_path()'
-'''
+# hook_post_update = '''
+#   call ddc#set_static_import_path()
+#   echomsg '[INFO] call ddc#set_static_import_path()'
+# '''
 
 # ---- ddc ui ----
 # [[plugins]]

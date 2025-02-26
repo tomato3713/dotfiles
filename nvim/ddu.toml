@@ -7,10 +7,10 @@ lua_add = '''
 lua_source = '''
   require('rc.ddu').setup()
 '''
-hook_post_update = '''
-  call ddu#set_static_import_path()
-  echomsg '[INFO] call ddu#set_static_import_path()'
-'''
+# hook_post_update = '''
+#   call ddu#set_static_import_path()
+#   echomsg '[INFO] call ddu#set_static_import_path()'
+# '''
 
 [[plugins]]
 repo = 'Shougo/ddu-commands.vim'
