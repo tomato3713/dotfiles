@@ -253,6 +253,9 @@ require('ts_context_commentstring').setup {
 '''
 
 [[plugins]]
+repo = 'https://github.com/mattn/vim-godoc'
+
+[[plugins]]
 repo = 'https://github.com/ngalaiko/tree-sitter-go-template'
 depends = ['nvim-treesitter']
 

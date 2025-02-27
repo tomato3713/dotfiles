@@ -2,6 +2,13 @@ local utils = require('my.utils')
 
 utils.clear_vimrc_autocmd()
 
+-- g? でコマンドを選択する
+_G.favoriteList = {}
+table.insert(_G.favoriteList, 'DeinClearCache')
+table.insert(_G.favoriteList, 'GinStatus')
+
+vim.keymap.set({ 'n', 'x' }, 'g?', function() require('my.selector')(_G.favoriteList, vim.fn.execute) end)
+
 require('my.cmd').setup()
 
 -- set keymap
