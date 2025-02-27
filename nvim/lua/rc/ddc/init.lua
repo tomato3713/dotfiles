@@ -1,21 +1,22 @@
-local ddc_helper = require("rc.helper.ddc")
+local helper = require("rc.helper.ddc")
 
-ddc_helper.patch_global('ui', "pum")
+helper.patch_global('ui', "pum")
+
 local autoCompleteEvents = {
 	"InsertEnter",
 	"TextChangedI",
 	"TextChangedP",
 	"TextChangedT",
 }
-ddc_helper.patch_global('autoCompleteEvents', autoCompleteEvents)
+helper.patch_global('autoCompleteEvents', autoCompleteEvents)
 
-ddc_helper.patch_global('sources', {
+helper.patch_global('sources', {
 	"copilot",
 	"vsnip", "lsp",
 	"around", "file",
 })
 
-ddc_helper.patch_global({
+helper.patch_global({
 	backspaceCompletion = true,
 	specialBufferCompletion = true,
 	sourceOptions = {
@@ -69,7 +70,7 @@ ddc_helper.patch_global({
 })
 
 -- commandline completion
-ddc_helper.patch_global('sourceOptions', {
+helper.patch_global('sourceOptions', {
 	cmdline = {
 		mark = 'Ex',
 	},
@@ -97,12 +98,12 @@ ddc_helper.patch_global('sourceOptions', {
 		isVolatile = true,
 	},
 })
-ddc_helper.patch_global('sourceParams', {
+helper.patch_global('sourceParams', {
 	["shell_native"] = {
 		shell = 'zsh',
 	},
 })
-ddc_helper.patch_global('cmdlineSources', {
+helper.patch_global('cmdlineSources', {
 	[':'] = { 'cmdline', 'shell_native', 'cmdline_history', 'file' },
 	['/'] = { 'around' },
 	['?'] = { 'around' },
@@ -110,12 +111,12 @@ ddc_helper.patch_global('cmdlineSources', {
 })
 
 local commandlinePost = function()
-	ddc_helper.patch_global("autoCompleteEvents", autoCompleteEvents)
-	ddc_helper.enable_cmdline_completion()
+	helper.patch_global("autoCompleteEvents", autoCompleteEvents)
+	helper.enable_cmdline_completion()
 end
 
 local commandLinePre = function(ch)
-	ddc_helper.patch_global("autoCompleteEvents", {
+	helper.patch_global("autoCompleteEvents", {
 		"CmdlineChanged",
 	})
 
@@ -127,7 +128,7 @@ local commandLinePre = function(ch)
 		once = true,
 	})
 
-	ddc_helper.enable_cmdline_completion()
+	helper.enable_cmdline_completion()
 	vim.fn.feedkeys(vim.api.nvim_replace_termcodes(ch, true, true, true), "n")
 end
 vim.keymap.set("n", ":", function()
@@ -140,4 +141,4 @@ vim.keymap.set("n", "?", function()
 	commandLinePre("?")
 end, { noremap = true, silent = true })
 
-ddc_helper.enable()
+helper.enable()

@@ -1,10 +1,10 @@
 local _M = {}
 
-local ddu_helper = require('rc.helper.ddu')
+local helper = require('rc.helper.ddu')
 
 local function setup_ui_params()
-	ddu_helper.patch_global('ui', 'ff')
-	ddu_helper.patch_global('uiParams', {
+	helper.patch_global('ui', 'ff')
+	helper.patch_global('uiParams', {
 		ff = {
 			autoResize = true,
 			prompt = '$ ',
@@ -40,19 +40,19 @@ end
 
 -- setup language server sources
 local function setup_lsp_sources()
-	ddu_helper.patch_global('kindOptions', {
+	helper.patch_global('kindOptions', {
 		lsp = { defaultAction = 'open' },
 		lsp_codeAction = { defaultAction = 'apply' },
 	})
 
-	ddu_helper.patch_local('lsp_callHierarchy', {
+	helper.patch_local('lsp_callHierarchy', {
 		sources = {
-			ddu_helper.separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
+			helper.separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
 			{
 				name = 'lsp_callHierarchy',
 				params = { method = 'callHierarchy/outgoingCalls' },
 			},
-			ddu_helper.separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
+			helper.separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
 			{
 				name = 'lsp_callHierarchy',
 				params = { method = 'callHierarchy/incommingCalls' },
@@ -65,7 +65,7 @@ local function setup_lsp_sources()
 		}
 	})
 
-	ddu_helper.patch_local('lsp_implementation', {
+	helper.patch_local('lsp_implementation', {
 		sources = {
 			{
 				name = 'lsp_definition',
@@ -74,7 +74,7 @@ local function setup_lsp_sources()
 		},
 	})
 
-	ddu_helper.patch_local('lsp_declaration', {
+	helper.patch_local('lsp_declaration', {
 		sources = {
 			{
 				name = 'lsp_definition',
@@ -83,7 +83,7 @@ local function setup_lsp_sources()
 		},
 	})
 
-	ddu_helper.patch_local('lsp_typeDefinition', {
+	helper.patch_local('lsp_typeDefinition', {
 		sources = {
 			{
 				name = 'lsp_definition',
@@ -92,7 +92,7 @@ local function setup_lsp_sources()
 		},
 	})
 
-	ddu_helper.patch_local('lsp_definition', {
+	helper.patch_local('lsp_definition', {
 		sources = {
 			{
 				name = 'lsp_definition',
@@ -105,7 +105,7 @@ end
 _M.setup = function()
 	setup_ui_params()
 
-	ddu_helper.patch_global('sourceOptions', {
+	helper.patch_global('sourceOptions', {
 		_ = {
 			ignoreCase = true,
 			maxItems = 500,
@@ -139,7 +139,7 @@ _M.setup = function()
 		},
 	})
 
-	ddu_helper.patch_global('sourceParams', {
+	helper.patch_global('sourceParams', {
 		rg = {
 			args = {
 				'--smart-case',
@@ -151,11 +151,11 @@ _M.setup = function()
 		},
 	})
 
-	ddu_helper.patch_global('filterParams', {
+	helper.patch_global('filterParams', {
 		matcher_substring = { highhtMatched = 'Search' },
 	})
 
-	ddu_helper.patch_global('kindOptions', {
+	helper.patch_global('kindOptions', {
 		help = { defaultAction = 'open' },
 		file = { defaultAction = 'open' },
 		colorscheme = { defaultAction = 'set' },
@@ -164,7 +164,7 @@ _M.setup = function()
 		action = { defaultAction = 'do' },
 	})
 
-	ddu_helper.patch_local('node-files', {
+	helper.patch_local('node-files', {
 		sources = { 'file_rec' },
 		sourceParams = {
 			file_rec = {
@@ -173,7 +173,7 @@ _M.setup = function()
 		},
 	})
 
-	ddu_helper.patch_local('jp-files', {
+	helper.patch_local('jp-files', {
 		sources = { 'file_rec' },
 		sourceOptions = {
 			file_rec = {
@@ -225,7 +225,7 @@ _M.set_keymap = function()
 	}
 
 	for _, v in ipairs(res) do
-		vim.keymap.set('n', v.key, ddu_helper.start(v.config), { silent = true, noremap = true, desc = v.desc })
+		vim.keymap.set('n', v.key, helper.start(v.config), { silent = true, noremap = true, desc = v.desc })
 	end
 
 	-- ファイル検索開始
@@ -238,7 +238,7 @@ _M.set_keymap = function()
 				return
 			end
 
-			ddu_helper.start({
+			helper.start({
 				sources = {
 					{
 						name = 'rg',
@@ -260,35 +260,32 @@ _M.set_keymap = function()
 		end
 	end, { silent = true, noremap = true, desc = 'grep files' })
 
-	vim.keymap.set('n', '<space>h', ddu_helper.start({ name = 'lsp_callHierarchy' }),
+	vim.keymap.set('n', '<space>h', helper.start({ name = 'lsp_callHierarchy' }),
 		{ silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incoming calls' })
 
-	vim.keymap.set('n', 'gi', ddu_helper.start({ name = 'lsp_implementation' }),
+	vim.keymap.set('n', 'gi', helper.start({ name = 'lsp_implementation' }),
 		{ silent = true, noremap = true, desc = 'textDocument/implementation' })
 
-	vim.keymap.set('n', 'gd', ddu_helper.start({ name = 'lsp_definition' }),
+	vim.keymap.set('n', 'gd', helper.start({ name = 'lsp_definition' }),
 		{ silent = true, noremap = true, desc = 'textDocument/definition' })
 
-	vim.keymap.set('n', 'gD', ddu_helper.start({ name = 'lsp_declaration' }),
+	vim.keymap.set('n', 'gD', helper.start({ name = 'lsp_declaration' }),
 		{ silent = true, noremap = true, desc = 'textDocument/declaration' })
 
-	vim.keymap.set('n', '<space>wl', ddu_helper.start({ name = 'workspace' }),
+	vim.keymap.set('n', '<space>wl', helper.start({ name = 'workspace' }),
 		{ silent = true, noremap = true, desc = 'workspaceFolder' })
 
-	vim.keymap.set('n', 'gtd', ddu_helper.start({ name = 'lsp_typeDefinition' }),
+	vim.keymap.set('n', 'gtd', helper.start({ name = 'lsp_typeDefinition' }),
 		{ silent = true, noremap = true, desc = 'textDocument/typeDefinition' })
 
-	-- vim.keymap.set('n', 'gd', ddu_helper.start({ name = 'lsp_definition' }),
-	-- 	{ silent = true, noremap = true, desc = 'textDocument/definition' })
-
 	vim.keymap.set('n', 'gr',
-		ddu_helper.start({
+		helper.start({
 			sources = {
-				ddu_helper.separator('>>Definition<<', '#fc514e'),
+				helper.separator('>>Definition<<', '#fc514e'),
 				{
 					name = 'lsp_definition',
 				},
-				ddu_helper.separator('>>References<<', '#fc514e'),
+				helper.separator('>>References<<', '#fc514e'),
 				{
 					name = 'lsp_references',
 					params = { includeDeclaration = false },

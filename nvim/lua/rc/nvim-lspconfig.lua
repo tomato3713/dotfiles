@@ -58,9 +58,6 @@ local on_attach = function(_, bufnr)
 	--- 次のエラーに移動
 	vim.keymap.set("n", "g]", "<cmd>:lua vim.lsp.buf.diagnostic.show_next()<CR>", bufopts)
 
-	--- 定義に移動
-	-- vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-
 	-- code edit
 	--- 関数名や変数名をリネーム
 	vim.keymap.set("n", "<Space>r", vim.lsp.buf.rename, bufopts)
