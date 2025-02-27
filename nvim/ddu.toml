@@ -23,14 +23,14 @@ on_cmd = 'Ddu'
 repo = 'Shougo/ddu-ui-ff'
 on_source = 'ddu.vim'
 lua_add = '''
-  require('rc.ddu-ui-ff')
+  require('rc.ddu.ui-ff')
 '''
 
 [[plugins]]
 repo = 'Shougo/ddu-ui-filer'
 on_source = 'ddu.vim'
 lua_add = '''
-  require('rc.ddu-ui-filer')
+  require('rc.ddu.ui-filer')
 '''
 
 # -- column --
