@@ -17,6 +17,7 @@ require('my.utils').nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "k", ui_helper.move_ignore_dummy(-1), opts)
 		vim.keymap.set("n", "a", ui_helper.do_action("chooseAction"), opts)
 		vim.keymap.set("n", "o", ui_helper.do_action("expandItem", { mode = "toggle" }), opts)
+		vim.keymap.set("n", "p", ui_helper.do_action("togglePreview"), opts)
 	end,
 	desc = 'set keymap for ddu-ff',
 })

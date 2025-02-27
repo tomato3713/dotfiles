@@ -28,6 +28,8 @@ local function setup_ui_params()
 			displayTree = true,
 			split = 'floating',
 			floatingBorder = 'single',
+			startAutoAction = true,
+			previewFloating = true,
 			autoAction = {
 				name = 'preview',
 			},

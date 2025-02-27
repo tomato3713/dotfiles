@@ -16,6 +16,8 @@ require('my.utils').nvim_create_autocmd("FileType", {
 		vim.keymap.set('n', 'j', ui_helper.move_ignore_dummy(1), opts)
 		vim.keymap.set('n', 'k', ui_helper.move_ignore_dummy(-1), opts)
 
+		vim.keymap.set('n', 'p', ui_helper.do_action("togglePreview"), opts)
+
 		vim.keymap.set('n', '<CR>', function()
 			if ui_helper.isTree() then
 				ui_helper.item_action('narrow')()
