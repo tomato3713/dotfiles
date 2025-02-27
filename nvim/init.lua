@@ -6,6 +6,8 @@ utils.clear_vimrc_autocmd()
 _G.favoriteList = {}
 table.insert(_G.favoriteList, 'DeinClearCache')
 table.insert(_G.favoriteList, 'GinStatus')
+table.insert(_G.favoriteList, 'TodoQuickFix')
+table.insert(_G.favoriteList, 'TodoLocList' )
 
 vim.keymap.set({ 'n', 'x' }, 'g?', function() require('my.selector')(_G.favoriteList, vim.fn.execute) end)
 
