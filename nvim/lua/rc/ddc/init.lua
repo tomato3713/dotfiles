@@ -2,6 +2,8 @@ local helper = require("rc.helper.ddc")
 
 helper.patch_global('ui', "pum")
 
+local cmdline = require('rc.ddc.source.cmdline')
+
 local autoCompleteEvents = {
 	"InsertEnter",
 	"TextChangedI",
@@ -103,8 +105,9 @@ helper.patch_global('sourceParams', {
 		shell = 'zsh',
 	},
 })
+
 helper.patch_global('cmdlineSources', {
-	[':'] = { 'cmdline', 'shell_native', 'cmdline_history', 'file' },
+	[':'] = cmdline.current(),
 	['/'] = { 'around' },
 	['?'] = { 'around' },
 	['='] = { 'input' },
@@ -140,5 +143,22 @@ end, { noremap = true, silent = true })
 vim.keymap.set("n", "?", function()
 	commandLinePre("?")
 end, { noremap = true, silent = true })
+
+vim.keymap.set("c", "<C-s>", function()
+	helper.patch_buffer('cmdlineSources', {
+		[':'] = cmdline.next(),
+	})
+
+	require('my.utils').nvim_create_autocmd("User", {
+		pattern = "DDCCmdlineLeave",
+		callback = function()
+			cmdline.reset()
+			helper.patch_buffer('cmdlineSources', {
+				[':'] = cmdline.current(),
+			})
+		end,
+		once = true,
+	})
+end, { expr = true, noremap = true, silent = true })
 
 helper.enable()

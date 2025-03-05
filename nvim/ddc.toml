@@ -28,8 +28,8 @@ hook_add = '''
         \ pum#visible() ? '<Cmd>call pum#map#insert_relative(+1)<CR>' :
         \ ddc#map#manual_complete()
   cnoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-  cnoremap <C-n>   <Cmd>call pum#map#select_relative(+1)<CR>
-  cnoremap <C-p>   <Cmd>call pum#map#select_relative(-1)<CR>
+  cnoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
+  cnoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
   cnoremap <C-o>   <Cmd>call pum#map#confirm_word()<CR>
   cnoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
   cnoremap <expr> <CR> pum#visible()
