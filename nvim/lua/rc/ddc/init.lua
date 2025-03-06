@@ -31,6 +31,9 @@ helper.patch_global({
 		around = {
 			mark = "Around",
 		},
+		line = {
+			mark = "line",
+		},
 		lsp = {
 			mark = "LS",
 			keywordPattern = "\\k+",
@@ -108,8 +111,8 @@ helper.patch_global('sourceParams', {
 
 helper.patch_global('cmdlineSources', {
 	[':'] = cmdline.current(),
-	['/'] = { 'around' },
-	['?'] = { 'around' },
+	['/'] = { 'around', 'line' },
+	['?'] = { 'around', 'line' },
 	['='] = { 'input' },
 })
 
