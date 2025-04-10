@@ -253,6 +253,9 @@ require('ts_context_commentstring').setup {
 '''
 
 [[plugins]]
+repo = 'https://github.com/google/vim-jsonnet'
+
+[[plugins]]
 repo = 'https://github.com/mattn/vim-godoc'
 
 [[plugins]]
