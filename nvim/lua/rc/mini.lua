@@ -24,3 +24,7 @@ require('mini.splitjoin').setup {
 		exclude_regions = { '%b()', '%b[]', '%b{}', '%b""', "%b''" }
 	}
 }
+
+local pick = require('mini.pick')
+pick.setup()
+vim.ui.select = pick.ui_select
