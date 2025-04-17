@@ -39,12 +39,6 @@ vim.notify = require('notify')
 '''
 
 [[plugins]]
-repo = 'stevearc/dressing.nvim'
-lua_source = '''
-require('dressing').setup()
-'''
-
-[[plugins]]
 repo = 'nvim-tree/nvim-web-devicons'
 lua_source = '''
 require('nvim-web-devicons').setup()
