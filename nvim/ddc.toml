@@ -95,7 +95,7 @@ repo = 'LumaKernel/ddc-file'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-source-lsp'
+repo = 'https://github.com/Shougo/ddc-source-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]

@@ -94,14 +94,15 @@ lua_source = '''
 
 # --- LSP ---
 
-[[plugins]]
-# to show lsp signature help
-repo = 'matsui54/denops-signature_help'
-depends = ['denops.vim']
-hook_source = '''
-  let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
-  call signature_help#enable()
-'''
+# [[plugins]]
+# # to show lsp signature help
+# https://github.com/matsui54/denops-signature_help/issues/34 
+# repo = 'https://github.com/matsui54/denops-signature_help'
+# depends = ['denops.vim']
+# hook_source = '''
+#   let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
+#   call signature_help#enable()
+# '''
 
 [[plugins]]
 repo = 'matsui54/denops-popup-preview.vim'
