@@ -1,6 +1,6 @@
 # --- Snippets
 [[plugins]]
-repo = 'hrsh7th/vim-vsnip'
+repo = 'https://github.com/hrsh7th/vim-vsnip'
 on_event = 'InsertEnter'
 depends = ['friendly-snippets']
 lua_add = '''
@@ -18,4 +18,4 @@ lua_add = '''
 # snippets collections
 [[plugins]]
 on_source = ['vim-vsnip']
-repo = 'rafamadriz/friendly-snippets'
+repo = 'https://github.com/rafamadriz/friendly-snippets'

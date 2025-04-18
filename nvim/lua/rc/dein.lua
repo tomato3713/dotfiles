@@ -49,6 +49,7 @@ _M.init = function()
 	-- dein.load_toml(vim.fn.expand('~/.config/nvim/ddc.toml'), { lazy = 1 })
 	dein.load_toml(vim.fn.expand('~/.config/nvim/snippets.toml'), { lazy = 0 })
 	dein.load_toml(vim.fn.expand('~/.config/nvim/cmp.toml'), { lazy = 0 })
+	dein.load_toml(vim.fn.expand('~/.config/nvim/lsp.toml'), { lazy = 0 })
 	dein.end_()
 	dein.save_state()
 

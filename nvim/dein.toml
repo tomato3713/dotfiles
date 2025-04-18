@@ -1,33 +1,33 @@
 # --- Plugin Manager ---
 
 [[plugins]]
-repo = 'Shougo/dein.vim'
+repo = 'https://github.com/Shougo/dein.vim'
 lua_add = '''
   require('rc.dein').setup_mapping()
 '''
 
 [[plugins]]
-repo = 'haya14busa/dein-command.vim'
+repo = 'https://github.com/haya14busa/dein-command.vim'
 depends = ['dein.vim']
 # on_cmd = ['Dein'] # TODO: lazy
 
 # --- Framework && Library ---
 [[plugins]]
-repo = "nvim-lua/plenary.nvim"
+repo = "https://github.com/nvim-lua/plenary.nvim"
 
 [[plugins]]
 repo = "https://github.com/uga-rosa/utf8.nvim"
 
 # --- Key Mapping Helper ---
 [[plugins]]
-repo = 'folke/which-key.nvim'
+repo = 'https://github.com/folke/which-key.nvim'
 lua_source = '''
 require('which-key').setup {}
 '''
 
 # --- Rich UI
 [[plugins]]
-repo = 'rcarriga/nvim-notify'
+repo = 'https://github.com/rcarriga/nvim-notify'
 on_lua = ['notify']
 lua_source = '''
 require('notify').setup({
@@ -39,7 +39,7 @@ vim.notify = require('notify')
 '''
 
 [[plugins]]
-repo = 'nvim-tree/nvim-web-devicons'
+repo = 'https://github.com/nvim-tree/nvim-web-devicons'
 lua_source = '''
 require('nvim-web-devicons').setup()
 '''
@@ -95,7 +95,7 @@ require('render-markdown').setup({
 
 # --- General Rich Text Editing ---
 [[plugins]]
-repo = 'simeji/winresizer'
+repo = 'https://github.com/simeji/winresizer'
 
 [[plugins]]
 repo = 'https://github.com/monaqa/general-converter.nvim'
@@ -104,19 +104,19 @@ require('rc.general_converter')
 '''
 
 [[plugins]]
-repo = 'karb94/neoscroll.nvim'
+repo = 'https://github.com/karb94/neoscroll.nvim'
 lua_source = '''
 require('neoscroll').setup()
 '''
 
 [[plugins]]
-repo = 'norcalli/nvim-colorizer.lua'
+repo = 'https://github.com/norcalli/nvim-colorizer.lua'
 lua_source = '''
 require('colorizer').setup()
 '''
 
 [[plugins]]
-repo = 'folke/todo-comments.nvim'
+repo = 'https://github.com/folke/todo-comments.nvim'
 depends = ['plenary.nvim']
 lua_source = '''
 require("todo-comments").setup({
@@ -140,7 +140,7 @@ require("todo-comments").setup({
 '''
 
 [[plugins]]
-repo = 'lambdalisue/mr.vim'
+repo = 'https://github.com/lambdalisue/mr.vim'
 on_event = ['BufNewFile', 'BufReadPre', 'BufWritePre']
 lua_source = '''
 require('rc.mr')
@@ -155,22 +155,22 @@ hook_add = '''
 
 # --- Rich Code Editing ---
 [[plugins]]
-repo = 'thinca/vim-quickrun'
+repo = 'https://github.com/thinca/vim-quickrun'
 
 [[plugins]]
-repo = 'rgroli/other.nvim'
+repo = 'https://github.com/rgroli/other.nvim'
 lua_source = '''
   require('rc.other-nvim')
 '''
 
 [[plugins]]
-repo = 'tpope/vim-surround'
+repo = 'https://github.com/tpope/vim-surround'
 
 [[plugins]]
-repo = 'tpope/vim-repeat'
+repo = 'https://github.com/tpope/vim-repeat'
 
 [[plugins]]
-repo = 'wellle/targets.vim'
+repo = 'https://github.com/wellle/targets.vim'
 
 [[plugins]]
 repo = 'https://github.com/stevearc/quicker.nvim'
@@ -179,7 +179,7 @@ require("quicker").setup()
 '''
 
 [[plugins]]
-repo = 'junegunn/vim-easy-align'
+repo = 'https://github.com/junegunn/vim-easy-align'
 hook_add = '''
   " Start interactive EasyAlign in visual mode (e.g. vipga)
   xmap ga <Plug>(EasyAlign)
@@ -192,7 +192,7 @@ repo = 'https://github.com/tyru/capture.vim'
 on_cmd = ['Capture']
 
 [[plugins]]
-repo = 'mhartington/formatter.nvim'
+repo = 'https://github.com/mhartington/formatter.nvim'
 hook_add = '''
   nnoremap <silent> <leader>F :Format<CR>
   nnoremap <silent> <leader>f :FormatWrite<CR>
@@ -202,7 +202,7 @@ lua_source = '''
 '''
 
 [[plugins]]
-repo = 'danymat/neogen'
+repo = 'https://github.com/danymat/neogen'
 depends = ['nvim-treesitter']
 lua_add = '''
   local opts = { noremap = true, silent = true }
@@ -232,7 +232,7 @@ lua_source = '''
 repo = 'https://github.com/RRethy/vim-illuminate'
 
 [[plugins]]
-repo = 'echasnovski/mini.nvim'
+repo = 'https://github.com/echasnovski/mini.nvim'
 depends = ['nvim-ts-context-commentstring']
 lua_source = '''
 require('rc.mini')
@@ -246,7 +246,7 @@ require('treesitter-context').setup({ enable = false })
 '''
 
 [[plugins]]
-repo = 'JoosepAlviste/nvim-ts-context-commentstring'
+repo = 'https://github.com/JoosepAlviste/nvim-ts-context-commentstring'
 depends = ['nvim-treesitter']
 # on_cmd = ['TSContextToggle'] # TODO: lazy
 lua_source = '''
@@ -268,14 +268,14 @@ depends = ['nvim-treesitter']
 
 [[plugins]]
 # use treesitter to autoclose and autorename html tag
-repo = 'windwp/nvim-ts-autotag'
+repo = 'https://github.com/windwp/nvim-ts-autotag'
 depends = ['nvim-treesitter']
 lua_source = '''
 require('nvim-ts-autotag').setup()
 '''
 
 [[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter'
+repo = 'https://github.com/nvim-treesitter/nvim-treesitter'
 on_event = ['BufRead', 'CursorHold']
 merged = 0
 hook_post_update = 'TSUpdate'
@@ -284,7 +284,7 @@ require('rc.treesitter')
 '''
 
 [[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter-textobjects'
+repo = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects'
 depends = ['nvim-treesitter']
 lua_source = '''
 require('rc.treesitter-textobjects')
@@ -292,13 +292,13 @@ require('rc.treesitter-textobjects')
 
 # --- Git ---
 [[plugins]]
-repo = 'lewis6991/gitsigns.nvim'
+repo = 'https://github.com/lewis6991/gitsigns.nvim'
 lua_source = '''
 require('rc.gitsigns')
 '''
 
 [[plugins]]
-repo = 'ruifm/gitlinker.nvim'
+repo = 'https://github.com/ruifm/gitlinker.nvim'
 depends = ['plenary.nvim']
 lua_source = '''
 require('rc.gitlinker')
@@ -306,7 +306,7 @@ require('rc.gitlinker')
 
 # --- File Exploer
 [[plugins]]
-repo = 'obaland/vfiler.vim'
+repo = 'https://github.com/obaland/vfiler.vim'
 # on_cmd = ['VFiler'] # TODO: lazy
 lua_add = '''
 -- Disable embedded plugins.
@@ -344,41 +344,10 @@ require('vfiler/config').setup {
 }
 '''
 
+# Neovim plugin for a code outline window
 [[plugins]]
-repo = 'stevearc/aerial.nvim'
+repo = 'https://github.com/stevearc/aerial.nvim'
 lua_source = '''
 require('rc.aerial')
-'''
-
-# --- Language Server Protocol ---
-[[plugins]]
-repo = 'williamboman/mason.nvim'
-
-[[plugins]]
-repo = 'williamboman/mason-lspconfig.nvim'
-
-[[plugins]]
-repo = 'neovim/nvim-lspconfig'
-depends = ['mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp']
-on_event = ['BufRead']
-lua_source = '''
-require('rc.nvim-lspconfig')
-'''
-
-
-[[plugins]]
-repo = 'folke/neodev.nvim'
-on_ft = ['lua']
-on_source = 'nvim-lspconfig'
-lua_source = '''
-require("neodev").setup()
-'''
-
-[[plugins]]
-repo = 'https://github.com/soulis-1256/eagle.nvim'
-lua_source = '''
-require("eagle").setup({})
-
-vim.o.mousemoveevent = true
 '''
 

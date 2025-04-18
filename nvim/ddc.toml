@@ -1,5 +1,5 @@
 [[plugins]]
-repo = 'Shougo/pum.vim'
+repo = 'https://github.com/Shougo/pum.vim'
 hook_add = '''
   " insert mode completion
   inoremap <expr> <TAB>
@@ -64,7 +64,7 @@ lua_source = '''
 
 # --- Asynchronous Completion Framwwork ---
 [[plugins]]
-repo = 'Shougo/ddc.vim'
+repo = 'https://github.com/Shougo/ddc.vim'
 depends = ['denops.vim', 'pum.vim']
 on_event = ['InsertEnter']
 lua_source = '''
@@ -77,21 +77,21 @@ lua_source = '''
 
 # ---- ddc ui ----
 # [[plugins]]
-# repo = 'Shougo/ddc-ui-native'
+# repo = 'https://github.com/Shougo/ddc-ui-native'
 # on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-ui-pum'
+repo = 'https://github.com/Shougo/ddc-ui-pum'
 depends = ['pum.vim']
 on_source = 'ddc.vim'
 
 #  ---- ddc source ----
 [[plugins]]
-repo = 'Shougo/ddc-around'
+repo = 'https://github.com/Shougo/ddc-around'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'LumaKernel/ddc-file'
+repo = 'https://github.com/LumaKernel/ddc-file'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -99,7 +99,7 @@ repo = 'https://github.com/Shougo/ddc-source-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-source-line'
+repo = 'https://github.com/Shougo/ddc-source-line'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -115,7 +115,7 @@ repo = 'https://github.com/Shougo/ddc-source-input'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-source-shell-native'
+repo = 'https://github.com/Shougo/ddc-source-shell-native'
 on_source = 'ddc.vim'
 
 # [[plugins]]
@@ -123,15 +123,15 @@ on_source = 'ddc.vim'
 # on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'uga-rosa/ddc-source-vsnip'
+repo = 'https://github.com/uga-rosa/ddc-source-vsnip'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-cmdline-history'
+repo = 'https://github.com/Shougo/ddc-cmdline-history'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-cmdline'
+repo = 'https://github.com/Shougo/ddc-cmdline'
 on_source = 'ddc.vim'
 
 [[plugins]]
@@ -143,6 +143,6 @@ on_source = 'ddc.vim'
 repo = 'https://github.com/Shougo/ddc-filter-matcher_head'
 on_source = 'ddc.vim'
 [[plugins]]
-repo = 'tani/ddc-fuzzy'
+repo = 'https://github.com/tani/ddc-fuzzy'
 on_source = 'ddc.vim'
 

@@ -1,5 +1,5 @@
 [[plugins]]
-repo = 'vim-denops/denops.vim'
+repo = 'https://github.com/vim-denops/denops.vim'
 hook_add = '''
   if exists("g:useShared")
     let g:useShared = v:true
@@ -15,7 +15,7 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'vim-denops/denops-shared-server.vim'
+repo = 'https://github.com/vim-denops/denops-shared-server.vim'
 on_source = ['denops.vim']
 hook_add = '''
   function! s:dss(action) abort
@@ -50,11 +50,11 @@ lua_source = '''
 '''
 
 [[plugins]]
-repo = 'lambdalisue/kensaku.vim'
+repo = 'https://github.com/lambdalisue/kensaku.vim'
 depends = ['denops.vim']
 
 [[plugins]]
-repo = 'lambdalisue/kensaku-search.vim'
+repo = 'https://github.com/lambdalisue/kensaku-search.vim'
 depends = ['kensaku.vim']
 lua_add = '''
   vim.keymap.set('c', '<CR>', function()
@@ -65,7 +65,7 @@ lua_add = '''
 # --- Git ---
 
 [[plugins]]
-repo = 'lambdalisue/gin.vim'
+repo = 'https://github.com/lambdalisue/gin.vim'
 depends = ['denops.vim']
 lua_source = '''
 require('rc.gin')
@@ -73,7 +73,7 @@ require('rc.gin')
 
 # --- SKK ---
 [[plugins]]
-repo = 'vim-skk/skkeleton'
+repo = 'https://github.com/vim-skk/skkeleton'
 depends = ['denops.vim']
 lua_add = '''
   vim.keymap.set({ 'i', 'c', 't' }, '<C-j>', '<Plug>(skkeleton-toggle)')
@@ -83,7 +83,7 @@ lua_source = '''
 '''
 
 [[plugins]]
-repo = 'delphinus/skkeleton_indicator.nvim'
+repo = 'https://github.com/delphinus/skkeleton_indicator.nvim'
 depends = ['skkeleton']
 lua_source = '''
   require('skkeleton_indicator').setup{
@@ -105,7 +105,7 @@ lua_source = '''
 # '''
 
 [[plugins]]
-repo = 'matsui54/denops-popup-preview.vim'
+repo = 'https://github.com/matsui54/denops-popup-preview.vim'
 depends = ['denops.vim']
 hook_source = '''
 call popup_preview#enable()
@@ -113,5 +113,5 @@ call popup_preview#enable()
 
 # --- Docker ---
 # [[plugins]]
-# repo = 'skanehira/denops-docker.vim'
+# repo = 'https://github.com/skanehira/denops-docker.vim'
 # depends = ['denops.vim' ]

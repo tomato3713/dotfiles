@@ -1,18 +1,18 @@
 # --- Colorscheme
 [[plugins]]
-repo = 'joshdick/onedark.vim'
+repo = 'https://github.com/joshdick/onedark.vim'
 
 [[plugins]]
-repo = 'vigoux/oak'
+repo = 'https://github.com/vigoux/oak'
 
 [[plugins]]
-repo = 'tanvirtin/monokai.nvim'
+repo = 'https://github.com/tanvirtin/monokai.nvim'
 hook_source = '''
   " au VimEnter * nested colorscheme monokai
 '''
 
 [[plugins]]
-repo = 'folke/tokyonight.nvim'
+repo = 'https://github.com/folke/tokyonight.nvim'
 lua_source = '''
 require('tokyonight').setup {
   style = 'night',
@@ -22,7 +22,7 @@ require('tokyonight').setup {
 '''
 
 [[plugins]]
-repo = 'fenetikm/falcon'
+repo = 'https://github.com/fenetikm/falcon'
 hook_source = '''
   au VimEnter * nested colorscheme falcon
 '''
