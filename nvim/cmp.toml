@@ -1,0 +1,23 @@
+
+[[plugins]]
+repo = 'https://github.com/hrsh7th/nvim-cmp'
+depends = ['vsnip', 'codecompanion.nvim']
+lua_source = '''
+	require('rc.cmp')
+'''
+
+[[plugins]]
+repo = 'https://github.com/hrsh7th/cmp-buffer'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'https://github.com/hrsh7th/cmp-nvim-lsp'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'https://github.com/hrsh7th/cmp-path'
+on_source = 'nvim-cmp'
+
+[[plugins]]
+repo = 'https://github.com/hrsh7th/cmp-cmdline'
+on_source = 'nvim-cmp'

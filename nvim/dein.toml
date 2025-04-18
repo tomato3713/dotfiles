@@ -359,7 +359,7 @@ repo = 'williamboman/mason-lspconfig.nvim'
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['mason.nvim', 'mason-lspconfig.nvim']
+depends = ['mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp']
 on_event = ['BufRead']
 lua_source = '''
 require('rc.nvim-lspconfig')
@@ -382,24 +382,3 @@ require("eagle").setup({})
 vim.o.mousemoveevent = true
 '''
 
-# --- Snippets
-[[plugins]]
-repo = 'hrsh7th/vim-vsnip'
-on_event = 'InsertEnter'
-depends = ['friendly-snippets']
-lua_add = '''
-  vim.keymap.set({'i', 's'}, '<C-f>',  function()
-      return vim.fn['vsnip#jumpable'](1) == 1 and '<Plug>(vsnip-jump-next)' or '<C-f>'
-  end, { expr = true, noremap = false })
-  vim.keymap.set({'i', 's'}, '<C-b>',  function()
-      return vim.fn['vsnip#jumpable'](-1) == 1 and '<Plug>(vsnip-jump-prev)' or '<C-b>'
-  end, { expr = true, noremap = false })
-
-  -- vim.g.vsnip_filetypes = {}
-  vim.g.vsnip_snippet_dir = vim.fn.expand('~/.config/nvim/snippets')
-'''
-
-# snippets collections
-[[plugins]]
-on_source = ['vim-vsnip']
-repo = 'rafamadriz/friendly-snippets'
