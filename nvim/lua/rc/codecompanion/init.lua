@@ -1,3 +1,5 @@
+-- ddc.vim の補完例
+-- https://github.com/atusy/dotfiles/blob/7f1a22c6e4e4cad43d37571c297b10c30572b921/dot_config/nvim/lua/plugins/ddc/codecompanion.lua#L17
 require('codecompanion').setup({
 	strategies = {
 		chat = {
@@ -7,6 +9,39 @@ require('codecompanion').setup({
 					return "  CodeCompanion (" .. adapter.formatted_name .. ")"
 				end,
 				user = "  Me",
+			},
+			slash_commands = {
+				["buffer"] = {
+					opts = {
+						provider = "mini_pick",
+					},
+				},
+				["file"] = {
+					callback = "strategies.chat.slash_commands.file",
+					opts = {
+						provider = "mini_pick",
+					},
+				},
+				["help"] = {
+					opts = {
+						provider = "mini_pick",
+					},
+				},
+				["symbols"] = {
+					opts = {
+						provider = "mini_pick",
+					},
+				},
+				["workspace"] = {
+					opts = {
+						provider = "mini_pick",
+					},
+				},
+				["actions"] = {
+					opts = {
+						provider = "mini_pick",
+					},
+				},
 			},
 		},
 		inline = {
@@ -18,7 +53,7 @@ require('codecompanion').setup({
 	},
 	display = {
 		chat = {
-			auto_scroll = false,
+			auto_scroll = true,
 			show_header_separator = true,
 		},
 		action_palette = {
