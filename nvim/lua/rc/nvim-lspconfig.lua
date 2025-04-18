@@ -5,7 +5,7 @@ require('mason').setup({
 	ui = { icons = { package_installed = "＊", package_pending = "∴", package_uninstalled = "×" } }
 })
 
--- vim.lsp.log_levels = 0
+vim.lsp.set_log_level("OFF")
 
 -- LSPの警告フォーマット
 -- ref: https://dev.classmethod.jp/articles/eetann-change-neovim-lsp-diagnostics-format/
