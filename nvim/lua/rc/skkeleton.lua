@@ -29,20 +29,6 @@ local init = function()
 	})
 end
 
-require('my.utils').nvim_create_autocmd("User", {
-	pattern = "skkeleton-enable-pre",
-	callback = function()
-		require('rc.helper.ddc').patch_buffer("sources", { "skkeleton" })
-	end,
-})
-
-require('my.utils').nvim_create_autocmd("User", {
-	pattern = "skkeleton-disable-pre",
-	callback = function()
-		require('rc.helper.ddc').remove_buffer("sources")
-	end,
-})
-
 vim.api.nvim_create_user_command('DownloadSKKDict', function()
 	init_skk_dictionary(global_skk_jisyo, true)
 end, {})
