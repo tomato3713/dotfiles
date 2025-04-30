@@ -1,10 +1,19 @@
 # --- AI Support ---
+# [[plugins]]
+# repo = 'https://github.com/github/copilot.vim'
+# lua_source = '''
+#   vim.g.copilot_no_maps = true
+#   -- vim.g.copilot_hide_during_completions = true
+#   vim.g.copilot_filetypes = { text = true }
+# '''
+
 [[plugins]]
-repo = 'https://github.com/github/copilot.vim'
+repo = 'https://github.com/zbirenbaum/copilot.lua'
 lua_source = '''
-  vim.g.copilot_no_maps = true
-  -- vim.g.copilot_hide_during_completions = true
-  vim.g.copilot_filetypes = { text = true }
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
 '''
 
 # [[plugins]]
@@ -19,7 +28,7 @@ repo = 'https://github.com/olimorris/codecompanion.nvim'
 depends = [
 	'plenary.nvim',
 	'nvim-treesitter/nvim-treesitter',
-	'copilot.vim'
+	'copilot.lua'
 ]
 lua_source = '''
 	require('rc.codecompanion')
