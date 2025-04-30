@@ -17,7 +17,6 @@ require('codecompanion').setup({
 					},
 				},
 				["file"] = {
-					callback = "strategies.chat.slash_commands.file",
 					opts = {
 						provider = "mini_pick",
 					},
@@ -47,9 +46,28 @@ require('codecompanion').setup({
 		inline = {
 			adapter = "copilot",
 		},
+		cmd = {
+			adapter = "copilot",
+		},
 	},
 	opts = {
 		language = "Japanese",
+	},
+	prompt_library = {
+		["With Copilot Instructions"] = {
+			strategy = "chat",
+			description = "Read and discuss the Copilot instructions from the file",
+			opts = {
+				auto_submit = false,
+				short_name = "copilot",
+			},
+			references = {
+				{
+					type = "file",
+					path = ".github/copilot-instructions.md",
+				},
+			},
+		},
 	},
 	display = {
 		chat = {
@@ -64,6 +82,13 @@ require('codecompanion').setup({
 				show_default_prompt_library = true, -- Show the default prompt library in the action palette?
 			},
 		},
+		diff = {
+			enabled = true,
+			close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+			layout = "vertical", -- vertical|horizontal split for default provider
+			opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+			provider = "default", -- default|mini_diff
+		},
 	},
 })
 
@@ -72,3 +97,5 @@ vim.keymap.set({ 'n', 'v' }, '<leader>cf', ':CodeCompanion<CR>', { silent = true
 vim.keymap.set({ 'n', 'v' }, '<leader>cc', ':CodeCompanionChat<CR>', { silent = true, desc = 'Chat with CodeCompanion' })
 vim.keymap.set({ 'n', 'v' }, '<leader>ca', ':CodeCompanionActions<CR>',
 	{ silent = true, desc = 'Action by CodeCompanion' })
+
+vim.cmd([[cab cc CodeCompanion]])
