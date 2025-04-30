@@ -27,8 +27,10 @@ require('which-key').setup {}
 
 # --- Rich UI
 [[plugins]]
+repo = 'https://github.com/MunifTanjim/nui.nvim'
+
+[[plugins]]
 repo = 'https://github.com/rcarriga/nvim-notify'
-on_lua = ['notify']
 lua_source = '''
 require('notify').setup({
   background_colour = "#000000",
@@ -36,6 +38,28 @@ require('notify').setup({
 })
 
 vim.notify = require('notify')
+'''
+
+[[plugins]]
+repo = "https://github.com/folke/noice.nvim"
+depends = ['MunifTanjim/nui.nvim', 'rcarriga/nvim-notify']
+lua_source = '''
+require("noice").setup({
+  lsp = {
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    long_message_to_split = true,
+    inc_rename = false,
+    lsp_doc_border = false,
+  },
+})
 '''
 
 [[plugins]]
@@ -350,4 +374,3 @@ repo = 'https://github.com/stevearc/aerial.nvim'
 lua_source = '''
 require('rc.aerial')
 '''
-
