@@ -41,6 +41,12 @@ vim.notify = require('notify')
 '''
 
 [[plugins]]
+repo = 'https://github.com/j-hui/fidget.nvim'
+lua_source = '''
+require("fidget").setup()
+'''
+
+[[plugins]]
 repo = "https://github.com/folke/noice.nvim"
 depends = ['MunifTanjim/nui.nvim', 'rcarriga/nvim-notify']
 lua_source = '''

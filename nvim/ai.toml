@@ -28,7 +28,8 @@ repo = 'https://github.com/olimorris/codecompanion.nvim'
 depends = [
 	'plenary.nvim',
 	'nvim-treesitter/nvim-treesitter',
-	'copilot.lua'
+	'copilot.lua',
+	'fidget.nvim'
 ]
 lua_source = '''
 	require('rc.codecompanion')

@@ -53,6 +53,9 @@ require('codecompanion').setup({
 	opts = {
 		language = "Japanese",
 	},
+	init = function()
+		require("rc.codecompanion.fidget-spinner"):init()
+	end,
 	prompt_library = {
 		["With Copilot Instructions"] = {
 			strategy = "chat",
