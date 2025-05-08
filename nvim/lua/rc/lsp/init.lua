@@ -16,7 +16,9 @@ require("mason-lspconfig").setup {
 	automatic_installation = false,
 }
 
-register_servers()
+local names = require('mason-lspconfig').get_available_servers()
+
+register_servers(names)
 setup_keymap()
 
 
