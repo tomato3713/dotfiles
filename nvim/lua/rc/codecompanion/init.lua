@@ -93,6 +93,20 @@ require('codecompanion').setup({
 			provider = "default", -- default|mini_diff
 		},
 	},
+	extensions = {
+		history = {
+			enabled = true,
+			opts = {
+				keymap = "gh",
+				auto_generate_title = true,
+				continue_last_chat = false,
+				delete_on_clearing_chat = false,
+				picker = "default",
+				enable_logging = false,
+				dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+			}
+		},
+	}
 })
 
 
@@ -102,3 +116,4 @@ vim.keymap.set({ 'n', 'v' }, '<leader>ca', ':CodeCompanionActions<CR>',
 	{ silent = true, desc = 'Action by CodeCompanion' })
 
 vim.cmd([[cab cc CodeCompanion]])
+

@@ -29,8 +29,12 @@ depends = [
 	'plenary.nvim',
 	'nvim-treesitter/nvim-treesitter',
 	'copilot.lua',
-	'fidget.nvim'
+	'fidget.nvim',
+	'ravitemer/codecompanion-history.nvim',
 ]
 lua_source = '''
 	require('rc.codecompanion')
 '''
+
+[[plugins]]
+repo = 'https://github.com/ravitemer/codecompanion-history.nvim'
