@@ -1,39 +1,14 @@
 local _M = {}
 
 local helper = require('rc.helper.ddu')
+local ff_helper = require('rc.ddu.ui-ff')
+local filer_helper = require('rc.ddu.ui-filer')
 
 local function setup_ui_params()
 	helper.patch_global('ui', 'ff')
 	helper.patch_global('uiParams', {
-		ff = {
-			autoResize = true,
-			prompt = '$ ',
-			split = 'floating',
-			autoAction = {
-				name = 'preview',
-			},
-			maxDisplayItems = 500,
-			startAutoAction = true,
-			previewFloating = true,
-			previewFloatingBorder = 'single',
-			previewSplit = 'horizontal',
-			floatingBorder = 'single',
-			highlights = {
-				floatingBorder = 'Special',
-			},
-		},
-		filer = {
-			statusline = false,
-			displayRoot = true,
-			displayTree = true,
-			split = 'floating',
-			floatingBorder = 'single',
-			startAutoAction = true,
-			previewFloating = true,
-			autoAction = {
-				name = 'preview',
-			},
-		},
+		ff = ff_helper.ui_params,
+		filer = filer_helper.ui_params,
 	})
 end
 
@@ -218,10 +193,24 @@ _M.set_keymap = function()
 			},
 			desc = 'ddu: file_rec source'
 		},
-		{ key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
 		{ key = '<Space>a', config = { sources = { 'lsp_codeAction' } }, desc = 'ddu: lsp codeAction source' },
 		{ key = ',d',       config = { sources = { 'lsp_diagnostic' } }, desc = 'ddu: lsp diagnostics' },
 		{ key = ',t',       config = { sources = { 'tab' } },            desc = 'ddu: tabs source' },
+		{
+			key = ',c',
+			config = {
+				ui = 'filer',
+				sources = { 'file' },
+				searchPath = vim.fn.expand('%:p:h'),
+				uiParams = {
+					filer = {
+						displayTree = true,
+					},
+				}
+			},
+			desc = 'ddu: current file source'
+		},
+		-- { key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
 	}
 
 	for _, v in ipairs(res) do
