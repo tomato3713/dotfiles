@@ -71,6 +71,37 @@ require('codecompanion').setup({
 				},
 			},
 		},
+		['Diff code review'] = {
+			strategy = 'chat',
+			description = 'Perform a code review',
+			opts = {
+				auto_submit = true,
+				user_prompt = false,
+			},
+			prompts = {
+				{
+					role = 'user',
+					content = function()
+						local target_branch = vim.fn.input(
+						'Target branch for merge base diff (default: main): ', 'main')
+
+						return string.format(
+							[[
+以下のコード変更をレビューしてください。  
+潜在的なバグ、パフォーマンスの問題、セキュリティ上の脆弱性、または可読性や保守性を向上させるためにリファクタリングが可能な箇所を特定してください。  
+理由を明確に説明し、具体的な改善提案を提供してください。  
+エッジケース、エラーハンドリング、ベストプラクティスやコーディング標準への準拠も考慮してください。  
+以下がコード変更です:  
+           ```
+            %s
+           ```
+           ]],
+							vim.fn.system('git diff --merge-base ' .. target_branch)
+						)
+					end,
+				},
+			},
+		},
 	},
 	display = {
 		chat = {
@@ -114,6 +145,4 @@ vim.keymap.set({ 'n', 'v' }, '<leader>cf', ':CodeCompanion<CR>', { silent = true
 vim.keymap.set({ 'n', 'v' }, '<leader>cc', ':CodeCompanionChat<CR>', { silent = true, desc = 'Chat with CodeCompanion' })
 vim.keymap.set({ 'n', 'v' }, '<leader>ca', ':CodeCompanionActions<CR>',
 	{ silent = true, desc = 'Action by CodeCompanion' })
-
 vim.cmd([[cab cc CodeCompanion]])
-
