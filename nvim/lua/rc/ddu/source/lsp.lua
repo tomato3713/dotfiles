@@ -24,6 +24,22 @@ return {
 		}
 	},
 	{
+		name = 'references',
+		opt = {
+			sources = {
+				helper.separator('>>Definition<<', '#fc514e'),
+				{
+					name = 'lsp_definition',
+				},
+				helper.separator('>>References<<', '#fc514e'),
+				{
+					name = 'lsp_references',
+					params = { includeDeclaration = false },
+				},
+			},
+		},
+	},
+	{
 		name = 'implementation',
 		opt = {
 			sources = {

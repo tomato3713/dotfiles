@@ -115,16 +115,25 @@ end
 -- mappings
 _M.set_keymap = function()
 	local res = {
-		{ key = ',h', config = { sources = { 'help' }, } , desc = 'ddu: help tags source' },
-		{ key = ',o',       config = { sources = { 'mr' } },             desc = 'ddu: mr source' },
-		{ key = ',m',       config = { sources = { 'marks' } },          desc = 'ddu: marks source' },
-		{ key = ',b',       config = { sources = { 'buffer' } },         desc = 'ddu: buffer source' },
-		{ key = ',f',       config = { name = 'node-files' },            desc = 'ddu: file_rec source' },
-		{ key = ',F',       config = { name = 'filer', },                desc = 'ddu: file_rec source' },
-		{ key = '<Space>a', config = { sources = { 'lsp_codeAction' } }, desc = 'ddu: lsp codeAction source' },
-		{ key = ',d',       config = { sources = { 'lsp_diagnostic' } }, desc = 'ddu: lsp diagnostics' },
-		{ key = ',t',       config = { sources = { 'tab' } },            desc = 'ddu: tabs source' },
-		{ key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
+		{ key = ',f',        config = { name = 'node-files' },            desc = 'ddu: file_rec source' },
+		{ key = ',F',        config = { name = 'filer', },                desc = 'ddu: file_rec source' },
+		{ key = ',h',        config = { sources = { 'help' }, },          desc = 'ddu: help tags source' },
+		{ key = ',o',        config = { sources = { 'mr' } },             desc = 'ddu: mr source' },
+		{ key = ',m',        config = { sources = { 'marks' } },          desc = 'ddu: marks source' },
+		{ key = ',b',        config = { sources = { 'buffer' } },         desc = 'ddu: buffer source' },
+		{ key = ',t',        config = { sources = { 'tab' } },            desc = 'ddu: tabs source' },
+		{ key = ',c',        config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
+
+		-- lsp
+		{ key = '<Space>a',  config = { sources = { 'lsp_codeAction' } }, desc = 'ddu: lsp codeAction source' },
+		{ key = ',d',        config = { sources = { 'lsp_diagnostic' } }, desc = 'ddu: lsp diagnostics' },
+		{ key = '<Space>h',  config = { name = 'lsp_callHierarchy' },     desc = 'ddu: lsp_callHierarchy/outgoing and incoming calls' },
+		{ key = 'gi',        config = { name = 'lsp_implementation' },    desc = 'textDocument/implementation' },
+		{ key = 'gd',        config = { name = 'lsp_definition' },        desc = 'textDocument/definition' },
+		{ key = 'gD',        config = { name = 'lsp_declaration' },       desc = 'textDocument/declaration' },
+		{ key = '<space>wl', config = { name = 'workspace' },             desc = 'workspaceFolder' },
+		{ key = 'gtd',       config = { name = 'lsp_typeDefinition' },    desc = 'textDocument/typeDefinition' },
+		{ key = 'gr',        config = { name = 'lsp_references' },        desc = 'references' },
 	}
 
 	for _, v in ipairs(res) do
@@ -162,40 +171,6 @@ _M.set_keymap = function()
 			grep(input)
 		end
 	end, { silent = true, noremap = true, desc = 'grep files' })
-
-	vim.keymap.set('n', '<space>h', helper.start({ name = 'lsp_callHierarchy' }),
-		{ silent = true, noremap = true, desc = 'lsp_callHierarchy/outgoing and incoming calls' })
-
-	vim.keymap.set('n', 'gi', helper.start({ name = 'lsp_implementation' }),
-		{ silent = true, noremap = true, desc = 'textDocument/implementation' })
-
-	vim.keymap.set('n', 'gd', helper.start({ name = 'lsp_definition' }),
-		{ silent = true, noremap = true, desc = 'textDocument/definition' })
-
-	vim.keymap.set('n', 'gD', helper.start({ name = 'lsp_declaration' }),
-		{ silent = true, noremap = true, desc = 'textDocument/declaration' })
-
-	vim.keymap.set('n', '<space>wl', helper.start({ name = 'workspace' }),
-		{ silent = true, noremap = true, desc = 'workspaceFolder' })
-
-	vim.keymap.set('n', 'gtd', helper.start({ name = 'lsp_typeDefinition' }),
-		{ silent = true, noremap = true, desc = 'textDocument/typeDefinition' })
-
-	vim.keymap.set('n', 'gr',
-		helper.start({
-			sources = {
-				helper.separator('>>Definition<<', '#fc514e'),
-				{
-					name = 'lsp_definition',
-				},
-				helper.separator('>>References<<', '#fc514e'),
-				{
-					name = 'lsp_references',
-					params = { includeDeclaration = false },
-				},
-			},
-		})
-		, { silent = true, noremap = true, desc = 'textDocument/definition' })
 end
 
 return _M
