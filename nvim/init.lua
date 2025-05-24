@@ -27,6 +27,7 @@ vim.opt.fileencodings = { 'utf-8', 'cp932', 'sjis' } -- 読み込み時UTF-8, CP
 vim.opt.fileformats = { 'unix', 'dos', 'mac' }
 
 -- view
+vim.opt.cmdheight = 0
 vim.opt.number = true
 vim.o.pumblend = 10
 vim.o.termguicolors = true
