@@ -1,14 +1,15 @@
 local _M = {}
 
 local helper = require('rc.helper.ddu')
-local ff_helper = require('rc.ddu.ui-ff')
-local filer_helper = require('rc.ddu.ui-filer')
+local ff = require('rc.ddu.ui-ff')
+local filer = require('rc.ddu.ui-filer')
+local source_lsp = require('rc.ddu.source.lsp')
 
 local function setup_ui_params()
 	helper.patch_global('ui', 'ff')
 	helper.patch_global('uiParams', {
-		ff = ff_helper.ui_params,
-		filer = filer_helper.ui_params,
+		ff = ff.ui_params,
+		filer = filer.ui_params,
 	})
 end
 
@@ -20,61 +21,9 @@ local function setup_lsp_sources()
 		lsp_codeAction = { defaultAction = 'apply' },
 	})
 
-	helper.patch_local('lsp_callHierarchy', {
-		sources = {
-			helper.separator('>>callHierarchy/outgoingCalls<<', '#fc514e'),
-			{
-				name = 'lsp_callHierarchy',
-				params = { method = 'callHierarchy/outgoingCalls' },
-			},
-			helper.separator('>>callHierarchy/incommingCalls<<', '#5e97ec'),
-			{
-				name = 'lsp_callHierarchy',
-				params = { method = 'callHierarchy/incommingCalls' },
-			},
-		},
-		uiParams = {
-			ff = {
-				displayTree = true,
-			}
-		}
-	})
-
-	helper.patch_local('lsp_implementation', {
-		sources = {
-			{
-				name = 'lsp_definition',
-				method = 'textDocument/implementation',
-			},
-		},
-	})
-
-	helper.patch_local('lsp_declaration', {
-		sources = {
-			{
-				name = 'lsp_definition',
-				method = 'textDocument/declaration',
-			},
-		},
-	})
-
-	helper.patch_local('lsp_typeDefinition', {
-		sources = {
-			{
-				name = 'lsp_definition',
-				method = 'textDocument/typeDefinition',
-			},
-		},
-	})
-
-	helper.patch_local('lsp_definition', {
-		sources = {
-			{
-				name = 'lsp_definition',
-				method = 'textDocument/definition',
-			},
-		},
-	})
+	for _, v in pairs(source_lsp) do
+		helper.patch_local('lsp_' .. v.name, v.opt)
+	end
 end
 
 _M.setup = function()
@@ -148,15 +97,14 @@ _M.setup = function()
 		},
 	})
 
-	helper.patch_local('jp-files', {
-		sources = { 'file_rec' },
-		sourceOptions = {
-			file_rec = {
-				matchers = {
-					'matcher_kensaku',
-				},
-			},
-		},
+	helper.patch_local('filer', {
+		ui = 'filer',
+		sources = { 'file' },
+		uiParams = {
+			filer = {
+				displayTree = true,
+			}
+		}
 	})
 
 	setup_lsp_sources()
@@ -167,50 +115,16 @@ end
 -- mappings
 _M.set_keymap = function()
 	local res = {
-		{
-			key = ',h',
-			config = {
-				sources = { 'help' },
-				-- uiParams = { ff = { startFilter = true } }
-			}
-			,
-			desc = 'ddu: help tags source'
-		},
-		{ key = ',o', config = { sources = { 'mr' } },     desc = 'ddu: mr source' },
-		{ key = ',m', config = { sources = { 'marks' } },  desc = 'ddu: marks source' },
-		{ key = ',b', config = { sources = { 'buffer' } }, desc = 'ddu: buffer source' },
-		{ key = ',f', config = { name = 'node-files' },    desc = 'ddu: file_rec source' },
-		{
-			key = ',F',
-			config = {
-				ui = 'filer',
-				sources = { 'file' },
-				uiParams = {
-					filer = {
-						displayTree = true,
-					}
-				}
-			},
-			desc = 'ddu: file_rec source'
-		},
+		{ key = ',h', config = { sources = { 'help' }, } , desc = 'ddu: help tags source' },
+		{ key = ',o',       config = { sources = { 'mr' } },             desc = 'ddu: mr source' },
+		{ key = ',m',       config = { sources = { 'marks' } },          desc = 'ddu: marks source' },
+		{ key = ',b',       config = { sources = { 'buffer' } },         desc = 'ddu: buffer source' },
+		{ key = ',f',       config = { name = 'node-files' },            desc = 'ddu: file_rec source' },
+		{ key = ',F',       config = { name = 'filer', },                desc = 'ddu: file_rec source' },
 		{ key = '<Space>a', config = { sources = { 'lsp_codeAction' } }, desc = 'ddu: lsp codeAction source' },
 		{ key = ',d',       config = { sources = { 'lsp_diagnostic' } }, desc = 'ddu: lsp diagnostics' },
 		{ key = ',t',       config = { sources = { 'tab' } },            desc = 'ddu: tabs source' },
-		{
-			key = ',c',
-			config = {
-				ui = 'filer',
-				sources = { 'file' },
-				searchPath = vim.fn.expand('%:p:h'),
-				uiParams = {
-					filer = {
-						displayTree = true,
-					},
-				}
-			},
-			desc = 'ddu: current file source'
-		},
-		-- { key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
+		{ key = ',c',       config = { sources = { 'colorscheme' } },    desc = 'ddu: colorscheme source' },
 	}
 
 	for _, v in ipairs(res) do
