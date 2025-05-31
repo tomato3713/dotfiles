@@ -315,9 +315,6 @@ require('rc.treesitter')
 [[plugins]]
 repo = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects'
 depends = ['nvim-treesitter']
-lua_source = '''
-require('rc.treesitter-textobjects')
-'''
 
 # --- Git ---
 [[plugins]]
