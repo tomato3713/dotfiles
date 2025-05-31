@@ -47,6 +47,20 @@ require("fidget").setup()
 '''
 
 [[plugins]]
+repo = 'https://github.com/folke/snacks.nvim'
+lua_source = '''
+require("snacks").setup({
+  picker = {
+    sources = {
+	files = {
+	   hidden = true, -- 隠しファイルを表示
+	},
+    },
+  },
+})
+'''
+
+[[plugins]]
 repo = "https://github.com/folke/noice.nvim"
 depends = ['MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', 'echasnovski/mini.nvim']
 lua_source = '''

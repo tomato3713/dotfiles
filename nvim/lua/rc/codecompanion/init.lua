@@ -13,32 +13,51 @@ require('codecompanion').setup({
 			slash_commands = {
 				["buffer"] = {
 					opts = {
-						provider = "mini_pick",
+						provider = "snacks",
 					},
 				},
 				["file"] = {
 					opts = {
-						provider = "mini_pick",
+						provider = "snacks",
 					},
 				},
 				["help"] = {
 					opts = {
-						provider = "mini_pick",
+						provider = "snacks",
 					},
 				},
 				["symbols"] = {
 					opts = {
-						provider = "mini_pick",
+						provider = "snacks",
 					},
 				},
 				["workspace"] = {
 					opts = {
-						provider = "mini_pick",
+						provider = "snacks",
 					},
 				},
 				["actions"] = {
 					opts = {
-						provider = "mini_pick",
+						provider = "snacks",
+					},
+				},
+				["git_files"] = {
+					description = "List git files",
+					---@param chat CodeCompanion.Chat
+					callback = function(chat)
+						local handle = io.popen("git ls-files")
+						if handle ~= nil then
+							local result = handle:read("*a")
+							handle:close()
+							chat:add_reference({ role = "user", content = result }, "git",
+								"<git_files>")
+						else
+							return vim.notify("No git files available", vim.log.levels.INFO,
+								{ title = "CodeCompanion" })
+						end
+					end,
+					opts = {
+						contains_code = false,
 					},
 				},
 			},
@@ -83,15 +102,15 @@ require('codecompanion').setup({
 					role = 'user',
 					content = function()
 						local target_branch = vim.fn.input(
-						'Target branch for merge base diff (default: main): ', 'main')
+							'Target branch for merge base diff (default: main): ', 'main')
 
 						return string.format(
 							[[
-以下のコード変更をレビューしてください。  
-潜在的なバグ、パフォーマンスの問題、セキュリティ上の脆弱性、または可読性や保守性を向上させるためにリファクタリングが可能な箇所を特定してください。  
-理由を明確に説明し、具体的な改善提案を提供してください。  
-エッジケース、エラーハンドリング、ベストプラクティスやコーディング標準への準拠も考慮してください。  
-以下がコード変更です:  
+以下のコード変更をレビューしてください。
+潜在的なバグ、パフォーマンスの問題、セキュリティ上の脆弱性、または可読性や保守性を向上させるためにリファクタリングが可能な箇所を特定してください。
+理由を明確に説明し、具体的な改善提案を提供してください。
+エッジケース、エラーハンドリング、ベストプラクティスやコーディング標準への準拠も考慮してください。
+以下がコード変更です:
            ```
             %s
            ```
@@ -110,7 +129,7 @@ require('codecompanion').setup({
 		},
 		action_palette = {
 			prompt = "Prompt ", -- Prompt used for interactive LLM calls
-			provider = "mini_pick", -- Can be "default", "telescope", or "mini_pick". If not specified, the plugin will autodetect installed providers.
+			provider = "snacks", -- Can be "default", "telescope", or "mini_pick". If not specified, the plugin will autodetect installed providers.
 			opts = {
 				show_default_actions = true, -- Show the default actions in the action palette?
 				show_default_prompt_library = true, -- Show the default prompt library in the action palette?
@@ -130,9 +149,9 @@ require('codecompanion').setup({
 			opts = {
 				keymap = "gh",
 				auto_generate_title = true,
-				continue_last_chat = false,
+				continue_last_chat = true,
 				delete_on_clearing_chat = false,
-				picker = "default",
+				picker = "snacks",
 				enable_logging = false,
 				dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
 			}

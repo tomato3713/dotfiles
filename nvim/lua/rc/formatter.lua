@@ -28,6 +28,10 @@ require('formatter').setup({
 			require('formatter.filetypes.css').prettier,
 		},
 
+		scss = {
+			require('formatter.filetypes.css').prettier,
+		},
+
 		go = {
 			require('formatter.filetypes.go').gofmt,
 		},
@@ -67,7 +71,7 @@ require('formatter').setup({
 })
 
 require('my.utils').nvim_create_autocmd({ 'BufWritePost' }, {
-	pattern = { '*.go', '*.pl', '*.pm', '*.tsx', '*.lua' },
+	pattern = { '*.go', '*.pl', '*.pm', '*.tsx', '*.lua', '*.scss' },
 	callback = function()
 		vim.cmd('FormatWrite')
 	end,
