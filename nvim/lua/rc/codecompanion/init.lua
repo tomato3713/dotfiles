@@ -149,7 +149,7 @@ require('codecompanion').setup({
 			opts = {
 				keymap = "gh",
 				auto_generate_title = true,
-				continue_last_chat = true,
+				continue_last_chat = false,
 				delete_on_clearing_chat = false,
 				picker = "snacks",
 				enable_logging = false,
