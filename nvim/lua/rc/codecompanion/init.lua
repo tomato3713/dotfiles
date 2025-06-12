@@ -1,5 +1,4 @@
--- ddc.vim の補完例
--- https://github.com/atusy/dotfiles/blob/7f1a22c6e4e4cad43d37571c297b10c30572b921/dot_config/nvim/lua/plugins/ddc/codecompanion.lua#L17
+require("rc.codecompanion.fidget-spinner"):init()
 require('codecompanion').setup({
 	strategies = {
 		chat = {
@@ -72,9 +71,6 @@ require('codecompanion').setup({
 	opts = {
 		language = "Japanese",
 	},
-	init = function()
-		require("rc.codecompanion.fidget-spinner"):init()
-	end,
 	prompt_library = {
 		["With Copilot Instructions"] = {
 			strategy = "chat",
