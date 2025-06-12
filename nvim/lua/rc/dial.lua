@@ -2,6 +2,7 @@ vim.g["dps_dial#augends"] = {
 	'decimal',
 	'date-slash',
 	{ kind = 'constant', opts = { elements = { 'true', 'false' }, cyclic = true, word = false } },
+	{ kind = 'constant', opts = { elements = { 'left', 'right' }, cyclic = true, word = false } },
 	{ kind = 'constant', opts = { elements = { 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' }, cycle = true, word = true } },
 	{ kind = 'constant', opts = { elements = { 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' }, cycle = true, word = true } },
 	{ kind = 'case',     opts = { cases = { 'camelCase', 'snake_case' }, cyclic = true } },
