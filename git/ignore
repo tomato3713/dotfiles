@@ -64,8 +64,6 @@ Sessionx.vim
 
 # Temporary
 .netrwhist
-# Auto-generated tag files
-tags
 # Persistent undo
 [._]*.un~
 
@@ -97,5 +95,11 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,linux,vim
 
+.worktrees/
+
+.claude/worktrees/
+
 .vscode/
 
+
+**/.claude/settings.local.json
