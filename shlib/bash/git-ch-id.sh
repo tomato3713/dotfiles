@@ -8,5 +8,5 @@ ch-git-name()
 
     opt="s/${oldID}/${newID}/"
 
-    git remote set-url origin `git config --get remote.origin.url | sed "${opt}"`
+    git remote set-url origin "$(git config --get remote.origin.url | sed "${opt}")"
 }

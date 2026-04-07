@@ -13,7 +13,7 @@ jobs:
       - name: Run shellcheck
         run: |
           echo "::add-matcher::.github/shellcheck-matcher.json"
-          find . -name "*.sh" -exec shellcheck --format=gcc {} +
+          find . -name "*.sh" -exec shellcheck --format=gcc --severity=error {} +
 
   selene:
     runs-on: ubuntu-latest

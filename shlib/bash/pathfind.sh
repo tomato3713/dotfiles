@@ -22,6 +22,7 @@
 IFS='
  	'
 # 信頼できる場所からのみプログラムを呼び出すようにする。
+# shellcheck disable=SC2034  # eval経由で参照される
 OLDPATH="$PATH"
 PATH=/bin:/usr/bin
 export PATH

@@ -27,9 +27,9 @@ run() {
     result=$?
 
     if [ $result -ne 0 ]; then
-        echo -n $(colored $red "Faild: ")
-        echo -n $(colored $cyan "$0")
-        echo $(colored $yellow " [$PWD]")
+        echo -n "$(colored $red "Faild: ")"
+        echo -n "$(colored $cyan "$0")"
+        echo "$(colored $yellow " [$PWD]")"
         exit $result
     fi
     return 0
