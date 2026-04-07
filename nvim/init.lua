@@ -7,7 +7,7 @@ _G.favoriteList = {}
 table.insert(_G.favoriteList, 'DeinClearCache')
 table.insert(_G.favoriteList, 'GinStatus')
 table.insert(_G.favoriteList, 'TodoQuickFix')
-table.insert(_G.favoriteList, 'TodoLocList' )
+table.insert(_G.favoriteList, 'TodoLocList')
 
 vim.keymap.set({ 'n', 'x' }, 'g?', function() require('my.selector')(_G.favoriteList, vim.fn.execute) end)
 
@@ -17,8 +17,8 @@ require('my.cmd').setup()
 require('my.keymap').global_mapping()
 require('my.keymap').filetype_mapping()
 
-vim.api.nvim_set_var('loaded_vimball', 1)
-vim.api.nvim_set_var('loaded_vimballPlugin', 1)
+vim.g.loaded_vimball = 1
+vim.g.loaded_vimballPlugin = 1
 
 -- encoding setting
 vim.o.encoding = 'utf-8'                             -- バッファ内で扱う文字コード
@@ -93,7 +93,7 @@ vim.opt.wildignore = {
 }
 
 -- terminal mode
-local sysname = vim.loop.os_uname().sysname
+local sysname = vim.uv.os_uname().sysname
 if sysname == 'Windows_NT' then
 	vim.o.shell = 'nyagos'
 	vim.o.shcf = '-c'
@@ -104,6 +104,18 @@ end
 utils.nvim_create_autocmd({ 'BufEnter' }, {
 	callback = require('my.fn').none_ft_set_txt,
 	desc = 'set default filetype as plain text',
+})
+
+vim.api.nvim_create_autocmd("RecordingEnter", {
+	callback = function()
+		vim.cmd("colorscheme evening")
+	end,
+})
+
+vim.api.nvim_create_autocmd("RecordingLeave", {
+	callback = function()
+		vim.cmd("colorscheme monokai")
+	end,
 })
 
 require('rc.dein').init()

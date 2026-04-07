@@ -12,25 +12,25 @@ require('formatter').setup({
 			end,
 		},
 
-		typescriptreact = {
-			require('formatter.filetypes.typescriptreact').prettier,
-		},
-
-		typescript = {
-			require('formatter.filetypes.typescript').prettier,
-		},
-
-		javascript = {
-			require('formatter.filetypes.javascript').prettier,
-		},
-
-		css = {
-			require('formatter.filetypes.css').prettier,
-		},
-
-		scss = {
-			require('formatter.filetypes.css').prettier,
-		},
+		-- typescriptreact = {
+		-- 	require('formatter.filetypes.typescriptreact').prettier,
+		-- },
+		--
+		-- typescript = {
+		-- 	require('formatter.filetypes.typescript').prettier,
+		-- },
+		--
+		-- javascript = {
+		-- 	require('formatter.filetypes.javascript').prettier,
+		-- },
+		--
+		-- css = {
+		-- 	require('formatter.filetypes.css').prettier,
+		-- },
+		--
+		-- scss = {
+		-- 	require('formatter.filetypes.css').prettier,
+		-- },
 
 		go = {
 			require('formatter.filetypes.go').gofmt,

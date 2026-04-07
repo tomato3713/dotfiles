@@ -14,24 +14,26 @@ register_servers(names)
 setup_keymap()
 
 
-vim.lsp.set_log_level("OFF")
+vim.lsp.log.set_level("OFF")
 
--- LSPの警告フォーマット
--- ref: https://dev.classmethod.jp/articles/eetann-change-neovim-lsp-diagnostics-format/
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-	virtual_text = {
-		format = function(diagnostic)
-			return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
+vim.lsp.config('*', {
+	handlers = {
+		['textDocument/signatureHelp'] = function(err, result, ctx, config)
+			vim.lsp.handlers.signature_help(err, result, ctx, vim.tbl_extend('keep', config or {}, {
+				silent = true,
+				border = "single",
+			}))
 		end,
 	},
-})
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-	silent = true,
-	border = "single",
 })
 vim.diagnostic.config({
 	float = {
 		border = "single",
 		severity_sort = true,
+	},
+	virtual_text = {
+		format = function(diagnostic)
+			return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
+		end,
 	},
 })

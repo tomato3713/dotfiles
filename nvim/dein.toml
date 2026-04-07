@@ -139,7 +139,7 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
-repo = 'https://github.com/norcalli/nvim-colorizer.lua'
+repo = 'https://github.com/NvChad/nvim-colorizer.lua'
 lua_source = '''
 require('colorizer').setup()
 '''
@@ -336,8 +336,8 @@ repo = 'https://github.com/obaland/vfiler.vim'
 # on_cmd = ['VFiler'] # TODO: lazy
 lua_add = '''
 -- Disable embedded plugins.
-vim.api.nvim_set_var('loaded_netrw', 1)
-vim.api.nvim_set_var('loaded_netrwPlugin', 1)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 local opts = { noremap=true, silent=true }
 --- open filer in window

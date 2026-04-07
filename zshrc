@@ -24,7 +24,10 @@ export SAVEHIST=100000
 setopt hist_ignore_dups
 setopt share_history
 setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
 setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_NO_STORE
 function history-all { history -E 1 }
 # http://mollifier.hatenablog.com/entry/20090728/p1
 zshaddhistory() {
@@ -51,6 +54,7 @@ alias nn=nvim $*
 alias g=git
 alias Gin=git
 alias GinBuffer=git
+alias python="python3"
 # alias gcd='cd `git rev-parse --show-toplevel`'
 
 # -----------------------------------
@@ -94,17 +98,42 @@ start-emacs-daemon() {
 zle -N peco-src
 bindkey '^]' peco-src
 
+# ------------------------------------
+# --------- Insert Datestamp ---------
+# ------------------------------------
+# 1. 日付を挿入する関数（ウィジェット）を定義
+insert-datestamp() {
+  LBUFFER="${LBUFFER}$(date +%Y-%m-%d)"
+}
+
+# 2. ZLEウィジェットとして登録
+zle -N insert-datestamp
+
+# 3. Ctrl-t ( ^T ) に割り当て
+bindkey '^T' insert-datestamp
+
 # -----------------------------------
 # ------------ PROMPT ---------------
 # -----------------------------------
+source $(brew --prefix)/opt/zsh-git-prompt/zshrc.sh
+autoload -Uz vcs_info
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
+zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
+zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+setopt prompt_subst
+# Gitリポジトリ以外ではGitリポジトリの状態を表示しない
 git_prompt() {
-  local branchname
-  branchname=`git symbolic-ref --short HEAD 2> /dev/null`
-  if [ -z $branchname ]; then
-    PROMPT="%~"$'\n'"%# "
-  fi
-  PROMPT="%~"$'\n'"[$branchname] %# "
+ if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = true ]; then
+   # local branchname
+   export PROMPT="[%B%F{red}%n@local%f%b:%F{green}%~%f]%F{cyan} ${vcs_info_msg_0_} "$'\n'"> " 
+ else
+   export PROMPT="[%B%F{red}%n@local%f%b:%F{green}%~%f]%F{cyan}%f"$'\n'"> " 
+ fi
 }
 precmd() {
-  git_prompt
+ vcs_info
+ git_prompt
 }
+

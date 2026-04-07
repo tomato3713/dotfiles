@@ -1,8 +1,8 @@
 return function()
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set("n", "<Space>df", "<cmd>lua vim.diagnostic.open_float()<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "[e", "<cmd>lua vim.diagnostic.goto_prev()<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "]e", "<cmd>lua vim.diagnostic.goto_next()<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "[e", function() vim.diagnostic.jump({ count = -1 }) end, { noremap = true, silent = true })
+vim.keymap.set("n", "]e", function() vim.diagnostic.jump({ count = 1 }) end, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>f",
 	function() require("my.utils").keep_cursor(vim.lsp.buf.format) end,
@@ -21,9 +21,9 @@ vim.keymap.set("n", "<Space>f",
 
 	-- code walking
 	--- 前のエラーに移動
-	vim.keymap.set("n", "g[", "<cmd>:lua vim.lsp.buf.diagnostic.show_prev()<CR>", bufopts)
+	vim.keymap.set("n", "g[", function() vim.diagnostic.jump({ count = -1 }) end, bufopts)
 	--- 次のエラーに移動
-	vim.keymap.set("n", "g]", "<cmd>:lua vim.lsp.buf.diagnostic.show_next()<CR>", bufopts)
+	vim.keymap.set("n", "g]", function() vim.diagnostic.jump({ count = 1 }) end, bufopts)
 
 	-- code edit
 	--- 関数名や変数名をリネーム

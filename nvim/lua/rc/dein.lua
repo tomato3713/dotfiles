@@ -18,7 +18,7 @@ _M.init = function()
 	if (_M.dein_loaded) then return end
 
 	-- https://github.com/settings/tokens
-	vim.api.nvim_set_var('dein#install_github_api_token', os.getenv('DEIN_GITHUB_TOKEN'))
+	vim.g['dein#install_github_api_token'] = os.getenv('DEIN_GITHUB_TOKEN')
 
 	local current_runtimepath = vim.api.nvim_get_option_value('runtimepath', { scope = 'global' })
 	vim.api.nvim_set_option_value('runtimepath', dein_repo_dir .. ',' .. current_runtimepath, { scope = 'global' })
