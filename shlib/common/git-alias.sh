@@ -1,3 +1,4 @@
+#!/bin/sh
 git config --global alias.s status
 git config --global alias.d diff
 git config --global alias.b branch

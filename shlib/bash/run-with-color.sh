@@ -19,7 +19,7 @@ cyan=36
 colored() {
     color=$1
     shift
-    echo -e "\033[1;${color}m$@\033[0m"
+    echo -e "\033[1;${color}m$*\033[0m"
 }
 
 run() {

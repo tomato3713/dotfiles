@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # memo command completion function
 _go_memo(){
     local prev cur cword
