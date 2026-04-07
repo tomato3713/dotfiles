@@ -1,4 +1,4 @@
-#! /bin/sh -
+#!/usr/bin/env bash
 
 # Usage:
 #   fd depth base-directory
