@@ -1,0 +1,5 @@
+name = "dotfiles"
+std = "lua51+vim"
+
+[rules]
+unused_variable = "allow"
