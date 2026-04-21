@@ -1,3 +1,4 @@
+#!/bin/sh
 # https://blog.nakanishy.com/truecolor-vim.html
 # なめらかな虹色が表示されればOK
 
