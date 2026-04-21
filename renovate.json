@@ -1,13 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "customManagers": [
+  "minimumReleaseAge": "3 days",
+  "packageRules": [
     {
-      "customType": "regex",
-      "fileMatch": ["^\\.github/workflows/.*\\.yml$"],
-      "matchStrings": ["SELENE_VERSION: \"(?<currentValue>[\\d\\.]+)\""],
-      "depNameTemplate": "Kampfkarren/selene",
-      "datasourceTemplate": "github-releases"
-    }
-  ]
+      matchDepTypes: ["action"],
+      excludePackagePrefixes: ["actions/"],
+      pinDigests: true,
+    },
+  ],
 }
