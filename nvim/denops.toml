@@ -63,13 +63,7 @@ lua_add = '''
 '''
 
 # --- Git ---
-
-[[plugins]]
-repo = 'https://github.com/lambdalisue/gin.vim'
-depends = ['denops.vim']
-lua_source = '''
-require('rc.gin')
-'''
+# TODO
 
 # --- SKK ---
 [[plugins]]
@@ -93,17 +87,6 @@ lua_source = '''
 '''
 
 # --- LSP ---
-
-# [[plugins]]
-# # to show lsp signature help
-# https://github.com/matsui54/denops-signature_help/issues/34 
-# repo = 'https://github.com/matsui54/denops-signature_help'
-# depends = ['denops.vim']
-# hook_source = '''
-#   let g:signature_help_config = { 'contentsStyle': 'full', 'viewStyle': 'floating' }
-#   call signature_help#enable()
-# '''
-
 [[plugins]]
 repo = 'https://github.com/matsui54/denops-popup-preview.vim'
 depends = ['denops.vim']
@@ -111,7 +94,3 @@ hook_source = '''
 call popup_preview#enable()
 '''
 
-# --- Docker ---
-# [[plugins]]
-# repo = 'https://github.com/skanehira/denops-docker.vim'
-# depends = ['denops.vim' ]

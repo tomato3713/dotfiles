@@ -74,12 +74,6 @@ require('nvim-web-devicons').setup()
 '''
 
 [[plugins]]
-repo = 'https://github.com/goolord/alpha-nvim'
-lua_source = '''
-require'alpha'.setup(require'alpha.themes.startify'.config)
-'''
-
-[[plugins]]
 repo = 'https://github.com/0xAdk/full_visual_line.nvim'
 on_event = ['ModeChanged']
 lua_source = '''
