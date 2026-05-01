@@ -81,13 +81,6 @@ lua_source = '''
 '''
 
 [[plugins]]
-repo = 'https://github.com/lukas-reineke/indent-blankline.nvim'
-on_event = ['BufReadPre', 'BufNewFile']
-lua_source = '''
---  require('rc.indent_blankline')
-'''
-
-[[plugins]]
 repo = 'https://github.com/shellRaining/hlchunk.nvim'
 on_event = ['BufReadPre', 'BufNewFile']
 lua_source = '''
@@ -237,13 +230,6 @@ repo = 'https://github.com/echasnovski/mini.nvim'
 depends = ['nvim-ts-context-commentstring']
 lua_source = '''
 require('rc.mini')
-'''
-
-[[plugins]]
-repo = 'https://github.com/nvim-treesitter/nvim-treesitter-context'
-depends = ['nvim-treesitter']
-lua_source = '''
-require('treesitter-context').setup({ enable = false })
 '''
 
 [[plugins]]

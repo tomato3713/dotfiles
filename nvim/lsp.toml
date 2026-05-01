@@ -12,14 +12,6 @@ lua_source = '''
 require('rc.lsp')
 '''
 
-# [[plugins]]
-# repo = 'https://github.com/soulis-1256/eagle.nvim'
-# lua_source = '''
-# require("eagle").setup({})
-#
-# vim.o.mousemoveevent = true
-# '''
-
 # ---- Additional LS support ----
 # -------- LuaLS --------
 [[plugins]]
