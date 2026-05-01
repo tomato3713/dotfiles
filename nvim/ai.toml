@@ -7,34 +7,3 @@
 #   vim.g.copilot_filetypes = { text = true }
 # '''
 
-[[plugins]]
-repo = 'https://github.com/zbirenbaum/copilot.lua'
-lua_source = '''
-require("copilot").setup({
-  suggestion = { enabled = false },
-  panel = { enabled = false },
-})
-'''
-
-# [[plugins]]
-# repo = 'https://github.com/CopilotC-Nvim/CopilotChat.nvim'
-# depends = ['copilot.vim', 'plenary.nvim']
-# lua_source = '''
-#   require('rc.copilot')
-# '''
-
-[[plugins]]
-repo = 'https://github.com/olimorris/codecompanion.nvim'
-depends = [
-	'plenary.nvim',
-	'nvim-treesitter/nvim-treesitter',
-	'copilot.lua',
-	'fidget.nvim',
-	'ravitemer/codecompanion-history.nvim',
-]
-lua_source = '''
-	require('rc.codecompanion')
-'''
-
-[[plugins]]
-repo = 'https://github.com/ravitemer/codecompanion-history.nvim'
