@@ -76,8 +76,17 @@ vim.opt.backup = false
 vim.o.ignorecase = true
 vim.opt.wrapscan = false -- no loop when search word
 
--- set wildmenu wildmode=longest:full
-vim.o.wildmenu = false
+-- cmdline 補完は nvim-cmp を使わず標準の wildmenu を入力に合わせて自動表示する
+vim.o.wildmenu = true
+vim.o.wildmode = 'noselect:lastused,full'
+vim.o.wildoptions = 'pum,fuzzy'
+vim.api.nvim_create_autocmd('CmdlineChanged', {
+	pattern = { ':', '/', '?' },
+	callback = function()
+		vim.fn.wildtrigger()
+	end,
+	desc = 'cmdline autocompletion',
+})
 vim.opt.wildignore = {
 	'*.o',
 	'*.obj',

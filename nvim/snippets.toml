@@ -4,6 +4,10 @@ repo = 'https://github.com/hrsh7th/vim-vsnip'
 on_event = 'InsertEnter'
 depends = ['friendly-snippets']
 lua_add = '''
+  -- 補完メニューにはスニペットを出さないため、prefix を入力してから明示的に展開する
+  vim.keymap.set({'i', 's'}, '<C-l>',  function()
+      return vim.fn['vsnip#available'](1) == 1 and '<Plug>(vsnip-expand-or-jump)' or '<C-l>'
+  end, { expr = true, noremap = false })
   vim.keymap.set({'i', 's'}, '<C-f>',  function()
       return vim.fn['vsnip#jumpable'](1) == 1 and '<Plug>(vsnip-jump-next)' or '<C-f>'
   end, { expr = true, noremap = false })

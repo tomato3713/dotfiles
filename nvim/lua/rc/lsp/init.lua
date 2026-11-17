@@ -1,8 +1,3 @@
--- 全サーバー共通の設定。after/lsp/*.lua のサーバー個別設定より先に定義しておく
-vim.lsp.config('*', {
-	capabilities = require('cmp_nvim_lsp').default_capabilities(),
-})
-
 require('mason').setup()
 -- mason でインストール済みのサーバーだけを vim.lsp.enable() する (automatic_enable はデフォルト有効)。
 -- get_available_servers() はレジストリ上の全サーバーを返すため、未インストールのものまで enable されてしまう
@@ -12,6 +7,7 @@ require('rc.lsp.keymap')()
 
 vim.lsp.log.set_level('OFF')
 
+-- 補完は nvim-cmp を使わず Neovim 標準の LSP 補完に一本化している
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(ev)
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
