@@ -26,6 +26,7 @@ local T = MiniTest.new_set({
 local function chdir_to_fixture(files)
 	child.lua([[
 		local dir = vim.fn.tempname()
+		vim.fn.mkdir(dir, 'p')
 		for path, lines in pairs(...) do
 			local full = dir .. '/' .. path
 			vim.fn.mkdir(vim.fs.dirname(full), 'p')
@@ -74,8 +75,28 @@ T['grep']['rg の出力からファイル・行・列を取り出す'] = functio
 	child.lua([[sources.grep('baz')]])
 	wait_loaded()
 	eq(child.lua_get([[_G.f.items]]), {
-		{ text = 'a.txt:2: bar baz', filter_text = 'a.txt', file = 'a.txt', lnum = 2, col = 7 },
+		{ text = 'a.txt:2: bar baz', filter_text = 'a.txt', file = child.fn.getcwd() .. '/a.txt', lnum = 2, col = 7 },
 	})
+end
+
+T['grep']['検索対象のディレクトリを検索パターンの欄のタイトルに表示する'] = function()
+	chdir_to_fixture({})
+	child.lua([[sources.grep('')]])
+	eq(child.lua_get([[vim.api.nvim_win_get_config(_G.f.input_wins[1]).title[1][1] ]]),
+		' Grep: ' .. child.fn.fnamemodify(child.fn.getcwd(), ':~') .. ' ')
+end
+
+T['grep']['起動後にカレントディレクトリが変わっても起動時のディレクトリで検索して開く'] = function()
+	skip_without_rg()
+	chdir_to_fixture({ ['a.txt'] = { 'foo' } })
+	local dir = child.fn.getcwd()
+	child.lua([[sources.grep('')]])
+	child.cmd('cd /')
+	child.type_keys('foo')
+	child.lua([[vim.wait(3000, function() return #_G.f.items > 0 and not _G.f.loading end)]])
+	child.type_keys('<C-g>', '<CR>')
+	child.lua([[vim.wait(200, function() return vim.api.nvim_buf_get_name(0) ~= '' end)]])
+	eq(child.fn.resolve(child.api.nvim_buf_get_name(0)), child.fn.resolve(dir .. '/a.txt'))
 end
 
 T['grep']['検索パターンの欄を書き換えると rg を実行し直す'] = function()
@@ -98,7 +119,7 @@ T['grep']['絞り込み欄は中身ではなくファイルパスだけを対象
 	wait_loaded()
 	child.type_keys('xyz')
 	child.lua([[vim.wait(50)]])
-	eq(child.lua_get([[vim.tbl_map(function(r) return r.item.file end, _G.f.results)]]), { 'xyz.txt' })
+	eq(child.lua_get([[vim.tbl_map(function(r) return r.item.filter_text end, _G.f.results)]]), { 'xyz.txt' })
 end
 
 T['grep']['検索パターンが空なら検索パターンの欄から入力を始める'] = function()

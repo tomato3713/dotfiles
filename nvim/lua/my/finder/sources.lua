@@ -34,10 +34,12 @@ end
 ---@param word? string 検索パターンの初期値。空なら検索パターンの入力から始める
 function M.grep(word)
 	word = word or ''
+	-- 起動時のディレクトリに固定する。:tcd などで後から変わっても、表示と検索対象と開くファイルがずれないように
+	local cwd = vim.fn.getcwd()
 	finder.start({
 		title = 'Grep',
 		inputs = { {
-			title = 'Grep',
+			title = 'Grep: ' .. vim.fn.fnamemodify(cwd, ':~'),
 			default = word,
 			on_change = function(pattern, f)
 				if pattern == '' then
@@ -55,11 +57,12 @@ function M.grep(word)
 							text = string.format('%s:%s: %s', file, lnum, vim.trim(text)),
 							-- 中身は rg のパターンで絞れるので、絞り込み欄はファイルの特定に使う
 							filter_text = file,
-							file = file,
+							file = vim.fs.joinpath(cwd, file),
 							lnum = tonumber(lnum),
 							col = tonumber(col),
 						}
-					end
+					end,
+					{ cwd = cwd }
 				))
 			end,
 		} },

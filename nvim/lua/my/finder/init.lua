@@ -611,11 +611,13 @@ end
 --- 外部コマンドの出力を 1 行ずつ item に変換して流し込む producer を作る
 ---@param cmd string[]
 ---@param parse fun(line: string): finder.Item?
+---@param opts? { cwd?: string } cwd 省略時は Neovim のカレントディレクトリで実行する
 ---@return fun(push: fun(items: finder.Item[]), done: fun()): fun()
-function M.command(cmd, parse)
+function M.command(cmd, parse, opts)
 	return function(push, done)
 		local partial = ''
 		local proc = vim.system(cmd, {
+			cwd = opts and opts.cwd,
 			stdout = function(_, data)
 				if not data then
 					return
