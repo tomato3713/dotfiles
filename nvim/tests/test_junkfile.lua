@@ -49,9 +49,36 @@ T['commands'][':JunkfileDiary は今日の日付のファイルを開く'] = fun
 	eq(vim.fs.basename(child.api.nvim_buf_get_name(0)), os.date('%Y-%m-%d.md'))
 end
 
-T['commands'][':JunkNote は今月の main.md を開く'] = function()
+T['commands'][':JunkNote は引数が無ければ今月の main.md を開く'] = function()
 	child.cmd('JunkNote')
 	eq(child.api.nvim_buf_get_name(0), child.lua_get([[junkfile.path('main.md')]]))
+end
+
+T['commands'][':JunkNote {話題} は月で分けない話題ごとのファイルを開く'] = function()
+	child.cmd('JunkNote 障害対応')
+	eq(child.api.nvim_buf_get_name(0), child.lua_get([[vim.env.XDG_CACHE_HOME]]) .. '/junkfile/topics/障害対応.md')
+end
+
+T['commands'][':JunkNote は既存の話題名を補完する'] = function()
+	child.lua([[
+		for _, topic in ipairs({ 'perl', 'perf', 'go' }) do
+			vim.fn.mkdir(junkfile.topic_dir(), 'p')
+			vim.fn.writefile({}, junkfile.topic_path(topic))
+		end
+	]])
+	eq(child.fn.getcompletion('JunkNote pe', 'cmdline'), { 'perf', 'perl' })
+end
+
+T['topics'] = MiniTest.new_set()
+
+T['topics']['話題のディレクトリがまだ無ければ空を返す'] = function()
+	eq(child.lua_get([[junkfile.topics()]]), {})
+end
+
+T['topics']['/ を含む話題名ではファイルを作らない'] = function()
+	child.lua([[junkfile.open_topic('../escape')]])
+	eq(child.api.nvim_buf_get_name(0), '')
+	eq(child.fn.filereadable(child.lua_get([[junkfile.dir()]]) .. '/escape.md'), 0)
 end
 
 return T

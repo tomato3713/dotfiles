@@ -15,8 +15,20 @@ _M.setup = function()
 	vim.api.nvim_create_user_command('JunkfileDiary', function()
 		junkfile.open(os.date('%Y-%m-%d.md'))
 	end, {})
-	vim.api.nvim_create_user_command('JunkNote', function()
-		junkfile.open('main.md')
-	end, {})
+	-- 引数なしは今月の main.md、引数ありは話題ごとに書き足していくメモを開く
+	vim.api.nvim_create_user_command('JunkNote', function(args)
+		if args.args == '' then
+			junkfile.open('main.md')
+		else
+			junkfile.open_topic(args.args)
+		end
+	end, {
+		nargs = '?',
+		complete = function(lead)
+			return vim.tbl_filter(function(topic)
+				return vim.startswith(topic, lead)
+			end, junkfile.topics())
+		end,
+	})
 end
 return _M
