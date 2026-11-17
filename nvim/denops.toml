@@ -82,7 +82,6 @@ depends = ['skkeleton']
 lua_source = '''
   require('skkeleton_indicator').setup{
   	alwaysShown = false,
-  	ignoreFt = { 'ddu-ui-filter' },
   }
 '''
 

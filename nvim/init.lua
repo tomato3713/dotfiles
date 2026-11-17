@@ -130,3 +130,5 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
 })
 
 require('rc.dein').init()
+
+require('rc.finder')
