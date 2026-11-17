@@ -20,3 +20,28 @@ jobs:
         run: |
           echo "::add-matcher::.github/shellcheck-matcher.json"
           find . -name "*.sh" -exec shellcheck --format=gcc --severity=error {} +
+
+  # ワークフローの構文・式の型・run 内のシェルスクリプトを検査する
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - name: Run actionlint
+        uses: docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
+        with:
+          args: -color
+
+  # actionlint では見ない、権限や認証情報の扱いなどセキュリティ上の問題を検査する
+  zizmor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          # code scanning に結果を送るには security-events: write が要る。ログに出して失敗させるだけで十分なので使わない
+          advanced-security: false
