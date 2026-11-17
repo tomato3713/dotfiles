@@ -1,18 +1,20 @@
-vim.g["dps_dial#augends"] = {
-	'decimal',
-	'date-slash',
-	{ kind = 'constant', opts = { elements = { 'true', 'false' }, cyclic = true, word = false } },
-	{ kind = 'constant', opts = { elements = { 'left', 'right' }, cyclic = true, word = false } },
-	{ kind = 'constant', opts = { elements = { 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' }, cycle = true, word = true } },
-	{ kind = 'constant', opts = { elements = { 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' }, cycle = true, word = true } },
-	{ kind = 'case',     opts = { cases = { 'camelCase', 'snake_case' }, cyclic = true } },
-}
+local dial = require('my.dial')
+local augend = dial.augends
 
-require('my.utils').nvim_create_autocmd({ 'FileType' }, {
-	pattern = 'typescript',
-	callback = function()
-		vim.b["dps_dial#augends"] = {
-			{ kind = 'constant', opts = { elements = { 'let', 'const' }, cyclic = true, word = true } },
-		}
-	end
+dial.setup({
+	augends = {
+		augend.decimal(),
+		augend.date_slash(),
+		augend.constant({ 'true', 'false' }, { word = false }),
+		augend.constant({ 'left', 'right' }, { word = false }),
+		augend.constant({ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' }),
+		augend.constant({ 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' }),
+		augend.case(),
+	},
+	-- 共通の augends より優先して使う
+	filetype = {
+		typescript = {
+			augend.constant({ 'let', 'const' }),
+		},
+	},
 })
