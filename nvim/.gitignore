@@ -3,3 +3,5 @@
 /plugged/
 /autoload/
 /sessions/
+
+/tests/.deps/

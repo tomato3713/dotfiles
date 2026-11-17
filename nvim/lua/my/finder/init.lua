@@ -451,6 +451,7 @@ function Finder:set_keymaps()
 end
 
 ---@param opts finder.Opts
+---@return finder.Finder テストから状態を検査できるように返す
 function M.start(opts)
 	local self = setmetatable({
 		opts = opts,
@@ -482,6 +483,7 @@ function M.start(opts)
 			end
 		end)
 	end
+	return self
 end
 
 --- 外部コマンドの出力を 1 行ずつ item に変換して流し込む producer を作る
