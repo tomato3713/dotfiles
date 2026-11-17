@@ -30,25 +30,40 @@ function M.files()
 	})
 end
 
----@param word string
+--- 上の入力欄の内容で rg を実行し直し、下の入力欄で結果をファイルパスだけを対象に絞り込む
+---@param word? string 検索パターンの初期値。空なら検索パターンの入力から始める
 function M.grep(word)
+	word = word or ''
 	finder.start({
-		title = 'Grep: ' .. word,
-		producer = finder.command(
-			{ 'rg', '--smart-case', '--line-number', '--column', '--no-heading', '--color', 'never', '--', word },
-			function(line)
-				local file, lnum, col, text = line:match('^(.-):(%d+):(%d+):(.*)$')
-				if not file then
-					return nil
+		title = 'Grep',
+		inputs = { {
+			title = 'Grep',
+			default = word,
+			on_change = function(pattern, f)
+				if pattern == '' then
+					f:set_producer(nil)
+					return
 				end
-				return {
-					text = string.format('%s:%s: %s', file, lnum, vim.trim(text)),
-					file = file,
-					lnum = tonumber(lnum),
-					col = tonumber(col),
-				}
-			end
-		),
+				f:set_producer(finder.command(
+					{ 'rg', '--smart-case', '--line-number', '--column', '--no-heading', '--color', 'never', '--', pattern },
+					function(line)
+						local file, lnum, col, text = line:match('^(.-):(%d+):(%d+):(.*)$')
+						if not file then
+							return nil
+						end
+						return {
+							text = string.format('%s:%s: %s', file, lnum, vim.trim(text)),
+							-- 中身は rg のパターンで絞れるので、絞り込み欄はファイルの特定に使う
+							filter_text = file,
+							file = file,
+							lnum = tonumber(lnum),
+							col = tonumber(col),
+						}
+					end
+				))
+			end,
+		} },
+		focus = word == '' and 1 or nil,
 	})
 end
 

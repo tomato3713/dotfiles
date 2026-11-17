@@ -31,16 +31,8 @@ for _, m in ipairs(maps) do
 	vim.keymap.set('n', m[1], m[2], { silent = true, desc = m[3] })
 end
 
--- カーソル上の単語で grep する。短すぎる単語は誤爆しやすいので入力してもらう
+-- カーソル上の単語で grep する。短すぎる単語は誤爆しやすいので、検索パターンの入力から始める
 vim.keymap.set('n', ',g', function()
 	local word = vim.fn.expand('<cword>')
-	if #word > 2 then
-		sources.grep(word)
-		return
-	end
-	vim.ui.input({ prompt = 'Grep: ' }, function(input)
-		if input and input ~= '' then
-			sources.grep(input)
-		end
-	end)
+	sources.grep(#word > 2 and word or '')
 end, { silent = true, desc = 'finder: grep' })

@@ -81,6 +81,82 @@ T['絞り込み']['groups を指定するとグループ順に見出しを付け
 	eq(selected_text(), 'def1')
 end
 
+T['絞り込み']['filter_text を指定するとその文字列だけを絞り込みの対象にする'] = function()
+	start([[{ title = 't', items = {
+		{ text = 'a.lua: xyz', filter_text = 'a.lua' },
+		{ text = 'xyz.lua: abc', filter_text = 'xyz.lua' },
+	} }]])
+	type_query('xyz')
+	eq(list_lines(), { 'xyz.lua: abc' })
+end
+
+T['入力欄'] = MiniTest.new_set()
+
+--- 入力欄の値をそのまま 1 件の候補にする input を持つファインダーを開く
+local function start_with_input(extra)
+	start([[vim.tbl_extend('force', {
+		title = 't',
+		inputs = { {
+			title = 'Source',
+			default = 'init',
+			on_change = function(value, f)
+				_G.changes = (_G.changes or 0) + 1
+				f:set_producer(function(push, done)
+					push({ { text = 'from:' .. value } })
+					done()
+				end)
+			end,
+		} },
+	}, ]] .. (extra or '{}') .. ')')
+	child.lua([[vim.wait(200, function() return #_G.f.results > 0 end)]])
+end
+
+T['入力欄']['起動時に既定値で on_change を呼んで候補を作る'] = function()
+	start_with_input()
+	eq(list_lines(), { 'from:init' })
+	-- 追加の入力欄があるときは、下の入力欄が絞り込み欄であることをタイトルで示す
+	eq(child.lua_get([[vim.api.nvim_win_get_config(_G.f.prompt_win).title[1][1] ]]), ' Filter ')
+end
+
+T['入力欄']['入力が止まってから on_change を 1 回だけ呼んで候補を作り直す'] = function()
+	start_with_input('{ focus = 1 }')
+	child.type_keys('a', 'b', 'c')
+	child.lua([[vim.wait(1000, function() return _G.f.items[1].text == 'from:initabc' end)]])
+	eq(list_lines(), { 'from:initabc' })
+	-- 起動時の 1 回と、打鍵をまとめた 1 回
+	eq(child.lua_get('_G.changes'), 2)
+end
+
+T['入力欄']['<C-g> で入力欄を上から順に巡回し、移動してもファインダーを閉じない'] = function()
+	start_with_input()
+	local input_win = child.lua_get([[_G.f.input_wins[1] ]])
+	local prompt_win = child.lua_get([[_G.f.prompt_win]])
+	eq(child.api.nvim_get_current_win(), prompt_win)
+	child.type_keys('<C-g>')
+	eq(child.api.nvim_get_current_win(), input_win)
+	child.type_keys('<C-g>')
+	eq(child.api.nvim_get_current_win(), prompt_win)
+	child.lua([[vim.wait(50)]])
+	eq(child.lua_get([[_G.f.closed]]), false)
+end
+
+T['入力欄']['既定値の入った入力欄では行末から続きを入力できる'] = function()
+	start_with_input('{ focus = 1 }')
+	child.type_keys('X')
+	eq(child.api.nvim_get_current_line(), 'initX')
+end
+
+T['入力欄']['作り直す前の producer から遅れて届いた候補は捨てる'] = function()
+	start([[{ title = 't' }]])
+	child.lua([[
+		_G.f:set_producer(function(push) _G.stale_push = push end)
+		_G.f:set_producer(function(push, done) push({ { text = 'new' } }) done() end)
+		_G.stale_push({ { text = 'stale' } })
+	]])
+	child.lua([[vim.wait(200)]])
+	eq(list_lines(), { 'new' })
+end
+
 T['カーソル移動'] = MiniTest.new_set()
 
 T['カーソル移動']['見出し行を飛ばして次の候補へ移る'] = function()

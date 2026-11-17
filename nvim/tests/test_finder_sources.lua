@@ -74,8 +74,37 @@ T['grep']['rg の出力からファイル・行・列を取り出す'] = functio
 	child.lua([[sources.grep('baz')]])
 	wait_loaded()
 	eq(child.lua_get([[_G.f.items]]), {
-		{ text = 'a.txt:2: bar baz', file = 'a.txt', lnum = 2, col = 7 },
+		{ text = 'a.txt:2: bar baz', filter_text = 'a.txt', file = 'a.txt', lnum = 2, col = 7 },
 	})
+end
+
+T['grep']['検索パターンの欄を書き換えると rg を実行し直す'] = function()
+	skip_without_rg()
+	chdir_to_fixture({ ['a.txt'] = { 'foo' }, ['b.txt'] = { 'bar' } })
+	child.lua([[sources.grep('foo')]])
+	wait_loaded()
+	eq(item_texts(), { 'a.txt:1: foo' })
+	-- 単語を渡したときは絞り込み欄から始まるので、検索パターンの欄へ移って書き換える
+	child.type_keys('<C-g>', '<C-u>', 'bar')
+	child.lua([[vim.wait(3000, function() return _G.f.items[1] and _G.f.items[1].file == 'b.txt' and not _G.f.loading end)]])
+	eq(item_texts(), { 'b.txt:1: bar' })
+end
+
+T['grep']['絞り込み欄は中身ではなくファイルパスだけを対象にする'] = function()
+	skip_without_rg()
+	-- 中身に xyz を含む行と、パスに xyz を含むファイル
+	chdir_to_fixture({ ['a.txt'] = { 'hit xyz' }, ['xyz.txt'] = { 'hit' } })
+	child.lua([[sources.grep('hit')]])
+	wait_loaded()
+	child.type_keys('xyz')
+	child.lua([[vim.wait(50)]])
+	eq(child.lua_get([[vim.tbl_map(function(r) return r.item.file end, _G.f.results)]]), { 'xyz.txt' })
+end
+
+T['grep']['検索パターンが空なら検索パターンの欄から入力を始める'] = function()
+	child.lua([[sources.grep('')]])
+	eq(child.api.nvim_get_current_win(), child.lua_get([[_G.f.input_wins[1] ]]))
+	eq(child.lua_get([[#_G.f.items]]), 0)
 end
 
 T['buffers'] = MiniTest.new_set()

@@ -4,7 +4,8 @@
 -- 日本語などマルチバイト文字も扱えるため。
 
 ---@class finder.Item
----@field text string 絞り込みの対象であり、表示する文字列
+---@field text string 表示する文字列。filter_text が無ければ絞り込みの対象にもなる
+---@field filter_text? string 絞り込みの対象を text の一部に限るときに指定する。ハイライト位置を合わせるため text の先頭部分であること
 ---@field icon? string text の前に表示する。絞り込みの対象外
 ---@field icon_hl? string
 ---@field group? integer opts.groups の添字。グループ見出しを表示するときに使う
@@ -22,6 +23,13 @@
 ---@field on_select? fun(item: finder.Item, cmd: finder.OpenCmd) 省略時は item の位置を開く
 ---@field on_cancel? fun()
 ---@field preview? boolean 省略時 true
+---@field inputs? finder.Input[] 絞り込み欄の上に並べる追加の入力欄。候補そのものを入力で作り直したいときに使う
+---@field focus? integer 起動時にカーソルを置く inputs の添字。省略時は絞り込み欄
+
+---@class finder.Input
+---@field title string
+---@field default? string
+---@field on_change fun(value: string, finder: finder.Finder) 起動時と、入力が止まってから呼ばれる
 
 ---@alias finder.OpenCmd 'edit'|'split'|'vsplit'|'tab'
 
@@ -97,7 +105,8 @@ end
 ---@field opts finder.Opts
 ---@field items finder.Item[]
 ---@field texts string[] matchfuzzypos() に渡す items[i].text の写し
----@field index_of table<string, integer[]> text から items の添字を引く。同じ text が複数あり得るため配列
+---@field index_of table<string, integer[]> 絞り込み対象の文字列から items の添字を引く。同じ文字列が複数あり得るため配列
+---@field generation integer set_producer() のたびに増やし、中断した producer から遅れて届く候補を捨てる
 ---@field results { item: finder.Item, positions?: integer[] }[]
 ---@field line_to_result table<integer, integer>
 ---@field cursor integer 選択中の行 (1-based)
@@ -114,13 +123,14 @@ function Finder:push(items)
 	end
 	for _, item in ipairs(items) do
 		local i = #self.items + 1
+		local key = item.filter_text or item.text
 		self.items[i] = item
-		self.texts[i] = item.text
-		local idxs = self.index_of[item.text]
+		self.texts[i] = key
+		local idxs = self.index_of[key]
 		if idxs then
 			idxs[#idxs + 1] = i
 		else
-			self.index_of[item.text] = { i }
+			self.index_of[key] = { i }
 		end
 	end
 	-- 非同期の source は細切れに push してくるため、まとめて再描画する
@@ -129,6 +139,36 @@ function Finder:push(items)
 			self:refresh(true)
 		end))
 	end
+end
+
+--- 候補を空にして producer から取り直す。nil なら空のままにする
+---@param producer? fun(push: fun(items: finder.Item[]), done: fun()): fun()?
+function Finder:set_producer(producer)
+	if self.cancel_producer then
+		self.cancel_producer()
+		self.cancel_producer = nil
+	end
+	self.generation = self.generation + 1
+	local generation = self.generation
+	self.items, self.texts, self.index_of = {}, {}, {}
+	self.loading = producer ~= nil
+	self:refresh()
+	if not producer then
+		return
+	end
+	self.cancel_producer = producer(function(items)
+		if generation == self.generation then
+			self:push(items)
+		end
+	end, function()
+		if generation ~= self.generation then
+			return
+		end
+		self.loading = false
+		if not self.closed then
+			self:refresh(true)
+		end
+	end)
 end
 
 function Finder:filter()
@@ -183,10 +223,11 @@ function Finder:render()
 		if item.icon_hl and item.icon then
 			marks[#marks + 1] = { row, 0, #item.icon, item.icon_hl }
 		end
+		local key = item.filter_text or item.text
 		for _, pos in ipairs(r.positions or {}) do
 			-- matchfuzzypos() の位置は文字単位なのでバイト位置に直す
-			local s = vim.str_byteindex(item.text, 'utf-32', pos, false)
-			local e = vim.str_byteindex(item.text, 'utf-32', pos + 1, false)
+			local s = vim.str_byteindex(key, 'utf-32', pos, false)
+			local e = vim.str_byteindex(key, 'utf-32', pos + 1, false)
 			marks[#marks + 1] = { row, #prefix + s, #prefix + e, 'FinderMatch' }
 		end
 	end
@@ -325,13 +366,15 @@ function Finder:close(on_done)
 		return
 	end
 	self.closed = true
-	self.timer:stop()
-	self.timer:close()
+	for _, timer in ipairs({ self.timer, self.input_timer }) do
+		timer:stop()
+		timer:close()
+	end
 	if self.cancel_producer then
 		self.cancel_producer()
 	end
-	for _, win in ipairs({ self.prompt_win, self.list_win, self.preview_win }) do
-		if win and vim.api.nvim_win_is_valid(win) then
+	for _, win in ipairs(self:windows()) do
+		if vim.api.nvim_win_is_valid(win) then
 			vim.api.nvim_win_close(win, true)
 		end
 	end
@@ -382,20 +425,34 @@ function Finder:open_windows()
 		}, cfg, { width = cfg.width - 2, height = cfg.height - 2 }))
 	end
 
-	self.prompt_buf = vim.api.nvim_create_buf(false, true)
-	self.list_buf = vim.api.nvim_create_buf(false, true)
-	for _, buf in ipairs({ self.prompt_buf, self.list_buf }) do
+	local function scratch()
+		local buf = vim.api.nvim_create_buf(false, true)
 		vim.bo[buf].bufhidden = 'wipe'
 		-- filetype が空だと BufEnter で txt が設定されるなど、他の設定の対象になってしまうため明示する
 		vim.bo[buf].filetype = 'finder'
+		return buf
 	end
 
+	-- 入力欄は追加の入力欄を上から並べ、最後に絞り込み欄を置く
+	self.input_wins = {}
+	local inputs = self.opts.inputs or {}
+	for i, input in ipairs(inputs) do
+		local buf = scratch()
+		vim.api.nvim_buf_set_lines(buf, 0, -1, false, { input.default or '' })
+		self.input_wins[i] = float(buf, {
+			row = row + 3 * (i - 1), col = col, width = list_width, height = 3,
+			title = ' ' .. input.title .. ' ',
+		})
+	end
+	local prompt_row = row + 3 * #inputs
+	self.prompt_buf = scratch()
+	self.list_buf = scratch()
 	self.prompt_win = float(self.prompt_buf, {
-		row = row, col = col, width = list_width, height = 3,
-		title = ' ' .. self.opts.title .. ' ',
+		row = prompt_row, col = col, width = list_width, height = 3,
+		title = ' ' .. (#inputs > 0 and 'Filter' or self.opts.title) .. ' ',
 	})
 	self.list_win = float(self.list_buf, {
-		row = row + 3, col = col, width = list_width, height = height - 3,
+		row = prompt_row + 3, col = col, width = list_width, height = height - 3 * (#inputs + 1),
 	})
 	vim.wo[self.list_win].cursorline = true
 	if with_preview then
@@ -405,11 +462,74 @@ function Finder:open_windows()
 		vim.wo[self.preview_win].number = true
 		vim.wo[self.preview_win].cursorline = true
 	end
-	vim.api.nvim_set_current_win(self.prompt_win)
+	self:focus_input(self.opts.focus and self.input_wins[self.opts.focus] or self.prompt_win)
+end
+
+---@return integer[] 入力欄を上から順に並べたもの
+function Finder:prompt_wins()
+	local wins = vim.list_extend({}, self.input_wins)
+	wins[#wins + 1] = self.prompt_win
+	return wins
+end
+
+---@return integer[]
+function Finder:windows()
+	local wins = self:prompt_wins()
+	wins[#wins + 1] = self.list_win
+	wins[#wins + 1] = self.preview_win
+	return wins
+end
+
+---@param win integer
+function Finder:focus_input(win)
+	vim.api.nvim_set_current_win(win)
+	-- 入力の続きをすぐ打てるよう行末に置く
+	vim.api.nvim_win_set_cursor(win, { 1, #vim.api.nvim_get_current_line() })
+end
+
+--- 入力欄を上から順に巡回する
+function Finder:cycle_input()
+	local wins = self:prompt_wins()
+	local current = vim.api.nvim_get_current_win()
+	for i, win in ipairs(wins) do
+		if win == current then
+			self:focus_input(wins[i % #wins + 1])
+			return
+		end
+	end
 end
 
 function Finder:set_keymaps()
-	local buf = self.prompt_buf
+	for _, win in ipairs(self:prompt_wins()) do
+		self:set_prompt_keymaps(vim.api.nvim_win_get_buf(win))
+	end
+
+	vim.api.nvim_create_autocmd('TextChangedI', {
+		buffer = self.prompt_buf,
+		callback = function()
+			self.query = vim.api.nvim_get_current_line()
+			self:refresh()
+		end,
+	})
+	for i, input in ipairs(self.opts.inputs or {}) do
+		vim.api.nvim_create_autocmd('TextChangedI', {
+			buffer = vim.api.nvim_win_get_buf(self.input_wins[i]),
+			callback = function()
+				local value = vim.api.nvim_get_current_line()
+				-- 外部コマンドを打鍵ごとに起動し直すと重いため、入力が止まるまで待つ
+				self.input_timer:stop()
+				self.input_timer:start(200, 0, vim.schedule_wrap(function()
+					if not self.closed then
+						input.on_change(value, self)
+					end
+				end))
+			end,
+		})
+	end
+end
+
+---@param buf integer
+function Finder:set_prompt_keymaps(buf)
 	local function map(modes, lhs, fn)
 		vim.keymap.set(modes, lhs, fn, { buffer = buf, nowait = true })
 	end
@@ -435,19 +555,19 @@ function Finder:set_keymaps()
 	map({ 'i', 'n' }, '<Esc>', function() self:close() end)
 	map({ 'i', 'n' }, '<C-c>', function() self:close() end)
 	map('n', 'q', function() self:close() end)
+	map({ 'i', 'n' }, '<C-g>', function() self:cycle_input() end)
 
-	vim.api.nvim_create_autocmd('TextChangedI', {
-		buffer = buf,
-		callback = function()
-			self.query = vim.api.nvim_get_current_line()
-			self:refresh()
-		end,
-	})
-	-- マウスなどで別ウィンドウへ移ったときにフロートが残らないようにする
+	-- マウスなどで別ウィンドウへ移ったときにフロートが残らないようにする。
+	-- 入力欄どうしの移動でも WinLeave は起きるため、移動先が自分のウィンドウかを確かめてから閉じる
 	vim.api.nvim_create_autocmd('WinLeave', {
 		buffer = buf,
-		once = true,
-		callback = function() self:close() end,
+		callback = function()
+			vim.schedule(function()
+				if not vim.tbl_contains(self:windows(), vim.api.nvim_get_current_win()) then
+					self:close()
+				end
+			end)
+		end,
 	})
 end
 
@@ -463,9 +583,11 @@ function M.start(opts)
 		line_to_result = {},
 		cursor = 0,
 		query = '',
-		loading = opts.producer ~= nil,
+		loading = false,
 		closed = false,
+		generation = 0,
 		timer = vim.uv.new_timer(),
+		input_timer = vim.uv.new_timer(),
 		origin_win = vim.api.nvim_get_current_win(),
 		origin_cursor = vim.api.nvim_win_get_cursor(0),
 	}, Finder)
@@ -474,15 +596,14 @@ function M.start(opts)
 	self:set_keymaps()
 	self:push(opts.items or {})
 	self:refresh()
-	vim.cmd.startinsert()
+	-- 既定値の入った入力欄でも続きを打てるよう、行末から挿入する
+	vim.cmd('startinsert!')
 
 	if opts.producer then
-		self.cancel_producer = opts.producer(function(items) self:push(items) end, function()
-			self.loading = false
-			if not self.closed then
-				self:refresh(true)
-			end
-		end)
+		self:set_producer(opts.producer)
+	end
+	for _, input in ipairs(opts.inputs or {}) do
+		input.on_change(input.default or '', self)
 	end
 	return self
 end
