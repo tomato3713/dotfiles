@@ -29,9 +29,8 @@ return function()
 			-- code edit
 			--- 関数名や変数名をリネーム
 			vim.keymap.set("n", "<Space>r", vim.lsp.buf.rename, bufopts)
-			vim.keymap.set("n", "<Space>f", function()
-				require("my.utils").keep_cursor(vim.lsp.buf.format)
-			end, bufopts)
+			-- keep_cursor() は関数を返すので、そのまま rhs に渡す
+			vim.keymap.set("n", "<Space>f", require("my.utils").keep_cursor(vim.lsp.buf.format), bufopts)
 
 			-- workspace
 			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
