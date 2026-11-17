@@ -146,6 +146,21 @@ T['入力欄']['既定値の入った入力欄では行末から続きを入力�
 	eq(child.api.nvim_get_current_line(), 'initX')
 end
 
+T['入力欄']['別の入力欄に移って入力しても、待機中の on_change は取り消されない'] = function()
+	start([[{
+		title = 't',
+		focus = 1,
+		inputs = {
+			{ title = 'A', on_change = function(v) _G.a = v end },
+			{ title = 'B', on_change = function(v) _G.b = v end },
+		},
+	}]])
+	-- 待ち時間 (200ms) が過ぎる前に次の入力欄へ移って入力する
+	child.type_keys('x', '<C-g>', 'y')
+	child.lua([[vim.wait(1000, function() return _G.a == 'x' and _G.b == 'y' end)]])
+	eq(child.lua_get('{ _G.a, _G.b }'), { 'x', 'y' })
+end
+
 T['入力欄']['作り直す前の producer から遅れて届いた候補は捨てる'] = function()
 	start([[{ title = 't' }]])
 	child.lua([[

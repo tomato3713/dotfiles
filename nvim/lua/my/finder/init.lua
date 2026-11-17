@@ -366,7 +366,7 @@ function Finder:close(on_done)
 		return
 	end
 	self.closed = true
-	for _, timer in ipairs({ self.timer, self.input_timer }) do
+	for _, timer in ipairs({ self.timer, unpack(self.input_timers) }) do
 		timer:stop()
 		timer:close()
 	end
@@ -512,13 +512,15 @@ function Finder:set_keymaps()
 		end,
 	})
 	for i, input in ipairs(self.opts.inputs or {}) do
+		-- 入力欄ごとにタイマーを持つ。共有すると、別の入力欄の入力で待機中の on_change が取り消されてしまう
+		local timer = self.input_timers[i]
 		vim.api.nvim_create_autocmd('TextChangedI', {
 			buffer = vim.api.nvim_win_get_buf(self.input_wins[i]),
 			callback = function()
 				local value = vim.api.nvim_get_current_line()
 				-- 外部コマンドを打鍵ごとに起動し直すと重いため、入力が止まるまで待つ
-				self.input_timer:stop()
-				self.input_timer:start(200, 0, vim.schedule_wrap(function()
+				timer:stop()
+				timer:start(200, 0, vim.schedule_wrap(function()
 					if not self.closed then
 						input.on_change(value, self)
 					end
@@ -587,7 +589,7 @@ function M.start(opts)
 		closed = false,
 		generation = 0,
 		timer = vim.uv.new_timer(),
-		input_timer = vim.uv.new_timer(),
+		input_timers = vim.tbl_map(function() return vim.uv.new_timer() end, opts.inputs or {}),
 		origin_win = vim.api.nvim_get_current_win(),
 		origin_cursor = vim.api.nvim_win_get_cursor(0),
 	}, Finder)
