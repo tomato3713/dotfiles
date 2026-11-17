@@ -1,20 +1,16 @@
-local setup_keymap = require('rc.lsp.keymap')
-local register_servers = require('rc.lsp.register_servers')
+-- 全サーバー共通の設定。after/lsp/*.lua のサーバー個別設定より先に定義しておく
+vim.lsp.config('*', {
+	capabilities = require('cmp_nvim_lsp').default_capabilities(),
+})
 
--- setup mason
 require('mason').setup()
+-- mason でインストール済みのサーバーだけを vim.lsp.enable() する (automatic_enable はデフォルト有効)。
+-- get_available_servers() はレジストリ上の全サーバーを返すため、未インストールのものまで enable されてしまう
+require('mason-lspconfig').setup()
 
-require("mason-lspconfig").setup {
-	automatic_installation = false,
-}
+require('rc.lsp.keymap')()
 
-local names = require('mason-lspconfig').get_available_servers()
-
-register_servers(names)
-setup_keymap()
-
-
-vim.lsp.log.set_level("OFF")
+vim.lsp.log.set_level('OFF')
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(ev)
@@ -25,24 +21,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	end,
 })
 
-vim.lsp.config('*', {
-	handlers = {
-		['textDocument/signatureHelp'] = function(err, result, ctx, config)
-			vim.lsp.handlers.signature_help(err, result, ctx, vim.tbl_extend('keep', config or {}, {
-				silent = true,
-				border = "single",
-			}))
-		end,
-	},
-})
 vim.diagnostic.config({
 	float = {
-		border = "single",
+		border = 'single',
 		severity_sort = true,
 	},
 	virtual_text = {
 		format = function(diagnostic)
-			return string.format("%s (%s: %s)", diagnostic.message, diagnostic.source, diagnostic.code)
+			-- code を返さないサーバーもあるため、存在するときだけ付与する
+			if diagnostic.code then
+				return string.format('%s (%s: %s)', diagnostic.message, diagnostic.source, diagnostic.code)
+			end
+			return string.format('%s (%s)', diagnostic.message, diagnostic.source)
 		end,
 	},
 })

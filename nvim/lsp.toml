@@ -1,9 +1,9 @@
 # --- Language Server Protocol ---
 [[plugins]]
-repo = 'https://github.com/williamboman/mason.nvim'
+repo = 'https://github.com/mason-org/mason.nvim'
 
 [[plugins]]
-repo = 'https://github.com/williamboman/mason-lspconfig.nvim'
+repo = 'https://github.com/mason-org/mason-lspconfig.nvim'
 
 [[plugins]]
 repo = 'https://github.com/neovim/nvim-lspconfig'
