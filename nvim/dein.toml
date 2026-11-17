@@ -140,13 +140,6 @@ lua_source = '''
 require('rc.mr')
 '''
 
-[[plugins]]
-repo = 'https://github.com/Shougo/junkfile.vim'
-hook_add = '''
-  command! -nargs=0 JunkfileDiary call junkfile#open_immediately('%Y-%m-%d.md'->strftime())
-  command! -nargs=0 JunkNote call junkfile#open_immediately('main.md')
-'''
-
 # --- Rich Code Editing ---
 [[plugins]]
 repo = 'https://github.com/thinca/vim-quickrun'
