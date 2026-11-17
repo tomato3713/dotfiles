@@ -1,6 +1,6 @@
 return function()
 	-- diagnostics (LSP 不要なのでグローバル設定)
-	local opts = { noremap = true, silent = true }
+	local opts = { silent = true }
 	vim.keymap.set("n", "gs", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "[e", function()
 		vim.diagnostic.jump({ count = -1 })
@@ -13,13 +13,18 @@ return function()
 	-- LSP keymaps (LspAttach でバッファローカルに設定)
 	vim.api.nvim_create_autocmd("LspAttach", {
 		callback = function(args)
-			local bufopts = { noremap = true, silent = true, buffer = args.buf }
+			local bufopts = { silent = true, buffer = args.buf }
 
 			-- code reading
 			--- 定義情報などを表示する
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+			-- Neovim 0.11 以降、hover/signature_help は handler を経由しないため border は引数で渡す
+			vim.keymap.set("n", "K", function()
+				vim.lsp.buf.hover({ border = "single" })
+			end, bufopts)
 			--- 関数の引数の内容とかを表示する
-			vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, bufopts)
+			vim.keymap.set("n", "<c-k>", function()
+				vim.lsp.buf.signature_help({ border = "single" })
+			end, bufopts)
 
 			-- code edit
 			--- 関数名や変数名をリネーム
