@@ -37,6 +37,10 @@ vim.api.nvim_set_hl(0, 'FinderGroup', { link = 'Title', default = true })
 ---@param path string
 ---@return string
 local function relpath(path)
+	-- fnamemodify('', ':~:.') はカレントディレクトリを返してしまうため、名前のないバッファは別扱いにする
+	if path == '' then
+		return '[No Name]'
+	end
 	return vim.fn.fnamemodify(path, ':~:.')
 end
 M.relpath = relpath

@@ -101,7 +101,8 @@ function M.marks()
 		items[#items + 1] = {
 			text = string.format('%s %s:%d: %s', mark.mark:sub(2), finder.relpath(name), lnum, vim.trim(line)),
 			bufnr = bufnr ~= 0 and bufnr or nil,
-			file = name,
+			-- 空文字のまま渡すと open() の bufadd('') が新しい空バッファを作ってしまう
+			file = name ~= '' and name or nil,
 			lnum = lnum,
 			col = col,
 		}
