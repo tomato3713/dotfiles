@@ -1,10 +1,10 @@
 [[plugins]]
 repo = 'https://github.com/vim-denops/denops.vim'
 hook_add = '''
-  if exists("g:useShared")
-    let g:useShared = v:true
+  " g:useShared を立てたときだけ denops-shared-server に接続する
+  if get(g:, 'useShared', v:false)
     let g:denops_server_addr = '127.0.0.1:32123'
-  fi
+  endif
 
   command! DenopsCacheUpdate call denops#cache#update(#{reload: v:true})
   command! DenopsRestart call denops#server#restart()
