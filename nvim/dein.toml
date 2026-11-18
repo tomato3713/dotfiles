@@ -209,7 +209,6 @@ repo = 'https://github.com/JoosepAlviste/nvim-ts-context-commentstring'
 depends = ['nvim-treesitter']
 # on_cmd = ['TSContextToggle'] # TODO: lazy
 lua_source = '''
-vim.g.skip_ts_context_commentstring_module = true
 require('ts_context_commentstring').setup {
 	enable_autocmd = false,
 }
