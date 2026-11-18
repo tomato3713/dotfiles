@@ -148,13 +148,9 @@ repo = 'https://github.com/tyru/capture.vim'
 on_cmd = ['Capture']
 
 [[plugins]]
-repo = 'https://github.com/mhartington/formatter.nvim'
-hook_add = '''
-  nnoremap <silent> <leader>F :Format<CR>
-  nnoremap <silent> <leader>f :FormatWrite<CR>
-'''
+repo = 'https://github.com/stevearc/conform.nvim'
 lua_source = '''
-  require('rc.formatter')
+  require('rc.conform')
 '''
 
 [[plugins]]

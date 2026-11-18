@@ -1,40 +1,5 @@
 local M = {}
 
---- try catch
----@param what table
----@return unknown
-M.try_catch = function(what)
-	local status, result = pcall(what.try)
-	if not status then
-		if what.catch ~= nil then
-			what.catch(result)
-		end
-	end
-	if what.finally ~= nil then
-		what.finally(result)
-	end
-	return result
-end
-
---- keep cursor
----@param cmd function
----@return nil
-M.keep_cursor = function(cmd)
-	return function()
-		local curwin_id = vim.fn.win_getid()
-		local view = vim.fn.winsaveview()
-
-		M.try_catch({
-			try = cmd,
-			finally = function()
-				if vim.fn.win_getid() == curwin_id then
-					vim.fn.winrestview(view)
-				end
-			end,
-		})
-	end
-end
-
 M.my_group = vim.api.nvim_create_augroup('vimrcEx', {})
 
 --- create autocmd in vimrcEx group
