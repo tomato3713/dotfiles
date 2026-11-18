@@ -102,10 +102,10 @@ function M.junkgrep()
 	M.grep('', require('my.junkfile').dir())
 end
 
---- 最近使ったファイル (mr.vim)
+--- 最近使ったファイル (vim-mr)
 function M.mru()
-	-- mr.vim は BufReadPre などで遅延読み込みされるため、起動直後でも使えるように読み込んでおく
-	pcall(vim.fn['dein#source'], 'mr.vim')
+	-- vim-mr は BufReadPre などで遅延読み込みされるため、起動直後でも使えるように読み込んでおく
+	pcall(vim.fn['dein#source'], 'vim-mr')
 	local items = {}
 	for _, path in ipairs(vim.fn['mr#mru#list']()) do
 		if vim.fn.filereadable(path) == 1 then

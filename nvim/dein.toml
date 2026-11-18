@@ -42,7 +42,7 @@ vim.notify = require('notify')
 
 [[plugins]]
 repo = "https://github.com/folke/noice.nvim"
-depends = ['MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', 'echasnovski/mini.nvim']
+depends = ['MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', 'nvim-mini/mini.nvim']
 lua_source = '''
 require('rc.noice')
 '''
@@ -84,7 +84,7 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
-repo = 'https://github.com/NvChad/nvim-colorizer.lua'
+repo = 'https://github.com/catgoose/nvim-colorizer.lua'
 lua_source = '''
 require('colorizer').setup()
 '''
@@ -114,7 +114,7 @@ require("todo-comments").setup({
 '''
 
 [[plugins]]
-repo = 'https://github.com/lambdalisue/mr.vim'
+repo = 'https://github.com/lambdalisue/vim-mr'
 on_event = ['BufNewFile', 'BufReadPre', 'BufWritePre']
 lua_source = '''
 require('rc.mr')
@@ -198,7 +198,7 @@ lua_source = '''
 repo = 'https://github.com/RRethy/vim-illuminate'
 
 [[plugins]]
-repo = 'https://github.com/echasnovski/mini.nvim'
+repo = 'https://github.com/nvim-mini/mini.nvim'
 depends = ['nvim-ts-context-commentstring']
 lua_source = '''
 require('rc.mini')

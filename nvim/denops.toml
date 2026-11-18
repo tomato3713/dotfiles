@@ -34,12 +34,12 @@ repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
 
 # --- Denops plugins ---
 [[plugins]]
-repo = 'https://github.com/lambdalisue/kensaku.vim'
+repo = 'https://github.com/lambdalisue/vim-kensaku'
 depends = ['denops.vim']
 
 [[plugins]]
-repo = 'https://github.com/lambdalisue/kensaku-search.vim'
-depends = ['kensaku.vim']
+repo = 'https://github.com/lambdalisue/vim-kensaku-search'
+depends = ['vim-kensaku']
 lua_add = '''
   vim.keymap.set('c', '<CR>', function()
   	return vim.fn.getcmdtype() == '/' and '<Plug>(kensaku-search-replace)<CR>' or '<CR>'
