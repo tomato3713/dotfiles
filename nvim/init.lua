@@ -108,15 +108,20 @@ utils.nvim_create_autocmd({ 'BufEnter' }, {
 	desc = 'set default filetype as plain text',
 })
 
+-- マクロ記録中だと一目で分かるよう colorscheme を変え、終わったら記録前のものに戻す
+local colors_before_recording
 vim.api.nvim_create_autocmd("RecordingEnter", {
 	callback = function()
-		vim.cmd("colorscheme evening")
+		colors_before_recording = vim.g.colors_name
+		vim.cmd.colorscheme("evening")
 	end,
 })
 
 vim.api.nvim_create_autocmd("RecordingLeave", {
 	callback = function()
-		vim.cmd("colorscheme monokai")
+		if colors_before_recording then
+			vim.cmd.colorscheme(colors_before_recording)
+		end
 	end,
 })
 
