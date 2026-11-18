@@ -101,6 +101,53 @@ local function send_to_quickfix(title, items)
 	vim.cmd.copen()
 end
 
+--- item の位置を win にプレビューする。item が nil なら空にする
+--- ファインダー以外 (JunkCalendar など) からも使えるよう、Finder から独立させている
+---@param win integer
+---@param item? finder.Item
+function M.preview(win, item)
+	local buf = vim.api.nvim_create_buf(false, true)
+	vim.bo[buf].bufhidden = 'wipe'
+	local lines, ft = {}, nil
+	if item and item.bufnr and vim.api.nvim_buf_is_loaded(item.bufnr) then
+		lines = vim.api.nvim_buf_get_lines(item.bufnr, 0, -1, false)
+		ft = vim.bo[item.bufnr].filetype
+	elseif item and item.file then
+		local size = vim.fn.getfsize(item.file)
+		if size > 1024 * 1024 then
+			lines = { '(too large)' }
+		elseif size >= 0 then
+			lines = vim.fn.readfile(item.file, '')
+			-- readfile() は NUL を改行に置き換える。改行を含む行は set_lines できないためバイナリ扱いにする
+			if lines[1] and lines[1]:find('\n') then
+				lines = { '(binary)' }
+			else
+				ft = vim.filetype.match({ filename = item.file })
+			end
+		end
+	end
+	vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+	if ft then
+		-- filetype を設定すると LSP や ftplugin まで起動してしまうため、ハイライトだけを有効にする
+		local lang = vim.treesitter.language.get_lang(ft)
+		if lang and vim.treesitter.language.add(lang) then
+			vim.treesitter.start(buf, lang)
+		else
+			vim.bo[buf].syntax = ft
+		end
+	end
+	vim.api.nvim_win_set_buf(win, buf)
+	vim.api.nvim_win_set_config(win, {
+		title = item and (item.file and (' ' .. relpath(item.file) .. ' ')) or '',
+	})
+	if item and item.lnum then
+		pcall(vim.api.nvim_win_set_cursor, win, { item.lnum, math.max((item.col or 1) - 1, 0) })
+		vim.api.nvim_win_call(win, function()
+			vim.cmd('normal! zz')
+		end)
+	end
+end
+
 ---@class finder.Finder
 ---@field opts finder.Opts
 ---@field items finder.Item[]
@@ -304,50 +351,8 @@ function Finder:refresh(keep_selection)
 end
 
 function Finder:update_preview()
-	local win = self.preview_win
-	if not win then
-		return
-	end
-	local item = self:selected()
-	local buf = vim.api.nvim_create_buf(false, true)
-	vim.bo[buf].bufhidden = 'wipe'
-	local lines, ft = {}, nil
-	if item and item.bufnr and vim.api.nvim_buf_is_loaded(item.bufnr) then
-		lines = vim.api.nvim_buf_get_lines(item.bufnr, 0, -1, false)
-		ft = vim.bo[item.bufnr].filetype
-	elseif item and item.file then
-		local size = vim.fn.getfsize(item.file)
-		if size > 1024 * 1024 then
-			lines = { '(too large)' }
-		elseif size >= 0 then
-			lines = vim.fn.readfile(item.file, '')
-			-- readfile() は NUL を改行に置き換える。改行を含む行は set_lines できないためバイナリ扱いにする
-			if lines[1] and lines[1]:find('\n') then
-				lines = { '(binary)' }
-			else
-				ft = vim.filetype.match({ filename = item.file })
-			end
-		end
-	end
-	vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-	if ft then
-		-- filetype を設定すると LSP や ftplugin まで起動してしまうため、ハイライトだけを有効にする
-		local lang = vim.treesitter.language.get_lang(ft)
-		if lang and vim.treesitter.language.add(lang) then
-			vim.treesitter.start(buf, lang)
-		else
-			vim.bo[buf].syntax = ft
-		end
-	end
-	vim.api.nvim_win_set_buf(win, buf)
-	vim.api.nvim_win_set_config(win, {
-		title = item and (item.file and (' ' .. relpath(item.file) .. ' ')) or '',
-	})
-	if item and item.lnum then
-		pcall(vim.api.nvim_win_set_cursor, win, { item.lnum, math.max((item.col or 1) - 1, 0) })
-		vim.api.nvim_win_call(win, function()
-			vim.cmd('normal! zz')
-		end)
+	if self.preview_win then
+		M.preview(self.preview_win, self:selected())
 	end
 end
 
