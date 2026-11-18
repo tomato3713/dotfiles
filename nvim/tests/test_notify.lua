@@ -76,4 +76,49 @@ T['NotificationsClear は履歴と表示中の通知を消す'] = function()
 	eq({ #notifications(), child.lua_get([[#require('my.notify').history]]) }, { 0, 0 })
 end
 
+T['replace に表示中の通知を渡すと、新しく出さずに中身とタイトルを差し替え、履歴には両方残す'] = function()
+	child.lua([[
+		local n = require('my.notify')
+		local first = n.notify('loading', vim.log.levels.INFO)
+		n.notify('done\nok', vim.log.levels.WARN, { replace = first })
+	]])
+	wait()
+	eq(notifications(), { { row = 0, title = ' WARN ', lines = { 'done', 'ok' } } })
+	eq(child.lua_get([[vim.tbl_map(function(r) return r.msg end, require('my.notify').history)]]), { 'loading', 'done\nok' })
+end
+
+T['差し替えると timeout を数え直す'] = function()
+	child.lua([[
+		local n = require('my.notify')
+		_G.first = n.notify('a', nil, { timeout = 100 })
+	]])
+	wait(60)
+	child.lua([[require('my.notify').notify('b', nil, { timeout = 100, replace = _G.first })]])
+	wait(60)
+	eq(#notifications(), 1)
+end
+
+T['nvim-notify と同じ require("notify") の呼び出しで、noice のメッセージも通知に出る'] = function()
+	child.lua([[
+		local id = require('notify')('E492: Not an editor command', 'error', { title = 'Error', render = function() end })
+		require('notify')('updated', 'error', { title = 'Error', replace = id })
+	]])
+	wait()
+	eq(notifications(), { { row = 0, title = ' Error ', lines = { 'updated' } } })
+end
+
+T['閉じた通知を replace に渡すと、新しい通知として出す'] = function()
+	child.lua([[_G.first = require('my.notify').notify('old', nil, { timeout = 30 })]])
+	wait(80)
+	child.lua([[require('my.notify').notify('new', nil, { replace = _G.first })]])
+	wait()
+	eq(notifications(), { { row = 0, title = ' INFO ', lines = { 'new' } } })
+end
+
+T['中身がタイトルより短くても、タイトルが収まる幅にする'] = function()
+	child.lua([[vim.notify('x', nil, { title = 'Messages' })]])
+	wait()
+	eq(child.lua_get([[vim.api.nvim_win_get_width(vim.iter(vim.api.nvim_list_wins()):find(function(w) return vim.api.nvim_win_get_config(w).relative ~= '' end))]]) >= #' Messages ', true)
+end
+
 return T

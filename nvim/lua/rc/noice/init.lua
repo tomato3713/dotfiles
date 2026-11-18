@@ -14,7 +14,8 @@ require("noice").setup({
 	messages = {
 		view_search = "mini",
 	},
-	-- vim.notify は my.notify が受け持つ
+	-- vim.notify は my.notify が直接受け持つ。
+	-- echo やエラーなどの「notify」表示も、互換モジュール lua/notify.lua を通して my.notify に出る
 	notify = {
 		enabled = false,
 	},
