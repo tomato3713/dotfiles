@@ -1,24 +1,8 @@
 # --- Colorscheme
 [[plugins]]
-repo = 'https://github.com/joshdick/onedark.vim'
-
-[[plugins]]
-repo = 'https://github.com/vigoux/oak'
-
-[[plugins]]
 repo = 'https://github.com/tanvirtin/monokai.nvim'
 hook_source = '''
   " au VimEnter * nested colorscheme monokai
-'''
-
-[[plugins]]
-repo = 'https://github.com/folke/tokyonight.nvim'
-lua_source = '''
-require('tokyonight').setup {
-  style = 'night',
-  transparent = false,
-  terminal_colors = true,
-}
 '''
 
 [[plugins]]
