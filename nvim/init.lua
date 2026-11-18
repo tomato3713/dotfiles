@@ -29,6 +29,8 @@ vim.opt.cmdheight = 0
 vim.opt.number = true
 vim.o.pumblend = 10
 vim.o.pumborder = 'rounded'
+-- hover や diagnostic などの float の枠線を個別に指定せず、ここでまとめて決める
+vim.o.winborder = 'single'
 vim.o.termguicolors = true
 vim.o.showmode = false
 vim.o.signcolumn = 'yes'

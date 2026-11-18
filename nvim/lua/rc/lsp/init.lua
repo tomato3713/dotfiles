@@ -19,7 +19,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.diagnostic.config({
 	float = {
-		border = 'single',
 		severity_sort = true,
 	},
 	virtual_text = {

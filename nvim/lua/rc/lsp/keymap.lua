@@ -16,15 +16,9 @@ return function()
 			local bufopts = { silent = true, buffer = args.buf }
 
 			-- code reading
-			--- 定義情報などを表示する
-			-- Neovim 0.11 以降、hover/signature_help は handler を経由しないため border は引数で渡す
-			vim.keymap.set("n", "K", function()
-				vim.lsp.buf.hover({ border = "single" })
-			end, bufopts)
+			-- hover は Neovim 標準の K を使う。枠線は winborder で付く
 			--- 関数の引数の内容とかを表示する
-			vim.keymap.set("n", "<c-k>", function()
-				vim.lsp.buf.signature_help({ border = "single" })
-			end, bufopts)
+			vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, bufopts)
 
 			-- code edit
 			--- 関数名や変数名をリネーム

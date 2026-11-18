@@ -15,7 +15,6 @@ require('gitsigns').setup({
 		ignore_whitespace = false,
 	},
 	preview_config = {
-		border = 'single',
 		style = 'minimal',
 		relative = 'cursor',
 		row = 1,
