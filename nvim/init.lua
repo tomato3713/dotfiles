@@ -133,3 +133,4 @@ require('rc.dein').init()
 
 require('rc.finder')
 require('rc.dial')
+require('rc.gitlink')

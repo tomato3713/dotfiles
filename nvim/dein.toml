@@ -293,13 +293,6 @@ lua_source = '''
 require('rc.gitsigns')
 '''
 
-[[plugins]]
-repo = 'https://github.com/ruifm/gitlinker.nvim'
-depends = ['plenary.nvim']
-lua_source = '''
-require('rc.gitlinker')
-'''
-
 # --- File Exploer
 [[plugins]]
 repo = 'https://github.com/obaland/vfiler.vim'
