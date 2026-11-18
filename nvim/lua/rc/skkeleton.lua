@@ -40,5 +40,3 @@ require('my.utils').nvim_create_autocmd('User', {
 })
 
 init_skk_dictionary(global_skk_jisyo, false)
-
-init()
