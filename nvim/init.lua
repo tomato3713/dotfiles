@@ -47,7 +47,7 @@ vim.opt.listchars = {
 vim.go.tabline = [[%!v:lua.require('my.tab').tabLineUpdate()]]
 utils.nvim_create_autocmd({ 'ColorScheme' }, {
 	callback = function()
-		vim.api.nvim_set_hl(0, "my.utils", { fg = 'White', bg = 'Green' })
+		vim.api.nvim_set_hl(0, "TabLineSel", { fg = 'White', bg = 'Green' })
 	end,
 	desc = 'set selected tab highlight',
 })
