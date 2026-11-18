@@ -35,38 +35,6 @@ M.keep_cursor = function(cmd)
 	end
 end
 
--- @params list list
--- @return bool
-M.contains = function(list, element)
-	for _, v in pairs(list) do
-		if v == element then
-			return true
-		end
-	end
-	return false
-end
-
--- @params obj object
--- @params indent number
--- @return string
-local function dumper(o, indent)
-	if type(o) == "table" then
-		local s = "{\n"
-		for k, v in pairs(o) do
-			s = s .. string.rep(" ", indent) .. "'" .. k .. "' = " .. dumper(v, indent + 1) .. ",\n"
-		end
-		return s .. string.rep(" ", indent) .. "}"
-	else
-		return tostring(o)
-	end
-end
-
--- @params obj object
--- @return string
-M.dump = function(o)
-	return dumper(o, 0)
-end
-
 M.my_group = vim.api.nvim_create_augroup('vimrcEx', {})
 
 --- create autocmd in vimrcEx group
@@ -84,29 +52,18 @@ M.clear_vimrc_autocmd = function()
 	})
 end
 
-M.is_file_exists = function(path)
-	return vim.fn.filereadable(vim.fn.expand(path)) == 1
-end
-
---- @param path string
-M.dirpath = function(path)
-	return string.match(path, '^.+/')
-end
-
---- download a file from path.
---- if is_override is true, override already existed file.
+--- url のファイルを path にダウンロードする。is_override が false なら既存のファイルは残す
 ---@param url string
 ---@param path string
 ---@param is_override boolean
 M.download_file = function(url, path, is_override)
-	if M.is_file_exists(path) then
-		if not is_override then return end
+	path = vim.fn.expand(path)
+	if vim.uv.fs_stat(path) and not is_override then
+		return
 	end
-
-	local dir = M.dirpath(path)
-	vim.fn.mkdir(dir, "p")
-
-	os.execute('curl -o ' .. vim.fn.expand(path) .. ' ' .. url)
+	vim.fn.mkdir(vim.fs.dirname(path), 'p')
+	-- os.execute はシェル経由で path をクォートしないため、引数を配列で渡す vim.system を使う
+	vim.system({ 'curl', '-fsSL', '-o', path, url }):wait()
 end
 
 return M
