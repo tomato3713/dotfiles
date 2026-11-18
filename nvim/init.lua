@@ -10,9 +10,6 @@ table.insert(_G.favoriteList, 'TodoLocList')
 
 vim.keymap.set({ 'n', 'x' }, 'g?', function() require('my.selector')(_G.favoriteList, vim.fn.execute) end)
 
--- プラグインが読み込まれる前に差し替え、起動中の通知も拾う
-require('my.notify').setup()
-
 require('my.cmd').setup()
 
 -- set keymap
