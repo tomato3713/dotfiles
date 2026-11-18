@@ -1,7 +1,7 @@
 return function()
 	-- diagnostics (LSP 不要なのでグローバル設定)
+	-- float は gs が mini.splitjoin と衝突するため、標準の <C-w>d で開く
 	local opts = { silent = true }
-	vim.keymap.set("n", "gs", vim.diagnostic.open_float, opts)
 	vim.keymap.set("n", "[e", function()
 		vim.diagnostic.jump({ count = -1 })
 	end, opts)
