@@ -32,10 +32,11 @@ end
 
 --- 上の入力欄の内容で rg を実行し直し、下の入力欄で結果をファイルパスだけを対象に絞り込む
 ---@param word? string 検索パターンの初期値。空なら検索パターンの入力から始める
-function M.grep(word)
+---@param dir? string 検索するディレクトリ。省略時はカレントディレクトリ
+function M.grep(word, dir)
 	word = word or ''
 	-- 起動時のディレクトリに固定する。:tcd などで後から変わっても、表示と検索対象と開くファイルがずれないように
-	local cwd = vim.fn.getcwd()
+	local cwd = dir or vim.fn.getcwd()
 	finder.start({
 		title = 'Grep',
 		inputs = { {
@@ -68,6 +69,37 @@ function M.grep(word)
 		} },
 		focus = word == '' and 1 or nil,
 	})
+end
+
+--- JunkNote / JunkfileDiary のメモ一覧。最近更新したものから並べる
+function M.junkfiles()
+	local junkfile = require('my.junkfile')
+	local root = junkfile.dir()
+	local files = {}
+	for name, type in vim.fs.dir(root, { depth = math.huge }) do
+		if type == 'file' then
+			local path = vim.fs.joinpath(root, name)
+			local stat = vim.uv.fs_stat(path)
+			files[#files + 1] = { name = name, path = path, mtime = stat and stat.mtime.sec or 0 }
+		end
+	end
+	table.sort(files, function(a, b)
+		return a.mtime > b.mtime
+	end)
+	finder.start({
+		title = 'Junkfiles',
+		items = vim.tbl_map(function(f)
+			local item = file_item(f.path)
+			-- 置き場所のパスは共通なので、topics/perl.md や 2026/11/main.md の形で見せる
+			item.text = f.name
+			return item
+		end, files),
+	})
+end
+
+--- JunkNote / JunkfileDiary のメモの中身を grep する
+function M.junkgrep()
+	M.grep('', require('my.junkfile').dir())
 end
 
 --- 最近使ったファイル (mr.vim)

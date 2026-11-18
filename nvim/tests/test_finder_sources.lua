@@ -182,4 +182,53 @@ T['marks']['英字のマークだけを候補にする'] = function()
 	eq(child.lua_get([[vim.tbl_map(function(i) return i.text end, _G.opts.items)]]), { 'a [No Name]:2: two' })
 end
 
+T['junkfiles'] = MiniTest.new_set({
+	hooks = {
+		pre_case = function()
+			-- 実際のメモ置き場を汚さないよう、一時ディレクトリをキャッシュディレクトリにする
+			child.lua([[
+				local tmp = vim.fn.tempname()
+				vim.fn.mkdir(tmp, 'p')
+				vim.env.XDG_CACHE_HOME = vim.fn.resolve(tmp)
+				_G.junk = function(name, lines, mtime)
+					local path = require('my.junkfile').dir() .. '/' .. name
+					vim.fn.mkdir(vim.fs.dirname(path), 'p')
+					vim.fn.writefile(lines, path)
+					vim.uv.fs_utime(path, mtime, mtime)
+				end
+			]])
+		end,
+	},
+})
+
+T['junkfiles']['月ごとのメモと話題ごとのメモを最近更新した順に並べる'] = function()
+	child.lua([[
+		junk('2026/10/main.md', { 'old' }, 1000)
+		junk('topics/perl.md', { 'newest' }, 3000)
+		junk('2026/11/2026-11-18.md', { 'middle' }, 2000)
+		sources.junkfiles()
+	]])
+	eq(child.lua_get([[vim.tbl_map(function(i) return i.text end, _G.opts.items)]]),
+		{ 'topics/perl.md', '2026/11/2026-11-18.md', '2026/10/main.md' })
+end
+
+T['junkfiles']['メモが無くても空の一覧を開く'] = function()
+	child.lua([[sources.junkfiles()]])
+	eq(child.lua_get([[#_G.opts.items]]), 0)
+end
+
+T['junkfiles']['中身の grep はメモの置き場所を対象にする'] = function()
+	skip_without_rg()
+	child.lua([[
+		junk('topics/perl.md', { 'use strict;' }, 1000)
+		sources.junkgrep()
+	]])
+	local dir = child.lua_get([[require('my.junkfile').dir()]])
+	eq(child.lua_get([[vim.api.nvim_win_get_config(_G.f.input_wins[1]).title[1][1] ]]),
+		' Grep: ' .. child.fn.fnamemodify(dir, ':~') .. ' ')
+	child.type_keys('strict')
+	child.lua([[vim.wait(3000, function() return #_G.f.items > 0 and not _G.f.loading end)]])
+	eq(child.lua_get([[_G.f.items[1].file]]), dir .. '/topics/perl.md')
+end
+
 return T

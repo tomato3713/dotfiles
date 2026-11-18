@@ -13,6 +13,8 @@ local maps = {
 	{ ',t', sources.tabs, 'finder: tabs' },
 	{ ',c', sources.colorschemes, 'finder: colorschemes' },
 	{ ',d', sources.diagnostics, 'finder: diagnostics' },
+	{ ',j', sources.junkfiles, 'finder: junkfiles' },
+	{ ',J', sources.junkgrep, 'finder: grep in junkfiles' },
 	{ ',F', '<Cmd>VFiler -layout=floating<CR>', 'filer' },
 
 	-- lsp
