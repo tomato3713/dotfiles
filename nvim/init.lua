@@ -29,6 +29,14 @@ vim.opt.fileformats = { 'unix', 'dos', 'mac' }
 
 -- view
 vim.opt.cmdheight = 0
+-- cmdheight=0 でも "Press ENTER" で止まらないよう、本体の新しいメッセージ・コマンドライン UI を使う。
+-- メッセージはコマンドラインではなく右下に一定時間出す。:ls や :map などの一覧は右下に収まらないため pager で開く
+require('vim._core.ui2').enable({
+	msg = {
+		target = 'msg',
+		targets = { list_cmd = 'pager' },
+	},
+})
 vim.opt.number = true
 vim.o.pumblend = 10
 vim.o.pumborder = 'rounded'

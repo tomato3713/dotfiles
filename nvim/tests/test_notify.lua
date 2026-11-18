@@ -98,15 +98,6 @@ T['差し替えると timeout を数え直す'] = function()
 	eq(#notifications(), 1)
 end
 
-T['nvim-notify と同じ require("notify") の呼び出しで、noice のメッセージも通知に出る'] = function()
-	child.lua([[
-		local id = require('notify')('E492: Not an editor command', 'error', { title = 'Error', render = function() end })
-		require('notify')('updated', 'error', { title = 'Error', replace = id })
-	]])
-	wait()
-	eq(notifications(), { { row = 0, title = ' Error ', lines = { 'updated' } } })
-end
-
 T['閉じた通知を replace に渡すと、新しい通知として出す'] = function()
 	child.lua([[_G.first = require('my.notify').notify('old', nil, { timeout = 30 })]])
 	wait(80)
