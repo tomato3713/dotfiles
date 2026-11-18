@@ -75,6 +75,7 @@ T['表示']['日曜始まりで、1 日を曜日の列に合わせて並べる']
 	eq(lines[1], ' Su  Mo  Tu  We  Th  Fr  Sa ')
 	eq(lines[2], '          1   2   3   4   5 ')
 	eq(lines[6], ' 27  28  29  30  31 ')
+	eq(lines[#lines], ' m: Monthly')
 	eq(title(), ' Junkfile 2026/12 ')
 end
 
@@ -105,8 +106,8 @@ T['表示']['カーソル下の日の日記とその月の main.md を別々に�
 		main(2026, 11)
 	]])
 	open_at(2026, 11, 3)
-	eq(preview('day_preview_win'), { { 'day three' }, ' 2026/11/03 ' })
-	eq(preview('month_preview_win'), { { 'monthly' }, ' 2026/11 main.md ' })
+	eq(preview('day_preview_win'), { { 'day three' }, ' Daily 2026/11/03 ' })
+	eq(preview('month_preview_win'), { { 'monthly' }, ' Monthly 2026/11 ' })
 end
 
 T['表示']['カーソルを動かすと日記のプレビューが移動先の日に変わる'] = function()
@@ -116,17 +117,17 @@ T['表示']['カーソルを動かすと日記のプレビューが移動先の�
 	]])
 	open_at(2026, 11, 3)
 	child.type_keys('l')
-	eq(preview('day_preview_win'), { { 'day four' }, ' 2026/11/04 ' })
+	eq(preview('day_preview_win'), { { 'day four' }, ' Daily 2026/11/04 ' })
 	child.type_keys('l')
-	eq(preview('day_preview_win'), { { '(ありません)' }, ' 2026/11/05 ' })
+	eq(preview('day_preview_win'), { { '(ありません)' }, ' Daily 2026/11/05 ' })
 end
 
 T['表示']['月を移ると main.md のプレビューも移動先の月に変わる'] = function()
 	child.lua([[main(2026, 11)]])
 	open_at(2026, 11, 3)
-	eq(preview('month_preview_win'), { { 'monthly' }, ' 2026/11 main.md ' })
+	eq(preview('month_preview_win'), { { 'monthly' }, ' Monthly 2026/11 ' })
 	child.type_keys('L')
-	eq(preview('month_preview_win'), { { '(ありません)' }, ' 2026/12 main.md ' })
+	eq(preview('month_preview_win'), { { '(ありません)' }, ' Monthly 2026/12 ' })
 end
 
 T['移動'] = MiniTest.new_set()

@@ -107,7 +107,8 @@ function Calendar:render()
 		lines[#lines + 1] = ''
 	end
 	lines[#lines + 1] = string.rep('─', CELL * #WEEKDAYS)
-	lines[#lines + 1] = ' m: main.md'
+	-- ファイル名の main.md では何のメモか分かりにくいため、表示上は Monthly と呼ぶ
+	lines[#lines + 1] = ' m: Monthly'
 	local main_exists = vim.fn.filereadable(M.main_path(self:time())) == 1
 	marks[#marks + 1] = { #lines - 1, 4, #lines[#lines], main_exists and 'JunkCalendarNote' or 'JunkCalendarEmpty', 10 }
 
@@ -125,9 +126,9 @@ function Calendar:render()
 
 	if self.day_preview_win then
 		show_note(self.day_preview_win, M.diary_path(self:time()),
-			string.format('%04d/%02d/%02d', self.year, self.month, self.day))
+			string.format('Daily %04d/%02d/%02d', self.year, self.month, self.day))
 		show_note(self.month_preview_win, M.main_path(self:time()),
-			string.format('%04d/%02d main.md', self.year, self.month))
+			string.format('Monthly %04d/%02d', self.year, self.month))
 	end
 end
 
