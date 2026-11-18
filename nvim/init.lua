@@ -5,7 +5,6 @@ utils.clear_vimrc_autocmd()
 -- g? でコマンドを選択する
 _G.favoriteList = {}
 table.insert(_G.favoriteList, 'DeinClearCache')
-table.insert(_G.favoriteList, 'GinStatus')
 table.insert(_G.favoriteList, 'TodoQuickFix')
 table.insert(_G.favoriteList, 'TodoLocList')
 
