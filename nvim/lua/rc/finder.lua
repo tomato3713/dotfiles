@@ -19,13 +19,14 @@ local maps = {
 
 	-- lsp
 	-- code action は vim.ui.select() 経由でファインダーが使われる
-	{ '<Space>a', vim.lsp.buf.code_action, 'lsp: code action' },
+	-- code action / rename は Neovim 標準の gra / grn を使う。
+	-- 一覧を finder で出したいものは、標準の gr* と同じキーを上書きする (gr 単体にすると gr* の入力を待ってしまう)
 	{ '<Space>h', lsp.call_hierarchy, 'lsp: call hierarchy' },
 	{ 'gd', lsp.jump('textDocument/definition', 'Definition'), 'lsp: definition' },
 	{ 'gD', lsp.jump('textDocument/declaration', 'Declaration'), 'lsp: declaration' },
-	{ 'gi', lsp.jump('textDocument/implementation', 'Implementation'), 'lsp: implementation' },
-	{ 'gtd', lsp.jump('textDocument/typeDefinition', 'Type Definition'), 'lsp: type definition' },
-	{ 'gr', lsp.references, 'lsp: definition and references' },
+	{ 'gri', lsp.jump('textDocument/implementation', 'Implementation'), 'lsp: implementation' },
+	{ 'grt', lsp.jump('textDocument/typeDefinition', 'Type Definition'), 'lsp: type definition' },
+	{ 'grr', lsp.references, 'lsp: definition and references' },
 	{ '<Space>wl', lsp.workspace_folders, 'lsp: workspace folders' },
 }
 

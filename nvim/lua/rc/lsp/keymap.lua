@@ -20,9 +20,7 @@ return function()
 			--- 関数の引数の内容とかを表示する
 			vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, bufopts)
 
-			-- code edit
-			--- 関数名や変数名をリネーム
-			vim.keymap.set("n", "<Space>r", vim.lsp.buf.rename, bufopts)
+			-- code edit (rename は標準の grn)
 			-- keep_cursor() は関数を返すので、そのまま rhs に渡す
 			vim.keymap.set("n", "<Space>f", require("my.utils").keep_cursor(vim.lsp.buf.format), bufopts)
 
