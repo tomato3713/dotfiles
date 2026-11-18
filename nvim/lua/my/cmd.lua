@@ -30,5 +30,8 @@ _M.setup = function()
 			end, junkfile.topics())
 		end,
 	})
+	vim.api.nvim_create_user_command('JunkCalendar', function()
+		require('my.junkcalendar').open()
+	end, {})
 end
 return _M
