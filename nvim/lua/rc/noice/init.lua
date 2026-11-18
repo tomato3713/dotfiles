@@ -14,6 +14,10 @@ require("noice").setup({
 	messages = {
 		view_search = "mini",
 	},
+	-- vim.notify は my.notify が受け持つ
+	notify = {
+		enabled = false,
+	},
   lsp = {
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
