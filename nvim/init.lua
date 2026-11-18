@@ -21,7 +21,6 @@ vim.g.loaded_vimball = 1
 vim.g.loaded_vimballPlugin = 1
 
 -- encoding setting
-vim.o.encoding = 'utf-8'                             -- バッファ内で扱う文字コード
 vim.o.fileencoding = 'utf-8'                         -- 書き込み時UTF-8出力
 vim.opt.fileencodings = { 'utf-8', 'cp932', 'sjis' } -- 読み込み時UTF-8, CP932, Shift_JISの順で自動判別
 vim.opt.fileformats = { 'unix', 'dos', 'mac' }
@@ -34,7 +33,7 @@ vim.o.pumborder = 'rounded'
 vim.o.termguicolors = true
 vim.o.showmode = false
 vim.o.signcolumn = 'yes'
-vim.o.laststatus = 3 -- v0.7.0 and later
+vim.o.laststatus = 3
 vim.opt.cursorline = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect', 'fuzzy', 'popup' }
 vim.o.list = true
@@ -53,13 +52,6 @@ utils.nvim_create_autocmd({ 'ColorScheme' }, {
 	end,
 	desc = 'set selected tab highlight',
 })
--- https://zenn.dev/kawarimidoll/articles/18ee967072def7
-vim.treesitter.start = (function(wrapped)
-	return function(bufnr, lang)
-		lang = lang or vim.fn.getbufvar(bufnr or '', '&filetype')
-		pcall(wrapped, bufnr, lang)
-	end
-end)(vim.treesitter.start)
 
 -- editor setting
 vim.o.smartindent = true -- スマートインデントを行う
