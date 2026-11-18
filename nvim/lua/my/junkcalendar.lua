@@ -49,7 +49,8 @@ end
 ---@field cells table<integer, { [1]: integer, [2]: integer }> 日 -> { 行 (0-based), 列 (0-based) }
 ---@field win integer
 ---@field buf integer
----@field preview_win? integer
+---@field day_preview_win? integer カーソル下の日の日記
+---@field month_preview_win? integer その月の main.md
 ---@field origin_win integer
 ---@field closed boolean
 local Calendar = {}
@@ -60,15 +61,17 @@ function Calendar:time()
 	return time_of(self.year, self.month, self.day)
 end
 
---- 選択中の日に表示・プレビューするメモ。日記が無ければその月の main.md、それも無ければ nil
----@return string?
-function Calendar:note_path()
-	for _, path in ipairs({ M.diary_path(self:time()), M.main_path(self:time()) }) do
-		if vim.fn.filereadable(path) == 1 then
-			return path
-		end
+--- path のメモを win にプレビューする。無ければその旨を表示し、空のプレビューと区別できるようにする
+---@param win integer
+---@param path string
+---@param title string
+local function show_note(win, path, title)
+	local exists = vim.fn.filereadable(path) == 1
+	finder.preview(win, exists and { text = path, file = path } or nil)
+	if not exists then
+		vim.api.nvim_buf_set_lines(vim.api.nvim_win_get_buf(win), 0, -1, false, { '(ありません)' })
 	end
-	return nil
+	vim.api.nvim_win_set_config(win, { title = ' ' .. title .. ' ' })
 end
 
 function Calendar:render()
@@ -120,9 +123,11 @@ function Calendar:render()
 	local cell = self.cells[self.day]
 	vim.api.nvim_win_set_cursor(self.win, { cell[1] + 1, cell[2] + 1 })
 
-	if self.preview_win then
-		local path = self:note_path()
-		finder.preview(self.preview_win, path and { text = path, file = path } or nil)
+	if self.day_preview_win then
+		show_note(self.day_preview_win, M.diary_path(self:time()),
+			string.format('%04d/%02d/%02d', self.year, self.month, self.day))
+		show_note(self.month_preview_win, M.main_path(self:time()),
+			string.format('%04d/%02d main.md', self.year, self.month))
 	end
 end
 
@@ -155,7 +160,8 @@ function Calendar:close(on_done)
 		return
 	end
 	self.closed = true
-	for _, win in ipairs({ self.win, self.preview_win }) do
+	-- プレビューは無いこともあるので、nil で ipairs が途切れないよう vim.tbl_values で詰める
+	for _, win in ipairs(vim.tbl_values({ self.win, self.day_preview_win, self.month_preview_win })) do
 		if vim.api.nvim_win_is_valid(win) then
 			vim.api.nvim_win_close(win, true)
 		end
@@ -222,11 +228,18 @@ function Calendar:open_windows()
 		row = row, col = col, width = cal_width - 2, height = cal_height - 2,
 	})
 	if with_preview then
-		self.preview_win = vim.api.nvim_open_win(vim.api.nvim_create_buf(false, true), false, {
-			relative = 'editor', style = 'minimal', border = 'single',
-			row = row, col = col + cal_width, width = preview_width - 2, height = preview_height - 2,
-		})
-		vim.wo[self.preview_win].number = true
+		-- 右側を上下に分け、上にカーソル下の日の日記、下にその月の main.md を出す
+		local day_height = math.floor(preview_height / 2)
+		local function preview(r, h)
+			local win = vim.api.nvim_open_win(vim.api.nvim_create_buf(false, true), false, {
+				relative = 'editor', style = 'minimal', border = 'single',
+				row = r, col = col + cal_width, width = preview_width - 2, height = h - 2,
+			})
+			vim.wo[win].number = true
+			return win
+		end
+		self.day_preview_win = preview(row, day_height)
+		self.month_preview_win = preview(row + day_height, preview_height - day_height)
 	end
 end
 

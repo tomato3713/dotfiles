@@ -22,6 +22,12 @@ local T = MiniTest.new_set({
 					vim.fn.mkdir(vim.fs.dirname(path), 'p')
 					vim.fn.writefile(lines or { 'diary' }, path)
 				end
+				--- 月の main.md を作る
+				_G.main = function(y, m, lines)
+					local path = cal.main_path(time_of(y, m, 1))
+					vim.fn.mkdir(vim.fs.dirname(path), 'p')
+					vim.fn.writefile(lines or { 'monthly' }, path)
+				end
 			]])
 		end,
 		post_once = child.stop,
@@ -85,17 +91,42 @@ T['表示']['選択中の日を強調する'] = function()
 	eq(vim.tbl_contains(day_highlights(17), 'JunkCalendarSelected'), false)
 end
 
-T['表示']['選択中の日の日記をプレビューし、無ければその月の main.md をプレビューする'] = function()
+--- プレビューの内容とタイトル
+local function preview(field)
+	return child.lua_get(string.format([[{
+		vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(_G.c.%s), 0, -1, false),
+		vim.api.nvim_win_get_config(_G.c.%s).title[1][1],
+	}]], field, field))
+end
+
+T['表示']['カーソル下の日の日記とその月の main.md を別々にプレビューする'] = function()
 	child.lua([[
 		diary(2026, 11, 3, { 'day three' })
-		local main = cal.main_path(time_of(2026, 11, 1))
-		vim.fn.writefile({ 'monthly' }, main)
+		main(2026, 11)
 	]])
 	open_at(2026, 11, 3)
-	local preview = [[vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(_G.c.preview_win), 0, -1, false)]]
-	eq(child.lua_get(preview), { 'day three' })
+	eq(preview('day_preview_win'), { { 'day three' }, ' 2026/11/03 ' })
+	eq(preview('month_preview_win'), { { 'monthly' }, ' 2026/11 main.md ' })
+end
+
+T['表示']['カーソルを動かすと日記のプレビューが移動先の日に変わる'] = function()
+	child.lua([[
+		diary(2026, 11, 3, { 'day three' })
+		diary(2026, 11, 4, { 'day four' })
+	]])
+	open_at(2026, 11, 3)
 	child.type_keys('l')
-	eq(child.lua_get(preview), { 'monthly' })
+	eq(preview('day_preview_win'), { { 'day four' }, ' 2026/11/04 ' })
+	child.type_keys('l')
+	eq(preview('day_preview_win'), { { '(ありません)' }, ' 2026/11/05 ' })
+end
+
+T['表示']['月を移ると main.md のプレビューも移動先の月に変わる'] = function()
+	child.lua([[main(2026, 11)]])
+	open_at(2026, 11, 3)
+	eq(preview('month_preview_win'), { { 'monthly' }, ' 2026/11 main.md ' })
+	child.type_keys('L')
+	eq(preview('month_preview_win'), { { '(ありません)' }, ' 2026/12 main.md ' })
 end
 
 T['移動'] = MiniTest.new_set()
@@ -156,11 +187,7 @@ T['開く']['<CR> で日記が無い日は何もせず、日記も作らない']
 end
 
 T['開く']['m でその月の main.md を開く'] = function()
-	child.lua([[
-		local main = cal.main_path(time_of(2026, 11, 1))
-		vim.fn.mkdir(vim.fs.dirname(main), 'p')
-		vim.fn.writefile({ 'monthly' }, main)
-	]])
+	child.lua([[main(2026, 11)]])
 	open_at(2026, 11, 18)
 	child.type_keys('m')
 	eq(child.api.nvim_buf_get_name(0), child.lua_get([[cal.main_path(time_of(2026, 11, 1))]]))
