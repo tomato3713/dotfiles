@@ -59,4 +59,4 @@ require("other-nvim").setup({
 	},
 })
 
-vim.api.nvim_set_keymap("n", "go", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "go", "<Cmd>Other<CR>", { silent = true })

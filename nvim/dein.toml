@@ -192,8 +192,7 @@ lua_source = '''
 repo = 'https://github.com/danymat/neogen'
 depends = ['nvim-treesitter']
 lua_add = '''
-  local opts = { noremap = true, silent = true }
-  vim.api.nvim_set_keymap("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", opts)
+  vim.keymap.set("n", "<Leader>nf", function() require('neogen').generate() end, { silent = true })
 '''
 lua_source = '''
   require('neogen').setup()
