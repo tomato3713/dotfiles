@@ -17,6 +17,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	end,
 })
 
+-- LSP の進捗は本体では表示されないため、progress メッセージにして ui2 のメッセージ欄に出す。
+-- id をトークンごとに固定し、同じ進捗は 1 つのメッセージを更新していく
+vim.api.nvim_create_autocmd('LspProgress', {
+	callback = function(ev)
+		local value = ev.data.params.value
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		vim.api.nvim_echo({ { value.message or 'done' } }, false, {
+			id = 'lsp.' .. ev.data.client_id .. '.' .. ev.data.params.token,
+			kind = 'progress',
+			source = client and client.name or 'vim.lsp',
+			title = value.title,
+			status = value.kind ~= 'end' and 'running' or 'success',
+			percent = value.percentage,
+		})
+	end,
+	desc = 'show LSP progress',
+})
+
 vim.diagnostic.config({
 	float = {
 		severity_sort = true,
