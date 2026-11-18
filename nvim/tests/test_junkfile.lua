@@ -44,14 +44,20 @@ end
 
 T['commands'] = MiniTest.new_set()
 
-T['commands'][':JunkfileDiary は今日の日付のファイルを開く'] = function()
-	child.cmd('JunkfileDiary')
+T['commands'][':JunkDaily は今日の日付のファイルを開く'] = function()
+	child.cmd('JunkDaily')
 	eq(vim.fs.basename(child.api.nvim_buf_get_name(0)), os.date('%Y-%m-%d.md'))
 end
 
-T['commands'][':JunkNote は引数が無ければ今月の main.md を開く'] = function()
-	child.cmd('JunkNote')
+T['commands'][':JunkMonthly は今月の main.md を開く'] = function()
+	child.cmd('JunkMonthly')
 	eq(child.api.nvim_buf_get_name(0), child.lua_get([[junkfile.path('main.md')]]))
+end
+
+T['commands'][':JunkNote は話題名を省略できない'] = function()
+	-- 引数なしで月のメモを開いていた頃の癖で打っても、別のファイルが黙って開かないようにする
+	eq(pcall(child.cmd, 'JunkNote'), false)
+	eq(child.api.nvim_buf_get_name(0), '')
 end
 
 T['commands'][':JunkNote {話題} は月で分けない話題ごとのファイルを開く'] = function()

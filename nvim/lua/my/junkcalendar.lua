@@ -1,4 +1,4 @@
--- JunkfileDiary の日記と月ごとの main.md をカレンダーで眺める
+-- JunkDaily の日記と JunkMonthly の月ごとのメモ をカレンダーで眺める
 -- 日付の格子はファインダーの縦一列のリストに合わないため、専用のフロートとして作る
 
 local junkfile = require('my.junkfile')

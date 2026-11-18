@@ -12,18 +12,18 @@ _M.setup = function()
 	vim.api.nvim_create_user_command('CountChars', fn.count_characters_in_selected_range, opt)
 
 	local junkfile = require('my.junkfile')
-	vim.api.nvim_create_user_command('JunkfileDiary', function()
+	-- カレンダーでの呼び名 (Daily / Monthly) とコマンド名を揃え、どのメモを開くのか名前で分かるようにする
+	vim.api.nvim_create_user_command('JunkDaily', function()
 		junkfile.open(os.date('%Y-%m-%d.md'))
 	end, {})
-	-- 引数なしは今月の main.md、引数ありは話題ごとに書き足していくメモを開く
+	vim.api.nvim_create_user_command('JunkMonthly', function()
+		junkfile.open('main.md')
+	end, {})
+	-- 月で分けず、話題ごとに 1 つのファイルへ書き足していくメモ
 	vim.api.nvim_create_user_command('JunkNote', function(args)
-		if args.args == '' then
-			junkfile.open('main.md')
-		else
-			junkfile.open_topic(args.args)
-		end
+		junkfile.open_topic(args.args)
 	end, {
-		nargs = '?',
+		nargs = 1,
 		complete = function(lead)
 			return vim.tbl_filter(function(topic)
 				return vim.startswith(topic, lead)

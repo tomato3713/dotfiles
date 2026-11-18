@@ -71,7 +71,7 @@ function M.grep(word, dir)
 	})
 end
 
---- JunkNote / JunkfileDiary のメモ一覧。最近更新したものから並べる
+--- JunkDaily / JunkMonthly / JunkNote のメモ一覧。最近更新したものから並べる
 function M.junkfiles()
 	local junkfile = require('my.junkfile')
 	local root = junkfile.dir()
@@ -97,7 +97,7 @@ function M.junkfiles()
 	})
 end
 
---- JunkNote / JunkfileDiary のメモの中身を grep する
+--- JunkDaily / JunkMonthly / JunkNote のメモの中身を grep する
 function M.junkgrep()
 	M.grep('', require('my.junkfile').dir())
 end
