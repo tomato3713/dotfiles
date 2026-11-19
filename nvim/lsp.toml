@@ -1,13 +1,13 @@
 # --- Language Server Protocol ---
 [[plugins]]
-repo = 'https://github.com/williamboman/mason.nvim'
+repo = 'https://github.com/mason-org/mason.nvim'
 
 [[plugins]]
-repo = 'https://github.com/williamboman/mason-lspconfig.nvim'
+repo = 'https://github.com/mason-org/mason-lspconfig.nvim'
 
 [[plugins]]
 repo = 'https://github.com/neovim/nvim-lspconfig'
-depends = ['mason.nvim', 'mason-lspconfig.nvim', 'nvim-cmp']
+depends = ['mason.nvim', 'mason-lspconfig.nvim']
 lua_source = '''
 require('rc.lsp')
 '''

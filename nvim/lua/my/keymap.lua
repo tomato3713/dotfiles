@@ -10,6 +10,7 @@ _M.global_mapping = function()
 	vim.keymap.set('n', "<C-g><C-g>", '<Cmd>:echo v:statusmsg<CR>')
 	vim.keymap.set('n', "<Plug>(macro_edit)", mfn.macro_editor)
 	vim.keymap.set('n', '<leader>q', '<Plug>(macro_edit)', { desc = "Edit a macro", silent = true })
+	vim.keymap.set('n', ',k', '<Cmd>JunkCalendar<CR>', { desc = 'junkfile: calendar', silent = true })
 end
 
 _M.filetype_mapping = function()

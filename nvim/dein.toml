@@ -27,47 +27,6 @@ require('which-key').setup {}
 
 # --- Rich UI
 [[plugins]]
-repo = 'https://github.com/MunifTanjim/nui.nvim'
-
-[[plugins]]
-repo = 'https://github.com/rcarriga/nvim-notify'
-lua_source = '''
-require('notify').setup({
-  background_colour = "#000000",
-  max_width = math.floor(vim.opt.columns:get() * 0.3)
-})
-
-vim.notify = require('notify')
-'''
-
-[[plugins]]
-repo = 'https://github.com/j-hui/fidget.nvim'
-lua_source = '''
-require("fidget").setup()
-'''
-
-[[plugins]]
-repo = 'https://github.com/folke/snacks.nvim'
-lua_source = '''
-require("snacks").setup({
-  picker = {
-    sources = {
-	files = {
-	   hidden = true, -- 隠しファイルを表示
-	},
-    },
-  },
-})
-'''
-
-[[plugins]]
-repo = "https://github.com/folke/noice.nvim"
-depends = ['MunifTanjim/nui.nvim', 'rcarriga/nvim-notify', 'echasnovski/mini.nvim']
-lua_source = '''
-require('rc.noice')
-'''
-
-[[plugins]]
 repo = 'https://github.com/nvim-tree/nvim-web-devicons'
 lua_source = '''
 require('nvim-web-devicons').setup()
@@ -104,7 +63,7 @@ require('neoscroll').setup()
 '''
 
 [[plugins]]
-repo = 'https://github.com/NvChad/nvim-colorizer.lua'
+repo = 'https://github.com/catgoose/nvim-colorizer.lua'
 lua_source = '''
 require('colorizer').setup()
 '''
@@ -134,17 +93,10 @@ require("todo-comments").setup({
 '''
 
 [[plugins]]
-repo = 'https://github.com/lambdalisue/mr.vim'
+repo = 'https://github.com/lambdalisue/vim-mr'
 on_event = ['BufNewFile', 'BufReadPre', 'BufWritePre']
 lua_source = '''
 require('rc.mr')
-'''
-
-[[plugins]]
-repo = 'https://github.com/Shougo/junkfile.vim'
-hook_add = '''
-  command! -nargs=0 JunkfileDiary call junkfile#open_immediately('%Y-%m-%d.md'->strftime())
-  command! -nargs=0 JunkNote call junkfile#open_immediately('main.md')
 '''
 
 # --- Rich Code Editing ---
@@ -186,21 +138,16 @@ repo = 'https://github.com/tyru/capture.vim'
 on_cmd = ['Capture']
 
 [[plugins]]
-repo = 'https://github.com/mhartington/formatter.nvim'
-hook_add = '''
-  nnoremap <silent> <leader>F :Format<CR>
-  nnoremap <silent> <leader>f :FormatWrite<CR>
-'''
+repo = 'https://github.com/stevearc/conform.nvim'
 lua_source = '''
-  require('rc.formatter')
+  require('rc.conform')
 '''
 
 [[plugins]]
 repo = 'https://github.com/danymat/neogen'
 depends = ['nvim-treesitter']
 lua_add = '''
-  local opts = { noremap = true, silent = true }
-  vim.api.nvim_set_keymap("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", opts)
+  vim.keymap.set("n", "<Leader>nf", function() require('neogen').generate() end, { silent = true })
 '''
 lua_source = '''
   require('neogen').setup()
@@ -226,7 +173,7 @@ lua_source = '''
 repo = 'https://github.com/RRethy/vim-illuminate'
 
 [[plugins]]
-repo = 'https://github.com/echasnovski/mini.nvim'
+repo = 'https://github.com/nvim-mini/mini.nvim'
 depends = ['nvim-ts-context-commentstring']
 lua_source = '''
 require('rc.mini')
@@ -237,21 +184,13 @@ repo = 'https://github.com/JoosepAlviste/nvim-ts-context-commentstring'
 depends = ['nvim-treesitter']
 # on_cmd = ['TSContextToggle'] # TODO: lazy
 lua_source = '''
-vim.g.skip_ts_context_commentstring_module = true
 require('ts_context_commentstring').setup {
 	enable_autocmd = false,
 }
 '''
 
 [[plugins]]
-repo = 'https://github.com/google/vim-jsonnet'
-
-[[plugins]]
 repo = 'https://github.com/mattn/vim-godoc'
-
-[[plugins]]
-repo = 'https://github.com/ngalaiko/tree-sitter-go-template'
-depends = ['nvim-treesitter']
 
 [[plugins]]
 # use treesitter to autoclose and autorename html tag
@@ -299,13 +238,6 @@ end
 repo = 'https://github.com/lewis6991/gitsigns.nvim'
 lua_source = '''
 require('rc.gitsigns')
-'''
-
-[[plugins]]
-repo = 'https://github.com/ruifm/gitlinker.nvim'
-depends = ['plenary.nvim']
-lua_source = '''
-require('rc.gitlinker')
 '''
 
 # --- File Exploer

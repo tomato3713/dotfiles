@@ -15,7 +15,6 @@ require('gitsigns').setup({
 		ignore_whitespace = false,
 	},
 	preview_config = {
-		border = 'single',
 		style = 'minimal',
 		relative = 'cursor',
 		row = 1,
@@ -30,17 +29,22 @@ require('gitsigns').setup({
 			opts.buffer = bufnr
 			vim.keymap.set(mode, l, r, opts)
 		end
-		map('n', ']d', function()
-			if vim.wo.diff then return ']d' end
-			vim.schedule(function() gs.next_hunk() end)
-			return '<Ignore>'
-		end, { expr = true, desc = 'goto git diff next hunk' })
+		-- ]d / [d は Neovim 標準の diagnostic 移動なので、diff モードと同じ ]c / [c に割り当てる
+		map('n', ']c', function()
+			if vim.wo.diff then
+				vim.cmd.normal({ ']c', bang = true })
+			else
+				gs.nav_hunk('next')
+			end
+		end, { desc = 'goto git diff next hunk' })
 
-		map('n', '[d', function()
-			if vim.wo.diff then return '[d' end
-			vim.schedule(function() gs.prev_hunk() end)
-			return '<Ignore>'
-		end, { expr = true, desc = 'goto git diff prev hunk' })
+		map('n', '[c', function()
+			if vim.wo.diff then
+				vim.cmd.normal({ '[c', bang = true })
+			else
+				gs.nav_hunk('prev')
+			end
+		end, { desc = 'goto git diff prev hunk' })
 
 		map('n', '<space>b', function() gs.blame_line { full = true } end,
 			{ desc = 'show blame current line' })

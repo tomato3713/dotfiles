@@ -1,7 +1,7 @@
 return function()
 	-- diagnostics (LSP 不要なのでグローバル設定)
-	local opts = { noremap = true, silent = true }
-	vim.keymap.set("n", "gs", vim.diagnostic.open_float, opts)
+	-- float は gs が mini.splitjoin と衝突するため、標準の <C-w>d で開く
+	local opts = { silent = true }
 	vim.keymap.set("n", "[e", function()
 		vim.diagnostic.jump({ count = -1 })
 	end, opts)
@@ -13,20 +13,14 @@ return function()
 	-- LSP keymaps (LspAttach でバッファローカルに設定)
 	vim.api.nvim_create_autocmd("LspAttach", {
 		callback = function(args)
-			local bufopts = { noremap = true, silent = true, buffer = args.buf }
+			local bufopts = { silent = true, buffer = args.buf }
 
 			-- code reading
-			--- 定義情報などを表示する
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+			-- hover は Neovim 標準の K を使う。枠線は winborder で付く
 			--- 関数の引数の内容とかを表示する
 			vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, bufopts)
 
-			-- code edit
-			--- 関数名や変数名をリネーム
-			vim.keymap.set("n", "<Space>r", vim.lsp.buf.rename, bufopts)
-			vim.keymap.set("n", "<Space>f", function()
-				require("my.utils").keep_cursor(vim.lsp.buf.format)
-			end, bufopts)
+			-- code edit: rename は標準の grn、整形は conform の <Space>f
 
 			-- workspace
 			vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)

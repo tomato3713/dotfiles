@@ -5,7 +5,6 @@ utils.clear_vimrc_autocmd()
 -- g? でコマンドを選択する
 _G.favoriteList = {}
 table.insert(_G.favoriteList, 'DeinClearCache')
-table.insert(_G.favoriteList, 'GinStatus')
 table.insert(_G.favoriteList, 'TodoQuickFix')
 table.insert(_G.favoriteList, 'TodoLocList')
 
@@ -21,20 +20,29 @@ vim.g.loaded_vimball = 1
 vim.g.loaded_vimballPlugin = 1
 
 -- encoding setting
-vim.o.encoding = 'utf-8'                             -- バッファ内で扱う文字コード
 vim.o.fileencoding = 'utf-8'                         -- 書き込み時UTF-8出力
 vim.opt.fileencodings = { 'utf-8', 'cp932', 'sjis' } -- 読み込み時UTF-8, CP932, Shift_JISの順で自動判別
 vim.opt.fileformats = { 'unix', 'dos', 'mac' }
 
 -- view
 vim.opt.cmdheight = 0
+-- cmdheight=0 でも "Press ENTER" で止まらないよう、本体の新しいメッセージ・コマンドライン UI を使う。
+-- メッセージはコマンドラインではなく右下に一定時間出す。:ls や :map などの一覧は右下に収まらないため pager で開く
+require('vim._core.ui2').enable({
+	msg = {
+		target = 'msg',
+		targets = { list_cmd = 'pager' },
+	},
+})
 vim.opt.number = true
 vim.o.pumblend = 10
 vim.o.pumborder = 'rounded'
+-- hover や diagnostic などの float の枠線を個別に指定せず、ここでまとめて決める
+vim.o.winborder = 'single'
 vim.o.termguicolors = true
 vim.o.showmode = false
 vim.o.signcolumn = 'yes'
-vim.o.laststatus = 3 -- v0.7.0 and later
+vim.o.laststatus = 3
 vim.opt.cursorline = true
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect', 'fuzzy', 'popup' }
 vim.o.list = true
@@ -49,17 +57,10 @@ vim.opt.listchars = {
 vim.go.tabline = [[%!v:lua.require('my.tab').tabLineUpdate()]]
 utils.nvim_create_autocmd({ 'ColorScheme' }, {
 	callback = function()
-		vim.api.nvim_set_hl(0, "my.utils", { fg = 'White', bg = 'Green' })
+		vim.api.nvim_set_hl(0, "TabLineSel", { fg = 'White', bg = 'Green' })
 	end,
 	desc = 'set selected tab highlight',
 })
--- https://zenn.dev/kawarimidoll/articles/18ee967072def7
-vim.treesitter.start = (function(wrapped)
-	return function(bufnr, lang)
-		lang = lang or vim.fn.getbufvar(bufnr or '', '&filetype')
-		pcall(wrapped, bufnr, lang)
-	end
-end)(vim.treesitter.start)
 
 -- editor setting
 vim.o.smartindent = true -- スマートインデントを行う
@@ -76,8 +77,17 @@ vim.opt.backup = false
 vim.o.ignorecase = true
 vim.opt.wrapscan = false -- no loop when search word
 
--- set wildmenu wildmode=longest:full
-vim.o.wildmenu = false
+-- cmdline 補完は nvim-cmp を使わず標準の wildmenu を入力に合わせて自動表示する
+vim.o.wildmenu = true
+vim.o.wildmode = 'noselect:lastused,full'
+vim.o.wildoptions = 'pum,fuzzy'
+vim.api.nvim_create_autocmd('CmdlineChanged', {
+	pattern = { ':', '/', '?' },
+	callback = function()
+		vim.fn.wildtrigger()
+	end,
+	desc = 'cmdline autocompletion',
+})
 vim.opt.wildignore = {
 	'*.o',
 	'*.obj',
@@ -108,16 +118,25 @@ utils.nvim_create_autocmd({ 'BufEnter' }, {
 	desc = 'set default filetype as plain text',
 })
 
+-- マクロ記録中だと一目で分かるよう colorscheme を変え、終わったら記録前のものに戻す
+local colors_before_recording
 vim.api.nvim_create_autocmd("RecordingEnter", {
 	callback = function()
-		vim.cmd("colorscheme evening")
+		colors_before_recording = vim.g.colors_name
+		vim.cmd.colorscheme("evening")
 	end,
 })
 
 vim.api.nvim_create_autocmd("RecordingLeave", {
 	callback = function()
-		vim.cmd("colorscheme monokai")
+		if colors_before_recording then
+			vim.cmd.colorscheme(colors_before_recording)
+		end
 	end,
 })
 
 require('rc.dein').init()
+
+require('rc.finder')
+require('rc.dial')
+require('rc.gitlink')

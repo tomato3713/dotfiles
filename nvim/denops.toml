@@ -1,10 +1,10 @@
 [[plugins]]
 repo = 'https://github.com/vim-denops/denops.vim'
 hook_add = '''
-  if exists("g:useShared")
-    let g:useShared = v:true
+  " g:useShared を立てたときだけ denops-shared-server に接続する
+  if get(g:, 'useShared', v:false)
     let g:denops_server_addr = '127.0.0.1:32123'
-  fi
+  endif
 
   command! DenopsCacheUpdate call denops#cache#update(#{reload: v:true})
   command! DenopsRestart call denops#server#restart()
@@ -34,28 +34,12 @@ repo = "https://github.com/vim-denops/denops-startup-recorder.vim"
 
 # --- Denops plugins ---
 [[plugins]]
-repo = 'https://github.com/monaqa/dps-dial.vim'
-depends = ['denops.vim']
-# on_map = '<Plug>'
-hook_add = '''
-  nmap  <C-a>  <Plug>(dps-dial-increment)
-  nmap  <C-x>  <Plug>(dps-dial-decrement)
-  xmap  <C-a>  <Plug>(dps-dial-increment)
-  xmap  <C-x>  <Plug>(dps-dial-decrement)
-  xmap g<C-a> g<Plug>(dps-dial-increment)
-  xmap g<C-x> g<Plug>(dps-dial-decrement)
-'''
-lua_source = '''
-  require('rc.dial')
-'''
-
-[[plugins]]
-repo = 'https://github.com/lambdalisue/kensaku.vim'
+repo = 'https://github.com/lambdalisue/vim-kensaku'
 depends = ['denops.vim']
 
 [[plugins]]
-repo = 'https://github.com/lambdalisue/kensaku-search.vim'
-depends = ['kensaku.vim']
+repo = 'https://github.com/lambdalisue/vim-kensaku-search'
+depends = ['vim-kensaku']
 lua_add = '''
   vim.keymap.set('c', '<CR>', function()
   	return vim.fn.getcmdtype() == '/' and '<Plug>(kensaku-search-replace)<CR>' or '<CR>'
@@ -82,15 +66,5 @@ depends = ['skkeleton']
 lua_source = '''
   require('skkeleton_indicator').setup{
   	alwaysShown = false,
-  	ignoreFt = { 'ddu-ui-filter' },
   }
 '''
-
-# --- LSP ---
-[[plugins]]
-repo = 'https://github.com/matsui54/denops-popup-preview.vim'
-depends = ['denops.vim']
-hook_source = '''
-call popup_preview#enable()
-'''
-

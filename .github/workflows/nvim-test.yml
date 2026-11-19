@@ -1,0 +1,43 @@
+name: nvim-test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'nvim/**'
+      - '.github/workflows/nvim-test.yml'
+  pull_request:
+    paths:
+      - 'nvim/**'
+      - '.github/workflows/nvim-test.yml'
+
+# テストを走らせるだけなので、リポジトリの読み取り以外の権限は渡さない
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nvim
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          # 後続のステップで push などはしないため、トークンをワークスペースに残さない
+          persist-credentials: false
+
+      # 手元と同じく最新の安定版で検証する。設定が新しい API を前提にしているため
+      - name: Install Neovim
+        run: |
+          curl -fsSL https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz | tar xz -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
+
+      # files / grep ソースのテストで使う
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Run tests
+        run: |
+          nvim --version | head -1
+          make test
